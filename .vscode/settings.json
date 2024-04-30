@@ -1,0 +1,18 @@
+{
+	"editor.defaultFormatter": "esbenp.prettier-vscode",
+	"prettier.useEditorConfig": false,
+	"editor.formatOnPaste": false,
+	"editor.formatOnSave": true,
+	"editor.codeActionsOnSave": {
+		"source.fixAll.eslint": "explicit",
+		"source.fixAll.format": "explicit"
+	},
+	"editor.quickSuggestions": {
+		"strings": "on"
+	},
+	"files.associations": {
+		"*.css": "tailwindcss"
+	},
+	"prettier.ignorePath": ".prettierignore",
+	"prettier.configPath": ".prettierrc.js"
+}
