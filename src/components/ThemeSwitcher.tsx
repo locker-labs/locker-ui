@@ -1,55 +1,76 @@
 "use client";
 
+import { RadioGroup } from "@headlessui/react";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
-import { AiOutlineLoading3Quarters } from "react-icons/ai";
-// import { CgScreen } from "react-icons/cg";
+import { CgScreen } from "react-icons/cg";
 import { IoMoonOutline, IoSunnyOutline } from "react-icons/io5";
 
 function ThemeSwitcher() {
 	const [mounted, setMounted] = useState<boolean>(false);
-	const { theme, setTheme, resolvedTheme } = useTheme();
+	const { theme, setTheme } = useTheme();
 
-	// If user did not choose anything,
-	//    - theme = "system"
-	//    - resolvedTheme = "undefined"
-	// If user chose something
-	//   - theme = "light", "dark", or "system"
-	//   - resolvedTheme = "light", "dark", "system"
-
-	// TODO: Make this component a Radio button with three options, defaulting to "system" if resolvedTheme is undefined
+	// ********** BEHAVIOR ********** //
+	// resoldvedTheme can be imported from useTheme
+	//
+	// By default:
+	//    Before mounting completes:
+	//        theme === "system"
+	//        resolvedTheme === undefined
+	//    After mounting completes:
+	//        theme === "system"
+	//        resolvedTheme === undefined
+	//
+	// If user manually sets the theme:
+	//    theme and resolvedTheme should be the same before and after mounting completes
+	// ****************************** //
 
 	useEffect(() => {
-		console.log("***theme: ", theme);
-		console.log("***resolvedTheme: ", resolvedTheme);
 		setMounted(true);
 	}, []);
 
-	if (!mounted) return <AiOutlineLoading3Quarters className="animate-spin" />;
-
-	if (resolvedTheme === "light") {
-		return (
-			<IoMoonOutline
-				className="cursor-pointer"
-				onClick={() => setTheme("dark")}
-			/>
-		);
-	}
-
-	// if (resolvedTheme === "system") {
-	// 	return <CgScreen onClick={() => setTheme("system")} />;
-	// }
-
-	if (resolvedTheme === "dark") {
-		return (
-			<IoSunnyOutline
-				className="cursor-pointer"
-				onClick={() => setTheme("light")}
-			/>
-		);
-	}
-
-	return null;
+	return (
+		<div>
+			{mounted ? (
+				<RadioGroup
+					className="flex items-center space-x-2 rounded-full border border-light-300 p-1 text-dark-100 dark:border-dark-100 dark:text-light-400"
+					value={theme}
+					onChange={setTheme}
+				>
+					<RadioGroup.Option
+						className="flex size-6 cursor-pointer items-center justify-center"
+						value="light"
+					>
+						{({ checked }) => (
+							<IoSunnyOutline
+								className={`${checked && "bg-secondary-200/30"} size-full rounded-full p-1`}
+							/>
+						)}
+					</RadioGroup.Option>
+					<RadioGroup.Option
+						className="flex size-6 cursor-pointer items-center justify-center"
+						value="system"
+					>
+						{({ checked }) => (
+							<CgScreen
+								className={`${checked && "bg-secondary-200/30"} size-full rounded-full p-1`}
+							/>
+						)}
+					</RadioGroup.Option>
+					<RadioGroup.Option
+						className="flex size-6 cursor-pointer items-center justify-center"
+						value="dark"
+					>
+						{({ checked }) => (
+							<IoMoonOutline
+								className={`${checked && "bg-secondary-200/30"} size-full rounded-full p-1`}
+							/>
+						)}
+					</RadioGroup.Option>
+				</RadioGroup>
+			) : null}
+		</div>
+	);
 }
 
 export default ThemeSwitcher;
