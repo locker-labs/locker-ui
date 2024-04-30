@@ -1,36 +1,55 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Locker User Interface
 
-## Getting Started
+The user interface for the Locker application.
 
-First, run the development server:
+## Getting Started with Development
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+The following are instructions to get a copy of the project running locally on your machine for developement and testing purposes.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Prerequisites
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+The preferred package manager of the Chain Rule team is [npm](https://docs.npmjs.com/), so this README only references npm, but pmpm or yarn may be used alternatively.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+Ensure that npm is installed globally on your machine.
 
-## Learn More
+### Installing, Running, and Building
 
-To learn more about Next.js, take a look at the following resources:
+Run `npm install` to install the project's dependencies.
 
--   [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
--   [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Run `npm run dev` to start the app server locally.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+Go to [localhost:3000](http://localhost:3000) in the web browser to view the app.
 
-## Deploy on Vercel
+Run `npm run build` to get a complete bundle of the app.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Testing, Formatting, and Linting
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Run `npm run test` to run all tests.
+
+Run `npm run format` to format all the code.
+
+Run `npm run lint:check` to run the linter.
+
+## Contributing
+
+-   On a new branch, open a PR for a particular set of changes.
+-   Name the PR according to the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0-beta.2/#specification) guidelines.
+-   All commits must be related to the PR name and commit messages must follow the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0-beta.2/#specification) guidelines.
+-   To make the enforcement of these guidelines easier, husky, commitlint, commitizen, and GitHub Actions have been configured for this project.
+-   All PRs must be squashed and merged to keep a clean history on the main branch.
+
+### Acceptable Commit Message Labels
+
+| Label    | Description                                                                       |
+| -------- | --------------------------------------------------------------------------------- |
+| feat     | A new feature                                                                     |
+| fix      | A bug fix                                                                         |
+| docs     | Documentation only changes                                                        |
+| style    | Changes that do not affect the meaning of the code (white-space, formatting, etc) |
+| refactor | A code change that neither fixes a bug nor adds a feature                         |
+| perf     | A code change that improves performance                                           |
+| test     | Adding missing tests or correcting existing tests                                 |
+| build    | Changes that affect the build system or external dependencies                     |
+| ci       | Changes to our CI configuration files and scripts                                 |
+| chore    | Other changes that don't modify src or test files                                 |
+| revert   | Reverts a previous commit                                                         |
