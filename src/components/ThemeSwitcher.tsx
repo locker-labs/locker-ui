@@ -19,10 +19,14 @@ function ThemeSwitcher() {
 	//        resolvedTheme === undefined
 	//    After mounting completes:
 	//        theme === "system"
-	//        resolvedTheme === undefined
+	//        resolvedTheme === "light" | "dark
 	//
 	// If user manually sets the theme:
-	//    theme and resolvedTheme should be the same before and after mounting completes
+	//    Before mounting completes:
+	//        theme and resolvedTheme should match -> "light" | "dark | "system"
+	//    After mounting completes:
+	//        theme === "light" | "dark | "system"
+	//        resolvedTheme === "light" | "dark
 	// ****************************** //
 
 	useEffect(() => {
@@ -43,7 +47,7 @@ function ThemeSwitcher() {
 					>
 						{({ checked }) => (
 							<IoSunnyOutline
-								className={`${checked && "bg-secondary-200/30"} size-full rounded-full p-1`}
+								className={`${checked && "bg-secondary-200/30"} size-full rounded-l-full rounded-r p-1`}
 							/>
 						)}
 					</RadioGroup.Option>
@@ -53,7 +57,7 @@ function ThemeSwitcher() {
 					>
 						{({ checked }) => (
 							<CgScreen
-								className={`${checked && "bg-secondary-200/30"} size-full rounded-full p-1`}
+								className={`${checked && "bg-secondary-200/30"} size-full rounded p-1`}
 							/>
 						)}
 					</RadioGroup.Option>
@@ -63,7 +67,7 @@ function ThemeSwitcher() {
 					>
 						{({ checked }) => (
 							<IoMoonOutline
-								className={`${checked && "bg-secondary-200/30"} size-full rounded-full p-1`}
+								className={`${checked && "bg-secondary-200/30"} size-full rounded-l rounded-r-full p-1`}
 							/>
 						)}
 					</RadioGroup.Option>

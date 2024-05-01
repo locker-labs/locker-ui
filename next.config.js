@@ -14,7 +14,8 @@ module.exports = withPWA({
 	reactStrictMode: true,
 	env: {
 		// ****************** PRIVATE ****************** //
-		// ...
+		NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: process.env.CLERK_PUBLISHABLE_KEY,
+		CLERK_SECRET_KEY: process.env.CLERK_SECRET_KEY,
 		// ********************************************* //
 
 		// ****************** PUBLIC ****************** //

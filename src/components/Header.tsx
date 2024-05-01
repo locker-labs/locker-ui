@@ -1,5 +1,9 @@
-import Image from "next/image";
+"use client";
+
 import Link from "next/link";
+
+import AuthButton from "@/components/AuthButton";
+import ThemedImage from "@/components/ThemedImage";
 
 function Header() {
 	return (
@@ -8,9 +12,18 @@ function Header() {
 				className="relative mr-2 flex h-9 w-28 shrink-0 justify-center outline-none"
 				href="/"
 			>
-				<Image src="assets/logoLocker.svg" alt="logo" fill />
+				<ThemedImage
+					darkImageSrc="/assets/logoLockerWhiteLetters.svg"
+					lightImageSrc="/assets/logoLockerDarkLetters.svg"
+					alt="Locker Logo"
+				/>
 			</Link>
-			<span>Menu</span>
+			<div className="ml-2 flex items-center justify-center sm:space-x-2">
+				<div className="hidden sm:flex">
+					<AuthButton type="sign-in" />
+				</div>
+				<AuthButton type="sign-up" />
+			</div>
 		</header>
 	);
 }

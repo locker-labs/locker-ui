@@ -1,5 +1,6 @@
 import "@/styles/globals.css";
 
+import { ClerkProvider } from "@clerk/nextjs";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { ThemeProvider } from "next-themes";
@@ -105,18 +106,20 @@ export default function RootLayout({
 	return (
 		<html lang="en" suppressHydrationWarning>
 			<body
-				className={`${inter.className} flex min-h-screen w-full flex-col items-center bg-light-100 text-dark-600 dark:bg-dark-500 dark:text-light-200`}
+				className={`${inter.className} flex min-h-screen w-full flex-col items-center bg-light-100 text-dark-500 dark:bg-dark-500 dark:text-light-200`}
 			>
 				<ThemeProvider
 					attribute="class"
 					defaultTheme="system"
 					enableSystem
 				>
-					<main className="flex w-full min-w-[230px] max-w-5xl flex-1 flex-col items-center p-5">
-						<Header />
-						{children}
-						<Footer />
-					</main>
+					<ClerkProvider>
+						<main className="flex w-full min-w-[230px] max-w-5xl flex-1 flex-col items-center p-5">
+							<Header />
+							{children}
+							<Footer />
+						</main>
+					</ClerkProvider>
 				</ThemeProvider>
 			</body>
 		</html>
