@@ -38,7 +38,7 @@ function ThemeSwitcher() {
 					onChange={setTheme}
 				>
 					<RadioGroup.Option
-						className="flex size-6 cursor-pointer items-center justify-center"
+						className="flex size-6 cursor-pointer items-center justify-center hover:text-dark-600 dark:hover:text-light-100"
 						value="light"
 					>
 						{({ checked }) => (
@@ -48,7 +48,7 @@ function ThemeSwitcher() {
 						)}
 					</RadioGroup.Option>
 					<RadioGroup.Option
-						className="flex size-6 cursor-pointer items-center justify-center"
+						className="flex size-6 cursor-pointer items-center justify-center hover:text-dark-600 dark:hover:text-light-100"
 						value="system"
 					>
 						{({ checked }) => (
@@ -58,7 +58,7 @@ function ThemeSwitcher() {
 						)}
 					</RadioGroup.Option>
 					<RadioGroup.Option
-						className="flex size-6 cursor-pointer items-center justify-center"
+						className="flex size-6 cursor-pointer items-center justify-center hover:text-dark-600 dark:hover:text-light-100"
 						value="dark"
 					>
 						{({ checked }) => (
