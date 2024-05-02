@@ -47,7 +47,7 @@ function ThemeSwitcher() {
 					>
 						{({ checked }) => (
 							<IoSunnyOutline
-								className={`${checked && "bg-secondary-200/30"} size-full rounded-l-full rounded-r p-1`}
+								className={`${checked && "bg-secondary-200/30 dark:bg-primary-100/30"} size-full rounded-l-full rounded-r p-1`}
 							/>
 						)}
 					</RadioGroup.Option>
@@ -57,7 +57,7 @@ function ThemeSwitcher() {
 					>
 						{({ checked }) => (
 							<CgScreen
-								className={`${checked && "bg-secondary-200/30"} size-full rounded p-1`}
+								className={`${checked && "bg-secondary-200/30 dark:bg-primary-100/30"} size-full rounded p-1`}
 							/>
 						)}
 					</RadioGroup.Option>
@@ -67,7 +67,7 @@ function ThemeSwitcher() {
 					>
 						{({ checked }) => (
 							<IoMoonOutline
-								className={`${checked && "bg-secondary-200/30"} size-full rounded-l rounded-r-full p-1`}
+								className={`${checked && "bg-secondary-200/30 dark:bg-primary-100/30"} size-full rounded-l rounded-r-full p-1`}
 							/>
 						)}
 					</RadioGroup.Option>
