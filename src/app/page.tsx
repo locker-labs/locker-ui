@@ -27,13 +27,13 @@ export default function LandingPage() {
 	return (
 		<div className="flex w-full flex-1 flex-col items-center pt-16">
 			<div className="flex w-full max-w-2xl flex-col space-y-10">
-				<h1 className="text-5xl">
+				<h1 className="text-5xl dark:text-light-100">
 					<span className="bg-gradient-to-r from-secondary-200 to-primary-200 bg-clip-text text-transparent">
 						Automate
 					</span>{" "}
 					your crypto
 				</h1>
-				<span className="text-2xl font-light text-dark-300 dark:text-light-500">
+				<span className="text-2xl font-light text-dark-300 dark:text-light-200">
 					Save and invest every time you get paid on-chain. Set up
 					your locker today and watch your crypto go where you want
 					it.
