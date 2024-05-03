@@ -1,17 +1,16 @@
 "use client";
 
-import { useAuth, useClerk } from "@clerk/nextjs";
+import { useAuth } from "@clerk/nextjs";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 
 import AuthButton from "@/components/AuthButton";
+import HeaderMenu from "@/components/HeaderMenu";
 import ThemedImage from "@/components/ThemedImage";
 import { PATHS } from "@/data/paths";
 
 function Header() {
-	const router = useRouter();
 	const pathname = usePathname();
-	const { signOut } = useClerk();
 	const { isSignedIn } = useAuth();
 
 	const isAuthRoute =
@@ -31,15 +30,10 @@ function Header() {
 				/>
 			</Link>
 			{isSignedIn ? (
-				<div className="ml-2 flex items-center justify-center">
-					<button
-						className="h-10 w-24 rounded-full bg-light-400 outline-none hover:bg-light-500 dark:bg-dark-300 dark:hover:bg-dark-200"
-						onClick={() =>
-							signOut(() => router.push(PATHS.LANDING))
-						}
-					>
-						Sign out
-					</button>
+				<div
+					className={`${pathname === PATHS.ACCOUNT && "hidden"} ml-2 flex items-center justify-center`}
+				>
+					<HeaderMenu />
 				</div>
 			) : showAuthButtons ? (
 				<div className="ml-2 flex items-center justify-center sm:space-x-2">

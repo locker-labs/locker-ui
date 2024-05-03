@@ -41,4 +41,14 @@ module.exports = withPWA({
 		TELEGRAM_URL: "https://t.me/+stsNEbe16tU5MTY5",
 		// ******************************************** //
 	},
+	images: {
+		remotePatterns: [
+			{
+				protocol: "https",
+				hostname: "img.clerk.com",
+				port: "",
+				pathname: "/**",
+			},
+		],
+	},
 });

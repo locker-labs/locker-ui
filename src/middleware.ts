@@ -5,7 +5,7 @@ import { PATHS } from "@/data/paths";
 
 const isProtectedRoute = createRouteMatcher([
 	`${PATHS.HOME}(.*)`,
-	`${PATHS.PROFILE}(.*)`,
+	`${PATHS.ACCOUNT}(.*)`,
 ]);
 
 export default clerkMiddleware(

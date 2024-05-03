@@ -8,12 +8,12 @@ import { IoChevronBackOutline } from "react-icons/io5";
 
 import { PATHS } from "@/data/paths";
 
-function ProfilePage() {
+function AccountPage() {
 	const router = useRouter();
 	const { resolvedTheme } = useTheme();
 
 	return (
-		<div className="flex w-full flex-1 flex-col items-center pt-16">
+		<div className="flex w-full flex-1 flex-col items-center py-12">
 			<div className="flex-col0 mb-8 flex w-full">
 				<button
 					className="h-10 w-fit hover:text-secondary-200 dark:hover:text-primary-100"
@@ -34,4 +34,4 @@ function ProfilePage() {
 	);
 }
 
-export default ProfilePage;
+export default AccountPage;

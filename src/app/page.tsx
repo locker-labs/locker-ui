@@ -24,7 +24,7 @@ export default function LandingPage() {
 	}, [isSignedIn]);
 
 	return (
-		<div className="flex w-full flex-1 flex-col items-center pt-16">
+		<div className="flex w-full flex-1 flex-col items-center py-12">
 			<div className="flex w-full max-w-2xl flex-col space-y-10">
 				<h1 className="text-5xl dark:text-light-100">
 					<span className="bg-gradient-to-r from-secondary-200 to-primary-200 bg-clip-text text-transparent">

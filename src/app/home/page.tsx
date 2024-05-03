@@ -3,6 +3,9 @@
 import { useAuth } from "@clerk/nextjs";
 import { useEffect } from "react";
 
+import LockerCreate from "@/components/LockerCreate";
+import LockerEmpty from "@/components/LockerEmpty";
+import LockerSetup from "@/components/LockerSetup";
 import { getLocker } from "@/services/lockers";
 
 function HomePage() {
@@ -20,8 +23,10 @@ function HomePage() {
 	}, []);
 
 	return (
-		<div className="flex w-full flex-1 flex-col items-center pt-16">
-			<span>Home</span>
+		<div className="flex w-full flex-1 flex-col items-center py-12">
+			<LockerCreate />
+			<LockerEmpty />
+			<LockerSetup />
 		</div>
 	);
 }
