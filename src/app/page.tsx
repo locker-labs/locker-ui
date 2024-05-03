@@ -6,9 +6,8 @@ import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 import AuthButton from "@/components/AuthButton";
+import lockerBlob from "@/data/lottie/lockerBlob.json";
 import { PATHS } from "@/data/paths";
-
-import animationLockerBlob from "../../public/assets/animationLockerBlob.json";
 
 const LottieAnimation = dynamic(() => import("@/components/LottieAnimation"), {
 	ssr: false,
@@ -48,8 +47,7 @@ export default function LandingPage() {
 				</div>
 			</div>
 			<div className="mt-14 flex w-full max-w-xl">
-				<LottieAnimation animationData={animationLockerBlob} />
-				{/* <LottieAnimation animationUrl="/assets/animationLockerBlob.json" /> */}
+				<LottieAnimation animationData={lockerBlob} />
 			</div>
 		</div>
 	);
