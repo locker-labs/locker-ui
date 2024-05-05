@@ -14,7 +14,7 @@ import { useAccount, useBalance, useDisconnect } from "wagmi";
 import ChainIcon from "@/components/ChainIcon";
 import Button from "@/components/HeaderMenu/Button";
 import { PATHS } from "@/data/constants/paths";
-import { supportedChains } from "@/data/constants/supportedChains";
+import { supportedChainIds } from "@/data/constants/supportedChains";
 import { copyToClipboard } from "@/utils/copytoClipboard";
 import { truncateAddress } from "@/utils/truncateAddress";
 
@@ -29,89 +29,43 @@ function HeaderMenu() {
 		address,
 	});
 
-	const chainIcon = () => {
-		switch (chain?.id) {
-			case supportedChains.ARBITRUM.id:
-				return (
-					<ChainIcon
-						className="mr-3 flex items-center justify-center"
-						name="ArbitrumIcon"
-						size="16px"
-					/>
-				);
-
-			case supportedChains.OPTIMISM.id:
-				return (
-					<ChainIcon
-						className="mr-3 flex items-center justify-center"
-						name="OptimismIcon"
-						size="16px"
-					/>
-				);
-			case supportedChains.POLYGON.id:
-				return (
-					<ChainIcon
-						className="mr-3 flex items-center justify-center"
-						name="PolygonIcon"
-						size="16px"
-					/>
-				);
-
-			case supportedChains.AVALANCHE.id:
-				return (
-					<ChainIcon
-						className="mr-3 flex items-center justify-center"
-						name="AvalancheIcon"
-						size="16px"
-					/>
-				);
-
-			case supportedChains.SEPOLIA.id:
-				return (
-					<ChainIcon
-						className="mr-3 flex items-center justify-center"
-						name="EthereumIcon"
-						size="16px"
-					/>
-				);
-
-			default:
-				return (
-					<IoWarningOutline
-						className="mr-3 flex items-center justify-center"
-						size="16px"
-					/>
-				);
-		}
-	};
-
-	const supportedChainIds = new Set(
-		Object.values(supportedChains).map((chainObject) => chainObject?.id)
-	);
+	const isChainSupported = (chainId: number) =>
+		Object.values(supportedChainIds).includes(chainId);
 
 	return (
 		<Menu as="div" className="relative inline-block text-left">
 			{({ open }) => (
 				<>
-					<Menu.Button className="z-10 flex h-10 w-20 items-center justify-center rounded-full bg-light-200 outline-none hover:bg-light-300 dark:bg-dark-400 dark:hover:bg-dark-300">
+					<Menu.Button className="z-10 flex h-10 w-fit shrink-0 items-center justify-center rounded-full bg-light-200 px-2 outline-none hover:bg-light-300 dark:bg-dark-400 dark:hover:bg-dark-300">
 						<Button />
 					</Menu.Button>
 					<Transition show={open}>
-						<Menu.Items className="absolute right-0 z-50 mt-4 w-fit origin-top-right rounded-xl bg-light-200 p-1 text-sm outline-none dark:bg-dark-400">
+						<Menu.Items className="absolute right-0 z-50 mt-3 w-fit origin-top-right rounded-xl bg-light-200 p-1 text-sm outline-none dark:bg-dark-400">
 							<div className="flex w-full items-center p-2">
-								{chainIcon()}
-								{chain?.id &&
-								supportedChainIds.has(chain?.id) ? (
-									<span className="whitespace-nowrap">
-										{parseFloat(
-											balance?.formatted as string
-										).toFixed(7)}{" "}
-										{balance?.symbol}
-									</span>
+								{chain && isChainSupported(chain.id) ? (
+									<>
+										<ChainIcon
+											className="mr-3 flex items-center justify-center"
+											chainId={chain.id}
+											size="16px"
+										/>
+										<span className="whitespace-nowrap">
+											{parseFloat(
+												balance?.formatted as string
+											).toFixed(7)}{" "}
+											{balance?.symbol}
+										</span>
+									</>
 								) : (
-									<span className="whitespace-nowrap">
-										Unsupported network
-									</span>
+									<>
+										<IoWarningOutline
+											className="mr-3 flex items-center justify-center text-error"
+											size="16px"
+										/>
+										<span className="whitespace-nowrap">
+											Unsupported network
+										</span>
+									</>
 								)}
 							</div>
 							<div className="flex w-full flex-col">

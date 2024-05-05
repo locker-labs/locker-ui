@@ -21,13 +21,7 @@ function EvmProvider({ children }: { children: React.ReactNode }) {
 	const config = getDefaultConfig({
 		appName: "Locker",
 		projectId: process.env.WC_PROJECT_ID!,
-		chains: [
-			supportedChains.ARBITRUM,
-			supportedChains.OPTIMISM,
-			supportedChains.POLYGON,
-			supportedChains.AVALANCHE,
-			supportedChains.SEPOLIA,
-		],
+		chains: supportedChains,
 		ssr: true,
 	});
 
@@ -36,7 +30,10 @@ function EvmProvider({ children }: { children: React.ReactNode }) {
 	return (
 		<WagmiProvider config={config}>
 			<QueryClientProvider client={queryClient}>
-				<RainbowKitProvider theme={null}>
+				<RainbowKitProvider
+					theme={null}
+					initialChain={supportedChains[0]}
+				>
 					<style
 						// eslint-disable-next-line react/no-danger
 						dangerouslySetInnerHTML={{

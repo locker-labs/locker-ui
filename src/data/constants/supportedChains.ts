@@ -1,9 +1,18 @@
+import type { Chain } from "@rainbow-me/rainbowkit";
 import { arbitrum, avalanche, optimism, polygon, sepolia } from "wagmi/chains";
 
-export const supportedChains = {
-	ARBITRUM: arbitrum,
-	OPTIMISM: optimism,
-	POLYGON: polygon,
-	AVALANCHE: avalanche,
-	SEPOLIA: sepolia,
+export const supportedChains: readonly [Chain, ...Chain[]] = [
+	arbitrum,
+	optimism,
+	polygon,
+	avalanche,
+	sepolia,
+];
+
+export const supportedChainIds: { [key: string]: number } = {
+	ARBITRUM: arbitrum.id,
+	OPTIMISM: optimism.id,
+	POLYGON: polygon.id,
+	AVALANCHE: avalanche.id,
+	SEPOLIA: sepolia.id,
 };

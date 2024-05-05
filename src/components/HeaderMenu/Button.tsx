@@ -9,7 +9,7 @@ function Button() {
 	return (
 		<div className="flex size-full items-center justify-center space-x-2 rounded-full">
 			{user?.hasImage ? (
-				<div className="flex size-8 items-center justify-center">
+				<div className="flex size-7 items-center justify-center">
 					<Image
 						className="rounded-full"
 						alt="User Image"
@@ -19,11 +19,11 @@ function Button() {
 					/>
 				</div>
 			) : (
-				<div className="flex size-8 items-center justify-center rounded-full bg-secondary-100 text-light-100 dark:bg-primary-100">
-					<FaUserAlt size={18} />
+				<div className="flex size-7 items-center justify-center rounded-full bg-secondary-100 text-light-100 dark:bg-primary-100">
+					<FaUserAlt size={16} />
 				</div>
 			)}
-			<IoChevronDown size={18} />
+			<IoChevronDown size={16} />
 		</div>
 	);
 }
