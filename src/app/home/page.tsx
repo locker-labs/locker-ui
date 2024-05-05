@@ -4,9 +4,9 @@ import { useAuth } from "@clerk/nextjs";
 import { useEffect } from "react";
 
 import LockerCreate from "@/components/LockerCreate";
-import LockerEmpty from "@/components/LockerEmpty";
-import LockerSetup from "@/components/LockerSetup";
-import { getLocker } from "@/services/lockers";
+// import LockerEmpty from "@/components/LockerEmpty";
+// import LockerSetup from "@/components/LockerSetup";
+// import { getLocker } from "@/services/lockers";
 
 function HomePage() {
 	const { getToken } = useAuth();
@@ -15,7 +15,8 @@ function HomePage() {
 		const getTokenAndData = async () => {
 			const token = await getToken();
 			if (token) {
-				await getLocker(token);
+				// await getLocker(token);
+				console.log("token", token);
 			}
 		};
 
@@ -25,8 +26,8 @@ function HomePage() {
 	return (
 		<div className="flex w-full flex-1 flex-col items-center py-12">
 			<LockerCreate />
-			<LockerEmpty />
-			<LockerSetup />
+			{/* <LockerEmpty />
+			<LockerSetup /> */}
 		</div>
 	);
 }

@@ -50,6 +50,12 @@ const config: Config = {
 				"light-500": "#AAAAAA",
 				"light-600": "#8B8B8B",
 				// ********************** //
+
+				// ******* OTHER ******* //
+				success: "#14B8A6",
+				error: "#F43F5E",
+				warning: "#F59E0B",
+				// ********************** //
 			},
 		},
 	},

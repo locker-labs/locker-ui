@@ -14,7 +14,7 @@ function PageLoader() {
 	const { resolvedTheme } = useTheme();
 
 	return (
-		<div className="flex w-full max-w-xs">
+		<div className="flex w-full max-w-xs flex-1">
 			{resolvedTheme === "dark" ? (
 				<LottieAnimation animationData={pageLoaderDark} />
 			) : (

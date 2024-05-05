@@ -6,8 +6,8 @@ import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 import AuthButton from "@/components/AuthButton";
+import { PATHS } from "@/data/constants/paths";
 import lockerBlob from "@/data/lottie/lockerBlob.json";
-import { PATHS } from "@/data/paths";
 
 const LottieAnimation = dynamic(() => import("@/components/LottieAnimation"), {
 	ssr: false,

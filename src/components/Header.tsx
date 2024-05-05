@@ -3,19 +3,25 @@
 import { useAuth } from "@clerk/nextjs";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useAccount } from "wagmi";
 
 import AuthButton from "@/components/AuthButton";
+import ConnectButton from "@/components/ConnectButton";
 import HeaderMenu from "@/components/HeaderMenu";
 import ThemedImage from "@/components/ThemedImage";
-import { PATHS } from "@/data/paths";
+import { PATHS } from "@/data/constants/paths";
 
 function Header() {
 	const pathname = usePathname();
 	const { isSignedIn } = useAuth();
+	const { isConnected } = useAccount();
 
 	const isAuthRoute =
 		pathname === PATHS.SIGN_IN || pathname === PATHS.SIGN_UP;
+
 	const showAuthButtons = !isSignedIn && !isAuthRoute;
+	const showConnectButton = isSignedIn && !isConnected;
+	const showMenu = isSignedIn && isConnected;
 
 	return (
 		<header className="top-0 z-10 flex h-20 w-full items-center justify-between">
@@ -29,12 +35,19 @@ function Header() {
 					alt="Locker Logo"
 				/>
 			</Link>
-			{isSignedIn ? (
+			{showMenu ? (
 				<div
 					className={`${pathname === PATHS.ACCOUNT && "hidden"} ml-2 flex items-center justify-center`}
 				>
 					<HeaderMenu />
 				</div>
+			) : showConnectButton ? (
+				<ConnectButton
+					label="Connect wallet"
+					height="h-10"
+					width="w-36"
+					color="subtle"
+				/>
 			) : showAuthButtons ? (
 				<div className="ml-2 flex items-center justify-center sm:space-x-2">
 					<AuthButton

@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { useTheme } from "next-themes";
 import { IoChevronBackOutline } from "react-icons/io5";
 
-import { PATHS } from "@/data/paths";
+import { PATHS } from "@/data/constants/paths";
 
 function AccountPage() {
 	const router = useRouter();

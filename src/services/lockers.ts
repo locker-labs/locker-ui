@@ -1,3 +1,10 @@
+export const createLocker = async () => {
+	await new Promise((resolve) => {
+		setTimeout(resolve, 3000);
+	});
+	console.log("Create a locker in DB");
+};
+
 export const getLocker = async (token: string) => {
 	try {
 		const response = await fetch(
