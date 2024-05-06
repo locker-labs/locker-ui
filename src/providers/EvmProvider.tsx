@@ -1,54 +1,23 @@
 "use client";
 
-import "@rainbow-me/rainbowkit/styles.css";
-
-import {
-	cssStringFromTheme,
-	darkTheme,
-	getDefaultConfig,
-	lightTheme,
-	RainbowKitProvider,
-} from "@rainbow-me/rainbowkit";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { WagmiProvider } from "wagmi";
+import type { ReactNode } from "react";
+import { type State, WagmiProvider } from "wagmi";
 
-import { supportedChains } from "@/data/constants/supportedChains";
+import { config } from "@/providers/wagmiConfig";
 
-function EvmProvider({ children }: { children: React.ReactNode }) {
-	const config = getDefaultConfig({
-		appName: "Locker",
-		projectId: process.env.WC_PROJECT_ID!,
-		chains: supportedChains,
-		ssr: true,
-	});
+export interface IEvmProvider {
+	children: ReactNode;
+	initialState: State | undefined;
+}
 
+function EvmProvider({ children, initialState }: IEvmProvider) {
 	const queryClient = new QueryClient();
 
 	return (
-		<WagmiProvider config={config}>
+		<WagmiProvider config={config} initialState={initialState}>
 			<QueryClientProvider client={queryClient}>
-				<RainbowKitProvider
-					theme={null}
-					initialChain={supportedChains[0]}
-				>
-					<style
-						// eslint-disable-next-line react/no-danger
-						dangerouslySetInnerHTML={{
-							__html: `
-                                :root {
-                                    ${cssStringFromTheme(lightTheme)}
-                                }
-
-                                .dark {
-                                    ${cssStringFromTheme(darkTheme, {
-										extends: lightTheme,
-									})}
-                                }
-                            `,
-						}}
-					/>
-					{children}
-				</RainbowKitProvider>
+				{children}
 			</QueryClientProvider>
 		</WagmiProvider>
 	);

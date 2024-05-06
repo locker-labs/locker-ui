@@ -42,6 +42,7 @@ module.exports = withPWA({
 		APP_NAME: "Locker",
 		APP_DESCRIPTION: "Save and invest every time you get paid on-chain.",
 		APP_BASE_URL: "http://localhost:3000",
+		LANDING_PAGE_URL: "https://locker.money",
 
 		// Socials
 		GITHUB_URL: "https://github.com/chainrule-labs",
