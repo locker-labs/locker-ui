@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { useAccount } from "wagmi";
 
 import AuthButton from "@/components/AuthButton";
+import ChainDropdown from "@/components/ChainDropdown";
 import ConnectButton from "@/components/ConnectButton";
 import HeaderMenu from "@/components/HeaderMenu";
 import ThemedImage from "@/components/ThemedImage";
@@ -37,8 +38,9 @@ function Header() {
 			</Link>
 			{showMenu ? (
 				<div
-					className={`${pathname === PATHS.ACCOUNT && "hidden"} ml-2 flex items-center justify-center`}
+					className={`${pathname === PATHS.ACCOUNT && "hidden"} ml-2 flex items-center justify-center space-x-1`}
 				>
+					<ChainDropdown />
 					<HeaderMenu />
 				</div>
 			) : showConnectButton ? (

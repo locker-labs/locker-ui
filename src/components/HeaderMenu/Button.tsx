@@ -7,7 +7,7 @@ function Button() {
 	const { user } = useUser();
 
 	return (
-		<div className="flex size-full items-center justify-center space-x-2 rounded-full">
+		<div className="flex size-full items-center justify-center space-x-1 rounded-full">
 			{user?.hasImage ? (
 				<div className="flex size-7 items-center justify-center">
 					<Image
@@ -23,7 +23,7 @@ function Button() {
 					<FaUserAlt size={16} />
 				</div>
 			)}
-			<IoChevronDown size={16} />
+			<IoChevronDown className="hidden xs:flex xs:shrink-0" size={16} />
 		</div>
 	);
 }

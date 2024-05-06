@@ -1,4 +1,4 @@
-import type { Chain } from "@rainbow-me/rainbowkit";
+import type { Chain } from "wagmi/chains";
 import { arbitrum, avalanche, optimism, polygon, sepolia } from "wagmi/chains";
 
 export const supportedChains: readonly [Chain, ...Chain[]] = [
