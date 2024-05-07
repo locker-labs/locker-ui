@@ -68,6 +68,7 @@ function ChainDropdown() {
 									>
 										<div className="flex w-full items-center">
 											<div
+												// TODO: Figure out why calling getChainIconStyling() is not working
 												className={`flex size-7 items-center justify-center rounded-full ${getChainIconStyling(chainOption.id)}`}
 											>
 												<ChainIcon

@@ -1,33 +1,57 @@
 "use client";
 
+import { useAuth } from "@clerk/nextjs";
+import { getKernelAddressFromECDSA } from "@zerodev/ecdsa-validator";
+import { ENTRYPOINT_ADDRESS_V07 } from "permissionless";
 import { useState } from "react";
-import { useAccount } from "wagmi";
+import type { PublicClient } from "viem";
+import { useAccount, useClient } from "wagmi";
 
 import ConnectButton from "@/components/ConnectButton";
 import { createLocker } from "@/services/lockers";
+import type { Locker } from "@/types";
 
-import PageLoader from "./PageLoader";
+export interface ILockerCreate {
+	lockerIndex: number;
+	fetchLockers: () => Promise<void>;
+}
 
-function LockerCreate() {
+function LockerCreate({ lockerIndex, fetchLockers }: ILockerCreate) {
 	const [isLoading, setIsLoading] = useState<boolean>(false);
-	const { isConnected } = useAccount();
+	const { isConnected, address, chainId } = useAccount();
+	const { getToken, userId } = useAuth();
+	const client = useClient();
 
-	// Should create a locker in DB, and somehow the parent page
-	// needs to pick up on the DB insertion.
-	const createLockerAddress = async () => {
+	const createNewLocker = async () => {
 		setIsLoading(true);
 		try {
-			await createLocker();
-			setIsLoading(false);
+			const smartAccountAddress = await getKernelAddressFromECDSA({
+				publicClient: client as PublicClient,
+				eoaAddress: address as `0x${string}`,
+				index: BigInt(lockerIndex),
+				entryPointAddress: ENTRYPOINT_ADDRESS_V07,
+			});
+			const locker: Locker = {
+				userId: userId as string,
+				seed: lockerIndex.toString(),
+				provider: "ZeroDev",
+				ownerAddress: address as `0x${string}`,
+				address: smartAccountAddress,
+				chainId: chainId?.toString() as string,
+			};
+
+			const token = await getToken();
+			if (token) {
+				await createLocker(token, locker);
+			}
 		} catch (error) {
+			// eslint-disable-next-line no-console
 			console.error(error);
+		} finally {
+			await fetchLockers();
 			setIsLoading(false);
 		}
 	};
-
-	if (isLoading) {
-		return <PageLoader />;
-	}
 
 	return (
 		<div className="flex w-full flex-1 flex-col items-start space-y-8">
@@ -41,10 +65,10 @@ function LockerCreate() {
 			{isConnected ? (
 				<button
 					className="h-12 w-40 items-center justify-center rounded-full bg-secondary-100 text-light-100 outline-none hover:bg-secondary-200 dark:bg-primary-200 dark:hover:bg-primary-100"
-					onClick={createLockerAddress}
+					onClick={() => createNewLocker()}
 					disabled={isLoading}
 				>
-					Create a Locker
+					{isLoading ? "Loading" : "Create a Locker"}
 				</button>
 			) : (
 				<ConnectButton

@@ -12,6 +12,7 @@ function Button() {
 	const isChainSupported = (chainId: number) =>
 		Object.values(supportedChainIds).includes(chainId);
 
+	// TODO: Figure out why this is not working
 	const chainIconStyling = chain
 		? getChainIconStyling(chain.id)
 		: "bg-error/20 text-error";
