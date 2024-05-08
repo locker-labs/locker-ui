@@ -7,15 +7,17 @@ import {
 	IoCopyOutline,
 	IoLogOutOutline,
 	IoSettingsOutline,
+	IoWalletOutline,
 	IoWarningOutline,
 } from "react-icons/io5";
 import { useAccount, useBalance, useDisconnect } from "wagmi";
 
 import ChainIcon from "@/components/ChainIcon";
 import Button from "@/components/HeaderMenu/Button";
-import { PATHS } from "@/data/constants/paths";
-import { supportedChainIds } from "@/data/constants/supportedChains";
+import { paths } from "@/data/constants/paths";
+import { useConnectModal } from "@/hooks/useConnectModal";
 import { copyToClipboard } from "@/utils/copytoClipboard";
+import { isChainSupported } from "@/utils/isChainSupported";
 import { truncateAddress } from "@/utils/truncateAddress";
 
 function HeaderMenu() {
@@ -23,14 +25,12 @@ function HeaderMenu() {
 
 	const router = useRouter();
 	const { signOut } = useClerk();
-	const { address, chain } = useAccount();
+	const { address, chain, isConnected } = useAccount();
+	const { openConnectModal, renderConnectModal } = useConnectModal();
 	const { disconnect } = useDisconnect();
 	const { data: balance } = useBalance({
 		address,
 	});
-
-	const isChainSupported = (chainId: number) =>
-		Object.values(supportedChainIds).includes(chainId);
 
 	return (
 		<Menu as="div" className="relative inline-block text-left">
@@ -41,61 +41,85 @@ function HeaderMenu() {
 					</Menu.Button>
 					<Transition show={open}>
 						<Menu.Items className="absolute right-0 z-50 mt-3 w-fit origin-top-right rounded-xl bg-light-200 p-1 text-sm outline-none dark:bg-dark-400">
-							<div className="flex w-full items-center p-2">
-								{chain && isChainSupported(chain.id) ? (
-									<>
-										<ChainIcon
-											className="mr-3 flex items-center justify-center"
-											chainId={chain.id}
-											size="16px"
-										/>
-										<span className="whitespace-nowrap">
-											{parseFloat(
-												balance?.formatted as string
-											).toFixed(7)}{" "}
-											{balance?.symbol}
-										</span>
-									</>
-								) : (
-									<>
-										<IoWarningOutline
-											className="mr-3 flex items-center justify-center text-error"
-											size="16px"
-										/>
-										<span className="whitespace-nowrap">
-											Unsupported network
-										</span>
-									</>
-								)}
-							</div>
-							<div className="flex w-full flex-col">
-								<button
-									className="flex w-full items-center p-2 outline-none hover:bg-light-300 dark:hover:bg-dark-300"
-									onClick={() =>
-										copyToClipboard(
-											address as string,
-											setCopied
-										)
-									}
-								>
-									{copied ? (
-										<IoCheckboxOutline
-											className="mr-3 flex items-center justify-center text-success"
-											size="16px"
-										/>
-									) : (
-										<IoCopyOutline
-											className="mr-3 flex items-center justify-center"
-											size="16px"
-										/>
-									)}
-									<span>
-										{truncateAddress(
-											address as `0x${string}`
+							{isConnected ? (
+								<>
+									<div className="flex w-full items-center p-2">
+										{chain && isChainSupported(chain.id) ? (
+											<>
+												<ChainIcon
+													className="mr-3 flex shrink-0 items-center justify-center"
+													chainId={chain.id}
+													size="16px"
+												/>
+												<span className="whitespace-nowrap">
+													{parseFloat(
+														balance?.formatted as string
+													).toFixed(7)}{" "}
+													{balance?.symbol}
+												</span>
+											</>
+										) : (
+											<>
+												<IoWarningOutline
+													className="mr-3 flex shrink-0 items-center justify-center text-error"
+													size="16px"
+												/>
+												<span className="whitespace-nowrap">
+													Unsupported network
+												</span>
+											</>
 										)}
-									</span>
-								</button>
-							</div>
+									</div>
+									<div className="flex w-full flex-col">
+										<button
+											className="flex w-full items-center p-2 outline-none hover:bg-light-300 dark:hover:bg-dark-300"
+											onClick={() =>
+												copyToClipboard(
+													address as string,
+													setCopied
+												)
+											}
+										>
+											{copied ? (
+												<IoCheckboxOutline
+													className="mr-3 flex shrink-0 items-center justify-center text-success"
+													size="16px"
+												/>
+											) : (
+												<IoCopyOutline
+													className="mr-3 flex shrink-0 items-center justify-center"
+													size="16px"
+												/>
+											)}
+											<span>
+												{truncateAddress(
+													address as `0x${string}`
+												)}
+											</span>
+										</button>
+									</div>
+								</>
+							) : (
+								<Menu.Item>
+									{({ active }) => (
+										<button
+											className={`${
+												active &&
+												"bg-light-300 dark:bg-dark-300"
+											} flex w-full items-center p-2`}
+											onClick={openConnectModal}
+										>
+											<IoWalletOutline
+												className="mr-3 flex shrink-0 items-center justify-center"
+												size="16px"
+											/>
+											<span className="whitespace-nowrap">
+												Connect wallet
+											</span>
+										</button>
+									)}
+								</Menu.Item>
+							)}
 							<Menu.Item>
 								{({ active }) => (
 									<button
@@ -104,11 +128,11 @@ function HeaderMenu() {
 											"bg-light-300 dark:bg-dark-300"
 										} flex w-full items-center p-2`}
 										onClick={() =>
-											router.push(PATHS.ACCOUNT)
+											router.push(paths.ACCOUNT)
 										}
 									>
 										<IoSettingsOutline
-											className="mr-3 flex items-center justify-center"
+											className="mr-3 flex shrink-0 items-center justify-center"
 											size="16px"
 										/>
 										<span>Account</span>
@@ -125,12 +149,12 @@ function HeaderMenu() {
 										onClick={() => {
 											disconnect();
 											signOut(() =>
-												router.push(PATHS.LANDING)
+												router.push(paths.LANDING)
 											);
 										}}
 									>
 										<IoLogOutOutline
-											className="mr-3 flex items-center justify-center"
+											className="mr-3 flex shrink-0 items-center justify-center"
 											size="16px"
 										/>
 										<span>Sign out</span>
@@ -139,6 +163,7 @@ function HeaderMenu() {
 							</Menu.Item>
 						</Menu.Items>
 					</Transition>
+					{renderConnectModal()}
 				</>
 			)}
 		</Menu>

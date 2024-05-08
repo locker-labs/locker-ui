@@ -3,15 +3,13 @@ import { useAccount } from "wagmi";
 
 import ChainIcon from "@/components/ChainIcon";
 import Tooltip from "@/components/ToolTip";
-import { supportedChainIds } from "@/data/constants/supportedChains";
 import { getChainIconStyling } from "@/utils/getChainIconStyling";
+import { isChainSupported } from "@/utils/isChainSupported";
 
 function Button() {
 	const { chain } = useAccount();
 
-	const isChainSupported = (chainId: number) =>
-		Object.values(supportedChainIds).includes(chainId);
-
+	// TODO: Figure out why this is not working
 	const chainIconStyling = chain
 		? getChainIconStyling(chain.id)
 		: "bg-error/20 text-error";

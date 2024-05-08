@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { useTheme } from "next-themes";
 import { IoChevronBackOutline } from "react-icons/io5";
 
-import { PATHS } from "@/data/constants/paths";
+import { paths } from "@/data/constants/paths";
 
 function AccountPage() {
 	const router = useRouter();
@@ -17,7 +17,7 @@ function AccountPage() {
 			<div className="flex-col0 mb-8 flex w-full">
 				<button
 					className="h-10 w-fit hover:text-secondary-200 dark:hover:text-primary-100"
-					onClick={() => router.push(PATHS.HOME)}
+					onClick={() => router.push(paths.HOME)}
 				>
 					<div className="flex items-center justify-center space-x-1">
 						<IoChevronBackOutline size={20} />

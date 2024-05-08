@@ -1,11 +1,11 @@
 // See https://clerk.com/docs/references/nextjs/clerk-middleware
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 
-import { PATHS } from "@/data/constants/paths";
+import { paths } from "@/data/constants/paths";
 
 const isProtectedRoute = createRouteMatcher([
-	`${PATHS.HOME}(.*)`,
-	`${PATHS.ACCOUNT}(.*)`,
+	`${paths.HOME}(.*)`,
+	`${paths.ACCOUNT}(.*)`,
 ]);
 
 export default clerkMiddleware(

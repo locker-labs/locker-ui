@@ -1,11 +1,7 @@
-export const createLocker = async () => {
-	await new Promise((resolve) => {
-		setTimeout(resolve, 3000);
-	});
-	console.log("Create a locker in DB");
-};
+/* eslint-disable no-console */
+import type { Locker } from "@/types";
 
-export const getLocker = async (token: string) => {
+export const getLockers = async (token: string): Promise<Locker[] | null> => {
 	try {
 		const response = await fetch(
 			`${process.env.LOCKER_API_BASE_URL}/lockers`,
@@ -15,12 +11,39 @@ export const getLocker = async (token: string) => {
 		);
 
 		if (response.ok) {
-			const data = await response.json();
-			// eslint-disable-next-line no-console
-			console.log("IT WORKED! \n\n", data, "\n\n");
+			const lockers = await response.json();
+			return lockers.data;
+		}
+		return null;
+	} catch (error) {
+		console.error(error);
+		return null;
+	}
+};
+
+export const createLocker = async (token: string, locker: Locker) => {
+	try {
+		const response = await fetch(
+			`${process.env.LOCKER_API_BASE_URL}/lockers/create`,
+			{
+				method: "POST",
+				headers: {
+					Authorization: `Bearer ${token}`,
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify(locker),
+			}
+		);
+
+		// check that response.stats is 201
+		if (!response.ok) {
+			const errorData = await response.json();
+			console.error("Failed to create locker: ", errorData);
+			throw new Error(
+				`HTTP error ${response.status}: ${errorData.message}`
+			);
 		}
 	} catch (error) {
-		// eslint-disable-next-line no-console
-		console.error("Error retrieving locker\n\n", error);
+		console.error(error);
 	}
 };
