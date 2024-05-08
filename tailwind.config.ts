@@ -6,6 +6,18 @@ const config: Config = {
 		"./src/components/**/*.{js,ts,jsx,tsx,mdx}",
 		"./src/app/**/*.{js,ts,jsx,tsx,mdx}",
 	],
+	safelist: [
+		"bg-arbitrum/20",
+		"text-arbitrum",
+		"bg-optimism/20",
+		"text-optimism",
+		"bg-polygon/20",
+		"text-polygon",
+		"bg-avalanche/20",
+		"text-avalanche",
+		"bg-ethereum/20",
+		"text-ethereum",
+	],
 	theme: {
 		screens: {
 			xxs: "230px",

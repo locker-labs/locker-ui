@@ -9,7 +9,6 @@ import { isChainSupported } from "@/utils/isChainSupported";
 function Button() {
 	const { chain } = useAccount();
 
-	// TODO: Figure out why this is not working
 	const chainIconStyling = chain
 		? getChainIconStyling(chain.id)
 		: "bg-error/20 text-error";
