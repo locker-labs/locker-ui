@@ -106,14 +106,27 @@ function LockerCreate({ lockerIndex, fetchLockers }: ILockerCreate) {
 				<Loader text="Setting up your locker" />
 			) : (
 				<>
-					<h1>How locker works</h1>
-					<span>Create a locker to save and invest.</span>
-					<span>
-						Customize how your locker distributes future deposits.
+					<h1 className="text-4xl dark:text-light-100">
+						How locker works
+					</h1>
+					<span className="text-xl">
+						<span className="bg-gradient-to-r from-secondary-200 to-primary-200 bg-clip-text text-2xl text-transparent">
+							Create
+						</span>{" "}
+						your locker smart account.
 					</span>
-					<span>
-						Get paid at your locker address to start automatically
-						routing your funds where you want them.
+					<span className="text-xl">
+						<span className="bg-gradient-to-r from-secondary-200 to-primary-200 bg-clip-text text-2xl text-transparent">
+							Customize
+						</span>{" "}
+						how your locker distributes future deposits.
+					</span>
+					<span className="text-xl">
+						<span className="bg-gradient-to-r from-secondary-200 to-primary-200 bg-clip-text text-2xl text-transparent">
+							Get paid
+						</span>{" "}
+						at your locker address and watch your crypto
+						automatically go where you want it.
 					</span>
 					<button
 						className="h-12 w-40 items-center justify-center rounded-full bg-secondary-100 text-light-100 outline-none hover:bg-secondary-200 dark:bg-primary-200 dark:hover:bg-primary-100"
