@@ -44,7 +44,12 @@ function Header() {
 					<HeaderMenu />
 				</div>
 			) : showConnectButton ? (
-				<ConnectButton />
+				<div className="ml-2 flex items-center justify-center xs1:space-x-2">
+					<div className="hidden xs1:flex">
+						<ConnectButton />
+					</div>
+					<HeaderMenu />
+				</div>
 			) : showAuthButtons ? (
 				<div className="ml-2 flex items-center justify-center sm:space-x-2">
 					<AuthButton
