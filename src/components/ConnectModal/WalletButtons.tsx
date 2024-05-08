@@ -4,7 +4,11 @@ import { useConnect } from "wagmi";
 
 import { filterConnectors } from "@/utils/filterConnectors";
 
-function WalletButtons() {
+export interface IWalletButtons {
+	closeModal: () => void;
+}
+
+function WalletButtons({ closeModal }: IWalletButtons) {
 	const { connect, connectors } = useConnect();
 
 	const filteredConnectors = filterConnectors(connectors);
@@ -17,6 +21,7 @@ function WalletButtons() {
 					key={connector.uid}
 					onClick={() => {
 						connect({ connector });
+						closeModal();
 					}}
 				>
 					<div className="flex w-36 items-center">

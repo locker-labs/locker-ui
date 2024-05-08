@@ -13,9 +13,9 @@ import { useAccount, useBalance, useDisconnect } from "wagmi";
 
 import ChainIcon from "@/components/ChainIcon";
 import Button from "@/components/HeaderMenu/Button";
-import { PATHS } from "@/data/constants/paths";
-import { supportedChainIds } from "@/data/constants/supportedChains";
+import { paths } from "@/data/constants/paths";
 import { copyToClipboard } from "@/utils/copytoClipboard";
+import { isChainSupported } from "@/utils/isChainSupported";
 import { truncateAddress } from "@/utils/truncateAddress";
 
 function HeaderMenu() {
@@ -28,9 +28,6 @@ function HeaderMenu() {
 	const { data: balance } = useBalance({
 		address,
 	});
-
-	const isChainSupported = (chainId: number) =>
-		Object.values(supportedChainIds).includes(chainId);
 
 	return (
 		<Menu as="div" className="relative inline-block text-left">
@@ -104,7 +101,7 @@ function HeaderMenu() {
 											"bg-light-300 dark:bg-dark-300"
 										} flex w-full items-center p-2`}
 										onClick={() =>
-											router.push(PATHS.ACCOUNT)
+											router.push(paths.ACCOUNT)
 										}
 									>
 										<IoSettingsOutline
@@ -125,7 +122,7 @@ function HeaderMenu() {
 										onClick={() => {
 											disconnect();
 											signOut(() =>
-												router.push(PATHS.LANDING)
+												router.push(paths.LANDING)
 											);
 										}}
 									>

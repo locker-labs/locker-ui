@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 import AuthButton from "@/components/AuthButton";
-import { PATHS } from "@/data/constants/paths";
+import { paths } from "@/data/constants/paths";
 import lockerBlob from "@/data/lottie/lockerBlob.json";
 
 const LottieAnimation = dynamic(() => import("@/components/LottieAnimation"), {
@@ -19,7 +19,7 @@ export default function LandingPage() {
 
 	useEffect(() => {
 		if (isSignedIn) {
-			router.push(PATHS.HOME);
+			router.push(paths.HOME);
 		}
 	}, [isSignedIn]);
 

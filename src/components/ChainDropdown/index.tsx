@@ -8,19 +8,14 @@ import type { Chain } from "wagmi/chains";
 
 import Button from "@/components/ChainDropdown/Button";
 import ChainIcon from "@/components/ChainIcon";
-import {
-	supportedChainIds,
-	supportedChains,
-} from "@/data/constants/supportedChains";
+import { supportedChains } from "@/data/constants/supportedChains";
 import { getChainIconStyling } from "@/utils/getChainIconStyling";
+import { isChainSupported } from "@/utils/isChainSupported";
 
 function ChainDropdown() {
 	const [selectedChain, setSelectedChain] = useState<Chain | null>(null);
 	const { chain } = useAccount();
 	const { switchChain } = useSwitchChain();
-
-	const isChainSupported = (chainId: number) =>
-		Object.values(supportedChainIds).includes(chainId);
 
 	useEffect(() => {
 		if (chain && isChainSupported(chain.id)) {

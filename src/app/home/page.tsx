@@ -3,9 +3,9 @@
 import { useAuth } from "@clerk/nextjs";
 import { useEffect, useRef, useState } from "react";
 
+import Loader from "@/components/Loader";
 import LockerCreate from "@/components/LockerCreate";
 import LockerEmpty from "@/components/LockerEmpty";
-import PageLoader from "@/components/PageLoader";
 // import LockerSetup from "@/components/LockerSetup";
 import { getLockers } from "@/services/lockers";
 import type { Locker } from "@/types";
@@ -43,7 +43,7 @@ function HomePage() {
 
 	return (
 		<div className="flex w-full flex-1 flex-col items-center py-12">
-			{!lockers && isFirstRender.current && <PageLoader />}
+			{!lockers && isFirstRender.current && <Loader />}
 			{lockers && lockers.length === 0 && !isFirstRender.current && (
 				<LockerCreate lockerIndex={0} fetchLockers={fetchLockers} />
 			)}
