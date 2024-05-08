@@ -3,9 +3,10 @@ import "@/styles/globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { headers } from "next/headers";
-import type { ReactNode } from "react";
+import { type ReactNode, Suspense } from "react";
 import { cookieToInitialState } from "wagmi";
 
+import Loading from "@/app/loading";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import { globalMetadata } from "@/data/seo/globalMetadata";
@@ -35,7 +36,9 @@ export default function RootLayout({
 						<ThemeProvider>
 							<main className="flex w-full min-w-[230px] max-w-5xl flex-1 flex-col items-center p-5">
 								<Header />
-								{children}
+								<Suspense fallback={<Loading />}>
+									{children}
+								</Suspense>
 								<Footer />
 							</main>
 						</ThemeProvider>

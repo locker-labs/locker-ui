@@ -19,16 +19,21 @@ function HomePage() {
 		const token = await getToken();
 		if (token) {
 			const lockersArray = await getLockers(token);
+			console.log(lockersArray);
 			setLockers(lockersArray);
-			if (isFirstRender.current) {
-				isFirstRender.current = false;
-			}
+		}
+		if (isFirstRender.current) {
+			isFirstRender.current = false;
 		}
 	};
 
 	useEffect(() => {
 		fetchLockers();
 	}, []);
+
+	useEffect(() => {
+		fetchLockers();
+	}, [isFirstRender.current]);
 
 	/*
 		After deploying:
