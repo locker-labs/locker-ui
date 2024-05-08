@@ -27,23 +27,29 @@ function HomePage() {
 		}
 	};
 
+	// Fetch lockers every 5 seconds if lockers is null
 	useEffect(() => {
-		fetchLockers();
-	}, []);
+		const interval = setInterval(() => {
+			if (!lockers) {
+				fetchLockers();
+			} else {
+				clearInterval(interval);
+			}
+		}, 5000);
 
-	useEffect(() => {
-		fetchLockers();
-	}, [isFirstRender.current]);
+		// Clean up the interval when the component unmounts
+		return () => clearInterval(interval);
+	}, [lockers]);
 
 	/*
 		After deploying:
-		- Call lockers/${id} with PATCH request to update the deploymentTxHash
+		- Call lockers/${id} with PATCH request to update the depsloymentTxHash
 		- Can also use lockers/${id} lockers/${id} to update ownerAddress
 	*/
 
 	return (
 		<div className="flex w-full flex-1 flex-col items-center py-12">
-			{!lockers && isFirstRender.current && <Loader />}
+			{isFirstRender.current && <Loader />}
 			{lockers && lockers.length === 0 && !isFirstRender.current && (
 				<LockerCreate lockerIndex={0} fetchLockers={fetchLockers} />
 			)}
