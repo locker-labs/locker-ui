@@ -35,7 +35,9 @@ function Button() {
 	return chain && isChainSupported(chain.id) ? (
 		buttonContent
 	) : (
-		<Tooltip tip="Unsupported network">{buttonContent}</Tooltip>
+		<Tooltip tip="Your wallet's current network is unsupported.">
+			{buttonContent}
+		</Tooltip>
 	);
 }
 

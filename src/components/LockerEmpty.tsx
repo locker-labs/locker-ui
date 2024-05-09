@@ -2,18 +2,31 @@
 
 // import Image from "next/image";
 import { QRCodeSVG } from "qrcode.react";
-import { useState } from "react";
-import { PiCheckSquareOffset, PiCopy } from "react-icons/pi";
+import { useEffect, useState } from "react";
+import { IoCheckboxOutline, IoCopyOutline } from "react-icons/io5";
+import { useAccount } from "wagmi";
 
+import { errors } from "@/data/constants/errorMessages";
 import type { Locker } from "@/types";
 import { copyToClipboard } from "@/utils/copytoClipboard";
+import { isChainSupported } from "@/utils/isChainSupported";
 
 export interface ILockerEmpty {
 	emptyLocker: Locker;
 }
 
 function LockerEmpty({ emptyLocker }: ILockerEmpty) {
+	const [errorMessage, setErrorMessage] = useState<string | null>(null);
 	const [copied, setCopied] = useState<boolean>(false);
+	const { isConnected, chainId } = useAccount();
+
+	useEffect(() => {
+		if (isConnected && !isChainSupported(chainId as number)) {
+			setErrorMessage(errors.UNSUPPORTED_CHAIN);
+		} else {
+			setErrorMessage(null);
+		}
+	}, [isConnected, chainId]);
 
 	return (
 		<div className="flex w-full flex-1 flex-col items-start space-y-8">
@@ -36,6 +49,13 @@ function LockerEmpty({ emptyLocker }: ILockerEmpty) {
 							className="self-center"
 							value={emptyLocker.address}
 							size={200}
+							imageSettings={{
+								// Aspect ratio of iconLocker = w/h = 0.90626
+								src: "/assets/iconLocker.svg",
+								height: 49.7,
+								width: 45,
+								excavate: true,
+							}}
 						/>
 					</div>
 					<button
@@ -46,15 +66,21 @@ function LockerEmpty({ emptyLocker }: ILockerEmpty) {
 					>
 						<code>{emptyLocker.address}</code>
 						{copied ? (
-							<PiCheckSquareOffset
+							<IoCheckboxOutline
 								className="ml-3 shrink-0 text-success"
 								size="25px"
 							/>
 						) : (
-							<PiCopy className="ml-3 shrink-0" size="25px" />
+							<IoCopyOutline
+								className="ml-3 shrink-0"
+								size="25px"
+							/>
 						)}
 					</button>
 				</div>
+				{errorMessage && (
+					<span className="text-error">{errorMessage}</span>
+				)}
 				{/* <a
 					href="https://faucet.circle.com/"
 					target="_blank"

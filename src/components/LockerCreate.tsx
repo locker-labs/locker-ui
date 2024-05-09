@@ -55,7 +55,7 @@ function LockerCreate({ lockerIndex, fetchLockers }: ILockerCreate) {
 
 			const token = await getToken();
 			if (token) {
-				await createLocker(token, locker);
+				await createLocker(token, locker, setErrorMessage);
 			}
 		} catch (error) {
 			// eslint-disable-next-line no-console
