@@ -1,18 +1,17 @@
 /* eslint-disable no-console */
+import { endpoints } from "@/data/constants/endpoints";
+import { errors } from "@/data/constants/errorMessages";
 import type { Locker } from "@/types";
 
 export const getLockers = async (token: string): Promise<Locker[] | null> => {
 	try {
-		const response = await fetch(
-			`${process.env.LOCKER_API_BASE_URL}/lockers`,
-			{
-				headers: { Authorization: `Bearer ${token}` },
-			}
-		);
+		const response = await fetch(endpoints.GET_LOCKERS, {
+			headers: { Authorization: `Bearer ${token}` },
+		});
 
 		if (response.ok) {
-			const lockers = await response.json();
-			return lockers.data;
+			const responseData = await response.json();
+			return responseData.data.lockers;
 		}
 		return null;
 	} catch (error) {
@@ -21,29 +20,37 @@ export const getLockers = async (token: string): Promise<Locker[] | null> => {
 	}
 };
 
-export const createLocker = async (token: string, locker: Locker) => {
+export const createLocker = async (
+	token: string,
+	locker: Locker,
+	setErrorMessage: (value: string | null) => void
+) => {
 	try {
-		const response = await fetch(
-			`${process.env.LOCKER_API_BASE_URL}/lockers/create`,
-			{
-				method: "POST",
-				headers: {
-					Authorization: `Bearer ${token}`,
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify(locker),
-			}
-		);
+		// response.status should be 201 (Created)
+		const response = await fetch(endpoints.CREATE_LOCKER, {
+			method: "POST",
+			headers: {
+				Authorization: `Bearer ${token}`,
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(locker),
+		});
 
-		// check that response.stats is 201
 		if (!response.ok) {
-			const errorData = await response.json();
-			console.error("Failed to create locker: ", errorData);
-			throw new Error(
-				`HTTP error ${response.status}: ${errorData.message}`
-			);
+			// Handle error in catch
+			throw response;
 		}
 	} catch (error) {
-		console.error(error);
+		if (error instanceof Response) {
+			const errorMessage =
+				error.status === 409
+					? errors.LOCKER_CONFLICT
+					: `${error.status} (${error.statusText}): ${errors.UNEXPECTED}`;
+			setErrorMessage(errorMessage);
+		} else {
+			// Handle other errors like network errors, etc.
+			console.error(error);
+			setErrorMessage(errors.UNEXPECTED);
+		}
 	}
 };

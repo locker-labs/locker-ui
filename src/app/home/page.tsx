@@ -42,7 +42,9 @@ function HomePage() {
 	}, [lockers]);
 
 	/*
-		After deploying:
+		If locker has been funded on any supported chain,
+		- Show LockerSetup component, which will show chains the locker has been funded on
+		After locker setup/deployment:
 		- Call lockers/${id} with PATCH request to update the depsloymentTxHash
 		- Can also use lockers/${id} lockers/${id} to update ownerAddress
 	*/
@@ -53,12 +55,9 @@ function HomePage() {
 			{lockers && lockers.length === 0 && !isFirstRender.current && (
 				<LockerCreate lockerIndex={0} fetchLockers={fetchLockers} />
 			)}
-			{lockers &&
-				lockers.length > 0 &&
-				!lockers[0].deploymentTxHash &&
-				!isFirstRender.current && (
-					<LockerEmpty emptyLocker={lockers[0]} />
-				)}
+			{lockers && lockers.length > 0 && !isFirstRender.current && (
+				<LockerEmpty emptyLocker={lockers[0]} />
+			)}
 			{/* <LockerSetup /> */}
 		</div>
 	);

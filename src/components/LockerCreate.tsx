@@ -8,11 +8,9 @@ import type { PublicClient } from "viem";
 import { useAccount, useClient } from "wagmi";
 
 import Loader from "@/components/Loader";
-import { errors } from "@/data/constants/errorMessages";
 import { useConnectModal } from "@/hooks/useConnectModal";
 import { createLocker } from "@/services/lockers";
 import type { Locker } from "@/types";
-import { isChainSupported } from "@/utils/isChainSupported";
 
 export interface ILockerCreate {
 	lockerIndex: number;
@@ -23,17 +21,17 @@ function LockerCreate({ lockerIndex, fetchLockers }: ILockerCreate) {
 	const [isCreatingLocker, setIsCreatingLocker] = useState<boolean>(false);
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const [errorMessage, setErrorMessage] = useState<string | null>(null);
-	const { isConnected, address, chainId } = useAccount();
+	const { isConnected, address } = useAccount();
 	const { openConnectModal, renderConnectModal } = useConnectModal();
-	const { getToken, userId } = useAuth();
+	const { getToken } = useAuth();
 	const client = useClient();
 
 	const createNewLocker = async () => {
 		setErrorMessage(null);
 		setIsLoading(true);
-		// Show Loader for 3 seconds
+		// Show Loader for 2 seconds
 		await new Promise((resolve) => {
-			setTimeout(resolve, 3000);
+			setTimeout(resolve, 2000);
 		});
 
 		// Proceed
@@ -45,17 +43,15 @@ function LockerCreate({ lockerIndex, fetchLockers }: ILockerCreate) {
 				entryPointAddress: ENTRYPOINT_ADDRESS_V07,
 			});
 			const locker: Locker = {
-				userId: userId as string,
-				seed: lockerIndex.toString(),
+				seed: lockerIndex,
 				provider: "ZeroDev",
-				ownerAddress: address as `0x${string}`,
 				address: smartAccountAddress,
-				chainId: chainId?.toString() as string,
+				ownerAddress: address as `0x${string}`,
 			};
 
 			const token = await getToken();
 			if (token) {
-				await createLocker(token, locker);
+				await createLocker(token, locker, setErrorMessage);
 			}
 		} catch (error) {
 			// eslint-disable-next-line no-console
@@ -68,11 +64,7 @@ function LockerCreate({ lockerIndex, fetchLockers }: ILockerCreate) {
 
 	const handleLockerCreation = () => {
 		if (isConnected) {
-			if (isChainSupported(chainId as number)) {
-				createNewLocker();
-			} else {
-				setErrorMessage(errors.UNSUPPORTED_CHAIN);
-			}
+			createNewLocker();
 		} else {
 			openConnectModal();
 			setIsCreatingLocker(true);
@@ -81,24 +73,9 @@ function LockerCreate({ lockerIndex, fetchLockers }: ILockerCreate) {
 
 	useEffect(() => {
 		if (isConnected && isCreatingLocker) {
-			if (isChainSupported(chainId as number)) {
-				createNewLocker();
-			} else {
-				setErrorMessage(errors.UNSUPPORTED_CHAIN);
-				setIsCreatingLocker(false);
-			}
+			createNewLocker();
 		}
 	}, [address, isCreatingLocker]);
-
-	useEffect(() => {
-		if (
-			isConnected &&
-			errorMessage === errors.UNSUPPORTED_CHAIN &&
-			isChainSupported(chainId as number)
-		) {
-			setErrorMessage(null);
-		}
-	}, [chainId]);
 
 	return (
 		<div className="flex w-full flex-1 flex-col items-start space-y-8">
@@ -107,13 +84,13 @@ function LockerCreate({ lockerIndex, fetchLockers }: ILockerCreate) {
 			) : (
 				<>
 					<h1 className="text-4xl dark:text-light-100">
-						How locker works
+						How Locker works
 					</h1>
 					<span className="text-xl">
 						<span className="bg-gradient-to-r from-secondary-200 to-primary-200 bg-clip-text text-2xl text-transparent">
 							Create
 						</span>{" "}
-						your locker smart account.
+						a locker smart account.
 					</span>
 					<span className="text-xl">
 						<span className="bg-gradient-to-r from-secondary-200 to-primary-200 bg-clip-text text-2xl text-transparent">

@@ -23,13 +23,13 @@ export const config = createConfig({
 				icons: ["/assets/iconLocker.svg"],
 			},
 			qrModalOptions: {
-				themeMode: "dark",
+				themeMode: "light",
 			},
 		}),
 		coinbaseWallet({
 			appName: "Locker",
 			appLogoUrl: "/assets/iconLocker.svg",
-			darkMode: true,
+			darkMode: false,
 		}),
 	],
 	transports: {

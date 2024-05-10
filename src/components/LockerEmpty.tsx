@@ -1,12 +1,16 @@
 "use client";
 
-// import Image from "next/image";
 import { QRCodeSVG } from "qrcode.react";
 import { useState } from "react";
-import { PiCheckSquareOffset, PiCopy } from "react-icons/pi";
+import { IoCheckboxOutline, IoCopyOutline } from "react-icons/io5";
 
+import { supportedChains } from "@/data/constants/supportedChains";
 import type { Locker } from "@/types";
 import { copyToClipboard } from "@/utils/copytoClipboard";
+import { getChainIconStyling } from "@/utils/getChainIconStyling";
+import { truncateAddress } from "@/utils/truncateAddress";
+
+import ChainIcon from "./ChainIcon";
 
 export interface ILockerEmpty {
 	emptyLocker: Locker;
@@ -17,51 +21,83 @@ function LockerEmpty({ emptyLocker }: ILockerEmpty) {
 
 	return (
 		<div className="flex w-full flex-1 flex-col items-start space-y-8">
-			<span>Your locker is empty</span>
-			<span>
-				Tell your employer, hackathon organizer, or clients to pay you
-				at your Locker address below.
-			</span>
-			<span>
-				You can also deposit yourself by transferring any token to your
-				Locker address from another account.
-			</span>
-			<div className="flex flex-col space-y-4">
-				<div className="flex flex-col items-center justify-center space-y-3">
-					<span className="self-center text-4xl">
-						Fund Your Locker
+			<div className="flex w-full max-w-3xl flex-1 flex-col items-start space-y-8">
+				<h1 className="text-4xl dark:text-light-100">
+					<span className="bg-gradient-to-r from-secondary-200 to-primary-200 bg-clip-text text-transparent">
+						Get paid
+					</span>{" "}
+					at your locker
+				</h1>
+				<span>
+					Tell your employer, clients, or anybody to pay you at your
+					locker address.
+				</span>
+				<span>
+					Any token can be transferred to your locker from another
+					account on any of the supported chains.
+				</span>
+				<div className="flex flex-col items-center justify-center space-y-5 self-center">
+					<span className="bg-gradient-to-r from-secondary-200 to-primary-200 bg-clip-text text-3xl text-transparent">
+						Your locker
 					</span>
-					<div className="mx-auto my-8 max-w-xs rounded-lg bg-light-100 p-3 shadow-lg">
-						<QRCodeSVG
-							className="self-center"
-							value={emptyLocker.address}
-							size={200}
-						/>
-					</div>
+					<QRCodeSVG
+						className="rounded-xl border-2 border-light-600 dark:border-dark-500"
+						value={emptyLocker.address}
+						size={225}
+						includeMargin
+						level="H"
+						imageSettings={{
+							src: "/assets/iconLockerWithMargin.svg",
+							height: 45,
+							width: 45,
+							excavate: true,
+						}}
+					/>
 					<button
-						className="flex items-center justify-center break-all text-left underline outline-none hover:text-secondary-100 dark:hover:text-primary-100"
+						className="flex items-center justify-center text-sm outline-none hover:text-secondary-100 dark:hover:text-primary-100"
 						onClick={() =>
 							copyToClipboard(emptyLocker.address, setCopied)
 						}
 					>
-						<code>{emptyLocker.address}</code>
+						<code>{truncateAddress(emptyLocker.address)}</code>
 						{copied ? (
-							<PiCheckSquareOffset
+							<IoCheckboxOutline
 								className="ml-3 shrink-0 text-success"
-								size="25px"
+								size="22px"
 							/>
 						) : (
-							<PiCopy className="ml-3 shrink-0" size="25px" />
+							<IoCopyOutline
+								className="ml-3 shrink-0"
+								size="22px"
+							/>
 						)}
 					</button>
+					<div className="flex flex-col items-center justify-center space-y-4 text-xs">
+						{supportedChains.map((chainOption) => (
+							<div
+								key={chainOption.id}
+								className="flex w-full items-center"
+							>
+								<div
+									className={`flex size-7 items-center justify-center rounded-full ${getChainIconStyling(chainOption.id)}`}
+								>
+									<ChainIcon
+										className="flex items-center justify-center"
+										chainId={chainOption.id}
+										size="16px"
+									/>
+								</div>
+								<span className="ml-3 whitespace-nowrap">
+									{chainOption.name === "OP Mainnet"
+										? "Optimism"
+										: chainOption.name === "Arbitrum One"
+											? "Arbitrum"
+											: chainOption.name}
+								</span>
+							</div>
+						))}
+					</div>
 				</div>
-				{/* <a
-					href="https://faucet.circle.com/"
-					target="_blank"
-					className="self-center underline hover:text-[#515EF1]"
-				>
-					Testnet Faucet
-				</a> */}
 			</div>
 		</div>
 	);
