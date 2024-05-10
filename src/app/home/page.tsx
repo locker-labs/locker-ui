@@ -6,8 +6,9 @@ import { useEffect, useRef, useState } from "react";
 import Loader from "@/components/Loader";
 import LockerCreate from "@/components/LockerCreate";
 import LockerEmpty from "@/components/LockerEmpty";
-// import LockerSetup from "@/components/LockerSetup";
+import LockerSetup from "@/components/LockerSetup";
 import { getLockers } from "@/services/lockers";
+import { getTokenTxs } from "@/services/transactions";
 import type { Locker } from "@/types";
 
 function HomePage() {
@@ -27,11 +28,22 @@ function HomePage() {
 		}
 	};
 
+	const fetchTxs = async () => {
+		const token = await getToken();
+		if (token && lockers) {
+			const lockersWithTxs = await getTokenTxs(token, lockers);
+			console.log(lockersWithTxs);
+			setLockers(lockersWithTxs);
+		}
+	};
+
 	// Fetch lockers every 5 seconds if lockers is null
 	useEffect(() => {
 		const interval = setInterval(() => {
 			if (!lockers) {
 				fetchLockers();
+			} else if (lockers) {
+				fetchTxs();
 			} else {
 				clearInterval(interval);
 			}
@@ -58,7 +70,11 @@ function HomePage() {
 			{lockers && lockers.length > 0 && !isFirstRender.current && (
 				<LockerEmpty emptyLocker={lockers[0]} />
 			)}
-			{/* <LockerSetup /> */}
+			{lockers &&
+				lockers.length > 0 &&
+				!isFirstRender.current &&
+				lockers[0].txs &&
+				lockers[0].txs.length > 0 && <LockerSetup />}
 		</div>
 	);
 }
