@@ -45,9 +45,9 @@ export default function LandingPage() {
 						width="w-32"
 					/>
 				</div>
-			</div>
-			<div className="mt-14 flex w-full max-w-xl">
-				<LottieAnimation animationData={lockerBlob} />
+				<div className="flex w-full max-w-72 self-center">
+					<LottieAnimation animationData={lockerBlob} />
+				</div>
 			</div>
 		</div>
 	);

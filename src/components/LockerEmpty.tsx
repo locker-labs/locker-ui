@@ -11,6 +11,11 @@ import type { Locker } from "@/types";
 import { copyToClipboard } from "@/utils/copytoClipboard";
 import { isChainSupported } from "@/utils/isChainSupported";
 
+// ***********************
+// TO-DO:
+//     - Improve verbiage, layout, and UI for this page
+// ***********************
+
 export interface ILockerEmpty {
 	emptyLocker: Locker;
 }
@@ -30,10 +35,12 @@ function LockerEmpty({ emptyLocker }: ILockerEmpty) {
 
 	return (
 		<div className="flex w-full flex-1 flex-col items-start space-y-8">
-			<span>Your locker is empty</span>
+			<h1 className="text-4xl dark:text-light-100">
+				Your locker is empty
+			</h1>
 			<span>
-				Tell your employer, hackathon organizer, or clients to pay you
-				at your Locker address below.
+				Tell your employer, clients, or whoever to pay you at your
+				locker address below.
 			</span>
 			<span>
 				You can also deposit yourself by transferring any token to your
@@ -49,6 +56,7 @@ function LockerEmpty({ emptyLocker }: ILockerEmpty) {
 							className="self-center"
 							value={emptyLocker.address}
 							size={200}
+							level="H"
 							imageSettings={{
 								// Aspect ratio of iconLocker = w/h = 0.90626
 								src: "/assets/iconLocker.svg",
@@ -81,13 +89,6 @@ function LockerEmpty({ emptyLocker }: ILockerEmpty) {
 				{errorMessage && (
 					<span className="text-error">{errorMessage}</span>
 				)}
-				{/* <a
-					href="https://faucet.circle.com/"
-					target="_blank"
-					className="self-center underline hover:text-[#515EF1]"
-				>
-					Testnet Faucet
-				</a> */}
 			</div>
 		</div>
 	);

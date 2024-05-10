@@ -1,9 +1,19 @@
+interface Deployment {
+	id: number;
+	lockerId: number;
+	txHash: `0x${string}`;
+	chainId: number;
+	createdAt: Date;
+	updatedAt: Date;
+}
 export interface Locker {
-	userId: string;
-	seed: string;
+	id?: number;
+	userId?: string;
+	seed: number;
 	provider: string;
-	deploymentTxHash?: string;
-	ownerAddress: `0x${string}`;
 	address: `0x${string}`;
-	chainId: string;
+	ownerAddress: `0x${string}`;
+	deployments?: Deployment[];
+	createdAt?: Date;
+	updatedAt?: Date;
 }
