@@ -2,6 +2,8 @@
 
 The user interface for the Locker application.
 
+It communicates with locker-api.
+
 ## Getting Started with Development
 
 The following are instructions to get a copy of the project running locally on your machine for developement and testing purposes.
