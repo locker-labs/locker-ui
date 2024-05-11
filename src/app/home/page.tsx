@@ -20,8 +20,12 @@ function HomePage() {
 		const token = await getToken();
 		if (token) {
 			const lockersArray = await getLockers(token);
-			console.log(lockersArray);
 			setLockers(lockersArray);
+			if (lockersArray && lockersArray.length > 0) {
+				const lockersWithTxs = await getTokenTxs(token, lockersArray);
+				console.log(lockersWithTxs);
+				setLockers(lockersWithTxs);
+			}
 		}
 		if (isFirstRender.current) {
 			isFirstRender.current = false;
@@ -67,14 +71,18 @@ function HomePage() {
 			{lockers && lockers.length === 0 && !isFirstRender.current && (
 				<LockerCreate lockerIndex={0} fetchLockers={fetchLockers} />
 			)}
-			{lockers && lockers.length > 0 && !isFirstRender.current && (
-				<LockerEmpty emptyLocker={lockers[0]} />
-			)}
+			{lockers &&
+				lockers.length > 0 &&
+				!isFirstRender.current &&
+				(!lockers[0].txs ||
+					(lockers[0].txs && lockers[0].txs.length === 0)) && (
+					<LockerEmpty emptyLocker={lockers[0]} />
+				)}
 			{lockers &&
 				lockers.length > 0 &&
 				!isFirstRender.current &&
 				lockers[0].txs &&
-				lockers[0].txs.length > 0 && <LockerSetup />}
+				lockers[0].txs.length > 0 && <LockerSetup lockers={lockers} />}
 		</div>
 	);
 }
