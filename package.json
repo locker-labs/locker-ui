@@ -46,6 +46,7 @@
 		"react-blockies": "^1.4.1",
 		"react-dom": "^18",
 		"react-icons": "^5.1.0",
+		"react-minimal-pie-chart": "^8.4.0",
 		"viem": "^2.9.31",
 		"wagmi": "^2.8.0"
 	},

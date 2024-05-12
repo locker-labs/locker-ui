@@ -2,7 +2,7 @@ export interface Tx {
 	id: number;
 	lockerId: number;
 	contractAddress: `0x${string}`;
-	amount: string;
+	amount: string; // should be bigint
 	tokenSymbol: string;
 	tokenDecimals: number;
 	fromAddress: `0x${string}`;
