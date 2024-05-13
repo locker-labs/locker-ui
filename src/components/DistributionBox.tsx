@@ -28,7 +28,7 @@ function DistributionBox({
 		1;
 
 	return (
-		<div className="flex w-full flex-col">
+		<div className="flex w-full min-w-60 max-w-sm flex-col">
 			<div className="flex w-full min-w-60 max-w-sm flex-col space-y-2 overflow-hidden rounded-md border border-light-200 shadow-sm shadow-light-600 dark:border-dark-200 dark:shadow-none">
 				{selectedChannels.save && (
 					<div className="flex w-full items-center justify-between border-b border-b-light-200 p-3 dark:border-b-dark-200">
@@ -83,7 +83,7 @@ function DistributionBox({
 				)}
 			</div>
 			{!isSingleChannel && (
-				<span className="ml-2 mt-2 text-xs text-dark-100 dark:text-light-400">
+				<span className="ml-2 mt-3 text-xs text-dark-100 dark:text-light-400">
 					Left to allocate:{" "}
 					<span
 						className={`${Number(percentLeft) < 0 ? "text-error" : "text-success"}`}

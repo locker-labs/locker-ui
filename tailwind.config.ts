@@ -21,6 +21,7 @@ const config: Config = {
 	theme: {
 		screens: {
 			xxs: "230px",
+			xxs1: "280px",
 			xs: "300px",
 			xs1: "360px",
 			xs2: "380px",

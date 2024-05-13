@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
 import { IoChevronBackOutline } from "react-icons/io5";
-import { PieChart } from "react-minimal-pie-chart";
 
+import ChannelPieChart from "@/components/ChannelPieChart";
 import ChannelSelectButton from "@/components/ChannelSelectButton";
 import DistributionBox from "@/components/DistributionBox";
 import Steps from "@/components/Steps";
 import { Locker } from "@/types";
-import { truncateAddress } from "@/utils/truncateAddress";
 
 export interface ILockerSetup {
 	lockers: Locker[];
@@ -28,6 +27,8 @@ function LockerSetup({ lockers }: ILockerSetup) {
 	});
 	const [step, setStep] = useState(1);
 	const [errorMessage, setErrorMessage] = useState("");
+
+	console.log("[LockerSetup] First locker: ", lockers[0].address);
 
 	const handleChannelSelection = (channel: keyof typeof selectedChannels) => {
 		setSelectedChannels((prev) => ({
@@ -109,12 +110,14 @@ function LockerSetup({ lockers }: ILockerSetup) {
 
 	return (
 		<div className="flex w-full flex-1 flex-col items-start space-y-8">
-			<span>Whenever I get paid at my locker, I want to:</span>
-			<span>
-				Locker: <code>{truncateAddress(lockers[0].address)}</code>
+			<span className="text-dark-100 dark:text-light-300">
+				Automation setup
 			</span>
 			{step === 1 && (
-				<div className="flex w-full flex-col">
+				<div className="flex w-full flex-col items-center">
+					<span className="mb-4 text-lg">
+						When money arrives in my locker, I want to:
+					</span>
 					<div className="flex w-full min-w-60 max-w-sm flex-col space-y-2">
 						<ChannelSelectButton
 							isSelected={selectedChannels.save}
@@ -133,41 +136,32 @@ function LockerSetup({ lockers }: ILockerSetup) {
 						/>
 					</div>
 					<button
-						className="mt-4 h-12 w-40 items-center justify-center rounded-full bg-secondary-100 text-light-100 outline-none hover:bg-secondary-200 dark:bg-primary-200 dark:hover:bg-primary-100"
+						className="mt-8 h-12 w-40 items-center justify-center rounded-full bg-secondary-100 text-light-100 outline-none hover:bg-secondary-200 dark:bg-primary-200 dark:hover:bg-primary-100"
 						onClick={proceedToNextStep}
 					>
 						Continue
 					</button>
-					{errorMessage && (
-						<span className="mt-4 text-sm text-red-500">
-							{errorMessage}
-						</span>
-					)}
 				</div>
 			)}
 			{step === 2 && (
-				<>
-					<div className="relative flex size-48 items-center justify-center">
-						<PieChart
-							data={[
-								{
-									value: Number(bankPercent),
-									color: "#14B8A6", // success
-								},
-								{
-									value: Number(hotWalletPercent),
-									color: "#1E82BC", // secondary-200
-								},
-								{
-									value: Number(savePercent),
-									color: "#4546C4", // primary-200
-								},
-							]}
-						/>
-						<div className="absolute flex size-32 flex-col items-center justify-center rounded-full bg-light-100 dark:bg-dark-500">
-							<span>Test</span>
-						</div>
-					</div>
+				<div className="flex w-full flex-col items-center space-y-8">
+					<span className="text-lg">Percentage allocation</span>
+					<ChannelPieChart
+						data={[
+							{
+								value: Number(bankPercent),
+								color: "#14B8A6", // success
+							},
+							{
+								value: Number(hotWalletPercent),
+								color: "#1E82BC", // secondary-200
+							},
+							{
+								value: Number(savePercent),
+								color: "#4546C4", // primary-200
+							},
+						]}
+					/>
 					<DistributionBox
 						savePercent={savePercent}
 						hotWalletPercent={hotWalletPercent}
@@ -177,7 +171,22 @@ function LockerSetup({ lockers }: ILockerSetup) {
 						selectedChannels={selectedChannels}
 					/>
 					<button
-						className="h-10 w-fit hover:text-secondary-200 dark:hover:text-primary-100"
+						className="h-12 w-48 items-center justify-center rounded-full bg-secondary-100 text-light-100 outline-none hover:bg-secondary-200 dark:bg-primary-200 dark:hover:bg-primary-100"
+						onClick={() => console.log("Enable automations")}
+					>
+						Enable automations
+					</button>
+				</div>
+			)}
+			{errorMessage && (
+				<span className="mt-8 self-center text-sm text-red-500">
+					{errorMessage}
+				</span>
+			)}
+			<div className="flex w-full flex-1 flex-col items-center justify-between xxs1:flex-row xxs1:items-end">
+				{step === 2 ? (
+					<button
+						className="mb-8 h-10 w-fit hover:text-secondary-200 dark:hover:text-primary-100 xxs1:mb-0"
 						onClick={() => setStep(1)}
 					>
 						<div className="flex items-center justify-center space-x-1">
@@ -185,9 +194,11 @@ function LockerSetup({ lockers }: ILockerSetup) {
 							<span>Back</span>
 						</div>
 					</button>
-				</>
-			)}
-			<Steps step={step} totalSteps={2} />
+				) : (
+					<div />
+				)}
+				<Steps step={step} totalSteps={2} />
+			</div>
 		</div>
 	);
 }

@@ -7,7 +7,7 @@ export interface ISteps {
 
 function Steps({ step, totalSteps }: ISteps) {
 	return (
-		<div className="flex items-center">
+		<div className="flex h-10 shrink-0 items-center">
 			<span className="mr-4 text-sm">
 				Step {step} of {totalSteps}
 			</span>
