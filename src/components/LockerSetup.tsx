@@ -1,9 +1,10 @@
-/* eslint-disable jsx-a11y/label-has-associated-control */
-// import { RadioGroup } from "@headlessui/react";
 import { useEffect, useState } from "react";
+import { IoChevronBackOutline } from "react-icons/io5";
 import { PieChart } from "react-minimal-pie-chart";
 
+import ChannelSelectButton from "@/components/ChannelSelectButton";
 import DistributionBox from "@/components/DistributionBox";
+import Steps from "@/components/Steps";
 import { Locker } from "@/types";
 import { truncateAddress } from "@/utils/truncateAddress";
 
@@ -23,7 +24,7 @@ function LockerSetup({ lockers }: ILockerSetup) {
 	}>({
 		save: true,
 		wallet: true,
-		bank: true,
+		bank: false,
 	});
 	const [step, setStep] = useState(1);
 	const [errorMessage, setErrorMessage] = useState("");
@@ -108,41 +109,41 @@ function LockerSetup({ lockers }: ILockerSetup) {
 
 	return (
 		<div className="flex w-full flex-1 flex-col items-start space-y-8">
-			<span>LockerSetup</span>
+			<span>Whenever I get paid at my locker, I want to:</span>
 			<span>
 				Locker: <code>{truncateAddress(lockers[0].address)}</code>
 			</span>
 			{step === 1 && (
-				<>
-					<label>
-						<input
-							type="checkbox"
-							checked={selectedChannels.save}
-							onChange={() => handleChannelSelection("save")}
-						/>{" "}
-						Save in my locker
-					</label>
-					<label>
-						<input
-							type="checkbox"
-							checked={selectedChannels.wallet}
-							onChange={() => handleChannelSelection("wallet")}
-						/>{" "}
-						Forward to my hot wallet
-					</label>
-					<label>
-						<input
-							type="checkbox"
-							checked={selectedChannels.bank}
-							onChange={() => handleChannelSelection("bank")}
-						/>{" "}
-						Send to my bank
-					</label>
-					<button onClick={proceedToNextStep}>Next</button>
+				<div className="flex w-full flex-col">
+					<div className="flex w-full min-w-60 max-w-sm flex-col space-y-2">
+						<ChannelSelectButton
+							isSelected={selectedChannels.save}
+							label="Save in my locker"
+							onClick={() => handleChannelSelection("save")}
+						/>
+						<ChannelSelectButton
+							isSelected={selectedChannels.wallet}
+							label="Forward to my hot wallet"
+							onClick={() => handleChannelSelection("wallet")}
+						/>
+						<ChannelSelectButton
+							isSelected={selectedChannels.bank}
+							label="Send to my bank"
+							onClick={() => handleChannelSelection("bank")}
+						/>
+					</div>
+					<button
+						className="mt-4 h-12 w-40 items-center justify-center rounded-full bg-secondary-100 text-light-100 outline-none hover:bg-secondary-200 dark:bg-primary-200 dark:hover:bg-primary-100"
+						onClick={proceedToNextStep}
+					>
+						Continue
+					</button>
 					{errorMessage && (
-						<p className="text-error">{errorMessage}</p>
+						<span className="mt-4 text-sm text-red-500">
+							{errorMessage}
+						</span>
 					)}
-				</>
+				</div>
 			)}
 			{step === 2 && (
 				<>
@@ -175,115 +176,20 @@ function LockerSetup({ lockers }: ILockerSetup) {
 						handlePercentChange={handlePercentChange}
 						selectedChannels={selectedChannels}
 					/>
-					<button onClick={() => setStep(1)}>Back</button>
+					<button
+						className="h-10 w-fit hover:text-secondary-200 dark:hover:text-primary-100"
+						onClick={() => setStep(1)}
+					>
+						<div className="flex items-center justify-center space-x-1">
+							<IoChevronBackOutline size={20} />
+							<span>Back</span>
+						</div>
+					</button>
 				</>
 			)}
+			<Steps step={step} totalSteps={2} />
 		</div>
 	);
 }
 
 export default LockerSetup;
-
-// import { useEffect, useState } from "react";
-// import { PieChart } from "react-minimal-pie-chart";
-
-// import DistributionBox from "@/components/DistributionBox";
-// import { Locker } from "@/types";
-// import { truncateAddress } from "@/utils/truncateAddress";
-
-// export interface ILockerSetup {
-// 	lockers: Locker[];
-// }
-
-// function LockerSetup({ lockers }: ILockerSetup) {
-// 	const [savePercent, setSavePercent] = useState<string>("20");
-// 	const [hotWalletPercent, setHotWalletPercent] = useState<string>("10");
-// 	const [bankPercent, setBankPercent] = useState<string>("70");
-// 	const [percentLeft, setPercentLeft] = useState<string>("0");
-
-// 	const handlePercentChange = (
-// 		event: React.FormEvent<HTMLInputElement>,
-// 		inputType: "save" | "wallet" | "bank"
-// 	) => {
-// 		const target = event.target as HTMLInputElement;
-
-// 		let amountString;
-// 		if (inputType === "save") {
-// 			amountString =
-// 				target.validity.valid &&
-// 				Number(target.value) <= 100 &&
-// 				target.value.length <= 3
-// 					? target.value
-// 					: savePercent;
-// 			setSavePercent(amountString);
-// 		} else if (inputType === "wallet") {
-// 			amountString =
-// 				target.validity.valid &&
-// 				Number(target.value) <= 100 &&
-// 				target.value.length <= 3
-// 					? target.value
-// 					: hotWalletPercent;
-// 			setHotWalletPercent(amountString);
-// 		} else if (inputType === "bank") {
-// 			amountString =
-// 				target.validity.valid &&
-// 				Number(target.value) <= 100 &&
-// 				target.value.length <= 3
-// 					? target.value
-// 					: bankPercent;
-// 			setBankPercent(amountString);
-// 		}
-// 	};
-
-// 	const handlePercentLeft = () => {
-// 		const total =
-// 			Number(savePercent) +
-// 			Number(hotWalletPercent) +
-// 			Number(bankPercent);
-// 		setPercentLeft((100 - total).toString());
-// 	};
-
-// 	// Use useEffect to handle changes in percentages
-// 	useEffect(() => {
-// 		handlePercentLeft();
-// 	}, [savePercent, hotWalletPercent, bankPercent]);
-
-// 	return (
-// 		<div className="flex w-full flex-1 flex-col items-start space-y-8">
-// 			<span>LockerSetup</span>
-// 			<span>
-// 				Locker: <code>{truncateAddress(lockers[0].address)}</code>
-// 			</span>
-// 			<div className="relative flex size-48 items-center justify-center">
-// 				<PieChart
-// 					data={[
-// 						{
-// 							value: Number(bankPercent),
-// 							color: "#14B8A6", // success
-// 						},
-// 						{
-// 							value: Number(hotWalletPercent),
-// 							color: "#1E82BC", // secondary-200
-// 						},
-// 						{
-// 							value: Number(savePercent),
-// 							color: "#4546C4", // primary-200
-// 						},
-// 					]}
-// 				/>
-// 				<div className="absolute flex size-32 flex-col items-center justify-center rounded-full bg-light-100 dark:bg-dark-500">
-// 					<span>Test</span>
-// 				</div>
-// 			</div>
-// 			<DistributionBox
-// 				savePercent={savePercent}
-// 				hotWalletPercent={hotWalletPercent}
-// 				bankPercent={bankPercent}
-// 				percentLeft={percentLeft}
-// 				handlePercentChange={handlePercentChange}
-// 			/>
-// 		</div>
-// 	);
-// }
-
-// export default LockerSetup;
