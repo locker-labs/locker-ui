@@ -150,6 +150,13 @@ function LockerSetup({ lockers }: ILockerSetup) {
 							label="Send to my bank"
 							onClick={() => handleChannelSelection("bank")}
 						/>
+						{selectedChannels.bank && (
+							<span className="text-xs text-light-600">
+								Bank off-ramp requires idendity verification. If
+								this process is not completed, any money
+								allocated to your bank will stay in your locker.
+							</span>
+						)}
 					</div>
 					<button
 						className={`${!isFundingConfirmed ? "cursor-not-allowed opacity-70" : "cursor-pointer opacity-100"} mt-8 h-12 w-40 items-center justify-center rounded-full bg-secondary-100 text-light-100 outline-none hover:bg-secondary-200 dark:bg-primary-200 dark:hover:bg-primary-100`}
