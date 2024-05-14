@@ -58,7 +58,12 @@ function TxDetails({ tx, chain }: ITxDetails) {
 										? "Optimism"
 										: chain.name === "Arbitrum One"
 											? "Arbitrum"
-											: chain.name}
+											: chain.name === "Polygon Mumbai"
+												? "Mumbai"
+												: chain.name ===
+													  "Avalanche Fuji"
+													? "Fuji"
+													: chain.name}
 								</span>
 							</div>
 						</td>

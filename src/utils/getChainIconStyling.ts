@@ -2,11 +2,13 @@ import { supportedChainIds } from "@/data/constants/supportedChains";
 
 export const getChainIconStyling = (chainId: number) => {
 	const chainClasses = {
-		[supportedChainIds.ARBITRUM]: "bg-arbitrum/20 text-arbitrum",
-		[supportedChainIds.OPTIMISM]: "bg-optimism/20 text-optimism",
-		[supportedChainIds.POLYGON]: "bg-polygon/20 text-polygon",
-		[supportedChainIds.AVALANCHE]: "bg-avalanche/20 text-avalanche",
-		[supportedChainIds.SEPOLIA]: "bg-ethereum/20 text-ethereum",
+		[supportedChainIds.arbitrum]: "bg-arbitrum/20 text-arbitrum",
+		[supportedChainIds.optimism]: "bg-optimism/20 text-optimism",
+		[supportedChainIds.polygon]: "bg-polygon/20 text-polygon",
+		[supportedChainIds.avalanche]: "bg-avalanche/20 text-avalanche",
+		[supportedChainIds.sepolia]: "bg-ethereum/20 text-ethereum",
+		[supportedChainIds.polygonMumbai]: "bg-polygon/20 text-polygon",
+		[supportedChainIds.avalancheFuji]: "bg-avalanche/20 text-avalanche",
 	};
 
 	return chainClasses[chainId] || "bg-error/20 text-error";

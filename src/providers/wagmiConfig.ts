@@ -1,10 +1,7 @@
-import { cookieStorage, createConfig, createStorage, http } from "wagmi";
+import { cookieStorage, createConfig, createStorage } from "wagmi";
 import { coinbaseWallet, injected, walletConnect } from "wagmi/connectors";
 
-import {
-	supportedChainIds,
-	supportedChains,
-} from "@/data/constants/supportedChains";
+import { supportedChains, transports } from "@/data/constants/supportedChains";
 
 export const config = createConfig({
 	ssr: true,
@@ -32,12 +29,5 @@ export const config = createConfig({
 			darkMode: false,
 		}),
 	],
-	transports: {
-		// Replace with private RPC Urls --> http(process.env.MY_RPC_URL)
-		[supportedChainIds.ARBITRUM]: http(),
-		[supportedChainIds.OPTIMISM]: http(),
-		[supportedChainIds.POLYGON]: http(),
-		[supportedChainIds.AVALANCHE]: http(),
-		[supportedChainIds.SEPOLIA]: http(),
-	},
+	transports,
 });

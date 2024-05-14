@@ -78,7 +78,7 @@ function LockerEmpty({ emptyLocker }: ILockerEmpty) {
 								className="flex w-full items-center"
 							>
 								<div
-									className={`flex size-7 items-center justify-center rounded-full ${getChainIconStyling(chainOption.id)}`}
+									className={`flex size-7 shrink-0 items-center justify-center rounded-full ${getChainIconStyling(chainOption.id)}`}
 								>
 									<ChainIcon
 										className="flex items-center justify-center"
@@ -91,7 +91,13 @@ function LockerEmpty({ emptyLocker }: ILockerEmpty) {
 										? "Optimism"
 										: chainOption.name === "Arbitrum One"
 											? "Arbitrum"
-											: chainOption.name}
+											: chainOption.name ===
+												  "Polygon Mumbai"
+												? "Mumbai"
+												: chainOption.name ===
+													  "Avalanche Fuji"
+													? "Fuji"
+													: chainOption.name}
 								</span>
 							</div>
 						))}
