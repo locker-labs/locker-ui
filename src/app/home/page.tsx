@@ -1,12 +1,14 @@
 "use client";
 
 import { useAuth } from "@clerk/nextjs";
+import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
 import Loader from "@/components/Loader";
 import LockerCreate from "@/components/LockerCreate";
 import LockerEmpty from "@/components/LockerEmpty";
 import LockerSetup from "@/components/LockerSetup";
+import { paths } from "@/data/constants/paths";
 import { getLockers } from "@/services/lockers";
 import { getTokenTxs } from "@/services/transactions";
 import type { Locker } from "@/types";
@@ -14,17 +16,27 @@ import type { Locker } from "@/types";
 function HomePage() {
 	const isFirstRender = useRef(true);
 	const [lockers, setLockers] = useState<Locker[] | null>(null);
+	const [initialTxLength, setInitialTxLength] = useState<number>(0);
+	const [latestTxLength, setLatestTxLength] = useState<number>(0);
+
+	const router = useRouter();
 	const { getToken } = useAuth();
 
 	const fetchLockers = async () => {
-		const token = await getToken();
-		if (token) {
-			const lockersArray = await getLockers(token);
+		const authToken = await getToken();
+		if (authToken) {
+			const lockersArray = await getLockers(authToken);
 			setLockers(lockersArray);
 			if (lockersArray && lockersArray.length > 0) {
-				const lockersWithTxs = await getTokenTxs(token, lockersArray);
+				const lockersWithTxs = await getTokenTxs(
+					authToken,
+					lockersArray
+				);
 				console.log(lockersWithTxs);
 				setLockers(lockersWithTxs);
+				if (lockersWithTxs[0]?.txs) {
+					setInitialTxLength(lockersWithTxs[0].txs.length);
+				}
 			}
 		}
 		if (isFirstRender.current) {
@@ -33,11 +45,14 @@ function HomePage() {
 	};
 
 	const fetchTxs = async () => {
-		const token = await getToken();
-		if (token && lockers) {
-			const lockersWithTxs = await getTokenTxs(token, lockers);
+		const authToken = await getToken();
+		if (authToken && lockers) {
+			const lockersWithTxs = await getTokenTxs(authToken, lockers);
 			console.log(lockersWithTxs);
 			setLockers(lockersWithTxs);
+			if (lockersWithTxs[0].txs) {
+				setLatestTxLength(lockersWithTxs[0].txs.length);
+			}
 		}
 	};
 
@@ -57,9 +72,21 @@ function HomePage() {
 		return () => clearInterval(interval);
 	}, [lockers]);
 
+	// When first tx comes in, handle navigation to transaciton page
+	useEffect(() => {
+		if (
+			!!lockers &&
+			initialTxLength === 0 &&
+			latestTxLength > 0 &&
+			lockers[0].txs
+		) {
+			router.push(
+				`${paths.TX}/${lockers[0].txs[0].chainId}/${lockers[0].txs[0].txHash}`
+			);
+		}
+	}, [lockers, initialTxLength, latestTxLength, router]);
+
 	/*
-		If locker has been funded on any supported chain,
-		- Show LockerSetup component, which will show chains the locker has been funded on
 		After locker setup/deployment:
 		- Call lockers/${id} with PATCH request to update the depsloymentTxHash
 		- Can also use lockers/${id} lockers/${id} to update ownerAddress

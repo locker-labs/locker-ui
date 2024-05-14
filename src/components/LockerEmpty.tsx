@@ -4,13 +4,12 @@ import { QRCodeSVG } from "qrcode.react";
 import { useState } from "react";
 import { IoCheckboxOutline, IoCopyOutline } from "react-icons/io5";
 
+import ChainIcon from "@/components/ChainIcon";
 import { supportedChains } from "@/data/constants/supportedChains";
 import type { Locker } from "@/types";
 import { copyToClipboard } from "@/utils/copytoClipboard";
 import { getChainIconStyling } from "@/utils/getChainIconStyling";
 import { truncateAddress } from "@/utils/truncateAddress";
-
-import ChainIcon from "./ChainIcon";
 
 export interface ILockerEmpty {
 	emptyLocker: Locker;

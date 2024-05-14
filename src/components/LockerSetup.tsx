@@ -1,11 +1,14 @@
 import { useEffect, useState } from "react";
 import { IoChevronBackOutline } from "react-icons/io5";
 
+import ChainIcon from "@/components/ChainIcon";
 import ChannelPieChart from "@/components/ChannelPieChart";
 import ChannelSelectButton from "@/components/ChannelSelectButton";
 import DistributionBox from "@/components/DistributionBox";
 import Steps from "@/components/Steps";
+import { supportedChains } from "@/data/constants/supportedChains";
 import { Locker } from "@/types";
+import { getChainIconStyling } from "@/utils/getChainIconStyling";
 
 export interface ILockerSetup {
 	lockers: Locker[];
@@ -27,8 +30,6 @@ function LockerSetup({ lockers }: ILockerSetup) {
 	});
 	const [step, setStep] = useState(1);
 	const [errorMessage, setErrorMessage] = useState("");
-
-	console.log("[LockerSetup] First locker: ", lockers[0].address);
 
 	const handleChannelSelection = (channel: keyof typeof selectedChannels) => {
 		setSelectedChannels((prev) => ({
@@ -104,9 +105,24 @@ function LockerSetup({ lockers }: ILockerSetup) {
 		setPercentLeft((100 - total).toString());
 	};
 
+	const txs = lockers[0].txs || [];
+	const isFundingConfirmed = txs.some((tx) => tx.isConfirmed);
+	const fundedChainIds = txs.map((tx) => tx.chainId);
+	const fundedChains = supportedChains.filter((chain) =>
+		fundedChainIds.includes(chain.id)
+	);
+	const unconfirmedChains = fundedChains.filter((chain) =>
+		txs.some((tx) => tx.chainId === chain.id && !tx.isConfirmed)
+	);
+	const confirmedChains = fundedChains.filter((chain) =>
+		txs.some((tx) => tx.chainId === chain.id && tx.isConfirmed)
+	);
+
 	useEffect(() => {
 		handlePercentLeft();
 	}, [savePercent, hotWalletPercent, bankPercent, selectedChannels]);
+
+	// Show which chains the locker has been funded on
 
 	return (
 		<div className="flex w-full flex-1 flex-col items-start space-y-8">
@@ -136,8 +152,9 @@ function LockerSetup({ lockers }: ILockerSetup) {
 						/>
 					</div>
 					<button
-						className="mt-8 h-12 w-40 items-center justify-center rounded-full bg-secondary-100 text-light-100 outline-none hover:bg-secondary-200 dark:bg-primary-200 dark:hover:bg-primary-100"
+						className={`${!isFundingConfirmed ? "cursor-not-allowed opacity-70" : "cursor-pointer opacity-100"} mt-8 h-12 w-40 items-center justify-center rounded-full bg-secondary-100 text-light-100 outline-none hover:bg-secondary-200 dark:bg-primary-200 dark:hover:bg-primary-100`}
 						onClick={proceedToNextStep}
+						disabled={!isFundingConfirmed}
 					>
 						Continue
 					</button>
@@ -176,6 +193,11 @@ function LockerSetup({ lockers }: ILockerSetup) {
 					>
 						Enable automations
 					</button>
+					<span className="flex w-full max-w-sm text-xs text-light-600">
+						This will deploy your locker to all the chains it has
+						been funded on with at least one confirmed funding
+						transaction.
+					</span>
 				</div>
 			)}
 			{errorMessage && (
@@ -183,6 +205,87 @@ function LockerSetup({ lockers }: ILockerSetup) {
 					{errorMessage}
 				</span>
 			)}
+			<div className="mt-8 flex w-full max-w-sm flex-col self-center rounded-md border border-light-200 p-3 shadow-sm shadow-light-600 dark:border-dark-200 dark:shadow-none">
+				{isFundingConfirmed ? (
+					<span className="text-sm">
+						Your locker has been funded.
+					</span>
+				) : (
+					<span className="text-sm">
+						Your locker has been funded, but the transaction is
+						pending. At least one confirmed funding transaction is
+						required to proceed.
+					</span>
+				)}
+				{confirmedChains && confirmedChains.length > 0 && (
+					<div className="mt-8 flex flex-col space-y-4">
+						<span className="w-fit rounded-full bg-success/20 px-3 py-1 text-sm text-success">
+							Confirmed
+						</span>
+						<div className="ml-3 flex flex-col space-y-4 text-xs">
+							{confirmedChains &&
+								confirmedChains.map((chainOption) => (
+									<div
+										key={chainOption.id}
+										className="flex w-full items-center"
+									>
+										<div
+											className={`flex size-7 items-center justify-center rounded-full ${getChainIconStyling(chainOption.id)}`}
+										>
+											<ChainIcon
+												className="flex items-center justify-center"
+												chainId={chainOption.id}
+												size="16px"
+											/>
+										</div>
+										<span className="ml-3 whitespace-nowrap">
+											{chainOption.name === "OP Mainnet"
+												? "Optimism"
+												: chainOption.name ===
+													  "Arbitrum One"
+													? "Arbitrum"
+													: chainOption.name}
+										</span>
+									</div>
+								))}
+						</div>
+					</div>
+				)}
+				{unconfirmedChains && unconfirmedChains.length > 0 && (
+					<div className="mt-8 flex flex-col space-y-4">
+						<span className="w-fit rounded-full bg-warning/20 px-3 py-1 text-sm text-warning">
+							Pending
+						</span>
+						<div className="ml-3 flex flex-col space-y-4 text-xs">
+							{unconfirmedChains &&
+								unconfirmedChains.map((chainOption) => (
+									<div
+										key={chainOption.id}
+										className="flex w-full items-center"
+									>
+										<div
+											className={`flex size-7 items-center justify-center rounded-full ${getChainIconStyling(chainOption.id)}`}
+										>
+											<ChainIcon
+												className="flex items-center justify-center"
+												chainId={chainOption.id}
+												size="16px"
+											/>
+										</div>
+										<span className="ml-3 whitespace-nowrap">
+											{chainOption.name === "OP Mainnet"
+												? "Optimism"
+												: chainOption.name ===
+													  "Arbitrum One"
+													? "Arbitrum"
+													: chainOption.name}
+										</span>
+									</div>
+								))}
+						</div>
+					</div>
+				)}
+			</div>
 			<div className="flex w-full flex-1 flex-col items-center justify-between xxs1:flex-row xxs1:items-end">
 				{step === 2 ? (
 					<button

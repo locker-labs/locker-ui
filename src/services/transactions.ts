@@ -1,9 +1,10 @@
 /* eslint-disable no-console */
 import { endpoints } from "@/data/constants/endpoints";
+import { supportedChainIds } from "@/data/constants/supportedChains";
 import type { Locker, Tx } from "@/types";
 
 export const getTokenTxs = async (
-	token: string,
+	authToken: string,
 	lockers: Locker[]
 ): Promise<Locker[]> => {
 	try {
@@ -13,7 +14,7 @@ export const getTokenTxs = async (
 				const response = await fetch(
 					`${endpoints.GET_TXS}/${locker.id}`,
 					{
-						headers: { Authorization: `Bearer ${token}` },
+						headers: { Authorization: `Bearer ${authToken}` },
 					}
 				);
 
@@ -40,26 +41,28 @@ export const getTokenTxs = async (
 };
 
 export const getTx = async (
-	token: string,
+	authToken: string,
+	chainId: number,
 	txHash: string
 ): Promise<Tx | null> => {
-	const tx: Tx = {
-		id: 12,
-		lockerId: 11,
-		contractAddress: "0x0000000000000000000000000000000000000000", // Why is this address(0)?
-		amount: "10000000000000", // should be bigint
-		tokenSymbol: "ETH",
-		tokenDecimals: 18,
-		fromAddress: "0xde076d651613c7bde3260b8b69c860d67bc16f49",
-		toAddress: "0x3abb17dd306cba6d4ccad0bbd880d0cbd0a2cdaa",
-		txHash: "0x881b5a18637dc1b127e4a2580074d91c3662b9b00e6fe502bc821364c7f80f69",
-		chainId: 11155111,
-		createdAt: "2024-05-11T05:41:15.690Z",
-		updatedAt: "2024-05-11T05:41:15.690Z",
-	};
-
-	if (token && txHash === tx.txHash) {
-		return tx;
+	if (!Object.values(supportedChainIds).includes(chainId)) {
+		return null;
 	}
-	return null;
+	try {
+		const response = await fetch(
+			`${endpoints.GET_TXS}/${chainId}/${txHash}`,
+			{
+				headers: { Authorization: `Bearer ${authToken}` },
+			}
+		);
+
+		if (response.ok) {
+			const responseData = await response.json();
+			return responseData.data;
+		}
+		return null;
+	} catch (error) {
+		console.error(error);
+		return null;
+	}
 };

@@ -2,13 +2,14 @@ export interface Tx {
 	id: number;
 	lockerId: number;
 	contractAddress: `0x${string}`;
-	amount: string; // should be bigint
+	amount: string; // update locker-api to return bigint
 	tokenSymbol: string;
 	tokenDecimals: number;
 	fromAddress: `0x${string}`;
 	toAddress: `0x${string}`;
 	txHash: `0x${string}`;
 	chainId: number;
+	isConfirmed: boolean;
 	createdAt: string;
 	updatedAt: string;
 }
