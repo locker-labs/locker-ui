@@ -4,13 +4,12 @@ import { QRCodeSVG } from "qrcode.react";
 import { useState } from "react";
 import { IoCheckboxOutline, IoCopyOutline } from "react-icons/io5";
 
+import ChainIcon from "@/components/ChainIcon";
 import { supportedChains } from "@/data/constants/supportedChains";
 import type { Locker } from "@/types";
 import { copyToClipboard } from "@/utils/copytoClipboard";
 import { getChainIconStyling } from "@/utils/getChainIconStyling";
 import { truncateAddress } from "@/utils/truncateAddress";
-
-import ChainIcon from "./ChainIcon";
 
 export interface ILockerEmpty {
 	emptyLocker: Locker;
@@ -36,12 +35,12 @@ function LockerEmpty({ emptyLocker }: ILockerEmpty) {
 					Any token can be transferred to your locker from another
 					account on any of the supported chains.
 				</span>
-				<div className="flex flex-col items-center justify-center space-y-5 self-center">
-					<span className="bg-gradient-to-r from-secondary-200 to-primary-200 bg-clip-text text-3xl text-transparent">
+				<div className="flex flex-col items-center justify-center self-center">
+					<span className="mb-3 bg-gradient-to-r from-secondary-200 to-primary-200 bg-clip-text text-3xl text-transparent">
 						Your locker
 					</span>
 					<QRCodeSVG
-						className="rounded-xl border-2 border-light-600 dark:border-dark-500"
+						className="rounded-xl border-[0.5px] border-light-600/30 shadow-md shadow-light-600 dark:border-dark-500 dark:shadow-none"
 						value={emptyLocker.address}
 						size={225}
 						includeMargin
@@ -54,7 +53,7 @@ function LockerEmpty({ emptyLocker }: ILockerEmpty) {
 						}}
 					/>
 					<button
-						className="flex items-center justify-center text-sm outline-none hover:text-secondary-100 dark:hover:text-primary-100"
+						className="my-5 flex items-center justify-center text-sm outline-none hover:text-secondary-100 dark:hover:text-primary-100"
 						onClick={() =>
 							copyToClipboard(emptyLocker.address, setCopied)
 						}
@@ -63,12 +62,12 @@ function LockerEmpty({ emptyLocker }: ILockerEmpty) {
 						{copied ? (
 							<IoCheckboxOutline
 								className="ml-3 shrink-0 text-success"
-								size="22px"
+								size="20px"
 							/>
 						) : (
 							<IoCopyOutline
 								className="ml-3 shrink-0"
-								size="22px"
+								size="20px"
 							/>
 						)}
 					</button>

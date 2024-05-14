@@ -1,10 +1,26 @@
+export interface Tx {
+	id: number;
+	lockerId: number;
+	contractAddress: `0x${string}`;
+	amount: string; // update locker-api to return bigint
+	tokenSymbol: string;
+	tokenDecimals: number;
+	fromAddress: `0x${string}`;
+	toAddress: `0x${string}`;
+	txHash: `0x${string}`;
+	chainId: number;
+	isConfirmed: boolean;
+	createdAt: string;
+	updatedAt: string;
+}
+
 interface Deployment {
 	id: number;
 	lockerId: number;
 	txHash: `0x${string}`;
 	chainId: number;
-	createdAt: Date;
-	updatedAt: Date;
+	createdAt: string;
+	updatedAt: string;
 }
 export interface Locker {
 	id?: number;
@@ -14,6 +30,7 @@ export interface Locker {
 	address: `0x${string}`;
 	ownerAddress: `0x${string}`;
 	deployments?: Deployment[];
-	createdAt?: Date;
-	updatedAt?: Date;
+	txs?: Tx[];
+	createdAt?: string;
+	updatedAt?: string;
 }

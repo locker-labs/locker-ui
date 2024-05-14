@@ -3,10 +3,12 @@ import { endpoints } from "@/data/constants/endpoints";
 import { errors } from "@/data/constants/errorMessages";
 import type { Locker } from "@/types";
 
-export const getLockers = async (token: string): Promise<Locker[] | null> => {
+export const getLockers = async (
+	authToken: string
+): Promise<Locker[] | null> => {
 	try {
 		const response = await fetch(endpoints.GET_LOCKERS, {
-			headers: { Authorization: `Bearer ${token}` },
+			headers: { Authorization: `Bearer ${authToken}` },
 		});
 
 		if (response.ok) {
@@ -21,7 +23,7 @@ export const getLockers = async (token: string): Promise<Locker[] | null> => {
 };
 
 export const createLocker = async (
-	token: string,
+	authToken: string,
 	locker: Locker,
 	setErrorMessage: (value: string | null) => void
 ) => {
@@ -30,7 +32,7 @@ export const createLocker = async (
 		const response = await fetch(endpoints.CREATE_LOCKER, {
 			method: "POST",
 			headers: {
-				Authorization: `Bearer ${token}`,
+				Authorization: `Bearer ${authToken}`,
 				"Content-Type": "application/json",
 			},
 			body: JSON.stringify(locker),
