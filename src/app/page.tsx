@@ -7,7 +7,7 @@ import { useEffect } from "react";
 
 import AuthButton from "@/components/AuthButton";
 import { paths } from "@/data/constants/paths";
-import lockerBlob from "@/data/lottie/lockerBlob.json";
+import lockerPaths from "@/data/lottie/lockerPaths.json";
 
 const LottieAnimation = dynamic(() => import("@/components/LottieAnimation"), {
 	ssr: false,
@@ -24,7 +24,7 @@ export default function LandingPage() {
 	}, [isSignedIn]);
 
 	return (
-		<div className="flex w-full flex-1 flex-col items-center py-12">
+		<div className="flex w-full flex-1 flex-col items-center">
 			<div className="flex w-full max-w-2xl flex-col space-y-10">
 				<h1 className="text-5xl dark:text-light-100">
 					<span className="bg-gradient-to-r from-secondary-200 to-primary-200 bg-clip-text text-transparent">
@@ -45,9 +45,9 @@ export default function LandingPage() {
 						width="w-32"
 					/>
 				</div>
-				<div className="flex w-full max-w-72 self-center">
-					<LottieAnimation animationData={lockerBlob} />
-				</div>
+			</div>
+			<div className="flex w-full max-w-2xl flex-1 items-center justify-center py-10">
+				<LottieAnimation animationData={lockerPaths} />
 			</div>
 		</div>
 	);
