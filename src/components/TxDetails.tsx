@@ -2,7 +2,9 @@ import { IoOpenOutline } from "react-icons/io5";
 import { formatUnits } from "viem";
 import type { Chain } from "wagmi/chains";
 
+import ChainIcon from "@/components/ChainIcon";
 import { Tx } from "@/types";
+import { getChainIconStyling } from "@/utils/getChainIconStyling";
 
 export interface ITxDetails {
 	tx: Tx;
@@ -19,6 +21,52 @@ function TxDetails({ tx, chain }: ITxDetails) {
 							Date (UTC):
 						</td>
 						<td className="px-4 py-3">{tx.createdAt}</td>
+					</tr>
+					<tr className="flex flex-col items-start sm1:flex-row sm1:items-center">
+						<td className="w-36 shrink-0 px-4 py-3 text-light-600">
+							Status:
+						</td>
+						<td className="px-4 py-3">
+							{tx.isConfirmed ? (
+								<span className="w-fit rounded-full bg-success/20 px-3 py-1 text-success">
+									Confirmed
+								</span>
+							) : (
+								<span className="w-fit rounded-full bg-warning/20 px-3 py-1 text-warning">
+									Pending
+								</span>
+							)}
+						</td>
+					</tr>
+					<tr className="flex flex-col items-start sm1:flex-row sm1:items-center">
+						<td className="w-36 shrink-0 px-4 py-3 text-light-600">
+							Chain:
+						</td>
+						<td className="px-4 py-3">
+							<div className="flex items-center">
+								<div
+									className={`flex size-7 items-center justify-center rounded-full ${getChainIconStyling(chain.id)}`}
+								>
+									<ChainIcon
+										className="flex items-center justify-center"
+										chainId={chain.id}
+										size="16px"
+									/>
+								</div>
+								<span className="ml-3 whitespace-nowrap">
+									{chain.name === "OP Mainnet"
+										? "Optimism"
+										: chain.name === "Arbitrum One"
+											? "Arbitrum"
+											: chain.name === "Polygon Mumbai"
+												? "Mumbai"
+												: chain.name ===
+													  "Avalanche Fuji"
+													? "Fuji"
+													: chain.name}
+								</span>
+							</div>
+						</td>
 					</tr>
 					<tr className="flex flex-col items-start sm1:flex-row sm1:items-center">
 						<td className="w-36 shrink-0 px-4 py-3 text-light-600">
@@ -41,19 +89,6 @@ function TxDetails({ tx, chain }: ITxDetails) {
 							) : (
 								<code>{tx.txHash}</code>
 							)}
-						</td>
-					</tr>
-					<tr className="flex flex-col items-start sm1:flex-row sm1:items-center">
-						<td className="w-36 shrink-0 px-4 py-3 text-light-600">
-							Chain:
-						</td>
-						<td className="px-4 py-3">
-							{chain.name === "OP Mainnet"
-								? "Optimism"
-								: chain.name === "Arbitrum One"
-									? "Arbitrum"
-									: chain.name}{" "}
-							({chain.id})
 						</td>
 					</tr>
 					<tr className="flex flex-col items-start sm1:flex-row sm1:items-center">

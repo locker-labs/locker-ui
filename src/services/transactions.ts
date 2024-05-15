@@ -45,7 +45,11 @@ export const getTx = async (
 	chainId: number,
 	txHash: string
 ): Promise<Tx | null> => {
-	if (!Object.values(supportedChainIds).includes(chainId)) {
+	if (
+		!Object.values(supportedChainIds).includes(
+			chainId as (typeof supportedChainIds)[number]
+		)
+	) {
 		return null;
 	}
 	try {

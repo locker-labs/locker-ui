@@ -1,4 +1,6 @@
 import { supportedChainIds } from "@/data/constants/supportedChains";
 
 export const isChainSupported = (chainId: number) =>
-	Object.values(supportedChainIds).includes(chainId);
+	Object.values(supportedChainIds).includes(
+		chainId as (typeof supportedChainIds)[number]
+	);

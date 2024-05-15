@@ -50,7 +50,7 @@ function HomePage() {
 			const lockersWithTxs = await getTokenTxs(authToken, lockers);
 			console.log(lockersWithTxs);
 			setLockers(lockersWithTxs);
-			if (lockersWithTxs[0].txs) {
+			if (lockersWithTxs[0]?.txs) {
 				setLatestTxLength(lockersWithTxs[0].txs.length);
 			}
 		}

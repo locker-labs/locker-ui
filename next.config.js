@@ -35,6 +35,18 @@ module.exports = withPWA({
 
 		// Locker Backend
 		LOCKER_API_BASE_URL: process.env.LOCKER_API_BASE_URL,
+
+		// Private RPC URLs
+		ARBITRUM_RPC_URL: process.env.ARBITRUM_RPC_URL,
+		OPTIMISM_RPC_URL: process.env.OPTIMISM_RPC_URL,
+		POLYGON_RPC_URL: process.env.POLYGON_RPC_URL,
+		AVALANCHE_RPC_URL: process.env.AVALANCHE_RPC_URL,
+		SEPOLIA_RPC_URL: process.env.SEPOLIA_RPC_URL,
+		POLYGON_MUMBAI_RPC_URL: process.env.POLYGON_MUMBAI_RPC_URL,
+		AVALANCHE_FUJI_RPC_URL: process.env.AVALANCHE_FUJI_RPC_URL,
+
+		// Supported chains (different for dev and prod)
+		SUPPORTED_CHAINS: process.env.SUPPORTED_CHAINS,
 		// ********************************************* //
 
 		// ****************** PUBLIC ****************** //

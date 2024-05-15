@@ -48,8 +48,8 @@ function ChainDropdown() {
 					leaveFrom="opacity-100"
 					leaveTo="opacity-0"
 				>
-					<Listbox.Options className="absolute right-0 z-50 mt-3 max-h-60 w-40 origin-top-right overflow-auto rounded-xl bg-light-200 p-1 text-sm outline-none dark:bg-dark-400">
-						{supportedChains.map((chainOption) => (
+					<Listbox.Options className="absolute right-0 z-50 mt-3 max-h-60 w-fit origin-top-right overflow-auto rounded-xl bg-light-200 p-1 text-sm outline-none dark:bg-dark-400">
+						{supportedChains.map((chainOption, index) => (
 							<Listbox.Option
 								key={chainOption.id}
 								value={chainOption}
@@ -59,11 +59,13 @@ function ChainDropdown() {
 										className={`${
 											active &&
 											"bg-light-300 dark:bg-dark-300"
-										} flex w-full cursor-pointer select-none items-center justify-between p-2`}
+										} flex w-fit cursor-pointer select-none items-center justify-between p-2 ${
+											index === 0 && "rounded-t-xl"
+										} ${index === supportedChains.length - 1 && "rounded-b-xl"}`}
 									>
-										<div className="flex w-full items-center">
+										<div className="flex w-32 items-center">
 											<div
-												className={`flex size-7 items-center justify-center rounded-full ${getChainIconStyling(chainOption.id)}`}
+												className={`flex size-7 shrink-0 items-center justify-center rounded-full ${getChainIconStyling(chainOption.id)}`}
 											>
 												<ChainIcon
 													className="flex items-center justify-center"
@@ -78,7 +80,13 @@ function ChainDropdown() {
 													: chainOption.name ===
 														  "Arbitrum One"
 														? "Arbitrum"
-														: chainOption.name}
+														: chainOption.name ===
+															  "Polygon Mumbai"
+															? "Mumbai"
+															: chainOption.name ===
+																  "Avalanche Fuji"
+																? "Fuji"
+																: chainOption.name}
 											</span>
 										</div>
 										<div className="flex items-center justify-center text-secondary-100 dark:text-primary-100">
