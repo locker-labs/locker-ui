@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 /** @type {import('next').NextConfig} */
 
 const prod = process.env.NODE_ENV === "production";
@@ -42,8 +43,34 @@ module.exports = withPWA({
 		POLYGON_RPC_URL: process.env.POLYGON_RPC_URL,
 		AVALANCHE_RPC_URL: process.env.AVALANCHE_RPC_URL,
 		SEPOLIA_RPC_URL: process.env.SEPOLIA_RPC_URL,
-		POLYGON_MUMBAI_RPC_URL: process.env.POLYGON_MUMBAI_RPC_URL,
+		POLYGON_AMOY_RPC_URL: process.env.POLYGON_AMOY_RPC_URL,
 		AVALANCHE_FUJI_RPC_URL: process.env.AVALANCHE_FUJI_RPC_URL,
+
+		// ZeroDev
+		ARBITRUM_PROJECT_ID: process.env.ARBITRUM_PROJECT_ID,
+		OPTIMISM_PROJECT_ID: process.env.OPTIMISM_PROJECT_ID,
+		POLYGON_PROJECT_ID: process.env.POLYGON_PROJECT_ID,
+		AVALANCHE_PROJECT_ID: process.env.AVALANCHE_PROJECT_ID,
+		SEPOLIA_PROJECT_ID: process.env.SEPOLIA_PROJECT_ID,
+		POLYGON_AMOY_PROJECT_ID: process.env.POLYGON_AMOY_PROJECT_ID,
+		AVALANCHE_FUJI_PROJECT_ID: process.env.AVALANCHE_FUJI_PROJECT_ID,
+		ARBITRUM_BUNDLER_RPC_URL: process.env.ARBITRUM_BUNDLER_RPC_URL,
+		OPTIMISM_BUNDLER_RPC_URL: process.env.OPTIMISM_BUNDLER_RPC_URL,
+		POLYGON_BUNDLER_RPC_URL: process.env.POLYGON_BUNDLER_RPC_URL,
+		AVALANCHE_BUNDLER_RPC_URL: process.env.AVALANCHE_BUNDLER_RPC_URL,
+		SEPOLIA_BUNDLER_RPC_URL: process.env.SEPOLIA_BUNDLER_RPC_URL,
+		POLYGON_AMOY_BUNDLER_RPC_URL: process.env.POLYGON_AMOY_BUNDLER_RPC_URL,
+		AVALANCHE_FUJI_BUNDLER_RPC_URL:
+			process.env.AVALANCHE_FUJI_BUNDLER_RPC_URL,
+		ARBITRUM_PAYMASTER_RPC_URL: process.env.ARBITRUM_PAYMASTER_RPC_URL,
+		OPTIMISM_PAYMASTER_RPC_URL: process.env.OPTIMISM_PAYMASTER_RPC_URL,
+		POLYGON_PAYMASTER_RPC_URL: process.env.POLYGON_PAYMASTER_RPC_URL,
+		AVALANCHE_PAYMASTER_RPC_URL: process.env.AVALANCHE_PAYMASTER_RPC_URL,
+		SEPOLIA_PAYMASTER_RPC_URL: process.env.SEPOLIA_PAYMASTER_RPC_URL,
+		POLYGON_AMOY_PAYMASTER_RPC_URL:
+			process.env.POLYGON_AMOY_PAYMASTER_RPC_URL,
+		AVALANCHE_FUJI_PAYMASTER_RPC_URL:
+			process.env.AVALANCHE_FUJI_PAYMASTER_RPC_URL,
 
 		// Supported chains (different for dev and prod)
 		SUPPORTED_CHAINS: process.env.SUPPORTED_CHAINS,
@@ -72,11 +99,5 @@ module.exports = withPWA({
 				pathname: "/**",
 			},
 		],
-	},
-	webpack: (config) => {
-		// eslint-disable-next-line no-param-reassign
-		config.resolve.fallback = { fs: false, net: false, tls: false };
-		config.externals.push("pino-pretty", "lokijs", "encoding");
-		return config;
 	},
 });

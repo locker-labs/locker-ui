@@ -81,8 +81,8 @@ function ChainDropdown() {
 														  "Arbitrum One"
 														? "Arbitrum"
 														: chainOption.name ===
-															  "Polygon Mumbai"
-															? "Mumbai"
+															  "Polygon Amoy"
+															? "Amoy"
 															: chainOption.name ===
 																  "Avalanche Fuji"
 																? "Fuji"

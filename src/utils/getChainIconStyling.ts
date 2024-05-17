@@ -7,7 +7,7 @@ export const getChainIconStyling = (chainId: number) => {
 		[supportedChainIds.polygon]: "bg-polygon/20 text-polygon",
 		[supportedChainIds.avalanche]: "bg-avalanche/20 text-avalanche",
 		[supportedChainIds.sepolia]: "bg-ethereum/20 text-ethereum",
-		[supportedChainIds.polygonMumbai]: "bg-polygon/20 text-polygon",
+		[supportedChainIds.polygonAmoy]: "bg-polygon/20 text-polygon",
 		[supportedChainIds.avalancheFuji]: "bg-avalanche/20 text-avalanche",
 	};
 

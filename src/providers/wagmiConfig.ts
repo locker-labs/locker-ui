@@ -3,7 +3,7 @@ import { coinbaseWallet, injected, walletConnect } from "wagmi/connectors";
 
 import { supportedChains, transports } from "@/data/constants/supportedChains";
 
-export const config = createConfig({
+export const wagmiConfig = createConfig({
 	ssr: true,
 	storage: createStorage({
 		storage: cookieStorage,

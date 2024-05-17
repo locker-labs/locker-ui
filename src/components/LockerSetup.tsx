@@ -252,8 +252,8 @@ function LockerSetup({ lockers }: ILockerSetup) {
 													  "Arbitrum One"
 													? "Arbitrum"
 													: chainOption.name ===
-														  "Polygon Mumbai"
-														? "Mumbai"
+														  "Polygon Amoy"
+														? "Amoy"
 														: chainOption.name ===
 															  "Avalanche Fuji"
 															? "Fuji"
@@ -292,8 +292,8 @@ function LockerSetup({ lockers }: ILockerSetup) {
 													  "Arbitrum One"
 													? "Arbitrum"
 													: chainOption.name ===
-														  "Polygon Mumbai"
-														? "Mumbai"
+														  "Polygon Amoy"
+														? "Amoy"
 														: chainOption.name ===
 															  "Avalanche Fuji"
 															? "Fuji"

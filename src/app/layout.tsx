@@ -12,8 +12,9 @@ import Header from "@/components/Header";
 import { globalMetadata } from "@/data/seo/globalMetadata";
 import AuthProvider from "@/providers/AuthProvider";
 import EvmProvider from "@/providers/EvmProvider";
+import SmartAccountProvider from "@/providers/SmartAccountProvider";
 import ThemeProvider from "@/providers/ThemeProvider";
-import { config } from "@/providers/wagmiConfig";
+import { wagmiConfig } from "@/providers/wagmiConfig";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -24,7 +25,10 @@ export default function RootLayout({
 }: Readonly<{
 	children: ReactNode;
 }>) {
-	const initialState = cookieToInitialState(config, headers().get("cookie"));
+	const initialState = cookieToInitialState(
+		wagmiConfig,
+		headers().get("cookie")
+	);
 
 	return (
 		<html lang="en" suppressHydrationWarning>
@@ -33,15 +37,17 @@ export default function RootLayout({
 			>
 				<AuthProvider>
 					<EvmProvider initialState={initialState}>
-						<ThemeProvider>
-							<main className="flex w-full min-w-[230px] max-w-5xl flex-1 flex-col items-center p-5">
-								<Header />
-								<Suspense fallback={<Loading />}>
-									{children}
-								</Suspense>
-								<Footer />
-							</main>
-						</ThemeProvider>
+						<SmartAccountProvider>
+							<ThemeProvider>
+								<main className="flex w-full min-w-[230px] max-w-5xl flex-1 flex-col items-center p-5">
+									<Header />
+									<Suspense fallback={<Loading />}>
+										{children}
+									</Suspense>
+									<Footer />
+								</main>
+							</ThemeProvider>
+						</SmartAccountProvider>
 					</EvmProvider>
 				</AuthProvider>
 			</body>

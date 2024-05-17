@@ -28,7 +28,7 @@ function Header() {
 		isConnected &&
 		chainId &&
 		(chainId === supportedChainIds?.sepolia ||
-			chainId === supportedChainIds?.polygonMumbai ||
+			chainId === supportedChainIds?.polygonAmoy ||
 			chainId === supportedChainIds?.avalancheFuji);
 
 	return (

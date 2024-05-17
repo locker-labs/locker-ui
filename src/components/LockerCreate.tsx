@@ -1,8 +1,6 @@
 "use client";
 
 import { useAuth } from "@clerk/nextjs";
-import { getKernelAddressFromECDSA } from "@zerodev/ecdsa-validator";
-import { ENTRYPOINT_ADDRESS_V07 } from "permissionless";
 import { useEffect, useState } from "react";
 import type { PublicClient } from "viem";
 import { useAccount, useClient } from "wagmi";
@@ -10,6 +8,7 @@ import { useAccount, useClient } from "wagmi";
 import Loader from "@/components/Loader";
 import { useConnectModal } from "@/hooks/useConnectModal";
 import { createLocker } from "@/services/lockers";
+import { getSmartAccountAddress } from "@/services/zerodev";
 import type { Locker } from "@/types";
 
 export interface ILockerCreate {
@@ -29,19 +28,19 @@ function LockerCreate({ lockerIndex, fetchLockers }: ILockerCreate) {
 	const createNewLocker = async () => {
 		setErrorMessage(null);
 		setIsLoading(true);
-		// Show Loader for 2 seconds
+		// Show Loader for 1.5 seconds
 		await new Promise((resolve) => {
-			setTimeout(resolve, 2000);
+			setTimeout(resolve, 1500);
 		});
 
 		// Proceed
 		try {
-			const smartAccountAddress = await getKernelAddressFromECDSA({
-				publicClient: client as PublicClient,
-				eoaAddress: address as `0x${string}`,
-				index: BigInt(lockerIndex),
-				entryPointAddress: ENTRYPOINT_ADDRESS_V07,
-			});
+			const smartAccountAddress = await getSmartAccountAddress(
+				client as PublicClient,
+				address as `0x${string}`,
+				lockerIndex
+			);
+
 			const locker: Locker = {
 				seed: lockerIndex,
 				provider: "ZeroDev",
@@ -96,7 +95,7 @@ function LockerCreate({ lockerIndex, fetchLockers }: ILockerCreate) {
 						<span className="bg-gradient-to-r from-secondary-200 to-primary-200 bg-clip-text text-2xl text-transparent">
 							Customize
 						</span>{" "}
-						how your locker distributes future deposits.
+						how your locker distributes payments.
 					</span>
 					<span className="text-xl">
 						<span className="bg-gradient-to-r from-secondary-200 to-primary-200 bg-clip-text text-2xl text-transparent">

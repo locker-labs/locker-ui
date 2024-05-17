@@ -4,7 +4,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import type { ReactNode } from "react";
 import { type State, WagmiProvider } from "wagmi";
 
-import { config } from "@/providers/wagmiConfig";
+import { wagmiConfig } from "@/providers/wagmiConfig";
 
 export interface IEvmProvider {
 	children: ReactNode;
@@ -15,7 +15,7 @@ function EvmProvider({ children, initialState }: IEvmProvider) {
 	const queryClient = new QueryClient();
 
 	return (
-		<WagmiProvider config={config} initialState={initialState}>
+		<WagmiProvider config={wagmiConfig} initialState={initialState}>
 			<QueryClientProvider client={queryClient}>
 				{children}
 			</QueryClientProvider>
