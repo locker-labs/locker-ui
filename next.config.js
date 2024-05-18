@@ -36,6 +36,7 @@ module.exports = withPWA({
 
 		// Locker Backend
 		LOCKER_API_BASE_URL: process.env.LOCKER_API_BASE_URL,
+		LOCKER_AGENT_ADDRESS: process.env.LOCKER_AGENT_ADDRESS,
 
 		// Private RPC URLs
 		ARBITRUM_RPC_URL: process.env.ARBITRUM_RPC_URL,

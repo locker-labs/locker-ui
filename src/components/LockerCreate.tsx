@@ -2,13 +2,12 @@
 
 import { useAuth } from "@clerk/nextjs";
 import { useEffect, useState } from "react";
-import type { PublicClient } from "viem";
-import { useAccount, useClient } from "wagmi";
+import { useAccount } from "wagmi";
 
 import Loader from "@/components/Loader";
 import { useConnectModal } from "@/hooks/useConnectModal";
+import useSmartAccount from "@/hooks/useSmartAccount";
 import { createLocker } from "@/services/lockers";
-import { getSmartAccountAddress } from "@/services/zerodev";
 import type { Locker } from "@/types";
 
 export interface ILockerCreate {
@@ -22,8 +21,8 @@ function LockerCreate({ lockerIndex, fetchLockers }: ILockerCreate) {
 	const [errorMessage, setErrorMessage] = useState<string | null>(null);
 	const { isConnected, address } = useAccount();
 	const { openConnectModal, renderConnectModal } = useConnectModal();
+	const { genSmartAccountAddress } = useSmartAccount();
 	const { getToken } = useAuth();
-	const client = useClient();
 
 	const createNewLocker = async () => {
 		setErrorMessage(null);
@@ -35,8 +34,7 @@ function LockerCreate({ lockerIndex, fetchLockers }: ILockerCreate) {
 
 		// Proceed
 		try {
-			const smartAccountAddress = await getSmartAccountAddress(
-				client as PublicClient,
+			const smartAccountAddress = await genSmartAccountAddress(
 				address as `0x${string}`,
 				lockerIndex
 			);

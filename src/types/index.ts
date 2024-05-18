@@ -34,3 +34,14 @@ export interface Locker {
 	createdAt?: string;
 	updatedAt?: string;
 }
+
+export interface Policy {
+	lockerId: number;
+	chainId: number;
+	sessionKey: string;
+	automations: {
+		savings: number;
+		hot_wallet: number;
+		off_ramp: number;
+	};
+}

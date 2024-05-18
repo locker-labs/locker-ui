@@ -7,7 +7,8 @@ import { useEffect, useRef, useState } from "react";
 import Loader from "@/components/Loader";
 import LockerCreate from "@/components/LockerCreate";
 import LockerEmpty from "@/components/LockerEmpty";
-import LockerSetup from "@/components/LockerSetup";
+// import LockerSetup from "@/components/LockerSetup";
+import ZeroDevTest from "@/components/ZeroDevTest";
 import { paths } from "@/data/constants/paths";
 import { getLockers } from "@/services/lockers";
 import { getTokenTxs } from "@/services/transactions";
@@ -105,11 +106,14 @@ function HomePage() {
 					(lockers[0].txs && lockers[0].txs.length === 0)) && (
 					<LockerEmpty emptyLocker={lockers[0]} />
 				)}
-			{lockers &&
-				lockers.length > 0 &&
-				!isFirstRender.current &&
-				lockers[0].txs &&
-				lockers[0].txs.length > 0 && <LockerSetup lockers={lockers} />}
+			{
+				lockers &&
+					lockers.length > 0 &&
+					!isFirstRender.current &&
+					lockers[0].txs &&
+					lockers[0].txs.length > 0 && <ZeroDevTest />
+				// <LockerSetup lockers={lockers} />
+			}
 		</div>
 	);
 }

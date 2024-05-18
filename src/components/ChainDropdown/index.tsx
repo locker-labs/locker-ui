@@ -59,7 +59,7 @@ function ChainDropdown() {
 										className={`${
 											active &&
 											"bg-light-300 dark:bg-dark-300"
-										} flex w-fit cursor-pointer select-none items-center justify-between p-2 ${
+										} flex w-full cursor-pointer select-none items-center justify-between p-2 ${
 											index === 0 && "rounded-t-xl"
 										} ${index === supportedChains.length - 1 && "rounded-b-xl"}`}
 									>

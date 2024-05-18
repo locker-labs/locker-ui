@@ -152,9 +152,11 @@ function LockerSetup({ lockers }: ILockerSetup) {
 						/>
 						{selectedChannels.bank && (
 							<span className="text-xs text-light-600">
-								Bank off-ramp requires idendity verification. If
-								this process is not completed, any money
-								allocated to your bank will stay in your locker.
+								Bank off-ramp is only available for US bank
+								accounts and requires idendity verification
+								after initial setup. If this process is not
+								completed, any money allocated to your bank will
+								stay in your locker.
 							</span>
 						)}
 					</div>
