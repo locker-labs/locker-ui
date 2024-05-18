@@ -51,14 +51,3 @@ export const supportedChains = (
 export const supportedChainIds = envChains.length
 	? Object.fromEntries(envChains.map((chain) => [chain, chains[chain].id]))
 	: defaultChainIds;
-
-// ZeroDev Project IDs
-export const zdProjectIds = {
-	[arbitrum.id]: process.env.ARBITRUM_PROJECT_ID!,
-	[optimism.id]: process.env.OPTIMISM_PROJECT_ID!,
-	[polygon.id]: process.env.POLYGON_PROJECT_ID!,
-	[avalanche.id]: process.env.AVALANCHE_PROJECT_ID!,
-	[sepolia.id]: process.env.SEPOLIA_PROJECT_ID!,
-	[polygonAmoy.id]: process.env.POLYGON_AMOY_PROJECT_ID!,
-	[avalancheFuji.id]: process.env.AVALANCHE_FUJI_PROJECT_ID!,
-};
