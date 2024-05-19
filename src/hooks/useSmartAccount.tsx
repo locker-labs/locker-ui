@@ -25,10 +25,14 @@ const useSmartAccount = () => {
 	if (!process.env.LOCKER_AGENT_ADDRESS)
 		throw new Error("LOCKER_AGENT_ADDRESS is not set");
 
-	// Prompts user to signe session key for current chain
+	// Prompts user to sign session key for current chain
 	const signSessionKey = async () => {
+		if (!walletClient) {
+			throw new Error("Wallet client is not available");
+		}
+
 		const smartAccountSigner =
-			await walletClientToSmartAccountSigner(walletClient);
+			walletClientToSmartAccountSigner(walletClient);
 
 		const ecdsaValidator = await signerToEcdsaValidator(
 			publicClient as PublicClient,
@@ -46,16 +50,19 @@ const useSmartAccount = () => {
 			signer: emptyAccount,
 		});
 
+		// Dummy policy
 		const callPolicy = toCallPolicy({
 			permissions: [
 				{
 					target: "0x7366325a27c5e39B594Db7eda7Ca65962A7C3284", // test counter contract
 					valueLimit: BigInt(0), // max value tranfer
 					abi: counterAbi,
+					// @ts-expect-error: ZeroDev docs say to do it like this , and it works.
+					// https://docs.zerodev.app/sdk/permissions/1-click-trading#creating-a-number-of-policies
 					functionName: "increment",
 					args: [
 						{
-							// we're saying we can only increment by 2
+							// Only allow increments of 2
 							condition: ParamCondition.EQUAL,
 							value: 2,
 						},
@@ -84,7 +91,26 @@ const useSmartAccount = () => {
 			}
 		);
 
-		return serializePermissionAccount(sessionKeyAccount);
+		let sig;
+		try {
+			sig = await serializePermissionAccount(sessionKeyAccount);
+		} catch (error) {
+			const acceptableErrorMessages = [
+				"rejected",
+				"request reset",
+				"denied",
+			];
+			if (
+				!acceptableErrorMessages.some((msg) =>
+					(error as Error).message.includes(msg)
+				)
+			) {
+				// eslint-disable-next-line no-console
+				console.error(error);
+			}
+		}
+
+		return sig;
 	};
 
 	// Generates a smart account addres from an EOA address and a locker index

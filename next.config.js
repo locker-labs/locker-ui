@@ -101,4 +101,10 @@ module.exports = withPWA({
 			},
 		],
 	},
+	webpack: (config) => {
+		// eslint-disable-next-line no-param-reassign
+		config.resolve.fallback = { fs: false, net: false, tls: false };
+		config.externals.push("pino-pretty", "lokijs", "encoding");
+		return config;
+	},
 });

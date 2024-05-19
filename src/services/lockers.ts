@@ -60,7 +60,7 @@ export const createLocker = async (
 export const createPolicy = async (
 	authToken: string,
 	policy: Policy,
-	setErrorMessage: (value: string | null) => void
+	setErrorMessage: (value: string) => void
 ) => {
 	try {
 		// response.status should be 201 (Created)
@@ -72,8 +72,6 @@ export const createPolicy = async (
 			},
 			body: JSON.stringify(policy),
 		});
-
-		console.log("response: ", console.log("response: ", response));
 
 		if (!response.ok) {
 			// Handle error in catch
@@ -91,5 +89,25 @@ export const createPolicy = async (
 			console.error(error);
 			setErrorMessage(errors.UNEXPECTED);
 		}
+	}
+};
+
+export const getPolicies = async (
+	authToken: string,
+	lockerId: number
+): Promise<Policy[] | null> => {
+	try {
+		const response = await fetch(`${endpoints.GET_POLICIES}/${lockerId}`, {
+			headers: { Authorization: `Bearer ${authToken}` },
+		});
+
+		if (response.ok) {
+			const responseData = await response.json();
+			return responseData.data.policies;
+		}
+		return null;
+	} catch (error) {
+		console.error(error);
+		return null;
 	}
 };
