@@ -1,0 +1,140 @@
+import { IoOpenOutline } from "react-icons/io5";
+import { formatUnits } from "viem";
+
+import { supportedChains } from "@/data/constants/supportedChains";
+import { Tx } from "@/types";
+import { formatDateUtc } from "@/utils/formatDateUtc";
+import { truncateAddress } from "@/utils/truncateAddress";
+
+export interface ITxTable {
+	txs: Tx[];
+}
+
+function TxTable({ txs }: ITxTable) {
+	const getChainName = (chainId: number) => {
+		const chain = supportedChains.find(
+			(chainObj) => chainObj.id === chainId
+		);
+
+		if (!chain) return null;
+
+		return (
+			<span>
+				{chain.name === "OP Mainnet"
+					? "Optimism"
+					: chain.name === "Arbitrum One"
+						? "Arbitrum"
+						: chain.name === "Polygon Amoy"
+							? "Amoy"
+							: chain.name === "Avalanche Fuji"
+								? "Fuji"
+								: chain.name}
+			</span>
+		);
+	};
+
+	const getTxHashContent = (tx: Tx) => {
+		const chain = supportedChains.find(
+			(chainObj) => chainObj.id === tx.chainId
+		);
+
+		if (!chain) return null;
+
+		if (chain.blockExplorers) {
+			return (
+				<a
+					className="flex items-center space-x-2 outline-none hover:text-secondary-100 hover:underline dark:hover:text-primary-100"
+					href={`${chain.blockExplorers.default.url}/tx/${tx.txHash}`}
+					target="_blank"
+					rel="noopener noreferrer"
+				>
+					<code>{truncateAddress(tx.txHash)}</code>
+					<IoOpenOutline className="ml-3 shrink-0" size={14} />
+				</a>
+			);
+		}
+		return <code>{truncateAddress(tx.txHash)}</code>;
+	};
+
+	const getAddressContent = (chainId: number, address: `0x${string}`) => {
+		const chain = supportedChains.find(
+			(chainObj) => chainObj.id === chainId
+		);
+
+		if (!chain) return null;
+
+		if (chain.blockExplorers) {
+			return (
+				<a
+					className="flex items-center space-x-2 outline-none hover:text-secondary-100 hover:underline dark:hover:text-primary-100"
+					href={`${chain.blockExplorers.default.url}/address/${address}`}
+					target="_blank"
+					rel="noopener noreferrer"
+				>
+					<code>{truncateAddress(address)}</code>
+					<IoOpenOutline className="ml-3 shrink-0" size={14} />
+				</a>
+			);
+		}
+		return <code>{truncateAddress(address)}</code>;
+	};
+
+	return (
+		<div className="flex w-full flex-col overflow-x-auto rounded-md border border-light-200 shadow-sm shadow-light-600 dark:border-dark-200 dark:shadow-none">
+			<table className="min-w-full divide-y divide-light-200 text-left text-xs dark:divide-dark-200">
+				<thead>
+					<tr className="text-light-600">
+						<th className="px-4 py-3">Date</th>
+						<th className="px-4 py-3">Status</th>
+						<th className="px-4 py-3">Chain</th>
+						<th className="px-4 py-3">Amount</th>
+						<th className="px-4 py-3">Tx hash</th>
+						<th className="px-4 py-3">Locker address</th>
+						<th className="px-4 py-3">Sender address</th>
+					</tr>
+				</thead>
+				<tbody>
+					{txs.map((tx) => (
+						<tr key={tx.txHash}>
+							<td className="px-4 py-3">
+								{formatDateUtc(tx.createdAt, false)}
+							</td>
+							<td className="px-4 py-3">
+								{tx.isConfirmed ? (
+									<span className="w-fit rounded-full bg-success/20 px-3 py-1 text-success">
+										Confirmed
+									</span>
+								) : (
+									<span className="w-fit rounded-full bg-warning/20 px-3 py-1 text-warning">
+										Pending
+									</span>
+								)}
+							</td>
+							<td className="px-4 py-3">
+								{getChainName(tx.chainId)}
+							</td>
+							<td className="px-4 py-3">
+								{formatUnits(
+									BigInt(tx.amount),
+									tx.tokenDecimals
+								)}{" "}
+								{tx.tokenSymbol}
+							</td>
+							<td className="px-4 py-3">
+								{getTxHashContent(tx)}
+							</td>
+							<td className="px-4 py-3">
+								{getAddressContent(tx.chainId, tx.toAddress)}
+							</td>
+							<td className="px-4 py-3">
+								{getAddressContent(tx.chainId, tx.fromAddress)}
+							</td>
+						</tr>
+					))}
+				</tbody>
+			</table>
+		</div>
+	);
+}
+
+export default TxTable;

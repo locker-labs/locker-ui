@@ -1,20 +1,24 @@
+import { useAuth } from "@clerk/nextjs";
 import { useEffect, useState } from "react";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { IoChevronBackOutline } from "react-icons/io5";
+import { useAccount } from "wagmi";
 
-import ChainIcon from "@/components/ChainIcon";
 import ChannelPieChart from "@/components/ChannelPieChart";
 import ChannelSelectButton from "@/components/ChannelSelectButton";
 import DistributionBox from "@/components/DistributionBox";
 import Steps from "@/components/Steps";
-import { supportedChains } from "@/data/constants/supportedChains";
-import { Locker } from "@/types";
-import { getChainIconStyling } from "@/utils/getChainIconStyling";
+import TxTable from "@/components/TxTable";
+import useSmartAccount from "@/hooks/useSmartAccount";
+import { createPolicy } from "@/services/lockers";
+import { Locker, Policy } from "@/types";
 
 export interface ILockerSetup {
 	lockers: Locker[];
+	fetchPolicies: () => void;
 }
 
-function LockerSetup({ lockers }: ILockerSetup) {
+function LockerSetup({ lockers, fetchPolicies }: ILockerSetup) {
 	const [savePercent, setSavePercent] = useState<string>("20");
 	const [hotWalletPercent, setHotWalletPercent] = useState<string>("0");
 	const [bankPercent, setBankPercent] = useState<string>("0");
@@ -28,8 +32,13 @@ function LockerSetup({ lockers }: ILockerSetup) {
 		wallet: true,
 		bank: false,
 	});
-	const [step, setStep] = useState(1);
-	const [errorMessage, setErrorMessage] = useState("");
+	const [step, setStep] = useState<number>(1);
+	const [errorMessage, setErrorMessage] = useState<string>("");
+	const [isLoading, setIsLoading] = useState<boolean>(false);
+
+	const { getToken } = useAuth();
+	const { chainId } = useAccount();
+	const { signSessionKey } = useSmartAccount();
 
 	const handleChannelSelection = (channel: keyof typeof selectedChannels) => {
 		setSelectedChannels((prev) => ({
@@ -105,24 +114,47 @@ function LockerSetup({ lockers }: ILockerSetup) {
 		setPercentLeft((100 - total).toString());
 	};
 
-	const txs = lockers[0].txs || [];
-	const isFundingConfirmed = txs.some((tx) => tx.isConfirmed);
-	const fundedChainIds = txs.map((tx) => tx.chainId);
-	const fundedChains = supportedChains.filter((chain) =>
-		fundedChainIds.includes(chain.id)
-	);
-	const unconfirmedChains = fundedChains.filter((chain) =>
-		txs.some((tx) => tx.chainId === chain.id && !tx.isConfirmed)
-	);
-	const confirmedChains = fundedChains.filter((chain) =>
-		txs.some((tx) => tx.chainId === chain.id && tx.isConfirmed)
-	);
+	const handlePolicyCreation = async () => {
+		if (Number(percentLeft) === 0) {
+			setErrorMessage("");
+			setIsLoading(true);
+			// 1. Get user to sign session key
+			const sig = await signSessionKey();
+			if (!sig) {
+				setIsLoading(false);
+				return;
+			}
+
+			// 2. Craft policy object
+			const policy: Policy = {
+				lockerId: lockers[0].id as number,
+				chainId: chainId as number,
+				sessionKey: sig as string,
+				automations: {
+					savings: Number(savePercent),
+					hot_wallet: Number(hotWalletPercent),
+					off_ramp: Number(bankPercent),
+				},
+			};
+
+			// 3. Get auth token and create policy through locker-api
+			const authToken = await getToken();
+			if (authToken) {
+				await createPolicy(authToken, policy, setErrorMessage);
+			}
+
+			// 4. Fetch policies from DB to update state in Home component
+			fetchPolicies();
+
+			setIsLoading(false);
+		} else {
+			setErrorMessage("All percentages must add up to 100%.");
+		}
+	};
 
 	useEffect(() => {
 		handlePercentLeft();
 	}, [savePercent, hotWalletPercent, bankPercent, selectedChannels]);
-
-	// Show which chains the locker has been funded on
 
 	return (
 		<div className="flex w-full flex-1 flex-col items-start space-y-8">
@@ -152,16 +184,17 @@ function LockerSetup({ lockers }: ILockerSetup) {
 						/>
 						{selectedChannels.bank && (
 							<span className="text-xs text-light-600">
-								Bank off-ramp requires idendity verification. If
-								this process is not completed, any money
-								allocated to your bank will stay in your locker.
+								Bank off-ramp is only available for US bank
+								accounts and requires idendity verification
+								after initial setup. If this process is not
+								completed, any money allocated to your bank will
+								stay in your locker.
 							</span>
 						)}
 					</div>
 					<button
-						className={`${!isFundingConfirmed ? "cursor-not-allowed opacity-70" : "cursor-pointer opacity-100"} mt-8 h-12 w-40 items-center justify-center rounded-full bg-secondary-100 text-light-100 outline-none hover:bg-secondary-200 dark:bg-primary-200 dark:hover:bg-primary-100`}
+						className="mt-8 h-12 w-40 items-center justify-center rounded-full bg-secondary-100 text-light-100 outline-none hover:bg-secondary-200 dark:bg-primary-200 dark:hover:bg-primary-100"
 						onClick={proceedToNextStep}
-						disabled={!isFundingConfirmed}
 					>
 						Continue
 					</button>
@@ -195,16 +228,27 @@ function LockerSetup({ lockers }: ILockerSetup) {
 						selectedChannels={selectedChannels}
 					/>
 					<button
-						className="h-12 w-48 items-center justify-center rounded-full bg-secondary-100 text-light-100 outline-none hover:bg-secondary-200 dark:bg-primary-200 dark:hover:bg-primary-100"
-						onClick={() => console.log("Enable automations")}
+						className={`${isLoading ? "cursor-not-allowed opacity-80" : "cursor-pointer opacity-100"} flex h-12 w-48 items-center justify-center rounded-full bg-secondary-100 text-light-100 outline-none hover:bg-secondary-200 dark:bg-primary-200 dark:hover:bg-primary-100`}
+						onClick={() => handlePolicyCreation()}
+						disabled={isLoading}
 					>
-						Enable automations
+						{isLoading ? (
+							<AiOutlineLoading3Quarters
+								className="animate-spin"
+								size={22}
+							/>
+						) : (
+							"Enable automations"
+						)}
 					</button>
-					<span className="flex w-full max-w-sm text-xs text-light-600">
-						This will deploy your locker to all the chains it has
-						been funded on with at least one confirmed funding
-						transaction.
-					</span>
+					{selectedChannels.bank && (
+						<span className="w-full min-w-60 max-w-sm text-xs text-light-600">
+							Bank off-ramp is only available for US bank accounts
+							and requires idendity verification after initial
+							setup. If this process is not completed, any money
+							allocated to your bank will stay in your locker.
+						</span>
+					)}
 				</div>
 			)}
 			{errorMessage && (
@@ -212,104 +256,18 @@ function LockerSetup({ lockers }: ILockerSetup) {
 					{errorMessage}
 				</span>
 			)}
-			<div className="mt-8 flex w-full max-w-sm flex-col self-center rounded-md border border-light-200 p-3 shadow-sm shadow-light-600 dark:border-dark-200 dark:shadow-none">
-				{isFundingConfirmed ? (
-					<span className="text-sm">
-						Your locker has been funded.
-					</span>
-				) : (
-					<span className="text-sm">
-						Your locker has been funded, but the transaction is
-						pending. At least one confirmed funding transaction is
-						required to proceed.
-					</span>
-				)}
-				{confirmedChains && confirmedChains.length > 0 && (
-					<div className="mt-8 flex flex-col space-y-4">
-						<span className="w-fit rounded-full bg-success/20 px-3 py-1 text-sm text-success">
-							Confirmed
-						</span>
-						<div className="ml-3 flex flex-col space-y-4 text-xs">
-							{confirmedChains &&
-								confirmedChains.map((chainOption) => (
-									<div
-										key={chainOption.id}
-										className="flex w-full items-center"
-									>
-										<div
-											className={`flex size-7 shrink-0 items-center justify-center rounded-full ${getChainIconStyling(chainOption.id)}`}
-										>
-											<ChainIcon
-												className="flex items-center justify-center"
-												chainId={chainOption.id}
-												size="16px"
-											/>
-										</div>
-										<span className="ml-3 whitespace-nowrap">
-											{chainOption.name === "OP Mainnet"
-												? "Optimism"
-												: chainOption.name ===
-													  "Arbitrum One"
-													? "Arbitrum"
-													: chainOption.name ===
-														  "Polygon Mumbai"
-														? "Mumbai"
-														: chainOption.name ===
-															  "Avalanche Fuji"
-															? "Fuji"
-															: chainOption.name}
-										</span>
-									</div>
-								))}
-						</div>
-					</div>
-				)}
-				{unconfirmedChains && unconfirmedChains.length > 0 && (
-					<div className="mt-8 flex flex-col space-y-4">
-						<span className="w-fit rounded-full bg-warning/20 px-3 py-1 text-sm text-warning">
-							Pending
-						</span>
-						<div className="ml-3 flex flex-col space-y-4 text-xs">
-							{unconfirmedChains &&
-								unconfirmedChains.map((chainOption) => (
-									<div
-										key={chainOption.id}
-										className="flex w-full items-center"
-									>
-										<div
-											className={`flex size-7 shrink-0 items-center justify-center rounded-full ${getChainIconStyling(chainOption.id)}`}
-										>
-											<ChainIcon
-												className="flex items-center justify-center"
-												chainId={chainOption.id}
-												size="16px"
-											/>
-										</div>
-										<span className="ml-3 whitespace-nowrap">
-											{chainOption.name === "OP Mainnet"
-												? "Optimism"
-												: chainOption.name ===
-													  "Arbitrum One"
-													? "Arbitrum"
-													: chainOption.name ===
-														  "Polygon Mumbai"
-														? "Mumbai"
-														: chainOption.name ===
-															  "Avalanche Fuji"
-															? "Fuji"
-															: chainOption.name}
-										</span>
-									</div>
-								))}
-						</div>
-					</div>
-				)}
-			</div>
+			{lockers[0].txs && (
+				<div className="flex w-full flex-col space-y-2">
+					<span className="text-sm">Transaction history</span>
+					<TxTable txs={lockers[0].txs} />
+				</div>
+			)}
 			<div className="flex w-full flex-1 flex-col items-center justify-between xxs1:flex-row xxs1:items-end">
 				{step === 2 ? (
 					<button
 						className="mb-8 h-10 w-fit hover:text-secondary-200 dark:hover:text-primary-100 xxs1:mb-0"
 						onClick={() => setStep(1)}
+						disabled={isLoading}
 					>
 						<div className="flex items-center justify-center space-x-1">
 							<IoChevronBackOutline size={20} />

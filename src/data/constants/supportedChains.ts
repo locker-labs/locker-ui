@@ -6,7 +6,7 @@ import {
 	avalancheFuji,
 	optimism,
 	polygon,
-	polygonMumbai,
+	polygonAmoy,
 	sepolia,
 } from "wagmi/chains";
 
@@ -16,7 +16,7 @@ const chains = {
 	polygon,
 	avalanche,
 	sepolia,
-	polygonMumbai,
+	polygonAmoy,
 	avalancheFuji,
 };
 
@@ -27,7 +27,7 @@ export const transports = {
 	[polygon.id]: http(process.env.POLYGON_RPC_URL),
 	[avalanche.id]: http(process.env.AVALANCHE_RPC_URL),
 	[sepolia.id]: http(process.env.SEPOLIA_RPC_URL),
-	[polygonMumbai.id]: http(process.env.POLYGON_MUMBAI_RPC_URL),
+	[polygonAmoy.id]: http(process.env.POLYGON_AMOY_RPC_URL),
 	[avalancheFuji.id]: http(process.env.AVALANCHE_FUJI_RPC_URL),
 };
 

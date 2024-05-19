@@ -92,8 +92,8 @@ function LockerEmpty({ emptyLocker }: ILockerEmpty) {
 										: chainOption.name === "Arbitrum One"
 											? "Arbitrum"
 											: chainOption.name ===
-												  "Polygon Mumbai"
-												? "Mumbai"
+												  "Polygon Amoy"
+												? "Amoy"
 												: chainOption.name ===
 													  "Avalanche Fuji"
 													? "Fuji"
