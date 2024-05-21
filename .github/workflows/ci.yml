@@ -12,8 +12,14 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - name: Clear npm cache
+        run: npm cache clean --force
+
       - name: Install dependencies
-        run: npm install
+        run: npm ci
+
+      - name: Remove ESLint cache
+        run: rm -rf .eslintcache
 
       - name: Check formatting
         run: npm run format:check
