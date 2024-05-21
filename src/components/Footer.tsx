@@ -38,7 +38,7 @@ function Footer() {
 					<ThemeSwitcher />
 				</div>
 			</div>
-			<div className="mt-6 flex text-center text-xs">
+			<div className="mt-6 flex text-center text-xs text-light-600">
 				© 2024 Locker. All rights reserved.
 			</div>
 		</footer>

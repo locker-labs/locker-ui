@@ -1,4 +1,4 @@
-export interface Tx {
+export type Tx = {
 	id: number;
 	lockerId: number;
 	contractAddress: `0x${string}`;
@@ -12,17 +12,17 @@ export interface Tx {
 	isConfirmed: boolean;
 	createdAt: string;
 	updatedAt: string;
-}
+};
 
-interface Deployment {
+type Deployment = {
 	id: number;
 	lockerId: number;
 	txHash: `0x${string}`;
 	chainId: number;
 	createdAt: string;
 	updatedAt: string;
-}
-export interface Locker {
+};
+export type Locker = {
 	id?: number;
 	userId?: string;
 	seed: number;
@@ -33,9 +33,9 @@ export interface Locker {
 	txs?: Tx[];
 	createdAt?: string;
 	updatedAt?: string;
-}
+};
 
-export interface Policy {
+export type Policy = {
 	lockerId: number;
 	chainId: number;
 	sessionKey: string;
@@ -44,4 +44,10 @@ export interface Policy {
 		hot_wallet: number;
 		off_ramp: number;
 	};
-}
+};
+
+export type Token = {
+	symbol: string;
+	address: `0x${string}`;
+	decimals: number;
+};
