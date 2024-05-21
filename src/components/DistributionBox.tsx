@@ -1,7 +1,7 @@
-import { FaPiggyBank, FaWallet } from "react-icons/fa";
-import { PiBankFill } from "react-icons/pi";
-
+import BankIcon from "@/components/BankIcon";
 import PercentInput from "@/components/PercentInput";
+import SaveIcon from "@/components/SaveIcon";
+import WalletIcon from "@/components/WalletIcon";
 
 interface IDistributionBox {
 	savePercent: string;
@@ -33,9 +33,7 @@ function DistributionBox({
 				{selectedChannels.save && (
 					<div className="flex w-full items-center justify-between border-b border-b-light-200 p-3 dark:border-b-dark-200">
 						<div className="mr-2 flex items-center">
-							<div className="flex size-7 shrink-0 items-center justify-center rounded-full bg-primary-100/20 text-primary-100">
-								<FaPiggyBank size="16px" />
-							</div>
+							<SaveIcon />
 							<span className="ml-3 whitespace-normal text-sm xs2:whitespace-nowrap xs2:text-[16px]">
 								Save in my locker
 							</span>
@@ -50,9 +48,7 @@ function DistributionBox({
 				{selectedChannels.wallet && (
 					<div className="flex w-full items-center justify-between border-b border-b-light-200 p-3 dark:border-b-dark-200">
 						<div className="mr-2 flex items-center">
-							<div className="flex size-7 shrink-0 items-center justify-center rounded-full bg-secondary-100/20 text-secondary-100">
-								<FaWallet size="16px" />
-							</div>
+							<WalletIcon />
 							<span className="ml-3 whitespace-normal text-sm xs2:whitespace-nowrap xs2:text-[16px]">
 								Forward to my hot wallet
 							</span>
@@ -67,9 +63,7 @@ function DistributionBox({
 				{selectedChannels.bank && (
 					<div className="flex w-full items-center justify-between border-b border-b-light-200 p-3 dark:border-b-dark-200">
 						<div className="mr-2 flex items-center">
-							<div className="flex size-7 shrink-0 items-center justify-center rounded-full bg-success/20 text-success">
-								<PiBankFill size="16px" />
-							</div>
+							<BankIcon />
 							<span className="ml-3 whitespace-normal text-sm xs2:whitespace-nowrap xs2:text-[16px]">
 								Send to my bank
 							</span>

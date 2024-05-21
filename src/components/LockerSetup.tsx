@@ -204,20 +204,11 @@ function LockerSetup({ lockers, fetchPolicies }: ILockerSetup) {
 				<div className="flex w-full flex-col items-center space-y-8">
 					<span className="text-lg">Percentage allocation</span>
 					<ChannelPieChart
-						data={[
-							{
-								value: Number(bankPercent),
-								color: "#14B8A6", // success
-							},
-							{
-								value: Number(hotWalletPercent),
-								color: "#1E82BC", // secondary-200
-							},
-							{
-								value: Number(savePercent),
-								color: "#4546C4", // primary-200
-							},
-						]}
+						bankPercent={Number(bankPercent)}
+						hotWalletPercent={Number(hotWalletPercent)}
+						savePercent={Number(savePercent)}
+						lineWidth={25}
+						size="size-48"
 					/>
 					<DistributionBox
 						savePercent={savePercent}
@@ -241,19 +232,19 @@ function LockerSetup({ lockers, fetchPolicies }: ILockerSetup) {
 							"Enable automations"
 						)}
 					</button>
-					{selectedChannels.bank && (
-						<span className="w-full min-w-60 max-w-sm text-xs text-light-600">
-							Bank off-ramp is only available for US bank accounts
-							and requires idendity verification after initial
-							setup. If this process is not completed, any money
-							allocated to your bank will stay in your locker.
-						</span>
-					)}
 				</div>
 			)}
 			{errorMessage && (
 				<span className="mt-8 self-center text-sm text-red-500">
 					{errorMessage}
+				</span>
+			)}
+			{selectedChannels.bank && step === 2 && (
+				<span className="w-full min-w-60 max-w-sm self-center text-xs text-light-600">
+					Bank off-ramp is only available for US bank accounts and
+					requires idendity verification after initial setup. If this
+					process is not completed, any money allocated to your bank
+					will stay in your locker.
 				</span>
 			)}
 			{lockers[0].txs && (

@@ -1,7 +1,6 @@
 "use client";
 
 import { useAuth } from "@clerk/nextjs";
-import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
 import Loader from "@/components/Loader";
@@ -9,19 +8,25 @@ import LockerCreate from "@/components/LockerCreate";
 import LockerEmpty from "@/components/LockerEmpty";
 import LockerPortfolio from "@/components/LockerPortfolio";
 import LockerSetup from "@/components/LockerSetup";
-import { paths } from "@/data/constants/paths";
 import { getLockers, getPolicies } from "@/services/lockers";
 import { getTokenTxs } from "@/services/transactions";
 import type { Locker, Policy } from "@/types";
 
-function HomePage() {
+function Test() {
+	// ****************************************************** //
+	// ************************ TEST ************************ //
+	// ****************************************************** //
+	const testLockerCreate = false;
+	const testLockerEmpty = true;
+	const testLockerSetup = false;
+	const testLockerPortfolio = false;
+	// ****************************************************** //
+	// ****************************************************** //
+	// ****************************************************** //
+
 	const isFirstRender = useRef(true);
 	const [lockers, setLockers] = useState<Locker[] | null>(null);
-	const [initialTxLength, setInitialTxLength] = useState<number>(0);
-	const [latestTxLength, setLatestTxLength] = useState<number>(0);
 	const [policies, setPolicies] = useState<Policy[] | null>(null);
-
-	const router = useRouter();
 	const { getToken } = useAuth();
 
 	const fetchLockers = async () => {
@@ -35,9 +40,6 @@ function HomePage() {
 					lockersArray
 				);
 				setLockers(lockersWithTxs);
-				if (lockersWithTxs[0]?.txs) {
-					setInitialTxLength(lockersWithTxs[0].txs.length);
-				}
 				const policiesArray = await getPolicies(
 					authToken,
 					lockersWithTxs[0].id as number
@@ -55,9 +57,6 @@ function HomePage() {
 		if (authToken && lockers) {
 			const lockersWithTxs = await getTokenTxs(authToken, lockers);
 			setLockers(lockersWithTxs);
-			if (lockersWithTxs[0]?.txs) {
-				setLatestTxLength(lockersWithTxs[0].txs.length);
-			}
 		}
 	};
 
@@ -84,55 +83,23 @@ function HomePage() {
 		return () => clearInterval(interval);
 	}, [lockers]);
 
-	// When first tx comes in, handle navigation to transaciton page
-	useEffect(() => {
-		if (
-			!!lockers &&
-			initialTxLength === 0 &&
-			latestTxLength > 0 &&
-			lockers[0].txs
-		) {
-			router.push(
-				`${paths.TX}/${lockers[0].txs[0].chainId}/${lockers[0].txs[0].txHash}`
-			);
-		}
-	}, [lockers, initialTxLength, latestTxLength, router]);
-
 	return (
 		<div className="flex w-full flex-1 flex-col items-center py-12">
 			{isFirstRender.current && <Loader />}
-			{lockers && lockers.length === 0 && !isFirstRender.current && (
+			{testLockerCreate && (
 				<LockerCreate lockerIndex={0} fetchLockers={fetchLockers} />
 			)}
-			{lockers &&
-				lockers.length > 0 &&
-				!isFirstRender.current &&
-				(!lockers[0].txs ||
-					(lockers[0].txs && lockers[0].txs.length === 0)) && (
-					<LockerEmpty emptyLocker={lockers[0]} />
-				)}
-			{lockers &&
-				lockers.length > 0 &&
-				!isFirstRender.current &&
-				lockers[0].txs &&
-				lockers[0].txs.length > 0 &&
-				(!policies || (policies && policies.length === 0)) && (
-					<LockerSetup
-						lockers={lockers}
-						fetchPolicies={fetchPolicies}
-					/>
-				)}
-			{lockers &&
-				lockers.length > 0 &&
-				!isFirstRender.current &&
-				lockers[0].txs &&
-				lockers[0].txs.length > 0 &&
-				policies &&
-				policies.length > 0 && (
-					<LockerPortfolio lockers={lockers} policies={policies} />
-				)}
+			{testLockerEmpty && lockers && (
+				<LockerEmpty emptyLocker={lockers[0]} />
+			)}
+			{testLockerSetup && lockers && (
+				<LockerSetup lockers={lockers} fetchPolicies={fetchPolicies} />
+			)}
+			{testLockerPortfolio && (
+				<LockerPortfolio lockers={lockers} policies={policies} />
+			)}
 		</div>
 	);
 }
 
-export default HomePage;
+export default Test;

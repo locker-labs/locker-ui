@@ -2,7 +2,7 @@ import { IoChevronDown, IoWarningOutline } from "react-icons/io5";
 import { useAccount } from "wagmi";
 
 import ChainIcon from "@/components/ChainIcon";
-import Tooltip from "@/components/ToolTip";
+import Tooltip from "@/components/Tooltip";
 import { getChainIconStyling } from "@/utils/getChainIconStyling";
 import { isChainSupported } from "@/utils/isChainSupported";
 
@@ -35,7 +35,10 @@ function Button() {
 	return chain && isChainSupported(chain.id) ? (
 		buttonContent
 	) : (
-		<Tooltip tip="Your wallet's current network is unsupported.">
+		<Tooltip
+			marginTop="mt-4"
+			label="Your wallet's current network is unsupported."
+		>
 			{buttonContent}
 		</Tooltip>
 	);
