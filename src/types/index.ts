@@ -35,15 +35,21 @@ export type Locker = {
 	updatedAt?: string;
 };
 
+export interface IAutomation {
+	type: "savings" | "forward_to" | "off_ramp";
+	// 0 - 1
+	allocationFactor: number;
+	// Always ready if savings or forward_to
+	status: "new" | "pending" | "ready" | "failed";
+	// Required if forward_to or off_ramp
+	recipientAddress?: `0x${string}`;
+}
+
 export type Policy = {
 	lockerId: number;
 	chainId: number;
 	sessionKey: string;
-	automations: {
-		savings: number;
-		hot_wallet: number;
-		off_ramp: number;
-	};
+	automations: IAutomation[];
 };
 
 export type Token = {

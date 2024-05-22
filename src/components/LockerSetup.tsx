@@ -2,6 +2,7 @@ import { useAuth } from "@clerk/nextjs";
 import { useEffect, useState } from "react";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { IoChevronBackOutline } from "react-icons/io5";
+import { formatUnits } from "viem";
 import { useAccount } from "wagmi";
 
 import ChannelPieChart from "@/components/ChannelPieChart";
@@ -11,7 +12,7 @@ import Steps from "@/components/Steps";
 import TxTable from "@/components/TxTable";
 import useSmartAccount from "@/hooks/useSmartAccount";
 import { createPolicy } from "@/services/lockers";
-import { Locker, Policy } from "@/types";
+import { IAutomation, Locker, Policy } from "@/types";
 
 export interface ILockerSetup {
 	lockers: Locker[];
@@ -124,17 +125,37 @@ function LockerSetup({ lockers, fetchPolicies }: ILockerSetup) {
 				setIsLoading(false);
 				return;
 			}
-
 			// 2. Craft policy object
+			const locker = lockers[0];
+			const automations: IAutomation[] = [
+				{
+					type: "savings",
+					allocationFactor: Number(
+						formatUnits(BigInt(savePercent), 2)
+					),
+					status: "ready",
+				},
+				{
+					type: "forward_to",
+					allocationFactor: Number(
+						formatUnits(BigInt(hotWalletPercent), 2)
+					),
+					status: "ready",
+					recipientAddress: locker.ownerAddress,
+				},
+				{
+					type: "off_ramp",
+					allocationFactor: Number(
+						formatUnits(BigInt(bankPercent), 2)
+					),
+					status: "new",
+				},
+			];
 			const policy: Policy = {
-				lockerId: lockers[0].id as number,
+				lockerId: locker.id as number,
 				chainId: chainId as number,
 				sessionKey: sig as string,
-				automations: {
-					savings: Number(savePercent),
-					hot_wallet: Number(hotWalletPercent),
-					off_ramp: Number(bankPercent),
-				},
+				automations,
 			};
 
 			// 3. Get auth token and create policy through locker-api
