@@ -1,11 +1,13 @@
-import { useState } from "react";
-import { parseUnits } from "viem";
+import { formatUnits, parseUnits } from "viem";
 
 import { Token } from "@/types";
 
 export interface ICurrencyInput {
 	isLoading: boolean;
 	setAmount: (value: bigint) => void;
+	amountInput: string;
+	setAmountInput: (value: string) => void;
+	maxAmount: bigint;
 	token: Token;
 	setErrorMessage: (errorMessage: string) => void;
 }
@@ -13,11 +15,12 @@ export interface ICurrencyInput {
 function CurrencyInput({
 	isLoading,
 	setAmount,
+	amountInput,
+	setAmountInput,
+	maxAmount,
 	token,
 	setErrorMessage,
 }: ICurrencyInput) {
-	const [amountInput, setAmountInput] = useState<string>("");
-
 	// Handle validity of input based on pattern defined in <input> element
 	const handleChange = (event: React.FormEvent<HTMLInputElement>) => {
 		const target = event.target as HTMLInputElement;
@@ -37,16 +40,24 @@ function CurrencyInput({
 				setErrorMessage("Too many decimal places.");
 			} else {
 				setErrorMessage("");
+				console.log("decimals: ", token.decimals);
 				setAmount(parseUnits(amountString, token.decimals));
 			}
 		}
 		setAmountInput(amountString);
 	};
 
+	const handleMaxAmountClick = () => {
+		if (maxAmount) {
+			setAmountInput(formatUnits(maxAmount, token.decimals));
+			setAmount(maxAmount);
+		}
+	};
+
 	return (
-		<div className="flex items-center rounded border border-light-200 bg-light-100 p-2 focus-within:border-light-600 dark:border-dark-200 dark:bg-dark-500 dark:focus-within:border-light-600">
+		<div className="flex h-12 w-full items-center rounded-md border border-light-200 bg-light-100 p-2 focus-within:border-light-600 dark:border-dark-200 dark:bg-dark-500 dark:focus-within:border-light-600">
 			<input
-				className="w-full bg-light-100 text-start outline-none dark:bg-dark-500"
+				className="h-full w-full bg-light-100 text-start outline-none dark:bg-dark-500"
 				type="text"
 				pattern="[0-9]*\.?[0-9]*"
 				inputMode="decimal"
@@ -57,7 +68,15 @@ function CurrencyInput({
 				onInput={(event) => handleChange(event)}
 				disabled={isLoading}
 			/>
-			<span className="ml-2 text-light-600">{token.symbol}</span>
+			<div className="flex items-center justify-center pl-1 pr-2">
+				<button
+					className="rounded-lg bg-light-200 px-2 py-1 text-xs outline-none hover:text-secondary-100 dark:bg-dark-400 dark:hover:text-primary-100"
+					onClick={() => handleMaxAmountClick()}
+				>
+					Max
+				</button>
+			</div>
+			<span className="ml-2 text-sm text-light-600">{token.symbol}</span>
 		</div>
 	);
 }

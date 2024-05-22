@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/control-has-associated-label */
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useState } from "react";
 import { IoCheckboxOutline, IoClose, IoCopyOutline } from "react-icons/io5";
@@ -49,6 +48,7 @@ function QrCodeModal({ isOpen, closeModal, lockerAddress }: IQrCodeModal) {
 								>
 									<button
 										className="rounded-full bg-light-200 p-1 hover:bg-light-300 dark:bg-dark-400 dark:hover:bg-dark-300"
+										aria-label="Close modal"
 										onClick={closeModal}
 									>
 										<IoClose className="" size="22px" />
