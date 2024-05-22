@@ -40,7 +40,6 @@ function CurrencyInput({
 				setErrorMessage("Too many decimal places.");
 			} else {
 				setErrorMessage("");
-				console.log("decimals: ", token.decimals);
 				setAmount(parseUnits(amountString, token.decimals));
 			}
 		}

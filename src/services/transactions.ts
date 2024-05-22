@@ -14,6 +14,7 @@ export const getTokenTxs = async (
 				const response = await fetch(
 					`${endpoints.GET_TXS}/${locker.id}`,
 					{
+						method: "GET",
 						headers: { Authorization: `Bearer ${authToken}` },
 					}
 				);
@@ -56,6 +57,7 @@ export const getTx = async (
 		const response = await fetch(
 			`${endpoints.GET_TXS}/${chainId}/${txHash}`,
 			{
+				method: "GET",
 				headers: { Authorization: `Bearer ${authToken}` },
 			}
 		);

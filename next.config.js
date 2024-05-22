@@ -47,6 +47,9 @@ module.exports = withPWA({
 		POLYGON_AMOY_RPC_URL: process.env.POLYGON_AMOY_RPC_URL,
 		AVALANCHE_FUJI_RPC_URL: process.env.AVALANCHE_FUJI_RPC_URL,
 
+		// Moralis
+		MORALIS_WEB3_API_KEY: process.env.MORALIS_WEB3_API_KEY,
+
 		// ZeroDev
 		ARBITRUM_PROJECT_ID: process.env.ARBITRUM_PROJECT_ID,
 		OPTIMISM_PROJECT_ID: process.env.OPTIMISM_PROJECT_ID,

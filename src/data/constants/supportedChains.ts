@@ -20,6 +20,19 @@ const chains = {
 	avalancheFuji,
 };
 
+// Wagmi code names for each chain
+export const chainCodeNames: {
+	[key: number]: string;
+} = {
+	[arbitrum.id]: "arbitrum",
+	[optimism.id]: "optimism",
+	[polygon.id]: "polygon",
+	[avalanche.id]: "avalanche",
+	[sepolia.id]: "sepolia",
+	[polygonAmoy.id]: "polygonAmoy",
+	[avalancheFuji.id]: "avalancheFuji",
+};
+
 // Private RPC URLs for each chain
 export const transports = {
 	[arbitrum.id]: http(process.env.ARBITRUM_RPC_URL),

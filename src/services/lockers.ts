@@ -8,6 +8,7 @@ export const getLockers = async (
 ): Promise<Locker[] | null> => {
 	try {
 		const response = await fetch(endpoints.GET_LOCKERS, {
+			method: "GET",
 			headers: { Authorization: `Bearer ${authToken}` },
 		});
 
@@ -98,6 +99,7 @@ export const getPolicies = async (
 ): Promise<Policy[] | null> => {
 	try {
 		const response = await fetch(`${endpoints.GET_POLICIES}/${lockerId}`, {
+			method: "GET",
 			headers: { Authorization: `Bearer ${authToken}` },
 		});
 

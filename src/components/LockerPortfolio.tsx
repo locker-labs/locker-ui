@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { HiDotsVertical } from "react-icons/hi";
 
 import BankIcon from "@/components/BankIcon";
@@ -6,7 +7,9 @@ import PortfolioIconButtonGroup from "@/components/PortfolioIconButtonGroup";
 import SaveIcon from "@/components/SaveIcon";
 import Tooltip from "@/components/Tooltip";
 import WalletIcon from "@/components/WalletIcon";
+import { getLockerNetWorth } from "@/services/moralis";
 import { Locker, Policy } from "@/types";
+import { isTestnet } from "@/utils/isTestnet";
 
 export interface ILockerPortfolio {
 	lockers: Locker[] | null;
@@ -14,6 +17,7 @@ export interface ILockerPortfolio {
 }
 
 function LockerPortfolio({ lockers, policies }: ILockerPortfolio) {
+	const [lockerNetWorth, setLockerNetWorth] = useState<string>("0.00");
 	const bankPercent = 70;
 	const hotWalletPercent = 20;
 	const savePercent = 10;
@@ -42,6 +46,29 @@ function LockerPortfolio({ lockers, policies }: ILockerPortfolio) {
 		- Not sure yet...
 	*/
 
+	const fetchLockerNetWorth = async () => {
+		if (lockers) {
+			const txs = lockers && lockers[0].txs ? lockers[0].txs : [];
+			const fundedMainnetChainIds = txs
+				.map((tx) => tx.chainId)
+				.filter((chainId) => !isTestnet(chainId));
+			const netWorth = await getLockerNetWorth(
+				lockers[0].address,
+				fundedMainnetChainIds
+			);
+
+			if (netWorth) {
+				setLockerNetWorth(netWorth);
+			}
+		}
+	};
+
+	// Only fetch locker net worth on initial render to prevent call to Moralis API
+	// every 5 seconds. This can be updated once we implement a websocket.
+	useEffect(() => {
+		fetchLockerNetWorth();
+	}, []);
+
 	return (
 		<div className="flex w-full flex-1 flex-col items-start">
 			<div className="flex w-fit flex-col overflow-visible">
@@ -56,7 +83,7 @@ function LockerPortfolio({ lockers, policies }: ILockerPortfolio) {
 						</span>
 					</Tooltip>
 
-					<span className="text-3xl">$19,289.01</span>
+					<span className="text-3xl">${lockerNetWorth}</span>
 				</div>
 				{lockers && (
 					<div className="mt-4 flex items-center">
