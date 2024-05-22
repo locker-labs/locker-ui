@@ -33,13 +33,14 @@ function LockerSetup({ lockers, fetchPolicies }: ILockerSetup) {
 		wallet: true,
 		bank: false,
 	});
+	const locker = lockers[0];
 	const [step, setStep] = useState<number>(1);
 	const [errorMessage, setErrorMessage] = useState<string>("");
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 
 	const { getToken } = useAuth();
 	const { chainId } = useAccount();
-	const { signSessionKey } = useSmartAccount();
+	const { signSessionKey } = useSmartAccount(locker.ownerAddress);
 
 	const handleChannelSelection = (channel: keyof typeof selectedChannels) => {
 		setSelectedChannels((prev) => ({
@@ -126,7 +127,6 @@ function LockerSetup({ lockers, fetchPolicies }: ILockerSetup) {
 				return;
 			}
 			// 2. Craft policy object
-			const locker = lockers[0];
 			const automations: IAutomation[] = [
 				{
 					type: "savings",
@@ -206,10 +206,10 @@ function LockerSetup({ lockers, fetchPolicies }: ILockerSetup) {
 						{selectedChannels.bank && (
 							<span className="text-xs text-light-600">
 								Bank off-ramp is only available for US bank
-								accounts and requires idendity verification
-								after initial setup. If this process is not
-								completed, any money allocated to your bank will
-								stay in your locker.
+								accounts and debit cards. It requires identity
+								verification after initial setup. If this
+								process is not completed, any money allocated to
+								your bank will stay in your locker.
 							</span>
 						)}
 					</div>
@@ -263,9 +263,9 @@ function LockerSetup({ lockers, fetchPolicies }: ILockerSetup) {
 			{selectedChannels.bank && step === 2 && (
 				<span className="w-full min-w-60 max-w-sm self-center text-xs text-light-600">
 					Bank off-ramp is only available for US bank accounts and
-					requires idendity verification after initial setup. If this
-					process is not completed, any money allocated to your bank
-					will stay in your locker.
+					debit cards. It requires identity verification after initial
+					setup. If this process is not completed, any money allocated
+					to your bank will stay in your locker.
 				</span>
 			)}
 			{lockers[0].txs && (

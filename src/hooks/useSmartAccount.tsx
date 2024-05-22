@@ -6,7 +6,11 @@ import {
 	serializePermissionAccount,
 	toPermissionValidator,
 } from "@zerodev/permissions";
-import { ParamCondition, toCallPolicy } from "@zerodev/permissions/policies";
+import {
+	// ParamCondition,
+	// toCallPolicy,
+	toSudoPolicy,
+} from "@zerodev/permissions/policies";
 import { toECDSASigner } from "@zerodev/permissions/signers";
 import { addressToEmptyAccount, createKernelAccount } from "@zerodev/sdk";
 import {
@@ -14,11 +18,14 @@ import {
 	walletClientToSmartAccountSigner,
 } from "permissionless";
 import { type PublicClient } from "viem";
+// import { parseAbi } from "viem";
 import { usePublicClient, useWalletClient } from "wagmi";
 
-import counterAbi from "@/data/abi/counter.json";
+// const ERC20_TRANSFER_ABI = parseAbi([
+// 	"function transfer(address _to, uint256 _value) public",
+// ]);
 
-const useSmartAccount = () => {
+const useSmartAccount = (ownerAddress?: `0x${string}`) => {
 	const publicClient = usePublicClient();
 	const { data: walletClient } = useWalletClient();
 
@@ -50,26 +57,26 @@ const useSmartAccount = () => {
 			signer: emptyAccount,
 		});
 
-		// Dummy policy
-		const callPolicy = toCallPolicy({
-			permissions: [
-				{
-					target: "0x7366325a27c5e39B594Db7eda7Ca65962A7C3284", // test counter contract
-					valueLimit: BigInt(0), // max value tranfer
-					abi: counterAbi,
-					// @ts-expect-error: ZeroDev docs say to do it like this , and it works.
-					// https://docs.zerodev.app/sdk/permissions/1-click-trading#creating-a-number-of-policies
-					functionName: "increment",
-					args: [
-						{
-							// Only allow increments of 2
-							condition: ParamCondition.EQUAL,
-							value: 2,
-						},
-					],
-				},
-			],
-		});
+		const callPolicy = toSudoPolicy({});
+		console.log(ownerAddress);
+		// Only allow ERC20 transfers to the owner of the locker
+		// const callPolicy = toCallPolicy({
+		// 	permissions: [
+		// 		{
+		// 			target: ownerAddress!,
+		// 			valueLimit: BigInt(0),
+		// 			functionName: "transfer",
+		// 			abi: ERC20_TRANSFER_ABI,
+		// 			args: [
+		// 				{
+		// 					condition: ParamCondition.EQUAL,
+		// 					value: ownerAddress!,
+		// 				},
+		// 				null,
+		// 			],
+		// 		},
+		// 	],
+		// });
 
 		const permissionPlugin = await toPermissionValidator(
 			publicClient as PublicClient,
