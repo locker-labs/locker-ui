@@ -95,7 +95,7 @@ function Test() {
 			{testLockerSetup && lockers && (
 				<LockerSetup lockers={lockers} fetchPolicies={fetchPolicies} />
 			)}
-			{testLockerPortfolio && (
+			{testLockerPortfolio && lockers && policies && (
 				<LockerPortfolio lockers={lockers} policies={policies} />
 			)}
 		</div>

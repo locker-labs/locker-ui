@@ -1,5 +1,6 @@
 import { formatUnits, parseUnits } from "viem";
 
+import { errors } from "@/data/constants/errorMessages";
 import { Token } from "@/types";
 
 export interface ICurrencyInput {
@@ -37,7 +38,7 @@ function CurrencyInput({
 			const decimals = components[1];
 
 			if (decimals && decimals.length > token.decimals) {
-				setErrorMessage("Too many decimal places.");
+				setErrorMessage(errors.TOO_MANY_DECIMALS);
 			} else {
 				setErrorMessage("");
 				setAmount(parseUnits(amountString, token.decimals));

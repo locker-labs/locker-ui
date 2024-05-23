@@ -1,5 +1,7 @@
 import { isAddress } from "viem";
 
+import { errors } from "@/data/constants/errorMessages";
+
 export interface IAddressInput {
 	sendToAddress: string;
 	setSendToAddress: (value: string) => void;
@@ -19,7 +21,7 @@ function AddressInput({
 		const isAddressValid = isAddress(input as `0x${string}`);
 
 		if (input.length > 0 && !isAddressValid) {
-			setErrorMessage("Invalid address.");
+			setErrorMessage(errors.INVALID_ADDRESS);
 		} else {
 			setErrorMessage("");
 		}

@@ -11,9 +11,11 @@ import { getLockerNetWorth } from "@/services/moralis";
 import { Locker, Policy } from "@/types";
 import { isTestnet } from "@/utils/isTestnet";
 
+import TxTable from "./TxTable";
+
 export interface ILockerPortfolio {
-	lockers: Locker[] | null;
-	policies: Policy[] | null;
+	lockers: Locker[];
+	policies: Policy[];
 }
 
 function LockerPortfolio({ lockers, policies }: ILockerPortfolio) {
@@ -21,6 +23,9 @@ function LockerPortfolio({ lockers, policies }: ILockerPortfolio) {
 	const bankPercent = 70;
 	const hotWalletPercent = 20;
 	const savePercent = 10;
+
+	const locker = lockers[0];
+	const { txs } = locker;
 
 	/*
 		- For now, only handling one locker per user (index 0)
@@ -47,13 +52,12 @@ function LockerPortfolio({ lockers, policies }: ILockerPortfolio) {
 	*/
 
 	const fetchLockerNetWorth = async () => {
-		if (lockers) {
-			const txs = lockers && lockers[0].txs ? lockers[0].txs : [];
+		if (locker && txs) {
 			const fundedMainnetChainIds = txs
 				.map((tx) => tx.chainId)
 				.filter((chainId) => !isTestnet(chainId));
 			const netWorth = await getLockerNetWorth(
-				lockers[0].address,
+				locker.address,
 				fundedMainnetChainIds
 			);
 
@@ -85,9 +89,9 @@ function LockerPortfolio({ lockers, policies }: ILockerPortfolio) {
 
 					<span className="text-3xl">${lockerNetWorth}</span>
 				</div>
-				{lockers && (
+				{locker && (
 					<div className="mt-4 flex items-center">
-						<PortfolioIconButtonGroup locker={lockers[0]} />
+						<PortfolioIconButtonGroup locker={locker} />
 					</div>
 				)}
 			</div>
@@ -146,6 +150,12 @@ function LockerPortfolio({ lockers, policies }: ILockerPortfolio) {
 				</div>
 			</div>
 			{/* ******************************************************** */}
+			{txs && (
+				<div className="mt-6 flex w-full flex-col space-y-2">
+					<span className="text-sm">Transaction history</span>
+					<TxTable txs={txs} />
+				</div>
+			)}
 		</div>
 	);
 }

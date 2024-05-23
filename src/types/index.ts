@@ -10,6 +10,9 @@ export type Tx = {
 	txHash: `0x${string}`;
 	chainId: number;
 	isConfirmed: boolean;
+	triggered_by_token_tx_id: number | null;
+	locker_direction: "in" | "out";
+	automations_state: "started" | "not_started";
 	createdAt: string;
 	updatedAt: string;
 };
@@ -35,21 +38,18 @@ export type Locker = {
 	updatedAt?: string;
 };
 
-export interface IAutomation {
+export type Automation = {
 	type: "savings" | "forward_to" | "off_ramp";
-	// 0 - 1
-	allocationFactor: number;
-	// Always ready if savings or forward_to
-	status: "new" | "pending" | "ready" | "failed";
-	// Required if forward_to or off_ramp
-	recipientAddress?: `0x${string}`;
-}
+	allocationFactor: number; // 0 - 1
+	status: "new" | "pending" | "ready" | "failed"; // Always "ready" for "savings" or "forward_to" types
+	recipientAddress?: `0x${string}`; // Required if forward_to or off_ramp
+};
 
 export type Policy = {
 	lockerId: number;
 	chainId: number;
 	sessionKey: string;
-	automations: IAutomation[];
+	automations: Automation[];
 };
 
 export type Token = {

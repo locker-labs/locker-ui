@@ -2,7 +2,7 @@ import { useAuth } from "@clerk/nextjs";
 import { useEffect, useState } from "react";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { IoChevronBackOutline } from "react-icons/io5";
-import { formatUnits } from "viem";
+import { checksumAddress, formatUnits } from "viem";
 import { useAccount } from "wagmi";
 
 import ChannelPieChart from "@/components/ChannelPieChart";
@@ -10,9 +10,11 @@ import ChannelSelectButton from "@/components/ChannelSelectButton";
 import DistributionBox from "@/components/DistributionBox";
 import Steps from "@/components/Steps";
 import TxTable from "@/components/TxTable";
+import { disclosures } from "@/data/constants/disclosures";
+import { errors } from "@/data/constants/errorMessages";
 import useSmartAccount from "@/hooks/useSmartAccount";
 import { createPolicy } from "@/services/lockers";
-import { IAutomation, Locker, Policy } from "@/types";
+import { Automation, Locker, Policy } from "@/types";
 
 export interface ILockerSetup {
 	lockers: Locker[];
@@ -33,14 +35,16 @@ function LockerSetup({ lockers, fetchPolicies }: ILockerSetup) {
 		wallet: true,
 		bank: false,
 	});
-	const locker = lockers[0];
 	const [step, setStep] = useState<number>(1);
 	const [errorMessage, setErrorMessage] = useState<string>("");
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 
 	const { getToken } = useAuth();
-	const { chainId } = useAccount();
-	const { signSessionKey } = useSmartAccount(locker.ownerAddress);
+	const { chainId, address } = useAccount();
+	const { signSessionKey } = useSmartAccount();
+
+	const locker = lockers[0];
+	const { txs } = locker;
 
 	const handleChannelSelection = (channel: keyof typeof selectedChannels) => {
 		setSelectedChannels((prev) => ({
@@ -78,7 +82,7 @@ function LockerSetup({ lockers, fetchPolicies }: ILockerSetup) {
 			setStep(2);
 			setErrorMessage("");
 		} else {
-			setErrorMessage("Must choose at least one.");
+			setErrorMessage(errors.AT_LEAST_ONE);
 		}
 	};
 
@@ -117,17 +121,23 @@ function LockerSetup({ lockers, fetchPolicies }: ILockerSetup) {
 	};
 
 	const handlePolicyCreation = async () => {
+		if (checksumAddress(locker.ownerAddress) !== address) {
+			setErrorMessage(errors.UNAUTHORIZED);
+			setIsLoading(false);
+			return;
+		}
+
 		if (Number(percentLeft) === 0) {
 			setErrorMessage("");
 			setIsLoading(true);
 			// 1. Get user to sign session key
-			const sig = await signSessionKey();
+			const sig = await signSessionKey(locker.ownerAddress);
 			if (!sig) {
 				setIsLoading(false);
 				return;
 			}
 			// 2. Craft policy object
-			const automations: IAutomation[] = [
+			const automations: Automation[] = [
 				{
 					type: "savings",
 					allocationFactor: Number(
@@ -169,7 +179,7 @@ function LockerSetup({ lockers, fetchPolicies }: ILockerSetup) {
 
 			setIsLoading(false);
 		} else {
-			setErrorMessage("All percentages must add up to 100%.");
+			setErrorMessage(errors.SUM_TO_100);
 		}
 	};
 
@@ -205,11 +215,7 @@ function LockerSetup({ lockers, fetchPolicies }: ILockerSetup) {
 						/>
 						{selectedChannels.bank && (
 							<span className="text-xs text-light-600">
-								Bank off-ramp is only available for US bank
-								accounts and debit cards. It requires identity
-								verification after initial setup. If this
-								process is not completed, any money allocated to
-								your bank will stay in your locker.
+								{disclosures.BANK_SETUP_US_ONLY}
 							</span>
 						)}
 					</div>
@@ -262,16 +268,13 @@ function LockerSetup({ lockers, fetchPolicies }: ILockerSetup) {
 			)}
 			{selectedChannels.bank && step === 2 && (
 				<span className="w-full min-w-60 max-w-sm self-center text-xs text-light-600">
-					Bank off-ramp is only available for US bank accounts and
-					debit cards. It requires identity verification after initial
-					setup. If this process is not completed, any money allocated
-					to your bank will stay in your locker.
+					{disclosures.BANK_SETUP_US_ONLY}
 				</span>
 			)}
-			{lockers[0].txs && (
+			{txs && (
 				<div className="flex w-full flex-col space-y-2">
 					<span className="text-sm">Transaction history</span>
-					<TxTable txs={lockers[0].txs} />
+					<TxTable txs={txs} />
 				</div>
 			)}
 			<div className="flex w-full flex-1 flex-col items-center justify-between xxs1:flex-row xxs1:items-end">

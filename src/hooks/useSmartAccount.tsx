@@ -16,7 +16,7 @@ import {
 import { type PublicClient } from "viem";
 import { usePublicClient, useWalletClient } from "wagmi";
 
-const useSmartAccount = (ownerAddress?: `0x${string}`) => {
+const useSmartAccount = () => {
 	const publicClient = usePublicClient();
 	const { data: walletClient } = useWalletClient();
 
@@ -24,7 +24,7 @@ const useSmartAccount = (ownerAddress?: `0x${string}`) => {
 		throw new Error("LOCKER_AGENT_ADDRESS is not set");
 
 	// Prompts user to sign session key for current chain
-	const signSessionKey = async () => {
+	const signSessionKey = async (ownerAddress?: `0x${string}`) => {
 		if (!walletClient) {
 			throw new Error("Wallet client is not available");
 		}
@@ -60,7 +60,7 @@ const useSmartAccount = (ownerAddress?: `0x${string}`) => {
 		// 			target: zeroAddress,
 		// 			valueLimit: BigInt(0),
 		// 			functionName: "transfer",
-		// 			abi: ERC20_TRANSFER_ABI,
+		// 			abi: erc20Abi,
 		// 			args: [
 		// 				{
 		// 					condition: ParamCondition.EQUAL,
