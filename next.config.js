@@ -35,7 +35,8 @@ module.exports = withPWA({
 		WC_PROJECT_ID: process.env.WC_PROJECT_ID,
 
 		// Locker Backend
-		LOCKER_API_BASE_URL: process.env.LOCKER_API_BASE_URL,
+		NEXT_PUBLIC_LOCKER_API_BASE_URL:
+			process.env.NEXT_PUBLIC_LOCKER_API_BASE_URL,
 		LOCKER_AGENT_ADDRESS: process.env.LOCKER_AGENT_ADDRESS,
 
 		// Private RPC URLs
