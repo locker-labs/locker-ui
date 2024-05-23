@@ -10,9 +10,9 @@ export type Tx = {
 	txHash: `0x${string}`;
 	chainId: number;
 	isConfirmed: boolean;
-	triggered_by_token_tx_id: number | null;
-	locker_direction: "in" | "out";
-	automations_state: "started" | "not_started";
+	triggeredByTokenTxId: number | null;
+	lockerDirection: "in" | "out";
+	automationsState: "started" | "not_started";
 	createdAt: string;
 	updatedAt: string;
 };

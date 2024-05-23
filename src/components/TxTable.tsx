@@ -89,8 +89,9 @@ function TxTable({ txs }: ITxTable) {
 						<th className="px-4 py-3">Chain</th>
 						<th className="px-4 py-3">Amount</th>
 						<th className="px-4 py-3">Tx hash</th>
-						<th className="px-4 py-3">Locker address</th>
-						<th className="px-4 py-3">Sender address</th>
+						<th className="px-4 py-3">To</th>
+						<th aria-label="Direction" className="px-4 py-3" />
+						<th className="px-4 py-3">From</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -125,6 +126,13 @@ function TxTable({ txs }: ITxTable) {
 							</td>
 							<td className="px-4 py-3">
 								{getAddressContent(tx.chainId, tx.toAddress)}
+							</td>
+							<td className="px-4 py-3">
+								<span
+									className={`w-fit rounded-full ${tx.lockerDirection === "in" ? "bg-success/20 px-3 py-1 text-success" : "bg-warning/20 px-3 py-1 text-warning"}`}
+								>
+									{tx.lockerDirection === "in" ? "In" : "Out"}
+								</span>
 							</td>
 							<td className="px-4 py-3">
 								{getAddressContent(tx.chainId, tx.fromAddress)}
