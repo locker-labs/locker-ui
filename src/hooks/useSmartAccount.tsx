@@ -6,11 +6,7 @@ import {
 	serializePermissionAccount,
 	toPermissionValidator,
 } from "@zerodev/permissions";
-import {
-	// ParamCondition,
-	// toCallPolicy,
-	toSudoPolicy,
-} from "@zerodev/permissions/policies";
+import { toSudoPolicy } from "@zerodev/permissions/policies";
 import { toECDSASigner } from "@zerodev/permissions/signers";
 import { addressToEmptyAccount, createKernelAccount } from "@zerodev/sdk";
 import {
@@ -18,12 +14,7 @@ import {
 	walletClientToSmartAccountSigner,
 } from "permissionless";
 import { type PublicClient } from "viem";
-// import { parseAbi } from "viem";
 import { usePublicClient, useWalletClient } from "wagmi";
-
-// const ERC20_TRANSFER_ABI = parseAbi([
-// 	"function transfer(address _to, uint256 _value) public",
-// ]);
 
 const useSmartAccount = (ownerAddress?: `0x${string}`) => {
 	const publicClient = usePublicClient();
@@ -58,12 +49,15 @@ const useSmartAccount = (ownerAddress?: `0x${string}`) => {
 		});
 
 		const callPolicy = toSudoPolicy({});
-		console.log(ownerAddress);
+		console.log(
+			`Generating policy that can only transfer to ${ownerAddress}`
+		);
+
 		// Only allow ERC20 transfers to the owner of the locker
 		// const callPolicy = toCallPolicy({
 		// 	permissions: [
 		// 		{
-		// 			target: ownerAddress!,
+		// 			target: zeroAddress,
 		// 			valueLimit: BigInt(0),
 		// 			functionName: "transfer",
 		// 			abi: ERC20_TRANSFER_ABI,
