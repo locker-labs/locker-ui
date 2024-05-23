@@ -35,7 +35,7 @@ function Header() {
 			)}
 			<div className="flex h-20 items-center justify-between">
 				<Link
-					className="relative mr-2 flex h-9 w-28 shrink-0 justify-center outline-none"
+					className="relative mr-2 flex h-9 w-28 shrink-0 justify-center"
 					href={paths.LANDING}
 				>
 					<ThemedImage

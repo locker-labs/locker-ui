@@ -93,7 +93,7 @@ export default function Transaction({
 						</span>
 					</div>
 					<button
-						className="h-14 w-40 rounded-full bg-secondary-100 text-lg text-light-100 outline-none hover:bg-secondary-200 dark:bg-primary-200 dark:hover:bg-primary-100"
+						className="h-14 w-40 rounded-full bg-secondary-100 text-lg text-light-100 hover:bg-secondary-200 dark:bg-primary-200 dark:hover:bg-primary-100"
 						onClick={() => handleContinue()}
 					>
 						Continue
@@ -129,7 +129,7 @@ export default function Transaction({
 						</span>
 					</div>
 					<button
-						className="h-14 w-40 rounded-full bg-secondary-100 text-lg text-light-100 outline-none hover:bg-secondary-200 dark:bg-primary-200 dark:hover:bg-primary-100"
+						className="h-14 w-40 rounded-full bg-secondary-100 text-lg text-light-100 hover:bg-secondary-200 dark:bg-primary-200 dark:hover:bg-primary-100"
 						onClick={() => handleContinue()}
 					>
 						Continue

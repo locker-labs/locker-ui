@@ -3,6 +3,7 @@ import { HiDotsVertical } from "react-icons/hi";
 
 import BankIcon from "@/components/BankIcon";
 import ChannelPieChart from "@/components/ChannelPieChart";
+// import PolicyExpandable from "@/components/PolicyExpandable";
 import PortfolioIconButtonGroup from "@/components/PortfolioIconButtonGroup";
 import SaveIcon from "@/components/SaveIcon";
 import Tooltip from "@/components/Tooltip";
@@ -38,12 +39,6 @@ function LockerPortfolio({ lockers, policies }: ILockerPortfolio) {
 			- Policy percentages
 			- Adjust percentages option
 		- If user opted for off-ramp and KYC is not complete, show "finish setup" button
-	*/
-
-	/*
-		What will the "Send" button do?
-		- Show a modal with an address input field
-		- Once transfer is successful, show a success message
 	*/
 
 	/*
@@ -150,6 +145,7 @@ function LockerPortfolio({ lockers, policies }: ILockerPortfolio) {
 				</div>
 			</div>
 			{/* ******************************************************** */}
+			{/* <PolicyExpandable /> */}
 			{txs && (
 				<div className="mt-6 flex w-full flex-col space-y-2">
 					<span className="text-sm">Transaction history</span>

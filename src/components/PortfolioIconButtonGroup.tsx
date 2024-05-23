@@ -5,8 +5,8 @@ import {
 	IoCopyOutline,
 	IoQrCodeOutline,
 } from "react-icons/io5";
-import { VscSettings } from "react-icons/vsc";
 
+// import { VscSettings } from "react-icons/vsc";
 import { useQrCodeModal } from "@/hooks/useQrCodeModal";
 import { useSendModal } from "@/hooks/useSendModal";
 import { Locker } from "@/types";
@@ -57,7 +57,7 @@ function PortfolioIconButtonGroup({ locker }: ILockerPortfolio) {
 				</button>
 				<span className="text-light-600">Send</span>
 			</div>
-			<div className="flex flex-col items-center justify-center space-y-1">
+			{/* <div className="flex flex-col items-center justify-center space-y-1">
 				<button
 					className="flex size-10 shrink-0 items-center justify-center rounded-full bg-dark-500/10 text-dark-600 transition duration-300 ease-in-out hover:scale-105 dark:bg-light-200/10 dark:text-light-100"
 					aria-label="Edit locker automation settings"
@@ -68,7 +68,7 @@ function PortfolioIconButtonGroup({ locker }: ILockerPortfolio) {
 					<VscSettings size="16px" />
 				</button>
 				<span className="text-light-600">Edit</span>
-			</div>
+			</div> */}
 			{renderQrCodeModal(locker.address)}
 			{renderSendModal()}
 		</div>

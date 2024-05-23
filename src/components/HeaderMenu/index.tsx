@@ -36,7 +36,7 @@ function HeaderMenu() {
 		<Menu as="div" className="relative inline-block text-left">
 			{({ open }) => (
 				<>
-					<Menu.Button className="z-10 flex h-10 w-fit shrink-0 items-center justify-center rounded-full bg-light-200 px-2 outline-none hover:bg-light-300 dark:bg-dark-400 dark:hover:bg-dark-300">
+					<Menu.Button className="z-10 flex h-10 w-fit shrink-0 items-center justify-center rounded-full bg-light-200 px-2 hover:bg-light-300 dark:bg-dark-400 dark:hover:bg-dark-300">
 						<Button />
 					</Menu.Button>
 					<Transition show={open}>

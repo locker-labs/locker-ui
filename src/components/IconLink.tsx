@@ -10,7 +10,7 @@ export interface IIconLink {
 function IconLink({ Icon, url, size, label }: IIconLink) {
 	return (
 		<a
-			className="flex shrink-0 flex-col items-center justify-center p-3 text-light-600 outline-none hover:text-secondary-100 dark:hover:text-primary-100"
+			className="flex shrink-0 flex-col items-center justify-center p-3 text-light-600 hover:text-secondary-100 dark:hover:text-primary-100"
 			href={url}
 			target="_blank"
 			aria-label={label}

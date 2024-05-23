@@ -220,7 +220,7 @@ function LockerSetup({ lockers, fetchPolicies }: ILockerSetup) {
 						)}
 					</div>
 					<button
-						className="mt-8 h-12 w-40 items-center justify-center rounded-full bg-secondary-100 text-light-100 outline-none hover:bg-secondary-200 dark:bg-primary-200 dark:hover:bg-primary-100"
+						className="mt-8 h-12 w-40 items-center justify-center rounded-full bg-secondary-100 text-light-100 hover:bg-secondary-200 dark:bg-primary-200 dark:hover:bg-primary-100"
 						onClick={proceedToNextStep}
 					>
 						Continue
@@ -246,7 +246,7 @@ function LockerSetup({ lockers, fetchPolicies }: ILockerSetup) {
 						selectedChannels={selectedChannels}
 					/>
 					<button
-						className={`${isLoading ? "cursor-not-allowed opacity-80" : "cursor-pointer opacity-100"} flex h-12 w-48 items-center justify-center rounded-full bg-secondary-100 text-light-100 outline-none hover:bg-secondary-200 dark:bg-primary-200 dark:hover:bg-primary-100`}
+						className={`${isLoading ? "cursor-not-allowed opacity-80" : "cursor-pointer opacity-100"} flex h-12 w-48 items-center justify-center rounded-full bg-secondary-100 text-light-100 hover:bg-secondary-200 dark:bg-primary-200 dark:hover:bg-primary-100`}
 						onClick={() => handlePolicyCreation()}
 						disabled={isLoading}
 					>

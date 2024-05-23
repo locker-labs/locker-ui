@@ -75,7 +75,7 @@ function TxDetails({ tx, chain }: ITxDetails) {
 						<td className="break-all px-4 py-3">
 							{chain.blockExplorers ? (
 								<a
-									className="flex items-center space-x-2 outline-none hover:text-secondary-100 hover:underline dark:hover:text-primary-100"
+									className="flex items-center space-x-2 hover:text-secondary-100 hover:underline dark:hover:text-primary-100"
 									href={`${chain.blockExplorers.default.url}/tx/${tx.txHash}`}
 									target="_blank"
 									rel="noopener noreferrer"
@@ -98,7 +98,7 @@ function TxDetails({ tx, chain }: ITxDetails) {
 						<td className="break-all px-4 py-3">
 							{chain.blockExplorers ? (
 								<a
-									className="flex items-center space-x-2 outline-none hover:text-secondary-100 hover:underline dark:hover:text-primary-100"
+									className="flex items-center space-x-2 hover:text-secondary-100 hover:underline dark:hover:text-primary-100"
 									href={`${chain.blockExplorers.default.url}/address/${tx.toAddress}`}
 									target="_blank"
 									rel="noopener noreferrer"
@@ -121,7 +121,7 @@ function TxDetails({ tx, chain }: ITxDetails) {
 						<td className="break-all px-4 py-3">
 							{chain.blockExplorers ? (
 								<a
-									className="flex items-center space-x-2 outline-none hover:text-secondary-100 hover:underline dark:hover:text-primary-100"
+									className="flex items-center space-x-2 hover:text-secondary-100 hover:underline dark:hover:text-primary-100"
 									href={`${chain.blockExplorers.default.url}/address/${tx.fromAddress}`}
 									target="_blank"
 									rel="noopener noreferrer"

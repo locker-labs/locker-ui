@@ -38,7 +38,7 @@ function LockerEmpty({ emptyLocker }: ILockerEmpty) {
 				<div className="flex flex-col items-center justify-center self-center">
 					<LockerQrCode lockerAddress={emptyLocker.address} />
 					<button
-						className="my-8 flex items-center justify-center text-sm outline-none hover:text-secondary-100 dark:hover:text-primary-100"
+						className="my-8 flex items-center justify-center text-sm hover:text-secondary-100 dark:hover:text-primary-100"
 						onClick={() =>
 							copyToClipboard(emptyLocker.address, setCopied)
 						}

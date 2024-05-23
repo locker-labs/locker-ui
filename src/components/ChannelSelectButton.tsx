@@ -10,7 +10,7 @@ export interface ISelectionButton {
 function ChannelSelectButton({ isSelected, label, onClick }: ISelectionButton) {
 	return (
 		<button
-			className={`flex w-full items-center rounded-md border p-3 shadow-sm shadow-light-600 outline-none dark:shadow-none ${isSelected ? "border-secondary-100 dark:border-primary-100 dark:bg-dark-400" : "border-light-200 bg-light-200/30 dark:border-dark-200 dark:bg-dark-400/50"}`}
+			className={`flex w-full items-center rounded-md border p-3 shadow-sm shadow-light-600 dark:shadow-none ${isSelected ? "border-secondary-100 dark:border-primary-100 dark:bg-dark-400" : "border-light-200 bg-light-200/30 dark:border-dark-200 dark:bg-dark-400/50"}`}
 			onClick={onClick}
 		>
 			<input

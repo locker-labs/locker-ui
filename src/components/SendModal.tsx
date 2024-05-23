@@ -180,7 +180,7 @@ function SendModal({ isOpen, closeModal }: ISendModal) {
 										</div>
 									</div>
 									<button
-										className={`${!isValid ? "cursor-not-allowed opacity-80" : "cursor-pointer opacity-100"} flex h-12 w-48 items-center justify-center rounded-full bg-secondary-100 text-light-100 outline-none hover:bg-secondary-200 dark:bg-primary-200 dark:hover:bg-primary-100`}
+										className={`${!isValid ? "cursor-not-allowed opacity-80" : "cursor-pointer opacity-100"} flex h-12 w-48 items-center justify-center rounded-full bg-secondary-100 text-light-100 hover:bg-secondary-200 dark:bg-primary-200 dark:hover:bg-primary-100`}
 										onClick={() => dummyFunction()}
 										disabled={!isValid}
 									>

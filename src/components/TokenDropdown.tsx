@@ -32,7 +32,7 @@ function TokenDropdown({ tokenList, selectedToken, setSelectedToken }: IToken) {
 			{({ open }) => (
 				<div className="relative h-full w-full">
 					<span className="inline-block h-full w-full">
-						<Listbox.Button className="flex h-12 w-full items-center justify-between rounded-md border border-light-200 bg-light-100 p-2 outline-none hover:border-light-600 dark:border-dark-200 dark:bg-dark-500  dark:hover:border-light-600">
+						<Listbox.Button className="flex h-12 w-full items-center justify-between rounded-md border border-light-200 bg-light-100 p-2 hover:border-light-600 dark:border-dark-200 dark:bg-dark-500  dark:hover:border-light-600">
 							<div className="flex items-center justify-center">
 								<div
 									className={`mr-4 flex size-7 shrink-0 items-center justify-center rounded-full ${getChainIconStyling(selectedToken.chainId)}`}

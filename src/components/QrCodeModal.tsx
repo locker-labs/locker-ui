@@ -59,7 +59,7 @@ function QrCodeModal({ isOpen, closeModal, lockerAddress }: IQrCodeModal) {
 										lockerAddress={lockerAddress}
 									/>
 									<button
-										className="mt-8 flex items-center justify-center text-sm outline-none hover:text-secondary-100 dark:hover:text-primary-100"
+										className="mt-8 flex items-center justify-center text-sm hover:text-secondary-100 dark:hover:text-primary-100"
 										onClick={() =>
 											copyToClipboard(
 												lockerAddress,
