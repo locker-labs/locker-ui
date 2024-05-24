@@ -5,6 +5,7 @@ import type { Chain } from "wagmi/chains";
 import ChainIcon from "@/components/ChainIcon";
 import { Tx } from "@/types";
 import { getChainIconStyling } from "@/utils/getChainIconStyling";
+import { getChainNameFromChainObj } from "@/utils/getChainName";
 
 export interface ITxDetails {
 	tx: Tx;
@@ -54,16 +55,7 @@ function TxDetails({ tx, chain }: ITxDetails) {
 									/>
 								</div>
 								<span className="ml-3 whitespace-nowrap">
-									{chain.name === "OP Mainnet"
-										? "Optimism"
-										: chain.name === "Arbitrum One"
-											? "Arbitrum"
-											: chain.name === "Polygon Amoy"
-												? "Amoy"
-												: chain.name ===
-													  "Avalanche Fuji"
-													? "Fuji"
-													: chain.name}
+									{getChainNameFromChainObj(chain)}
 								</span>
 							</div>
 						</td>

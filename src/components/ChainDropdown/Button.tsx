@@ -6,7 +6,7 @@ import Tooltip from "@/components/Tooltip";
 import { getChainIconStyling } from "@/utils/getChainIconStyling";
 import { isChainSupported } from "@/utils/isChainSupported";
 
-function Button() {
+function Button({ open }: { open: boolean }) {
 	const { chain } = useAccount();
 
 	const chainIconStyling = chain
@@ -16,7 +16,7 @@ function Button() {
 	const buttonContent = (
 		<div className="flex size-full items-center justify-center space-x-1 rounded-full">
 			<div
-				className={`flex size-7 items-center justify-center rounded-full ${chainIconStyling}`}
+				className={`flex size-7 shrink-0 items-center justify-center rounded-full ${chainIconStyling}`}
 			>
 				{chain && isChainSupported(chain.id) ? (
 					<ChainIcon
@@ -28,7 +28,10 @@ function Button() {
 					<IoWarningOutline size={16} />
 				)}
 			</div>
-			<IoChevronDown className="hidden xs:flex xs:shrink-0" size={16} />
+			<IoChevronDown
+				className={`${open && "rotate-180 transform"} hidden xs:flex xs:shrink-0`}
+				size={16}
+			/>
 		</div>
 	);
 

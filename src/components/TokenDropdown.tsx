@@ -56,7 +56,10 @@ function TokenDropdown({ tokenList, selectedToken, setSelectedToken }: IToken) {
 									</span>
 								</div>
 							</div>
-							<IoChevronDown className="shrink-0" size="20px" />
+							<IoChevronDown
+								className={`${open && "rotate-180 transform"} shrink-0`}
+								size="20px"
+							/>
 						</Listbox.Button>
 					</span>
 					<Transition

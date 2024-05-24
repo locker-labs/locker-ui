@@ -9,6 +9,7 @@ import { supportedChains } from "@/data/constants/supportedChains";
 import type { Locker } from "@/types";
 import { copyToClipboard } from "@/utils/copytoClipboard";
 import { getChainIconStyling } from "@/utils/getChainIconStyling";
+import { getChainNameFromChainObj } from "@/utils/getChainName";
 import { truncateAddress } from "@/utils/truncateAddress";
 
 export interface ILockerEmpty {
@@ -72,17 +73,7 @@ function LockerEmpty({ emptyLocker }: ILockerEmpty) {
 									/>
 								</div>
 								<span className="ml-3 whitespace-nowrap">
-									{chainOption.name === "OP Mainnet"
-										? "Optimism"
-										: chainOption.name === "Arbitrum One"
-											? "Arbitrum"
-											: chainOption.name ===
-												  "Polygon Amoy"
-												? "Amoy"
-												: chainOption.name ===
-													  "Avalanche Fuji"
-													? "Fuji"
-													: chainOption.name}
+									{getChainNameFromChainObj(chainOption)}
 								</span>
 							</div>
 						))}

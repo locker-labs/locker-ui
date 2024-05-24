@@ -4,6 +4,7 @@ import { formatUnits } from "viem";
 import { supportedChains } from "@/data/constants/supportedChains";
 import { Tx } from "@/types";
 import { formatDateUtc } from "@/utils/formatDateUtc";
+import { getChainNameFromId } from "@/utils/getChainName";
 import { truncateAddress } from "@/utils/truncateAddress";
 
 export interface ITxTable {
@@ -11,28 +12,6 @@ export interface ITxTable {
 }
 
 function TxTable({ txs }: ITxTable) {
-	const getChainName = (chainId: number) => {
-		const chain = supportedChains.find(
-			(chainObj) => chainObj.id === chainId
-		);
-
-		if (!chain) return null;
-
-		return (
-			<span>
-				{chain.name === "OP Mainnet"
-					? "Optimism"
-					: chain.name === "Arbitrum One"
-						? "Arbitrum"
-						: chain.name === "Polygon Amoy"
-							? "Amoy"
-							: chain.name === "Avalanche Fuji"
-								? "Fuji"
-								: chain.name}
-			</span>
-		);
-	};
-
 	const getTxHashContent = (tx: Tx) => {
 		const chain = supportedChains.find(
 			(chainObj) => chainObj.id === tx.chainId
@@ -112,7 +91,7 @@ function TxTable({ txs }: ITxTable) {
 								)}
 							</td>
 							<td className="px-4 py-3">
-								{getChainName(tx.chainId)}
+								<span>{getChainNameFromId(tx.chainId)}</span>
 							</td>
 							<td className="px-4 py-3">
 								{formatUnits(

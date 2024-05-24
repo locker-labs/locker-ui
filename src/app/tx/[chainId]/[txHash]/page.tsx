@@ -14,6 +14,7 @@ import { paths } from "@/data/constants/paths";
 import { supportedChains } from "@/data/constants/supportedChains";
 import { getTx } from "@/services/transactions";
 import { Tx } from "@/types";
+import { getChainNameFromChainObj } from "@/utils/getChainName";
 
 export default function Transaction({
 	params,
@@ -81,15 +82,7 @@ export default function Transaction({
 								)}{" "}
 								{transaction.tokenSymbol}
 							</strong>{" "}
-							<span>
-								on{" "}
-								{chain.name === "OP Mainnet"
-									? "Optimism"
-									: chain.name === "Arbitrum One"
-										? "Arbitrum"
-										: chain.name}
-								!
-							</span>
+							<span>on {getChainNameFromChainObj(chain)}!</span>
 						</span>
 					</div>
 					<button
@@ -117,15 +110,7 @@ export default function Transaction({
 								)}{" "}
 								{transaction.tokenSymbol}
 							</strong>{" "}
-							<span>
-								on{" "}
-								{chain.name === "OP Mainnet"
-									? "Optimism"
-									: chain.name === "Arbitrum One"
-										? "Arbitrum"
-										: chain.name}
-								!
-							</span>
+							<span>on {getChainNameFromChainObj(chain)}!</span>
 						</span>
 					</div>
 					<button

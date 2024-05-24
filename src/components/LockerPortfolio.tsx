@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
-import { HiDotsVertical } from "react-icons/hi";
 
-import BankIcon from "@/components/BankIcon";
-import ChannelPieChart from "@/components/ChannelPieChart";
-// import PolicyExpandable from "@/components/PolicyExpandable";
+// import { HiDotsVertical } from "react-icons/hi";
+// import BankIcon from "@/components/BankIcon";
+// import ChannelPieChart from "@/components/ChannelPieChart";
+import PolicyExpandable from "@/components/PolicyExpandable";
 import PortfolioIconButtonGroup from "@/components/PortfolioIconButtonGroup";
-import SaveIcon from "@/components/SaveIcon";
+// import SaveIcon from "@/components/SaveIcon";
 import Tooltip from "@/components/Tooltip";
-import WalletIcon from "@/components/WalletIcon";
+// import WalletIcon from "@/components/WalletIcon";
 import { getLockerNetWorth } from "@/services/moralis";
 import { Locker, Policy } from "@/types";
 import { isTestnet } from "@/utils/isTestnet";
@@ -21,12 +21,13 @@ export interface ILockerPortfolio {
 
 function LockerPortfolio({ lockers, policies }: ILockerPortfolio) {
 	const [lockerNetWorth, setLockerNetWorth] = useState<string>("0.00");
-	const bankPercent = 70;
-	const hotWalletPercent = 20;
-	const savePercent = 10;
+	// const bankPercent = 70;
+	// const hotWalletPercent = 20;
+	// const savePercent = 10;
 
 	const locker = lockers[0];
 	const { txs } = locker;
+	const fundedChainIds = txs ? txs.map((tx) => tx.chainId) : [];
 
 	/*
 		- For now, only handling one locker per user (index 0)
@@ -48,9 +49,10 @@ function LockerPortfolio({ lockers, policies }: ILockerPortfolio) {
 
 	const fetchLockerNetWorth = async () => {
 		if (locker && txs) {
-			const fundedMainnetChainIds = txs
-				.map((tx) => tx.chainId)
-				.filter((chainId) => !isTestnet(chainId));
+			const fundedMainnetChainIds = fundedChainIds.filter(
+				(chainId) => !isTestnet(chainId)
+			);
+
 			const netWorth = await getLockerNetWorth(
 				locker.address,
 				fundedMainnetChainIds
@@ -92,7 +94,7 @@ function LockerPortfolio({ lockers, policies }: ILockerPortfolio) {
 			</div>
 
 			{/* This cannot be here because it will differ across chains */}
-			<div className="mt-6 flex w-full min-w-52 max-w-xs flex-col items-center space-y-4 rounded-md border border-light-200 p-3 shadow-sm shadow-light-600 dark:border-dark-200 dark:shadow-none">
+			{/* <div className="mt-6 flex w-full min-w-52 max-w-xs flex-col items-center space-y-4 rounded-md border border-light-200 p-3 shadow-sm shadow-light-600 dark:border-dark-200 dark:shadow-none">
 				<div className="flex w-full items-center justify-between">
 					<span className="text-sm">Payment allocation</span>
 					<button
@@ -143,9 +145,18 @@ function LockerPortfolio({ lockers, policies }: ILockerPortfolio) {
 						</div>
 					</div>
 				</div>
-			</div>
+			</div> */}
 			{/* ******************************************************** */}
-			{/* <PolicyExpandable /> */}
+			{locker && policies && (
+				<div className="mt-6 flex w-full flex-col space-y-2">
+					<span className="text-sm">Automation settings</span>
+					<PolicyExpandable
+						fundedChainIds={fundedChainIds}
+						policies={policies}
+						lockerAddress={locker.address}
+					/>
+				</div>
+			)}
 			{txs && (
 				<div className="mt-6 flex w-full flex-col space-y-2">
 					<span className="text-sm">Transaction history</span>

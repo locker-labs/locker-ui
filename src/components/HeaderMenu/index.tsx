@@ -37,7 +37,7 @@ function HeaderMenu() {
 			{({ open }) => (
 				<>
 					<Menu.Button className="z-10 flex h-10 w-fit shrink-0 items-center justify-center rounded-full bg-light-200 px-2 hover:bg-light-300 dark:bg-dark-400 dark:hover:bg-dark-300">
-						<Button />
+						<Button open={open} />
 					</Menu.Button>
 					<Transition show={open}>
 						<Menu.Items className="absolute right-0 z-50 mt-3 w-fit origin-top-right rounded-xl bg-light-200 p-1 text-sm outline-none dark:bg-dark-400">
