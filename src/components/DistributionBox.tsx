@@ -29,9 +29,9 @@ function DistributionBox({
 
 	return (
 		<div className="flex w-full min-w-60 max-w-sm flex-col">
-			<div className="flex w-full min-w-60 max-w-sm flex-col space-y-2 overflow-hidden rounded-md border border-light-200 shadow-sm shadow-light-600 dark:border-dark-200 dark:shadow-none">
+			<div className="flex w-full min-w-60 max-w-sm flex-col divide-y divide-light-200 overflow-hidden rounded-md border border-light-200 shadow-sm shadow-light-600 dark:divide-dark-200 dark:border-dark-200 dark:shadow-none">
 				{selectedChannels.save && (
-					<div className="flex w-full items-center justify-between border-b border-b-light-200 p-3 dark:border-b-dark-200">
+					<div className="flex w-full items-center justify-between p-3 dark:border-b-dark-200">
 						<div className="mr-2 flex items-center">
 							<SaveIcon />
 							<span className="ml-3 whitespace-normal text-sm xs2:whitespace-nowrap xs2:text-[16px]">
@@ -46,7 +46,7 @@ function DistributionBox({
 					</div>
 				)}
 				{selectedChannels.wallet && (
-					<div className="flex w-full items-center justify-between border-b border-b-light-200 p-3 dark:border-b-dark-200">
+					<div className="flex w-full items-center justify-between p-3 dark:border-b-dark-200">
 						<div className="mr-2 flex items-center">
 							<WalletIcon />
 							<span className="ml-3 whitespace-normal text-sm xs2:whitespace-nowrap xs2:text-[16px]">
@@ -61,7 +61,7 @@ function DistributionBox({
 					</div>
 				)}
 				{selectedChannels.bank && (
-					<div className="flex w-full items-center justify-between border-b border-b-light-200 p-3 dark:border-b-dark-200">
+					<div className="flex w-full items-center justify-between p-3 dark:border-b-dark-200">
 						<div className="mr-2 flex items-center">
 							<BankIcon />
 							<span className="ml-3 whitespace-normal text-sm xs2:whitespace-nowrap xs2:text-[16px]">

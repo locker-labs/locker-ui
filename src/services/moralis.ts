@@ -1,10 +1,11 @@
 /* eslint-disable no-console */
 import { chainCodeNames } from "@/data/constants/supportedChains";
+import { LockerNetWorth } from "@/types";
 
 export const getLockerNetWorth = async (
 	lockerAddress: `0x${string}`,
 	chaindIds: number[]
-): Promise<string | null> => {
+): Promise<LockerNetWorth | null> => {
 	const apiKey = process.env.MORALIS_WEB3_API_KEY;
 
 	if (!apiKey) {
@@ -22,6 +23,13 @@ export const getLockerNetWorth = async (
 		},
 		{}
 	);
+
+	const chainCodeNameToId = Object.entries(chainCodeNames).reduce<
+		Record<string, number>
+	>((acc, [id, name]) => {
+		acc[name] = Number(id);
+		return acc;
+	}, {});
 
 	const queryParams = new URLSearchParams({
 		...chainQueryParams,
@@ -41,8 +49,21 @@ export const getLockerNetWorth = async (
 		);
 
 		if (response.ok) {
-			const responseData = await response.json();
-			return responseData.total_networth_usd;
+			const responseData: {
+				total_networth_usd: string;
+				chains: { chain: string; networth_usd: string }[];
+			} = await response.json();
+			const totalNetWorth = responseData.total_networth_usd;
+			const chainNetWorths: Record<number, string> = {};
+
+			responseData.chains.forEach((chain) => {
+				const chainId = chainCodeNameToId[chain.chain];
+				if (chainId !== undefined) {
+					chainNetWorths[chainId] = chain.networth_usd;
+				}
+			});
+
+			return { totalNetWorth, chainNetWorths };
 		}
 		return null;
 	} catch (error) {

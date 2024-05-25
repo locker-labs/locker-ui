@@ -3,17 +3,17 @@ import ChannelPieChart from "@/components/ChannelPieChart";
 import SaveIcon from "@/components/SaveIcon";
 import WalletIcon from "@/components/WalletIcon";
 
-export interface IAutomationBox {
+export interface IAllocationBox {
 	bankPercent: number;
 	hotWalletPercent: number;
 	savePercent: number;
 }
 
-function AutomationBox({
+function AllocationBox({
 	bankPercent,
 	hotWalletPercent,
 	savePercent,
-}: IAutomationBox) {
+}: IAllocationBox) {
 	return (
 		<div className="mt-6 flex w-full max-w-xs flex-col items-center space-y-4 rounded-md border border-light-200 p-3 shadow-sm shadow-light-600 dark:border-dark-200 dark:shadow-none">
 			<span className="self-start text-sm">Payment allocation</span>
@@ -25,7 +25,7 @@ function AutomationBox({
 					lineWidth={30}
 					size="size-24"
 				/>
-				<div className="ml-0 mt-4 flex w-40 flex-col space-y-4 px-2 text-xs xs1:ml-4 xs1:mt-0 xs1:px-0">
+				<div className="ml-0 mt-4 flex w-40 flex-col space-y-4 px-2 text-sm xs1:ml-4 xs1:mt-0 xs1:px-0">
 					<div className="flex items-center justify-between">
 						<div className="flex items-center">
 							<SaveIcon divSize="size-6" iconSize="14px" />
@@ -59,4 +59,4 @@ function AutomationBox({
 	);
 }
 
-export default AutomationBox;
+export default AllocationBox;

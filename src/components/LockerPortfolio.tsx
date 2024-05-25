@@ -1,13 +1,9 @@
 import { useEffect, useState } from "react";
 
-// import { HiDotsVertical } from "react-icons/hi";
-// import BankIcon from "@/components/BankIcon";
-// import ChannelPieChart from "@/components/ChannelPieChart";
-import PolicyExpandable from "@/components/PolicyExpandable";
+import AllocationBox from "@/components/AllocationBox";
+import MultiChainOverview from "@/components/MultiChainOverview";
 import PortfolioIconButtonGroup from "@/components/PortfolioIconButtonGroup";
-// import SaveIcon from "@/components/SaveIcon";
 import Tooltip from "@/components/Tooltip";
-// import WalletIcon from "@/components/WalletIcon";
 import { getLockerNetWorth } from "@/services/moralis";
 import { Locker, Policy } from "@/types";
 import { isTestnet } from "@/utils/isTestnet";
@@ -20,31 +16,44 @@ export interface ILockerPortfolio {
 }
 
 function LockerPortfolio({ lockers, policies }: ILockerPortfolio) {
+	// State variables
 	const [lockerNetWorth, setLockerNetWorth] = useState<string>("0.00");
-	// const bankPercent = 70;
-	// const hotWalletPercent = 20;
-	// const savePercent = 10;
+	const [chainsNetWorths, setChainsNetWorths] = useState<
+		Record<number, string>
+	>({});
 
+	// Props destructured variables
 	const locker = lockers[0];
 	const { txs } = locker;
+	const basePolicy = policies[0];
+	const { automations } = basePolicy;
+
+	// Props derived variables
+	const bankAutomation = automations.find((a) => a.type === "off_ramp");
+	const hotWalletAutomation = automations.find(
+		(a) => a.type === "forward_to"
+	);
+	const saveAutomation = automations.find((a) => a.type === "savings");
+	const bankPercent = bankAutomation
+		? bankAutomation.allocationFactor * 100
+		: 0;
+	const hotWalletPercent = hotWalletAutomation
+		? hotWalletAutomation.allocationFactor * 100
+		: 0;
+	const savePercent = saveAutomation
+		? saveAutomation.allocationFactor * 100
+		: 0;
 	const fundedChainIds = txs ? txs.map((tx) => tx.chainId) : [];
 
-	/*
-		- For now, only handling one locker per user (index 0)
+	/* For now, we're only handling:
+		- One locker per user (index 0)
 			- In the future, we can add a dropdown to choose which locker to display
-		- The single locker may have money across multiple chains
-			- Locker will only be deployed once automations are enabled on that chain
-			- If locker is funded on chain, but automations are not enabled, show "Enable automations" for that chain
-		- Per chain, show:
-			- Balance
-			- Policy percentages
-			- Adjust percentages option
-		- If user opted for off-ramp and KYC is not complete, show "finish setup" button
-	*/
-
-	/*
-		What will the "Edit" button do?
-		- Not sure yet...
+		- One set of automation settings across all chains
+			- A policy is necessary for each chain because of the session key signature
+			- Use the automations from policies[0] and use that across all chains
+			- If the autmation settings change, need to update policies on all chains
+			- KYC only needs to be completed once
+				- Only use policies[0] to determine whether KYC is complete
 	*/
 
 	const fetchLockerNetWorth = async () => {
@@ -59,7 +68,8 @@ function LockerPortfolio({ lockers, policies }: ILockerPortfolio) {
 			);
 
 			if (netWorth) {
-				setLockerNetWorth(netWorth);
+				setLockerNetWorth(netWorth.totalNetWorth);
+				setChainsNetWorths(netWorth.chainNetWorths);
 			}
 		}
 	};
@@ -92,67 +102,21 @@ function LockerPortfolio({ lockers, policies }: ILockerPortfolio) {
 					</div>
 				)}
 			</div>
-
-			{/* This cannot be here because it will differ across chains */}
-			{/* <div className="mt-6 flex w-full min-w-52 max-w-xs flex-col items-center space-y-4 rounded-md border border-light-200 p-3 shadow-sm shadow-light-600 dark:border-dark-200 dark:shadow-none">
-				<div className="flex w-full items-center justify-between">
-					<span className="text-sm">Payment allocation</span>
-					<button
-						className="hover:text-secondary-100 dark:hover:text-primary-100"
-						aria-label="Edit payment distribution"
-						onClick={() =>
-							console.log("Edit payment distribution", policies)
-						}
-					>
-						<HiDotsVertical size={18} />
-					</button>
-				</div>
-				<div className="flex w-full flex-col items-center justify-between xs:flex-row">
-					<ChannelPieChart
-						bankPercent={bankPercent}
-						hotWalletPercent={hotWalletPercent}
-						savePercent={savePercent}
-						lineWidth={30}
-						size="size-24"
-					/>
-					<div className="ml-0 mt-4 flex w-40 flex-col space-y-4 text-sm xs:ml-4 xs:mt-0">
-						<div className="flex items-center justify-between">
-							<div className="flex items-center">
-								<SaveIcon divSize="size-6" iconSize="14px" />
-								<span className="ml-3">Save</span>
-							</div>
-							<span className="ml-3 whitespace-nowrap text-light-600">
-								{savePercent} %
-							</span>
-						</div>
-						<div className="flex items-center justify-between">
-							<div className="flex items-center">
-								<WalletIcon divSize="size-6" iconSize="12px" />
-								<span className="ml-3">Forward</span>
-							</div>
-							<span className="ml-3 whitespace-nowrap text-light-600">
-								{hotWalletPercent} %
-							</span>
-						</div>
-						<div className="flex items-center justify-between">
-							<div className="flex items-center">
-								<BankIcon divSize="size-6" iconSize="15px" />
-								<span className="ml-3">Bank</span>
-							</div>
-							<span className="ml-3 whitespace-nowrap text-light-600">
-								{bankPercent} %
-							</span>
-						</div>
-					</div>
-				</div>
-			</div> */}
-			{/* ******************************************************** */}
+			<div className="mt-6 flex w-full flex-col space-y-2">
+				<span className="text-sm">Automation settings</span>
+				<AllocationBox
+					bankPercent={bankPercent}
+					hotWalletPercent={hotWalletPercent}
+					savePercent={savePercent}
+				/>
+			</div>
 			{locker && policies && (
 				<div className="mt-6 flex w-full flex-col space-y-2">
-					<span className="text-sm">Automation settings</span>
-					<PolicyExpandable
+					<span className="text-sm">Multi-chain overview</span>
+					<MultiChainOverview
 						fundedChainIds={fundedChainIds}
 						policies={policies}
+						chainsNetWorths={chainsNetWorths}
 						lockerAddress={locker.address}
 					/>
 				</div>

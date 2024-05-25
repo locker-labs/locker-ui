@@ -64,3 +64,5 @@ export const supportedChains = (
 export const supportedChainIds = envChains.length
 	? Object.fromEntries(envChains.map((chain) => [chain, chains[chain].id]))
 	: defaultChainIds;
+
+export const supportedChainIdsArray = Object.values(supportedChainIds);

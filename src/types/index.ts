@@ -59,3 +59,8 @@ export type Token = {
 	chainId: number;
 	balance: string;
 };
+
+export type LockerNetWorth = {
+	totalNetWorth: string;
+	chainNetWorths: Record<number, string>;
+};
