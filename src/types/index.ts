@@ -62,5 +62,5 @@ export type Token = {
 
 export type LockerNetWorth = {
 	totalNetWorth: string;
-	chainNetWorths: Record<number, string>;
+	chainsNetWorth: Record<number, string>;
 };

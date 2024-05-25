@@ -54,16 +54,16 @@ export const getLockerNetWorth = async (
 				chains: { chain: string; networth_usd: string }[];
 			} = await response.json();
 			const totalNetWorth = responseData.total_networth_usd;
-			const chainNetWorths: Record<number, string> = {};
+			const chainsNetWorth: Record<number, string> = {};
 
 			responseData.chains.forEach((chain) => {
 				const chainId = chainCodeNameToId[chain.chain];
 				if (chainId !== undefined) {
-					chainNetWorths[chainId] = chain.networth_usd;
+					chainsNetWorth[chainId] = chain.networth_usd;
 				}
 			});
 
-			return { totalNetWorth, chainNetWorths };
+			return { totalNetWorth, chainsNetWorth };
 		}
 		return null;
 	} catch (error) {

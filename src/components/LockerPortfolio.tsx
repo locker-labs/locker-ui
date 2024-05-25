@@ -69,7 +69,7 @@ function LockerPortfolio({ lockers, policies }: ILockerPortfolio) {
 
 			if (netWorth) {
 				setLockerNetWorth(netWorth.totalNetWorth);
-				setChainsNetWorths(netWorth.chainNetWorths);
+				setChainsNetWorths(netWorth.chainsNetWorth);
 			}
 		}
 	};

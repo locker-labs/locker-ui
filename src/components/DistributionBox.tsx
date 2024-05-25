@@ -3,6 +3,8 @@ import PercentInput from "@/components/PercentInput";
 import SaveIcon from "@/components/SaveIcon";
 import WalletIcon from "@/components/WalletIcon";
 
+import AddressInput from "./AddressInput";
+
 interface IDistributionBox {
 	savePercent: string;
 	hotWalletPercent: string;
@@ -13,6 +15,10 @@ interface IDistributionBox {
 		inputType: "save" | "wallet" | "bank"
 	) => void;
 	selectedChannels: { save: boolean; wallet: boolean; bank: boolean };
+	sendToAddress: string;
+	setSendToAddress: (value: string) => void;
+	isLoading: boolean;
+	setErrorMessage: (errorMessage: string) => void;
 }
 
 function DistributionBox({
@@ -22,6 +28,10 @@ function DistributionBox({
 	percentLeft,
 	handlePercentChange,
 	selectedChannels,
+	sendToAddress,
+	setSendToAddress,
+	isLoading,
+	setErrorMessage,
 }: IDistributionBox) {
 	const isSingleChannel =
 		Object.values(selectedChannels).filter((channel) => channel).length ===
@@ -35,7 +45,7 @@ function DistributionBox({
 						<div className="mr-2 flex items-center">
 							<SaveIcon />
 							<span className="ml-3 whitespace-normal text-sm xs2:whitespace-nowrap xs2:text-[16px]">
-								Save in my locker
+								Save in your locker
 							</span>
 						</div>
 						<PercentInput
@@ -46,18 +56,33 @@ function DistributionBox({
 					</div>
 				)}
 				{selectedChannels.wallet && (
-					<div className="flex w-full items-center justify-between p-3 dark:border-b-dark-200">
-						<div className="mr-2 flex items-center">
-							<WalletIcon />
-							<span className="ml-3 whitespace-normal text-sm xs2:whitespace-nowrap xs2:text-[16px]">
-								Forward to my hot wallet
-							</span>
+					<div className="flex w-full flex-col items-center p-3 dark:border-b-dark-200">
+						<div className="flex w-full items-center justify-between dark:border-b-dark-200">
+							<div className="mr-2 flex items-center">
+								<WalletIcon />
+								<span className="ml-3 whitespace-normal text-sm xs2:whitespace-nowrap xs2:text-[16px]">
+									Forward to a hot wallet
+								</span>
+							</div>
+							<PercentInput
+								value={hotWalletPercent}
+								onInput={(e) =>
+									handlePercentChange(e, "wallet")
+								}
+								disabled={isSingleChannel}
+							/>
 						</div>
-						<PercentInput
-							value={hotWalletPercent}
-							onInput={(e) => handlePercentChange(e, "wallet")}
-							disabled={isSingleChannel}
-						/>
+						<div className="mt-2 flex w-full flex-col space-y-1">
+							<span className="self-start text-xs text-light-600">
+								Recipient address
+							</span>
+							<AddressInput
+								sendToAddress={sendToAddress}
+								setSendToAddress={setSendToAddress}
+								isLoading={isLoading}
+								setErrorMessage={setErrorMessage}
+							/>
+						</div>
 					</div>
 				)}
 				{selectedChannels.bank && (
@@ -65,7 +90,7 @@ function DistributionBox({
 						<div className="mr-2 flex items-center">
 							<BankIcon />
 							<span className="ml-3 whitespace-normal text-sm xs2:whitespace-nowrap xs2:text-[16px]">
-								Send to my bank
+								Send to your bank
 							</span>
 						</div>
 						<PercentInput

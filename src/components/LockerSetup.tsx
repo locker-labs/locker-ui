@@ -12,9 +12,12 @@ import Steps from "@/components/Steps";
 import TxTable from "@/components/TxTable";
 import { disclosures } from "@/data/constants/disclosures";
 import { errors } from "@/data/constants/errorMessages";
+import { useConnectModal } from "@/hooks/useConnectModal";
+import { usePolicyReviewModal } from "@/hooks/usePolicyReviewModal";
 import useSmartAccount from "@/hooks/useSmartAccount";
 import { createPolicy } from "@/services/lockers";
 import { Automation, Locker, Policy } from "@/types";
+import { isChainSupported } from "@/utils/isChainSupported";
 
 export interface ILockerSetup {
 	lockers: Locker[];
@@ -22,6 +25,7 @@ export interface ILockerSetup {
 }
 
 function LockerSetup({ lockers, fetchPolicies }: ILockerSetup) {
+	const [sendToAddress, setSendToAddress] = useState<string>("");
 	const [savePercent, setSavePercent] = useState<string>("20");
 	const [hotWalletPercent, setHotWalletPercent] = useState<string>("0");
 	const [bankPercent, setBankPercent] = useState<string>("0");
@@ -40,8 +44,11 @@ function LockerSetup({ lockers, fetchPolicies }: ILockerSetup) {
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 
 	const { getToken } = useAuth();
-	const { chainId, address } = useAccount();
+	const { chainId, address, isConnected } = useAccount();
 	const { signSessionKey } = useSmartAccount();
+	const { openConnectModal, renderConnectModal } = useConnectModal();
+	const { openPolicyReviewModal, renderPolicyReviewModal } =
+		usePolicyReviewModal();
 
 	const locker = lockers[0];
 	const { txs } = locker;
@@ -120,66 +127,90 @@ function LockerSetup({ lockers, fetchPolicies }: ILockerSetup) {
 		setPercentLeft((100 - total).toString());
 	};
 
-	const handlePolicyCreation = async () => {
-		if (checksumAddress(locker.ownerAddress) !== address) {
-			setErrorMessage(errors.UNAUTHORIZED);
+	const createNewPolicy = async () => {
+		setIsLoading(true);
+
+		// 1. Get user to sign session key
+		const sig = await signSessionKey(locker.ownerAddress);
+		if (!sig) {
 			setIsLoading(false);
 			return;
 		}
+		// 2. Craft policy object
+		const automations: Automation[] = [
+			{
+				type: "savings",
+				allocationFactor: Number(formatUnits(BigInt(savePercent), 2)),
+				status: "ready",
+			},
+			{
+				type: "forward_to",
+				allocationFactor: Number(
+					formatUnits(BigInt(hotWalletPercent), 2)
+				),
+				status: "ready",
+				recipientAddress: locker.ownerAddress,
+			},
+			{
+				type: "off_ramp",
+				allocationFactor: Number(formatUnits(BigInt(bankPercent), 2)),
+				status: "new",
+			},
+		];
+		const policy: Policy = {
+			lockerId: locker.id as number,
+			chainId: chainId as number,
+			sessionKey: sig as string,
+			automations,
+		};
 
-		if (Number(percentLeft) === 0) {
+		// 3. Get auth token and create policy through locker-api
+		const authToken = await getToken();
+		if (authToken) {
+			await createPolicy(authToken, policy, setErrorMessage);
+		}
+
+		// 4. Fetch policies from DB to update state in Home component
+		fetchPolicies();
+
+		setIsLoading(false);
+	};
+
+	const handlePolicyCreation = () => {
+		// TODO: Improve error handling
+		if (isConnected) {
+			if (
+				selectedChannels.wallet &&
+				errorMessage === errors.INVALID_ADDRESS
+			)
+				return;
+
 			setErrorMessage("");
-			setIsLoading(true);
-			// 1. Get user to sign session key
-			const sig = await signSessionKey(locker.ownerAddress);
-			if (!sig) {
-				setIsLoading(false);
+			if (chainId && !isChainSupported(chainId)) {
+				setErrorMessage(errors.UNSUPPORTED_CHAIN);
 				return;
 			}
-			// 2. Craft policy object
-			const automations: Automation[] = [
-				{
-					type: "savings",
-					allocationFactor: Number(
-						formatUnits(BigInt(savePercent), 2)
-					),
-					status: "ready",
-				},
-				{
-					type: "forward_to",
-					allocationFactor: Number(
-						formatUnits(BigInt(hotWalletPercent), 2)
-					),
-					status: "ready",
-					recipientAddress: locker.ownerAddress,
-				},
-				{
-					type: "off_ramp",
-					allocationFactor: Number(
-						formatUnits(BigInt(bankPercent), 2)
-					),
-					status: "new",
-				},
-			];
-			const policy: Policy = {
-				lockerId: locker.id as number,
-				chainId: chainId as number,
-				sessionKey: sig as string,
-				automations,
-			};
 
-			// 3. Get auth token and create policy through locker-api
-			const authToken = await getToken();
-			if (authToken) {
-				await createPolicy(authToken, policy, setErrorMessage);
+			if (selectedChannels.wallet && !sendToAddress) {
+				setErrorMessage(errors.NO_ADDRESS);
+				return;
 			}
 
-			// 4. Fetch policies from DB to update state in Home component
-			fetchPolicies();
+			if (checksumAddress(locker.ownerAddress) !== address) {
+				setErrorMessage(errors.UNAUTHORIZED);
+				return;
+			}
 
-			setIsLoading(false);
+			if (Number(percentLeft) !== 0) {
+				setErrorMessage(errors.SUM_TO_100);
+				return;
+			}
+
+			if (errorMessage) return;
+
+			openPolicyReviewModal();
 		} else {
-			setErrorMessage(errors.SUM_TO_100);
+			openConnectModal();
 		}
 	};
 
@@ -244,6 +275,10 @@ function LockerSetup({ lockers, fetchPolicies }: ILockerSetup) {
 						percentLeft={percentLeft}
 						handlePercentChange={handlePercentChange}
 						selectedChannels={selectedChannels}
+						sendToAddress={sendToAddress}
+						setSendToAddress={setSendToAddress}
+						setErrorMessage={setErrorMessage}
+						isLoading={isLoading}
 					/>
 					<button
 						className={`${isLoading ? "cursor-not-allowed opacity-80" : "cursor-pointer opacity-100"} flex h-12 w-48 items-center justify-center rounded-full bg-secondary-100 text-light-100 hover:bg-secondary-200 dark:bg-primary-200 dark:hover:bg-primary-100`}
@@ -281,7 +316,10 @@ function LockerSetup({ lockers, fetchPolicies }: ILockerSetup) {
 				{step === 2 ? (
 					<button
 						className="mb-8 h-10 w-fit hover:text-secondary-200 dark:hover:text-primary-100 xxs1:mb-0"
-						onClick={() => setStep(1)}
+						onClick={() => {
+							setErrorMessage("");
+							setStep(1);
+						}}
 						disabled={isLoading}
 					>
 						<div className="flex items-center justify-center space-x-1">
@@ -294,6 +332,8 @@ function LockerSetup({ lockers, fetchPolicies }: ILockerSetup) {
 				)}
 				<Steps step={step} totalSteps={2} />
 			</div>
+			{renderConnectModal()}
+			{chainId && renderPolicyReviewModal(createNewPolicy, chainId)}
 		</div>
 	);
 }

@@ -8,6 +8,7 @@ export const errors = {
 	UNAUTHORIZED:
 		"Your wallet's current account is not the owner of this locker. Please switch to the correct account.",
 	INVALID_ADDRESS: "Invalid address.",
+	NO_ADDRESS: "Enter a recipient address.",
 	TOO_MANY_DECIMALS: "Too many decimal places.",
 	AT_LEAST_ONE: "Must choose at least one.",
 	SUM_TO_100: "Percentages must add up to 100%.",
