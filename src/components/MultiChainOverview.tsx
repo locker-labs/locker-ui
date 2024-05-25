@@ -1,9 +1,18 @@
+import { useAuth } from "@clerk/nextjs";
+import { useState } from "react";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { FaRobot } from "react-icons/fa6";
+import { checksumAddress } from "viem";
+import { useAccount, useSwitchChain } from "wagmi";
 
 import ChainIcon from "@/components/ChainIcon";
+import { errors } from "@/data/constants/errorMessages";
 import { supportedChainIdsArray } from "@/data/constants/supportedChains";
+import { useConnectModal } from "@/hooks/useConnectModal";
 import { useQrCodeModal } from "@/hooks/useQrCodeModal";
-import { Policy } from "@/types";
+import useSmartAccount from "@/hooks/useSmartAccount";
+import { createPolicy } from "@/services/lockers";
+import { Automation, Locker, Policy } from "@/types";
 import { getChainIconStyling } from "@/utils/getChainIconStyling";
 import { getChainNameFromId } from "@/utils/getChainName";
 import { isTestnet } from "@/utils/isTestnet";
@@ -11,17 +20,114 @@ import { isTestnet } from "@/utils/isTestnet";
 export interface IMultiChainOverview {
 	fundedChainIds: number[];
 	policies: Policy[];
+	automations: Automation[];
 	chainsNetWorths: Record<number, string>;
-	lockerAddress: `0x${string}`;
+	locker: Locker;
+	setErrorMessage: (errorMessage: string) => void;
+	fetchPolicies: () => void;
 }
+
+/*
+const [copied, setCopied] = useState<boolean>(false);
+const [copiedSymbol, setCopiedSymbol] = useState<string>("");
+    
+<div className="flex h-10 w-12 items-center justify-center">
+    {copied &&
+    copiedSymbol ===
+        token.symbol ? (
+        <IoCheckboxOutline
+            className="text-success"
+            size="15px"
+        />
+    ) : (
+        <IoCopyOutline size="15px" />
+    )}
+</div>
+*/
 
 function MultiChainOverview({
 	fundedChainIds,
 	policies,
+	automations,
 	chainsNetWorths,
-	lockerAddress,
+	locker,
+	setErrorMessage,
+	fetchPolicies,
 }: IMultiChainOverview) {
+	const [isLoading, setIsLoading] = useState<boolean>(false);
+	const [chainRowLoading, setChainRowLoading] = useState<number | null>(null);
+
+	const { getToken } = useAuth();
+	const { signSessionKey } = useSmartAccount();
+	const { switchChain } = useSwitchChain();
+	const { openConnectModal, renderConnectModal } = useConnectModal();
+	const { chainId: walletChainId, address, isConnected } = useAccount();
 	const { openQrCodeModal, renderQrCodeModal } = useQrCodeModal();
+
+	const createNewPolicy = async (policyChainId: number) => {
+		setIsLoading(true);
+		setChainRowLoading(policyChainId);
+		setErrorMessage("");
+
+		if (checksumAddress(locker.ownerAddress) !== address) {
+			setErrorMessage(errors.UNAUTHORIZED);
+			setIsLoading(false);
+			setChainRowLoading(null);
+			return;
+		}
+
+		// 1. Require user's wallet to be on the correct chain
+		if (walletChainId !== policyChainId) {
+			switchChain({ chainId: policyChainId });
+
+			// Wait 1 second for the chain switch to finish updating the wallet client
+			await new Promise((resolve) => {
+				setTimeout(resolve, 1000);
+			});
+
+			// TODO: If wallet client fails to update in alloted time, catch the error, setErrorMessage, and return
+			// It seems like the best approach will be to separate the switchChain logic from the createNewPolicy function.
+			// Then we could do the following:
+			//   1. Check if the walletChainId === policyChainId before calling createNewPolicy
+			//   2. If they are not equal, call a function that calls switchChain
+			//   3. Call createNewPolicy in a useEffect to ensure that the state changes triggered by switchChain are complete
+		}
+
+		// 2. Get user to sign session key
+		const sig = await signSessionKey(locker.ownerAddress);
+		if (!sig) {
+			setIsLoading(false);
+			setChainRowLoading(null);
+			return;
+		}
+		// 3. Craft policy for the specified chain using existing automations
+		const policy: Policy = {
+			lockerId: locker.id as number,
+			chainId: policyChainId as number,
+			sessionKey: sig as string,
+			automations,
+		};
+
+		// 4. Get auth token and create policy through locker-api
+		const authToken = await getToken();
+		if (authToken) {
+			await createPolicy(authToken, policy, setErrorMessage);
+		}
+
+		// 5. Fetch policies from DB to update state in Home component
+		fetchPolicies();
+
+		setIsLoading(false);
+		setChainRowLoading(null);
+	};
+
+	const handlePolicyCreation = (policyChainId: number) => {
+		if (isConnected) {
+			createNewPolicy(policyChainId);
+		} else {
+			openConnectModal();
+		}
+	};
 
 	return (
 		<div className="flex w-full min-w-52 max-w-lg flex-col divide-y divide-light-200 overflow-hidden rounded-md border border-light-200 text-sm shadow-sm shadow-light-600 dark:divide-dark-200 dark:border-dark-200 dark:shadow-none">
@@ -61,22 +167,30 @@ function MultiChainOverview({
 							<div className="mt-4 flex flex-col space-y-2 xs2:mt-0 xs2:flex-row xs2:space-x-2 xs2:space-y-0">
 								{!isFunded && (
 									<button
-										className="w-fit justify-center rounded-full bg-secondary-100 px-3 py-1 text-light-100 hover:bg-secondary-200 dark:bg-primary-200 dark:hover:bg-primary-100"
+										className="flex h-8 w-16 items-center justify-center rounded-full bg-secondary-100 text-light-100 hover:bg-secondary-200 dark:bg-primary-200 dark:hover:bg-primary-100"
 										onClick={openQrCodeModal}
+										disabled={isLoading}
 									>
 										Fund
 									</button>
 								)}
 								{!policy && (
 									<button
-										className="w-fit justify-center rounded-full bg-light-200 px-3 py-1 hover:bg-light-300 dark:bg-dark-400 dark:hover:bg-dark-300"
+										className="flex h-8 w-24 items-center justify-center rounded-full bg-light-200 hover:bg-light-300 dark:bg-dark-400 dark:hover:bg-dark-300"
 										onClick={() =>
-											console.log(
-												`Require user's wallet to be on this ${chainId}, craft policy object for this chain using existing automations, and prompt user to sign session key.`
-											)
+											handlePolicyCreation(chainId)
 										}
+										disabled={isLoading}
 									>
-										Automate
+										{isLoading &&
+										chainRowLoading === chainId ? (
+											<AiOutlineLoading3Quarters
+												className="animate-spin"
+												size={16}
+											/>
+										) : (
+											"Automate"
+										)}
 									</button>
 								)}
 							</div>
@@ -92,7 +206,8 @@ function MultiChainOverview({
 					</div>
 				);
 			})}
-			{renderQrCodeModal(lockerAddress)}
+			{renderQrCodeModal(locker.address)}
+			{renderConnectModal()}
 		</div>
 	);
 }

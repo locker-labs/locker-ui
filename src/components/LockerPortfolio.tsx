@@ -13,10 +13,16 @@ import TxTable from "./TxTable";
 export interface ILockerPortfolio {
 	lockers: Locker[];
 	policies: Policy[];
+	fetchPolicies: () => void;
 }
 
-function LockerPortfolio({ lockers, policies }: ILockerPortfolio) {
+function LockerPortfolio({
+	lockers,
+	policies,
+	fetchPolicies,
+}: ILockerPortfolio) {
 	// State variables
+	const [errorMessage, setErrorMessage] = useState<string>("");
 	const [lockerNetWorth, setLockerNetWorth] = useState<string>("0.00");
 	const [chainsNetWorths, setChainsNetWorths] = useState<
 		Record<number, string>
@@ -116,10 +122,18 @@ function LockerPortfolio({ lockers, policies }: ILockerPortfolio) {
 					<MultiChainOverview
 						fundedChainIds={fundedChainIds}
 						policies={policies}
+						automations={automations}
 						chainsNetWorths={chainsNetWorths}
-						lockerAddress={locker.address}
+						locker={locker}
+						setErrorMessage={setErrorMessage}
+						fetchPolicies={fetchPolicies}
 					/>
 				</div>
+			)}
+			{errorMessage && (
+				<span className="mt-6 text-sm text-red-500">
+					{errorMessage}
+				</span>
 			)}
 			{txs && (
 				<div className="mt-6 flex w-full flex-col space-y-2">

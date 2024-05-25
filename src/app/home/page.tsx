@@ -129,7 +129,11 @@ function HomePage() {
 				lockers[0].txs.length > 0 &&
 				policies &&
 				policies.length > 0 && (
-					<LockerPortfolio lockers={lockers} policies={policies} />
+					<LockerPortfolio
+						lockers={lockers}
+						policies={policies}
+						fetchPolicies={fetchPolicies}
+					/>
 				)}
 		</div>
 	);
