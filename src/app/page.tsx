@@ -2,6 +2,7 @@
 
 import { useAuth } from "@clerk/nextjs";
 import dynamic from "next/dynamic";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
@@ -37,17 +38,29 @@ export default function LandingPage() {
 					your locker today and watch your crypto go where you want
 					it.
 				</span>
+
 				<div className="flex w-full max-w-2xl items-center text-lg">
-					<AuthButton
-						type="sign-up"
-						label="Sign up"
-						height="h-12"
-						width="w-32"
-					/>
+					<div className="flex w-full flex-col space-y-4 ">
+						<Link
+							href="https://waitlist.locker.money"
+							target="_blank"
+						>
+							<button className="h-12 w-full items-center justify-center rounded-full bg-secondary-100 text-light-100 outline-none hover:bg-secondary-200 dark:bg-primary-200 dark:hover:bg-primary-100">
+								Join waitlist
+							</button>
+						</Link>
+						<AuthButton
+							type="sign-in"
+							label="I have an invitation"
+							height="h-12"
+							width="w-full"
+						/>
+					</div>
 				</div>
-			</div>
-			<div className="flex w-full max-w-2xl flex-1 items-center justify-center py-10">
-				<LottieAnimation animationData={lockerPaths} />
+
+				<div className="flex w-full max-w-2xl flex-1 items-center justify-center py-10">
+					<LottieAnimation animationData={lockerPaths} />
+				</div>
 			</div>
 		</div>
 	);
