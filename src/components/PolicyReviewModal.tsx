@@ -6,7 +6,7 @@ import ChainIcon from "@/components/ChainIcon";
 import { getChainIconStyling } from "@/utils/getChainIconStyling";
 import { getChainNameFromId } from "@/utils/getChainName";
 
-export interface ISendModal {
+export interface IPolicyReviewModal {
 	isOpen: boolean;
 	closeModal: () => void;
 	createNewPolicy: () => void;
@@ -18,7 +18,7 @@ function PolicyReviewModal({
 	closeModal,
 	createNewPolicy,
 	chainId,
-}: ISendModal) {
+}: IPolicyReviewModal) {
 	return (
 		<Transition appear show={isOpen} as={Fragment}>
 			<Dialog as="div" className="relative z-10" onClose={closeModal}>

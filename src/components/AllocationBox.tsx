@@ -15,8 +15,7 @@ function AllocationBox({
 	savePercent,
 }: IAllocationBox) {
 	return (
-		<div className="mt-6 flex w-full max-w-xs flex-col items-center space-y-4 rounded-md border border-light-200 p-3 shadow-sm shadow-light-600 dark:border-dark-200 dark:shadow-none">
-			<span className="self-start text-sm">Payment allocation</span>
+		<div className="flex w-full max-w-xs flex-col items-center space-y-4 rounded-md border border-light-200 p-3 shadow-sm shadow-light-600 dark:border-dark-200 dark:shadow-none">
 			<div className="flex w-full flex-col items-center justify-between xs1:flex-row">
 				<ChannelPieChart
 					bankPercent={bankPercent}

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import AllocationBox from "@/components/AllocationBox";
+import AutomationSettings from "@/components/AutomationSettings";
 import MultiChainOverview from "@/components/MultiChainOverview";
 import PortfolioIconButtonGroup from "@/components/PortfolioIconButtonGroup";
 import Tooltip from "@/components/Tooltip";
@@ -40,15 +40,6 @@ function LockerPortfolio({
 		(a) => a.type === "forward_to"
 	);
 	const saveAutomation = automations.find((a) => a.type === "savings");
-	const bankPercent = bankAutomation
-		? bankAutomation.allocationFactor * 100
-		: 0;
-	const hotWalletPercent = hotWalletAutomation
-		? hotWalletAutomation.allocationFactor * 100
-		: 0;
-	const savePercent = saveAutomation
-		? saveAutomation.allocationFactor * 100
-		: 0;
 	const fundedChainIds = txs ? txs.map((tx) => tx.chainId) : [];
 
 	/* For now, we're only handling:
@@ -57,7 +48,7 @@ function LockerPortfolio({
 		- One set of automation settings across all chains
 			- A policy is necessary for each chain because of the session key signature
 			- Use the automations from policies[0] and use that across all chains
-			- If the autmation settings change, need to update policies on all chains
+			- If the autmation settings change, need to update policies on all enabled chains
 			- KYC only needs to be completed once
 				- Only use policies[0] to determine whether KYC is complete
 	*/
@@ -110,10 +101,12 @@ function LockerPortfolio({
 			</div>
 			<div className="mt-6 flex w-full flex-col space-y-2">
 				<span className="text-sm">Automation settings</span>
-				<AllocationBox
-					bankPercent={bankPercent}
-					hotWalletPercent={hotWalletPercent}
-					savePercent={savePercent}
+				<AutomationSettings
+					fetchPolicies={fetchPolicies}
+					locker={locker}
+					bankAutomation={bankAutomation}
+					hotWalletAutomation={hotWalletAutomation}
+					saveAutomation={saveAutomation}
 				/>
 			</div>
 			{locker && policies && (

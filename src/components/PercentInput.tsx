@@ -19,7 +19,7 @@ function PercentInput({ value, onInput, disabled }: IPercentInput) {
 				onInput={onInput}
 				disabled={disabled}
 			/>
-			<span>%</span>
+			<span className="select-none">%</span>
 		</div>
 	);
 }

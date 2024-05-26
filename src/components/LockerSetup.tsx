@@ -206,8 +206,6 @@ function LockerSetup({ lockers, fetchPolicies }: ILockerSetup) {
 				return;
 			}
 
-			if (errorMessage) return;
-
 			openPolicyReviewModal();
 		} else {
 			openConnectModal();

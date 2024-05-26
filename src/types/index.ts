@@ -48,7 +48,7 @@ export type Automation = {
 export type Policy = {
 	lockerId: number;
 	chainId: number;
-	sessionKey: string;
+	sessionKey?: string;
 	automations: Automation[];
 };
 

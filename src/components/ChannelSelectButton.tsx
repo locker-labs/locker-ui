@@ -20,7 +20,10 @@ function ChannelSelectButton({ isSelected, label, onClick }: ISelectionButton) {
 				className="absolute opacity-0"
 			/>
 			{isSelected ? (
-				<IoCheckmarkCircle className="text-success" size={25} />
+				<IoCheckmarkCircle
+					className="shrink-0 text-success"
+					size={25}
+				/>
 			) : (
 				<MdOutlineRadioButtonUnchecked
 					className="text-light-600"
