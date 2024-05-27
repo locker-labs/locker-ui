@@ -2,7 +2,6 @@ import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useEffect, useState } from "react";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { IoClose } from "react-icons/io5";
-import { zeroAddress } from "viem";
 
 import AddressInput from "@/components/AddressInput";
 import CurrencyInput from "@/components/CurrencyInput";
@@ -13,60 +12,22 @@ import TokenDropdown from "./TokenDropdown";
 export interface ISendModal {
 	isOpen: boolean;
 	closeModal: () => void;
+	tokenList: Token[];
 }
 
 // TODO:
-// - Check all tokens for supported chains
 // - Craft and send userOp using zerodev sdk
 // - Render success message if transfer is successful
 
-const tokenList: Token[] = [
-	{
-		symbol: "ETH",
-		address: zeroAddress,
-		decimals: 18,
-		chainId: 11155111,
-		balance: "1010000000000000000", // 1.01 ETH
-	},
-	{
-		symbol: "MATIC",
-		address: zeroAddress,
-		decimals: 18,
-		chainId: 137,
-		balance: "19310000000000000000", // 19.31 MATIC
-	},
-	{
-		symbol: "WBTC",
-		address: "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599",
-		decimals: 18,
-		chainId: 137,
-		balance: "5000000000000000", // 0.005 WBTC
-	},
-	{
-		symbol: "DAI",
-		address: "0x6B175474E89094C44Da98b954EedeAC495271d0F",
-		decimals: 18,
-		chainId: 10,
-		balance: "250000000000000000000", // 250 DAI
-	},
-	{
-		symbol: "USDC",
-		address: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
-		decimals: 6,
-		chainId: 10,
-		balance: "15430000", // 15.43 USDC
-	},
-];
-
-function SendModal({ isOpen, closeModal }: ISendModal) {
+function SendModal({ isOpen, closeModal, tokenList }: ISendModal) {
 	const [isLoading, setIsLoading] = useState<boolean>(false);
-	const [selectedToken, setSelectedToken] = useState(tokenList[0]);
+	const [selectedToken, setSelectedToken] = useState<Token>(tokenList[0]);
 	const [sendToAddress, setSendToAddress] = useState<string>("");
 	const [amountInput, setAmountInput] = useState<string>("");
 	const [amount, setAmount] = useState<bigint>(BigInt(0));
 	const [errorMessage, setErrorMessage] = useState<string>("");
 
-	const dummyFunction = () => {
+	const dummyFunction = async () => {
 		setIsLoading(true);
 		setTimeout(() => {
 			console.log(amount);

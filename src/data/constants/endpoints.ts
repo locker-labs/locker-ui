@@ -19,4 +19,7 @@ export const endpoints = {
 
 	// GET --> /public/policies/${lockerId}
 	GET_POLICIES: `${process.env.LOCKER_API_BASE_URL}/public/policies`,
+
+	// GET --> /public/tokenTxs/${lockerId}/balances
+	GET_TOKEN_BALANCES: `${process.env.LOCKER_API_BASE_URL}/public/tokenTxs`,
 };

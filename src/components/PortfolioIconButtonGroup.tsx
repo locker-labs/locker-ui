@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useAuth } from "@clerk/nextjs";
+import { useEffect, useState } from "react";
 import { IoIosSend } from "react-icons/io";
 import {
 	IoCheckboxOutline,
@@ -8,7 +9,8 @@ import {
 
 import { useQrCodeModal } from "@/hooks/useQrCodeModal";
 import { useSendModal } from "@/hooks/useSendModal";
-import { Locker } from "@/types";
+import { getTokenBalances } from "@/services/transactions";
+import { Locker, Token } from "@/types";
 import { copyToClipboard } from "@/utils/copytoClipboard";
 
 export interface ILockerPortfolio {
@@ -16,9 +18,23 @@ export interface ILockerPortfolio {
 }
 
 function PortfolioIconButtonGroup({ locker }: ILockerPortfolio) {
+	const [tokenList, setTokenList] = useState<Token[]>([]);
 	const [copied, setCopied] = useState<boolean>(false);
 	const { openQrCodeModal, renderQrCodeModal } = useQrCodeModal();
 	const { openSendModal, renderSendModal } = useSendModal();
+	const { getToken } = useAuth();
+
+	const getTokenList = async () => {
+		const authToken = await getToken();
+		if (authToken && locker.id) {
+			const list = await getTokenBalances(authToken, locker.id);
+			setTokenList(list || []);
+		}
+	};
+
+	useEffect(() => {
+		getTokenList();
+	}, []);
 
 	return (
 		<div className="flex items-center space-x-4 text-xs">
@@ -40,7 +56,10 @@ function PortfolioIconButtonGroup({ locker }: ILockerPortfolio) {
 				<button
 					className="flex size-10 shrink-0 items-center justify-center rounded-full bg-dark-500/10 text-dark-600 transition duration-300 ease-in-out hover:scale-105 dark:bg-light-200/10 dark:text-light-100"
 					aria-label="Display locker QR code"
-					onClick={openQrCodeModal}
+					onClick={() => {
+						getTokenList();
+						openQrCodeModal();
+					}}
 				>
 					<IoQrCodeOutline size="16px" />
 				</button>
@@ -57,7 +76,7 @@ function PortfolioIconButtonGroup({ locker }: ILockerPortfolio) {
 				<span className="text-light-600">Send</span>
 			</div>
 			{renderQrCodeModal(locker.address)}
-			{renderSendModal()}
+			{renderSendModal(tokenList)}
 		</div>
 	);
 }

@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import { endpoints } from "@/data/constants/endpoints";
 import { supportedChainIds } from "@/data/constants/supportedChains";
-import type { Locker, Tx } from "@/types";
+import type { Locker, Token, Tx } from "@/types";
 
 export const getTokenTxs = async (
 	authToken: string,
@@ -56,6 +56,30 @@ export const getTx = async (
 	try {
 		const response = await fetch(
 			`${endpoints.GET_TXS}/${chainId}/${txHash}`,
+			{
+				method: "GET",
+				headers: { Authorization: `Bearer ${authToken}` },
+			}
+		);
+
+		if (response.ok) {
+			const responseData = await response.json();
+			return responseData.data;
+		}
+		return null;
+	} catch (error) {
+		console.error(error);
+		return null;
+	}
+};
+
+export const getTokenBalances = async (
+	authToken: string,
+	lockerId: number
+): Promise<Token[] | null> => {
+	try {
+		const response = await fetch(
+			`${endpoints.GET_TOKEN_BALANCES}/${lockerId}/balances`,
 			{
 				method: "GET",
 				headers: { Authorization: `Bearer ${authToken}` },
