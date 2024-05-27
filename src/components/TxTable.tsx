@@ -4,6 +4,7 @@ import { formatUnits } from "viem";
 import { supportedChains } from "@/data/constants/supportedChains";
 import { Tx } from "@/types";
 import { formatDateUtc } from "@/utils/formatDateUtc";
+import { getChainNameFromId } from "@/utils/getChainName";
 import { truncateAddress } from "@/utils/truncateAddress";
 
 export interface ITxTable {
@@ -11,28 +12,6 @@ export interface ITxTable {
 }
 
 function TxTable({ txs }: ITxTable) {
-	const getChainName = (chainId: number) => {
-		const chain = supportedChains.find(
-			(chainObj) => chainObj.id === chainId
-		);
-
-		if (!chain) return null;
-
-		return (
-			<span>
-				{chain.name === "OP Mainnet"
-					? "Optimism"
-					: chain.name === "Arbitrum One"
-						? "Arbitrum"
-						: chain.name === "Polygon Amoy"
-							? "Amoy"
-							: chain.name === "Avalanche Fuji"
-								? "Fuji"
-								: chain.name}
-			</span>
-		);
-	};
-
 	const getTxHashContent = (tx: Tx) => {
 		const chain = supportedChains.find(
 			(chainObj) => chainObj.id === tx.chainId
@@ -43,7 +22,7 @@ function TxTable({ txs }: ITxTable) {
 		if (chain.blockExplorers) {
 			return (
 				<a
-					className="flex items-center space-x-2 outline-none hover:text-secondary-100 hover:underline dark:hover:text-primary-100"
+					className="flex items-center space-x-2 hover:text-secondary-100 hover:underline dark:hover:text-primary-100"
 					href={`${chain.blockExplorers.default.url}/tx/${tx.txHash}`}
 					target="_blank"
 					rel="noopener noreferrer"
@@ -66,7 +45,7 @@ function TxTable({ txs }: ITxTable) {
 		if (chain.blockExplorers) {
 			return (
 				<a
-					className="flex items-center space-x-2 outline-none hover:text-secondary-100 hover:underline dark:hover:text-primary-100"
+					className="flex items-center space-x-2 hover:text-secondary-100 hover:underline dark:hover:text-primary-100"
 					href={`${chain.blockExplorers.default.url}/address/${address}`}
 					target="_blank"
 					rel="noopener noreferrer"
@@ -89,8 +68,9 @@ function TxTable({ txs }: ITxTable) {
 						<th className="px-4 py-3">Chain</th>
 						<th className="px-4 py-3">Amount</th>
 						<th className="px-4 py-3">Tx hash</th>
-						<th className="px-4 py-3">Locker address</th>
-						<th className="px-4 py-3">Sender address</th>
+						<th className="px-4 py-3">To</th>
+						<th aria-label="Direction" className="px-4 py-3" />
+						<th className="px-4 py-3">From</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -111,7 +91,7 @@ function TxTable({ txs }: ITxTable) {
 								)}
 							</td>
 							<td className="px-4 py-3">
-								{getChainName(tx.chainId)}
+								<span>{getChainNameFromId(tx.chainId)}</span>
 							</td>
 							<td className="px-4 py-3">
 								{formatUnits(
@@ -125,6 +105,13 @@ function TxTable({ txs }: ITxTable) {
 							</td>
 							<td className="px-4 py-3">
 								{getAddressContent(tx.chainId, tx.toAddress)}
+							</td>
+							<td className="px-4 py-3">
+								<span
+									className={`w-fit rounded-full ${tx.lockerDirection === "in" ? "bg-success/20 px-3 py-1 text-success" : "bg-warning/20 px-3 py-1 text-warning"}`}
+								>
+									{tx.lockerDirection === "in" ? "In" : "Out"}
+								</span>
 							</td>
 							<td className="px-4 py-3">
 								{getAddressContent(tx.chainId, tx.fromAddress)}

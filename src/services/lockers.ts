@@ -1,4 +1,5 @@
 /* eslint-disable no-console */
+
 import { endpoints } from "@/data/constants/endpoints";
 import { errors } from "@/data/constants/errorMessages";
 import type { Locker, Policy } from "@/types";
@@ -8,6 +9,7 @@ export const getLockers = async (
 ): Promise<Locker[] | null> => {
 	try {
 		const response = await fetch(endpoints.GET_LOCKERS, {
+			method: "GET",
 			headers: { Authorization: `Bearer ${authToken}` },
 		});
 
@@ -98,6 +100,7 @@ export const getPolicies = async (
 ): Promise<Policy[] | null> => {
 	try {
 		const response = await fetch(`${endpoints.GET_POLICIES}/${lockerId}`, {
+			method: "GET",
 			headers: { Authorization: `Bearer ${authToken}` },
 		});
 
@@ -109,5 +112,54 @@ export const getPolicies = async (
 	} catch (error) {
 		console.error(error);
 		return null;
+	}
+};
+
+export const updateAutomations = async (
+	authToken: string,
+	policies: Policy[],
+	setErrorMessage: (value: string) => void
+) => {
+	try {
+		const responses = await Promise.all(
+			policies.map(async (policy) => {
+				const response = await fetch(
+					`${endpoints.UPDATE_POLICY}/${policy.id}`,
+					{
+						method: "PATCH",
+						headers: {
+							Authorization: `Bearer ${authToken}`,
+							"Content-Type": "application/json",
+						},
+						body: JSON.stringify(policy),
+					}
+				);
+
+				if (!response.ok) {
+					// Handle error here or let it be caught in the catch block below
+					throw response;
+				}
+
+				return response;
+			})
+		);
+
+		// Check if all responses are OK
+		const allOk = responses.every((response) => response.ok);
+		if (!allOk) {
+			throw new Error("One or more requests failed.");
+		}
+	} catch (error) {
+		if (error instanceof Response) {
+			const errorMessage =
+				error.status === 409
+					? errors.POLICY_CONFLICT
+					: `${error.status} (${error.statusText}): ${errors.UNEXPECTED}`;
+			setErrorMessage(errorMessage);
+		} else {
+			// Handle other errors like network errors, etc.
+			console.error(error);
+			setErrorMessage(errors.UNEXPECTED);
+		}
 	}
 };

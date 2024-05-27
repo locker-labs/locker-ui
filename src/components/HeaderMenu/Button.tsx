@@ -3,7 +3,7 @@ import Image from "next/image";
 import { FaUserAlt } from "react-icons/fa";
 import { IoChevronDown } from "react-icons/io5";
 
-function Button() {
+function Button({ open }: { open: boolean }) {
 	const { user } = useUser();
 
 	return (
@@ -23,7 +23,10 @@ function Button() {
 					<FaUserAlt size={16} />
 				</div>
 			)}
-			<IoChevronDown className="hidden xs:flex xs:shrink-0" size={16} />
+			<IoChevronDown
+				className={`${open && "rotate-180 transform"} hidden xs:flex xs:shrink-0`}
+				size={16}
+			/>
 		</div>
 	);
 }

@@ -11,7 +11,7 @@ import ConnectButton from "@/components/ConnectButton";
 import HeaderMenu from "@/components/HeaderMenu";
 import ThemedImage from "@/components/ThemedImage";
 import { paths } from "@/data/constants/paths";
-import { supportedChainIds } from "@/data/constants/supportedChains";
+import { isTestnet } from "@/utils/isTestnet";
 
 function Header() {
 	const pathname = usePathname();
@@ -24,12 +24,7 @@ function Header() {
 	const showAuthButtons = !isSignedIn && !isAuthRoute;
 	const showConnectButton = isSignedIn && !isConnected;
 	const showMenu = isSignedIn && isConnected;
-	const showTestnetBanner =
-		isConnected &&
-		chainId &&
-		(chainId === supportedChainIds?.sepolia ||
-			chainId === supportedChainIds?.polygonAmoy ||
-			chainId === supportedChainIds?.avalancheFuji);
+	const showTestnetBanner = isConnected && chainId && isTestnet(chainId);
 
 	return (
 		<header className="relative top-0 z-10 w-full">
@@ -40,7 +35,7 @@ function Header() {
 			)}
 			<div className="flex h-20 items-center justify-between">
 				<Link
-					className="relative mr-2 flex h-9 w-28 shrink-0 justify-center outline-none"
+					className="relative mr-2 flex h-9 w-28 shrink-0 justify-center"
 					href={paths.LANDING}
 				>
 					<ThemedImage

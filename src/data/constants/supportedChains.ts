@@ -20,6 +20,19 @@ const chains = {
 	avalancheFuji,
 };
 
+// Wagmi code names for each chain
+export const chainCodeNames: {
+	[key: number]: string;
+} = {
+	[arbitrum.id]: "arbitrum",
+	[optimism.id]: "optimism",
+	[polygon.id]: "polygon",
+	[avalanche.id]: "avalanche",
+	[sepolia.id]: "sepolia",
+	[polygonAmoy.id]: "polygonAmoy",
+	[avalancheFuji.id]: "avalancheFuji",
+};
+
 // Private RPC URLs for each chain
 export const transports = {
 	[arbitrum.id]: http(process.env.ARBITRUM_RPC_URL),
@@ -51,3 +64,5 @@ export const supportedChains = (
 export const supportedChainIds = envChains.length
 	? Object.fromEntries(envChains.map((chain) => [chain, chains[chain].id]))
 	: defaultChainIds;
+
+export const supportedChainIdsArray = Object.values(supportedChainIds);

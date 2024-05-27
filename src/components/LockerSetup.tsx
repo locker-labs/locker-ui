@@ -2,6 +2,7 @@ import { useAuth } from "@clerk/nextjs";
 import { useEffect, useState } from "react";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { IoChevronBackOutline } from "react-icons/io5";
+import { checksumAddress, formatUnits } from "viem";
 import { useAccount } from "wagmi";
 
 import ChannelPieChart from "@/components/ChannelPieChart";
@@ -9,9 +10,14 @@ import ChannelSelectButton from "@/components/ChannelSelectButton";
 import DistributionBox from "@/components/DistributionBox";
 import Steps from "@/components/Steps";
 import TxTable from "@/components/TxTable";
+import { disclosures } from "@/data/constants/disclosures";
+import { errors } from "@/data/constants/errorMessages";
+import { useConnectModal } from "@/hooks/useConnectModal";
+import { usePolicyReviewModal } from "@/hooks/usePolicyReviewModal";
 import useSmartAccount from "@/hooks/useSmartAccount";
 import { createPolicy } from "@/services/lockers";
-import { Locker, Policy } from "@/types";
+import { Automation, Locker, Policy } from "@/types";
+import { isChainSupported } from "@/utils/isChainSupported";
 
 export interface ILockerSetup {
 	lockers: Locker[];
@@ -19,6 +25,7 @@ export interface ILockerSetup {
 }
 
 function LockerSetup({ lockers, fetchPolicies }: ILockerSetup) {
+	const [sendToAddress, setSendToAddress] = useState<string>("");
 	const [savePercent, setSavePercent] = useState<string>("20");
 	const [hotWalletPercent, setHotWalletPercent] = useState<string>("0");
 	const [bankPercent, setBankPercent] = useState<string>("0");
@@ -37,8 +44,14 @@ function LockerSetup({ lockers, fetchPolicies }: ILockerSetup) {
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 
 	const { getToken } = useAuth();
-	const { chainId } = useAccount();
+	const { chainId, address, isConnected } = useAccount();
 	const { signSessionKey } = useSmartAccount();
+	const { openConnectModal, renderConnectModal } = useConnectModal();
+	const { openPolicyReviewModal, renderPolicyReviewModal } =
+		usePolicyReviewModal();
+
+	const locker = lockers[0];
+	const { txs } = locker;
 
 	const handleChannelSelection = (channel: keyof typeof selectedChannels) => {
 		setSelectedChannels((prev) => ({
@@ -76,7 +89,7 @@ function LockerSetup({ lockers, fetchPolicies }: ILockerSetup) {
 			setStep(2);
 			setErrorMessage("");
 		} else {
-			setErrorMessage("Must choose at least one.");
+			setErrorMessage(errors.AT_LEAST_ONE);
 		}
 	};
 
@@ -114,41 +127,86 @@ function LockerSetup({ lockers, fetchPolicies }: ILockerSetup) {
 		setPercentLeft((100 - total).toString());
 	};
 
-	const handlePolicyCreation = async () => {
-		if (Number(percentLeft) === 0) {
+	const createNewPolicy = async () => {
+		setIsLoading(true);
+
+		// 1. Get user to sign session key
+		const sig = await signSessionKey(locker.ownerAddress);
+		if (!sig) {
+			setIsLoading(false);
+			return;
+		}
+		// 2. Craft policy object
+		const automations: Automation[] = [
+			{
+				type: "savings",
+				allocation: Number(formatUnits(BigInt(savePercent), 2)),
+				status: "ready",
+			},
+			{
+				type: "forward_to",
+				allocation: Number(formatUnits(BigInt(hotWalletPercent), 2)),
+				status: "ready",
+				recipientAddress: locker.ownerAddress,
+			},
+			{
+				type: "off_ramp",
+				allocation: Number(formatUnits(BigInt(bankPercent), 2)),
+				status: "new",
+			},
+		];
+		const policy: Policy = {
+			lockerId: locker.id as number,
+			chainId: chainId as number,
+			sessionKey: sig as string,
+			automations,
+		};
+
+		// 3. Get auth token and create policy through locker-api
+		const authToken = await getToken();
+		if (authToken) {
+			await createPolicy(authToken, policy, setErrorMessage);
+		}
+
+		// 4. Fetch policies from DB to update state in Home component
+		fetchPolicies();
+
+		setIsLoading(false);
+	};
+
+	const handlePolicyCreation = () => {
+		// TODO: Improve error handling
+		if (isConnected) {
+			if (
+				selectedChannels.wallet &&
+				errorMessage === errors.INVALID_ADDRESS
+			)
+				return;
+
 			setErrorMessage("");
-			setIsLoading(true);
-			// 1. Get user to sign session key
-			const sig = await signSessionKey();
-			if (!sig) {
-				setIsLoading(false);
+			if (chainId && !isChainSupported(chainId)) {
+				setErrorMessage(errors.UNSUPPORTED_CHAIN);
 				return;
 			}
 
-			// 2. Craft policy object
-			const policy: Policy = {
-				lockerId: lockers[0].id as number,
-				chainId: chainId as number,
-				sessionKey: sig as string,
-				automations: {
-					savings: Number(savePercent),
-					hot_wallet: Number(hotWalletPercent),
-					off_ramp: Number(bankPercent),
-				},
-			};
-
-			// 3. Get auth token and create policy through locker-api
-			const authToken = await getToken();
-			if (authToken) {
-				await createPolicy(authToken, policy, setErrorMessage);
+			if (selectedChannels.wallet && !sendToAddress) {
+				setErrorMessage(errors.NO_ADDRESS);
+				return;
 			}
 
-			// 4. Fetch policies from DB to update state in Home component
-			fetchPolicies();
+			if (checksumAddress(locker.ownerAddress) !== address) {
+				setErrorMessage(errors.UNAUTHORIZED);
+				return;
+			}
 
-			setIsLoading(false);
+			if (Number(percentLeft) !== 0) {
+				setErrorMessage(errors.SUM_TO_100);
+				return;
+			}
+
+			openPolicyReviewModal();
 		} else {
-			setErrorMessage("All percentages must add up to 100%.");
+			openConnectModal();
 		}
 	};
 
@@ -184,16 +242,12 @@ function LockerSetup({ lockers, fetchPolicies }: ILockerSetup) {
 						/>
 						{selectedChannels.bank && (
 							<span className="text-xs text-light-600">
-								Bank off-ramp is only available for US bank
-								accounts and requires idendity verification
-								after initial setup. If this process is not
-								completed, any money allocated to your bank will
-								stay in your locker.
+								{disclosures.BANK_SETUP_US_ONLY}
 							</span>
 						)}
 					</div>
 					<button
-						className="mt-8 h-12 w-40 items-center justify-center rounded-full bg-secondary-100 text-light-100 outline-none hover:bg-secondary-200 dark:bg-primary-200 dark:hover:bg-primary-100"
+						className="mt-8 h-12 w-40 items-center justify-center rounded-full bg-secondary-100 text-light-100 hover:bg-secondary-200 dark:bg-primary-200 dark:hover:bg-primary-100"
 						onClick={proceedToNextStep}
 					>
 						Continue
@@ -204,20 +258,11 @@ function LockerSetup({ lockers, fetchPolicies }: ILockerSetup) {
 				<div className="flex w-full flex-col items-center space-y-8">
 					<span className="text-lg">Percentage allocation</span>
 					<ChannelPieChart
-						data={[
-							{
-								value: Number(bankPercent),
-								color: "#14B8A6", // success
-							},
-							{
-								value: Number(hotWalletPercent),
-								color: "#1E82BC", // secondary-200
-							},
-							{
-								value: Number(savePercent),
-								color: "#4546C4", // primary-200
-							},
-						]}
+						bankPercent={Number(bankPercent)}
+						hotWalletPercent={Number(hotWalletPercent)}
+						savePercent={Number(savePercent)}
+						lineWidth={25}
+						size="size-48"
 					/>
 					<DistributionBox
 						savePercent={savePercent}
@@ -226,9 +271,13 @@ function LockerSetup({ lockers, fetchPolicies }: ILockerSetup) {
 						percentLeft={percentLeft}
 						handlePercentChange={handlePercentChange}
 						selectedChannels={selectedChannels}
+						sendToAddress={sendToAddress}
+						setSendToAddress={setSendToAddress}
+						setErrorMessage={setErrorMessage}
+						isLoading={isLoading}
 					/>
 					<button
-						className={`${isLoading ? "cursor-not-allowed opacity-80" : "cursor-pointer opacity-100"} flex h-12 w-48 items-center justify-center rounded-full bg-secondary-100 text-light-100 outline-none hover:bg-secondary-200 dark:bg-primary-200 dark:hover:bg-primary-100`}
+						className={`${isLoading ? "cursor-not-allowed opacity-80" : "cursor-pointer opacity-100"} flex h-12 w-48 items-center justify-center rounded-full bg-secondary-100 text-light-100 hover:bg-secondary-200 dark:bg-primary-200 dark:hover:bg-primary-100`}
 						onClick={() => handlePolicyCreation()}
 						disabled={isLoading}
 					>
@@ -241,32 +290,32 @@ function LockerSetup({ lockers, fetchPolicies }: ILockerSetup) {
 							"Enable automations"
 						)}
 					</button>
-					{selectedChannels.bank && (
-						<span className="w-full min-w-60 max-w-sm text-xs text-light-600">
-							Bank off-ramp is only available for US bank accounts
-							and requires idendity verification after initial
-							setup. If this process is not completed, any money
-							allocated to your bank will stay in your locker.
-						</span>
-					)}
 				</div>
 			)}
 			{errorMessage && (
-				<span className="mt-8 self-center text-sm text-red-500">
+				<span className="mt-8 self-center text-sm text-error">
 					{errorMessage}
 				</span>
 			)}
-			{lockers[0].txs && (
+			{selectedChannels.bank && step === 2 && (
+				<span className="w-full min-w-60 max-w-sm self-center text-xs text-light-600">
+					{disclosures.BANK_SETUP_US_ONLY}
+				</span>
+			)}
+			{txs && (
 				<div className="flex w-full flex-col space-y-2">
 					<span className="text-sm">Transaction history</span>
-					<TxTable txs={lockers[0].txs} />
+					<TxTable txs={txs} />
 				</div>
 			)}
 			<div className="flex w-full flex-1 flex-col items-center justify-between xxs1:flex-row xxs1:items-end">
 				{step === 2 ? (
 					<button
 						className="mb-8 h-10 w-fit hover:text-secondary-200 dark:hover:text-primary-100 xxs1:mb-0"
-						onClick={() => setStep(1)}
+						onClick={() => {
+							setErrorMessage("");
+							setStep(1);
+						}}
 						disabled={isLoading}
 					>
 						<div className="flex items-center justify-center space-x-1">
@@ -279,6 +328,8 @@ function LockerSetup({ lockers, fetchPolicies }: ILockerSetup) {
 				)}
 				<Steps step={step} totalSteps={2} />
 			</div>
+			{renderConnectModal()}
+			{chainId && renderPolicyReviewModal(createNewPolicy, chainId)}
 		</div>
 	);
 }

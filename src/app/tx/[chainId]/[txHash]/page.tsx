@@ -14,6 +14,7 @@ import { paths } from "@/data/constants/paths";
 import { supportedChains } from "@/data/constants/supportedChains";
 import { getTx } from "@/services/transactions";
 import { Tx } from "@/types";
+import { getChainNameFromChainObj } from "@/utils/getChainName";
 
 export default function Transaction({
 	params,
@@ -81,19 +82,11 @@ export default function Transaction({
 								)}{" "}
 								{transaction.tokenSymbol}
 							</strong>{" "}
-							<span>
-								on{" "}
-								{chain.name === "OP Mainnet"
-									? "Optimism"
-									: chain.name === "Arbitrum One"
-										? "Arbitrum"
-										: chain.name}
-								!
-							</span>
+							<span>on {getChainNameFromChainObj(chain)}!</span>
 						</span>
 					</div>
 					<button
-						className="h-14 w-40 rounded-full bg-secondary-100 text-lg text-light-100 outline-none hover:bg-secondary-200 dark:bg-primary-200 dark:hover:bg-primary-100"
+						className="h-14 w-40 rounded-full bg-secondary-100 text-lg text-light-100 hover:bg-secondary-200 dark:bg-primary-200 dark:hover:bg-primary-100"
 						onClick={() => handleContinue()}
 					>
 						Continue
@@ -117,19 +110,11 @@ export default function Transaction({
 								)}{" "}
 								{transaction.tokenSymbol}
 							</strong>{" "}
-							<span>
-								on{" "}
-								{chain.name === "OP Mainnet"
-									? "Optimism"
-									: chain.name === "Arbitrum One"
-										? "Arbitrum"
-										: chain.name}
-								!
-							</span>
+							<span>on {getChainNameFromChainObj(chain)}!</span>
 						</span>
 					</div>
 					<button
-						className="h-14 w-40 rounded-full bg-secondary-100 text-lg text-light-100 outline-none hover:bg-secondary-200 dark:bg-primary-200 dark:hover:bg-primary-100"
+						className="h-14 w-40 rounded-full bg-secondary-100 text-lg text-light-100 hover:bg-secondary-200 dark:bg-primary-200 dark:hover:bg-primary-100"
 						onClick={() => handleContinue()}
 					>
 						Continue

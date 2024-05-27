@@ -103,7 +103,7 @@ function LockerCreate({ lockerIndex, fetchLockers }: ILockerCreate) {
 						automatically go where you want it.
 					</span>
 					<button
-						className="h-12 w-40 items-center justify-center rounded-full bg-secondary-100 text-light-100 outline-none hover:bg-secondary-200 dark:bg-primary-200 dark:hover:bg-primary-100"
+						className="h-12 w-40 items-center justify-center rounded-full bg-secondary-100 text-light-100 hover:bg-secondary-200 dark:bg-primary-200 dark:hover:bg-primary-100"
 						onClick={() => handleLockerCreation()}
 						disabled={isLoading}
 					>
