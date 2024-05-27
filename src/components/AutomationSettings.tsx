@@ -5,10 +5,11 @@ import ChannelPieChart from "@/components/ChannelPieChart";
 import SaveIcon from "@/components/SaveIcon";
 import WalletIcon from "@/components/WalletIcon";
 import { useEditAutomationsModal } from "@/hooks/useEditAutomationsModal";
-import { Automation, Locker } from "@/types";
+import { Automation, Locker, Policy } from "@/types";
 
 export interface IAutomationSettings {
 	locker: Locker;
+	currentPolicies: Policy[];
 	fetchPolicies: () => void;
 	bankAutomation: Automation | undefined;
 	hotWalletAutomation: Automation | undefined;
@@ -17,6 +18,7 @@ export interface IAutomationSettings {
 
 function AutomationSettings({
 	locker,
+	currentPolicies,
 	fetchPolicies,
 	bankAutomation,
 	hotWalletAutomation,
@@ -25,15 +27,11 @@ function AutomationSettings({
 	const { openEditAutomationsModal, renderEditAutomationsModal } =
 		useEditAutomationsModal();
 
-	const bankPercent = bankAutomation
-		? bankAutomation.allocationFactor * 100
-		: 0;
+	const bankPercent = bankAutomation ? bankAutomation.allocation * 100 : 0;
 	const hotWalletPercent = hotWalletAutomation
-		? hotWalletAutomation.allocationFactor * 100
+		? hotWalletAutomation.allocation * 100
 		: 0;
-	const savePercent = saveAutomation
-		? saveAutomation.allocationFactor * 100
-		: 0;
+	const savePercent = saveAutomation ? saveAutomation.allocation * 100 : 0;
 
 	return (
 		<div className="flex w-full max-w-xs flex-col items-center space-y-6 rounded-md border border-light-200 p-3 shadow-sm shadow-light-600 dark:border-dark-200 dark:shadow-none">
@@ -108,6 +106,7 @@ function AutomationSettings({
 				)}
 			</div>
 			{renderEditAutomationsModal(
+				currentPolicies,
 				fetchPolicies,
 				locker,
 				bankAutomation,

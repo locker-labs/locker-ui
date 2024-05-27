@@ -1,3 +1,4 @@
+/* eslint-disable react/require-default-props */
 import BankIcon from "@/components/BankIcon";
 import PercentInput from "@/components/PercentInput";
 import SaveIcon from "@/components/SaveIcon";
@@ -19,6 +20,7 @@ interface IDistributionBox {
 	setSendToAddress: (value: string) => void;
 	isLoading: boolean;
 	setErrorMessage: (errorMessage: string) => void;
+	disabled?: boolean;
 }
 
 function DistributionBox({
@@ -32,6 +34,7 @@ function DistributionBox({
 	setSendToAddress,
 	isLoading,
 	setErrorMessage,
+	disabled = false,
 }: IDistributionBox) {
 	const isSingleChannel =
 		Object.values(selectedChannels).filter((channel) => channel).length ===
@@ -51,7 +54,7 @@ function DistributionBox({
 						<PercentInput
 							value={savePercent}
 							onInput={(e) => handlePercentChange(e, "save")}
-							disabled={isSingleChannel}
+							disabled={isSingleChannel || disabled}
 						/>
 					</div>
 				)}
@@ -69,7 +72,7 @@ function DistributionBox({
 								onInput={(e) =>
 									handlePercentChange(e, "wallet")
 								}
-								disabled={isSingleChannel}
+								disabled={isSingleChannel || disabled}
 							/>
 						</div>
 						<div className="mt-2 flex w-full flex-col space-y-1">
@@ -81,6 +84,7 @@ function DistributionBox({
 								setSendToAddress={setSendToAddress}
 								isLoading={isLoading}
 								setErrorMessage={setErrorMessage}
+								disabled={disabled}
 							/>
 						</div>
 					</div>
@@ -96,7 +100,7 @@ function DistributionBox({
 						<PercentInput
 							value={bankPercent}
 							onInput={(e) => handlePercentChange(e, "bank")}
-							disabled={isSingleChannel}
+							disabled={isSingleChannel || disabled}
 						/>
 					</div>
 				)}

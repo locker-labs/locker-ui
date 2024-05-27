@@ -1,3 +1,4 @@
+/* eslint-disable react/require-default-props */
 import { isAddress } from "viem";
 
 import { errors } from "@/data/constants/errorMessages";
@@ -7,6 +8,7 @@ export interface IAddressInput {
 	setSendToAddress: (value: string) => void;
 	isLoading: boolean;
 	setErrorMessage: (errorMessage: string) => void;
+	disabled?: boolean;
 }
 
 function AddressInput({
@@ -14,6 +16,7 @@ function AddressInput({
 	setSendToAddress,
 	isLoading,
 	setErrorMessage,
+	disabled,
 }: IAddressInput) {
 	const handleInputChange = (input: string) => {
 		setSendToAddress(input);
@@ -37,7 +40,7 @@ function AddressInput({
 				placeholder="0x..."
 				value={sendToAddress}
 				onChange={(event) => handleInputChange(event.target.value)}
-				disabled={isLoading}
+				disabled={isLoading || disabled}
 			/>
 		</div>
 	);

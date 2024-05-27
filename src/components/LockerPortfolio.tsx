@@ -48,9 +48,9 @@ function LockerPortfolio({
 		- One set of automation settings across all chains
 			- A policy is necessary for each chain because of the session key signature
 			- Use the automations from policies[0] and use that across all chains
-			- If the autmation settings change, need to update policies on all enabled chains
+			- If the automation settings change, need to update policies on all enabled chains
 			- KYC only needs to be completed once
-				- Only use policies[0] to determine whether KYC is complete
+				- Use basePolicy to determine whether KYC is complete
 	*/
 
 	const fetchLockerNetWorth = async () => {
@@ -102,6 +102,7 @@ function LockerPortfolio({
 			<div className="mt-6 flex w-full flex-col space-y-2">
 				<span className="text-sm">Automation settings</span>
 				<AutomationSettings
+					currentPolicies={policies}
 					fetchPolicies={fetchPolicies}
 					locker={locker}
 					bankAutomation={bankAutomation}
@@ -124,9 +125,7 @@ function LockerPortfolio({
 				</div>
 			)}
 			{errorMessage && (
-				<span className="mt-6 text-sm text-red-500">
-					{errorMessage}
-				</span>
+				<span className="mt-6 text-sm text-error">{errorMessage}</span>
 			)}
 			{txs && (
 				<div className="mt-6 flex w-full flex-col space-y-2">

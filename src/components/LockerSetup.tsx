@@ -140,20 +140,18 @@ function LockerSetup({ lockers, fetchPolicies }: ILockerSetup) {
 		const automations: Automation[] = [
 			{
 				type: "savings",
-				allocationFactor: Number(formatUnits(BigInt(savePercent), 2)),
+				allocation: Number(formatUnits(BigInt(savePercent), 2)),
 				status: "ready",
 			},
 			{
 				type: "forward_to",
-				allocationFactor: Number(
-					formatUnits(BigInt(hotWalletPercent), 2)
-				),
+				allocation: Number(formatUnits(BigInt(hotWalletPercent), 2)),
 				status: "ready",
 				recipientAddress: locker.ownerAddress,
 			},
 			{
 				type: "off_ramp",
-				allocationFactor: Number(formatUnits(BigInt(bankPercent), 2)),
+				allocation: Number(formatUnits(BigInt(bankPercent), 2)),
 				status: "new",
 			},
 		];
@@ -295,7 +293,7 @@ function LockerSetup({ lockers, fetchPolicies }: ILockerSetup) {
 				</div>
 			)}
 			{errorMessage && (
-				<span className="mt-8 self-center text-sm text-red-500">
+				<span className="mt-8 self-center text-sm text-error">
 					{errorMessage}
 				</span>
 			)}

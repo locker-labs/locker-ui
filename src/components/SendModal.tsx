@@ -194,7 +194,7 @@ function SendModal({ isOpen, closeModal }: ISendModal) {
 										)}
 									</button>
 									{errorMessage && (
-										<span className="text-sm text-red-500">
+										<span className="text-sm text-error">
 											{errorMessage}
 										</span>
 									)}

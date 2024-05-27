@@ -1,7 +1,7 @@
 import { useAuth } from "@clerk/nextjs";
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useEffect, useState } from "react";
-// import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { IoClose } from "react-icons/io5";
 import { formatUnits } from "viem";
 
@@ -10,13 +10,14 @@ import DistributionBox from "@/components/DistributionBox";
 import { disclosures } from "@/data/constants/disclosures";
 import { errors } from "@/data/constants/errorMessages";
 import { usePolicyReviewModal } from "@/hooks/usePolicyReviewModal";
-// import { updatePolcies } from "@/services/lockers";
+import { updateAutomations } from "@/services/lockers";
 import { Automation, Locker, Policy } from "@/types";
 
 export interface IEditAutomationsModal {
 	isOpen: boolean;
 	closeModal: () => void;
 	fetchPolicies: () => void;
+	currentPolicies: Policy[];
 	locker: Locker;
 	currentBankAutomation: Automation | undefined;
 	currentHotWalletAutomation: Automation | undefined;
@@ -27,19 +28,20 @@ function EditAutomationsModal({
 	isOpen,
 	closeModal,
 	fetchPolicies,
+	currentPolicies,
 	locker,
 	currentBankAutomation,
 	currentHotWalletAutomation,
 	currentSaveAutomation,
 }: IEditAutomationsModal) {
 	const currentBankPercent = currentBankAutomation
-		? currentBankAutomation.allocationFactor * 100
+		? currentBankAutomation.allocation * 100
 		: 0;
 	const currentHotWalletPercent = currentHotWalletAutomation
-		? currentHotWalletAutomation.allocationFactor * 100
+		? currentHotWalletAutomation.allocation * 100
 		: 0;
 	const currentSavePercent = currentSaveAutomation
-		? currentSaveAutomation.allocationFactor * 100
+		? currentSaveAutomation.allocation * 100
 		: 0;
 
 	const [sendToAddress, setSendToAddress] = useState<string>("");
@@ -63,6 +65,7 @@ function EditAutomationsModal({
 		bank: currentBankPercent > 0,
 	});
 	const [errorMessage, setErrorMessage] = useState<string>("");
+	const [successMessage, setSuccessMessage] = useState<string>("");
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 
 	const { getToken } = useAuth();
@@ -113,51 +116,49 @@ function EditAutomationsModal({
 	const updatePolicies = async () => {
 		setIsLoading(true);
 
-		// 1. Craft policy object
+		await new Promise((resolve) => {
+			setTimeout(resolve, 1500);
+		});
+
+		// TO DO: handle the case where automation did not change
+
+		// 1. Craft policy objects for all enabled chains
 		const automations: Automation[] = [
 			{
 				type: "savings",
-				allocationFactor: Number(formatUnits(BigInt(savePercent), 2)),
+				allocation: Number(formatUnits(BigInt(savePercent), 2)),
 				status: "ready",
 			},
 			{
 				type: "forward_to",
-				allocationFactor: Number(
-					formatUnits(BigInt(hotWalletPercent), 2)
-				),
+				allocation: Number(formatUnits(BigInt(hotWalletPercent), 2)),
 				status: "ready",
 				recipientAddress: locker.ownerAddress,
 			},
 			{
 				type: "off_ramp",
-				allocationFactor: Number(formatUnits(BigInt(bankPercent), 2)),
-				status: "new",
+				allocation: Number(formatUnits(BigInt(bankPercent), 2)),
+				status: currentBankAutomation?.status || "new",
 			},
 		];
 
-		// Should be array of funded chains
-		const chainId = 137;
-
-		// should be an array of polcies
-		const policy: Policy = {
-			lockerId: locker.id as number,
-			chainId: chainId as number,
+		const newPolicies = currentPolicies.map((policy) => ({
+			id: policy.id,
+			lockerId: policy.lockerId,
+			chainId: policy.chainId,
 			automations,
-		};
+		}));
 
-		console.log(policy);
-
-		// 2. Get auth token and update policies on all chains with existing
-		//    policies through locker-api
+		// 2. Get auth token and update policies for all enabled chains through locker-api
 		const authToken = await getToken();
 		if (authToken) {
-			// await createPolicy(authToken, policy, setErrorMessage);
-			// update policies
+			await updateAutomations(authToken, newPolicies, setErrorMessage);
 		}
 
 		// 3. Fetch policies from DB to update state in Home component
 		fetchPolicies();
 
+		setSuccessMessage("Automations updated successfully");
 		setIsLoading(false);
 	};
 
@@ -273,6 +274,7 @@ function EditAutomationsModal({
 											onClick={() =>
 												handleChannelSelection("save")
 											}
+											disabled={!!successMessage}
 										/>
 										<ChannelSelectButton
 											isSelected={selectedChannels.wallet}
@@ -280,6 +282,7 @@ function EditAutomationsModal({
 											onClick={() =>
 												handleChannelSelection("wallet")
 											}
+											disabled={!!successMessage}
 										/>
 										<ChannelSelectButton
 											isSelected={selectedChannels.bank}
@@ -287,6 +290,7 @@ function EditAutomationsModal({
 											onClick={() =>
 												handleChannelSelection("bank")
 											}
+											disabled={!!successMessage}
 										/>
 										{selectedChannels.bank &&
 											currentBankAutomation?.status ===
@@ -311,49 +315,40 @@ function EditAutomationsModal({
 										setSendToAddress={setSendToAddress}
 										isLoading={isLoading}
 										setErrorMessage={setErrorMessage}
+										disabled={!!successMessage}
 									/>
-									<button
-										className="h-10 w-24 justify-center rounded-full bg-secondary-100 text-light-100 hover:bg-secondary-200 dark:bg-primary-200 dark:hover:bg-primary-100"
-										onClick={handleAutomationUpdate}
-									>
-										Update
-									</button>
+									{successMessage ? (
+										<button
+											className="h-10 w-24 justify-center rounded-full bg-light-200 hover:bg-light-300 dark:bg-dark-400 dark:hover:bg-dark-300"
+											onClick={closeModal}
+										>
+											Close
+										</button>
+									) : (
+										<button
+											className={`${isLoading ? "cursor-not-allowed opacity-80" : "cursor-pointer opacity-100"} flex h-10 w-24 items-center justify-center rounded-full bg-secondary-100 text-light-100 hover:bg-secondary-200 dark:bg-primary-200 dark:hover:bg-primary-100`}
+											onClick={handleAutomationUpdate}
+										>
+											{isLoading ? (
+												<AiOutlineLoading3Quarters
+													className="animate-spin"
+													size={22}
+												/>
+											) : (
+												"Update"
+											)}
+										</button>
+									)}
 									{errorMessage && (
-										<span className="mt-6 text-sm text-red-500">
+										<span className="mt-6 text-sm text-error">
 											{errorMessage}
 										</span>
 									)}
-									{/* <div className="flex w-full items-center justify-center">
-										<div
-											className={`flex size-7 items-center justify-center rounded-full ${getChainIconStyling(chainId)}`}
-										>
-											<ChainIcon
-												className="flex items-center justify-center"
-												chainId={chainId}
-												size={16}
-											/>
-										</div>
-										<span className="ml-3 whitespace-nowrap">
-											{getChainNameFromId(chainId)}
+									{successMessage && (
+										<span className="mt-6 text-success">
+											{successMessage}
 										</span>
-									</div>
-									<div className="flex w-full flex-col items-center space-y-4">
-										<button
-											className="h-10 w-24 justify-center rounded-full bg-secondary-100 text-light-100 hover:bg-secondary-200 dark:bg-primary-200 dark:hover:bg-primary-100"
-											onClick={() => {
-												createNewPolicy();
-												closeModal();
-											}}
-										>
-											Enable
-										</button>
-										<button
-											className="text-sm hover:text-secondary-100 dark:hover:text-primary-100"
-											onClick={closeModal}
-										>
-											Cancel
-										</button>
-									</div> */}
+									)}
 								</div>
 							</Dialog.Panel>
 						</Transition.Child>

@@ -40,12 +40,13 @@ export type Locker = {
 
 export type Automation = {
 	type: "savings" | "forward_to" | "off_ramp";
-	allocationFactor: number; // 0 - 1
+	allocation: number; // 0 - 1
 	status: "new" | "pending" | "ready" | "failed"; // Always "ready" for "savings" or "forward_to" types
 	recipientAddress?: `0x${string}`; // Required if forward_to or off_ramp
 };
 
 export type Policy = {
+	id?: number;
 	lockerId: number;
 	chainId: number;
 	sessionKey?: string;
