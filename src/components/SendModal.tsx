@@ -76,7 +76,7 @@ function SendModal({ isOpen, closeModal, tokenList }: ISendModal) {
 							leaveFrom="opacity-100 scale-100"
 							leaveTo="opacity-0 scale-95"
 						>
-							<Dialog.Panel className="flex w-full min-w-64 max-w-sm flex-col items-center justify-center overflow-hidden rounded-2xl bg-light-100 p-6 shadow-xl dark:bg-dark-500">
+							<Dialog.Panel className="flex w-full min-w-64 max-w-sm flex-col items-center justify-center overflow-visible rounded-2xl bg-light-100 p-6 shadow-xl dark:bg-dark-500">
 								<Dialog.Title
 									as="h3"
 									className="flex w-full items-center justify-between"

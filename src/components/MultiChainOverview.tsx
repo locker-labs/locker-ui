@@ -1,9 +1,9 @@
 import { useAuth } from "@clerk/nextjs";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { FaRobot } from "react-icons/fa6";
 import { checksumAddress } from "viem";
-import { useAccount, useSwitchChain } from "wagmi";
+import { useAccount, useSwitchChain, useWalletClient } from "wagmi";
 
 import ChainIcon from "@/components/ChainIcon";
 import { errors } from "@/data/constants/errorMessages";
@@ -27,24 +27,6 @@ export interface IMultiChainOverview {
 	fetchPolicies: () => void;
 }
 
-/*
-const [copied, setCopied] = useState<boolean>(false);
-const [copiedSymbol, setCopiedSymbol] = useState<string>("");
-    
-<div className="flex h-10 w-12 items-center justify-center">
-    {copied &&
-    copiedSymbol ===
-        token.symbol ? (
-        <IoCheckboxOutline
-            className="text-success"
-            size="15px"
-        />
-    ) : (
-        <IoCopyOutline size="15px" />
-    )}
-</div>
-*/
-
 function MultiChainOverview({
 	fundedChainIds,
 	policies,
@@ -56,13 +38,25 @@ function MultiChainOverview({
 }: IMultiChainOverview) {
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const [chainRowLoading, setChainRowLoading] = useState<number | null>(null);
+	const [chainSwitched, setChainSwitched] = useState<boolean>(false);
+	const [targetChainId, setTargetChainId] = useState<number | null>(null);
+	const [pendingPolicyChainId, setPendingPolicyChainId] = useState<
+		number | null
+	>(null);
 
 	const { getToken } = useAuth();
 	const { signSessionKey } = useSmartAccount();
 	const { switchChain } = useSwitchChain();
 	const { openConnectModal, renderConnectModal } = useConnectModal();
 	const { chainId: walletChainId, address, isConnected } = useAccount();
+	const { data: walletClient } = useWalletClient();
 	const { openQrCodeModal, renderQrCodeModal } = useQrCodeModal();
+
+	const handleChainSwitch = async (policyChainId: number) => {
+		setTargetChainId(policyChainId);
+		switchChain({ chainId: policyChainId });
+		setChainSwitched(true);
+	};
 
 	const createNewPolicy = async (policyChainId: number) => {
 		setIsLoading(true);
@@ -76,31 +70,23 @@ function MultiChainOverview({
 			return;
 		}
 
-		// 1. Require user's wallet to be on the correct chain
 		if (walletChainId !== policyChainId) {
-			switchChain({ chainId: policyChainId });
-
-			// Wait 1 second for the chain switch to finish updating the wallet client
-			await new Promise((resolve) => {
-				setTimeout(resolve, 1000);
-			});
-
-			// TODO: If wallet client fails to update in alloted time, catch the error, setErrorMessage, and return
-			// It seems like the best approach will be to separate the switchChain logic from the createNewPolicy function.
-			// Then we could do the following:
-			//   1. Check if the walletChainId === policyChainId before calling createNewPolicy
-			//   2. If they are not equal, call a function that calls switchChain
-			//   3. Call createNewPolicy in a useEffect to ensure that the state changes triggered by switchChain are complete
+			await handleChainSwitch(policyChainId);
+			return; // Exit early as the useEffect will handle calling createNewPolicy again
 		}
 
-		// 2. Get user to sign session key
+		if (!walletClient) {
+			setPendingPolicyChainId(policyChainId);
+			return;
+		}
+
 		const sig = await signSessionKey(locker.ownerAddress);
 		if (!sig) {
 			setIsLoading(false);
 			setChainRowLoading(null);
 			return;
 		}
-		// 3. Craft policy for the specified chain using existing automations
+
 		const policy: Policy = {
 			lockerId: locker.id as number,
 			chainId: policyChainId as number,
@@ -108,13 +94,11 @@ function MultiChainOverview({
 			automations,
 		};
 
-		// 4. Get auth token and create policy through locker-api
 		const authToken = await getToken();
 		if (authToken) {
 			await createPolicy(authToken, policy, setErrorMessage);
 		}
 
-		// 5. Fetch policies from DB to update state in Home component
 		fetchPolicies();
 
 		setIsLoading(false);
@@ -128,6 +112,20 @@ function MultiChainOverview({
 			openConnectModal();
 		}
 	};
+
+	useEffect(() => {
+		if (chainSwitched && walletChainId === targetChainId) {
+			createNewPolicy(targetChainId!);
+			setChainSwitched(false);
+		}
+	}, [chainSwitched, walletChainId, targetChainId]);
+
+	useEffect(() => {
+		if (walletClient && pendingPolicyChainId !== null) {
+			createNewPolicy(pendingPolicyChainId);
+			setPendingPolicyChainId(null);
+		}
+	}, [walletClient, pendingPolicyChainId]);
 
 	return (
 		<div className="flex w-full min-w-52 max-w-lg flex-col divide-y divide-light-200 overflow-hidden rounded-md border border-light-200 text-sm shadow-sm shadow-light-600 dark:divide-dark-200 dark:border-dark-200 dark:shadow-none">
