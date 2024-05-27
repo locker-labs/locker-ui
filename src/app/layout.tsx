@@ -1,5 +1,6 @@
 import "@/styles/globals.css";
 
+import { Analytics as VercelAnalytics } from "@vercel/analytics/react";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { headers } from "next/headers";
@@ -47,6 +48,7 @@ export default function RootLayout({
 						</ThemeProvider>
 					</EvmProvider>
 				</AuthProvider>
+				<VercelAnalytics />
 			</body>
 		</html>
 	);
