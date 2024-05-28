@@ -1,16 +1,16 @@
 "use client";
 
-import { QRCodeSVG } from "qrcode.react";
 import { useState } from "react";
 import { IoCheckboxOutline, IoCopyOutline } from "react-icons/io5";
 
+import ChainIcon from "@/components/ChainIcon";
+import LockerQrCode from "@/components/LockerQrCode";
 import { supportedChains } from "@/data/constants/supportedChains";
 import type { Locker } from "@/types";
 import { copyToClipboard } from "@/utils/copytoClipboard";
 import { getChainIconStyling } from "@/utils/getChainIconStyling";
+import { getChainNameFromChainObj } from "@/utils/getChainName";
 import { truncateAddress } from "@/utils/truncateAddress";
-
-import ChainIcon from "./ChainIcon";
 
 export interface ILockerEmpty {
 	emptyLocker: Locker;
@@ -36,25 +36,10 @@ function LockerEmpty({ emptyLocker }: ILockerEmpty) {
 					Any token can be transferred to your locker from another
 					account on any of the supported chains.
 				</span>
-				<div className="flex flex-col items-center justify-center space-y-5 self-center">
-					<span className="bg-gradient-to-r from-secondary-200 to-primary-200 bg-clip-text text-3xl text-transparent">
-						Your locker
-					</span>
-					<QRCodeSVG
-						className="rounded-xl border-2 border-light-600 dark:border-dark-500"
-						value={emptyLocker.address}
-						size={225}
-						includeMargin
-						level="H"
-						imageSettings={{
-							src: "/assets/iconLockerWithMargin.svg",
-							height: 45,
-							width: 45,
-							excavate: true,
-						}}
-					/>
+				<div className="flex flex-col items-center justify-center self-center">
+					<LockerQrCode lockerAddress={emptyLocker.address} />
 					<button
-						className="flex items-center justify-center text-sm outline-none hover:text-secondary-100 dark:hover:text-primary-100"
+						className="my-8 flex items-center justify-center text-sm hover:text-secondary-100 dark:hover:text-primary-100"
 						onClick={() =>
 							copyToClipboard(emptyLocker.address, setCopied)
 						}
@@ -63,12 +48,12 @@ function LockerEmpty({ emptyLocker }: ILockerEmpty) {
 						{copied ? (
 							<IoCheckboxOutline
 								className="ml-3 shrink-0 text-success"
-								size="22px"
+								size="20px"
 							/>
 						) : (
 							<IoCopyOutline
 								className="ml-3 shrink-0"
-								size="22px"
+								size="20px"
 							/>
 						)}
 					</button>
@@ -79,7 +64,7 @@ function LockerEmpty({ emptyLocker }: ILockerEmpty) {
 								className="flex w-full items-center"
 							>
 								<div
-									className={`flex size-7 items-center justify-center rounded-full ${getChainIconStyling(chainOption.id)}`}
+									className={`flex size-7 shrink-0 items-center justify-center rounded-full ${getChainIconStyling(chainOption.id)}`}
 								>
 									<ChainIcon
 										className="flex items-center justify-center"
@@ -88,11 +73,7 @@ function LockerEmpty({ emptyLocker }: ILockerEmpty) {
 									/>
 								</div>
 								<span className="ml-3 whitespace-nowrap">
-									{chainOption.name === "OP Mainnet"
-										? "Optimism"
-										: chainOption.name === "Arbitrum One"
-											? "Arbitrum"
-											: chainOption.name}
+									{getChainNameFromChainObj(chainOption)}
 								</span>
 							</div>
 						))}

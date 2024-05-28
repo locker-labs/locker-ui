@@ -1,5 +1,6 @@
 import "@/styles/globals.css";
 
+import { Analytics as VercelAnalytics } from "@vercel/analytics/react";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { headers } from "next/headers";
@@ -13,7 +14,7 @@ import { globalMetadata } from "@/data/seo/globalMetadata";
 import AuthProvider from "@/providers/AuthProvider";
 import EvmProvider from "@/providers/EvmProvider";
 import ThemeProvider from "@/providers/ThemeProvider";
-import { config } from "@/providers/wagmiConfig";
+import { wagmiConfig } from "@/providers/wagmiConfig";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -24,7 +25,10 @@ export default function RootLayout({
 }: Readonly<{
 	children: ReactNode;
 }>) {
-	const initialState = cookieToInitialState(config, headers().get("cookie"));
+	const initialState = cookieToInitialState(
+		wagmiConfig,
+		headers().get("cookie")
+	);
 
 	return (
 		<html lang="en" suppressHydrationWarning>
@@ -44,6 +48,7 @@ export default function RootLayout({
 						</ThemeProvider>
 					</EvmProvider>
 				</AuthProvider>
+				<VercelAnalytics />
 			</body>
 		</html>
 	);

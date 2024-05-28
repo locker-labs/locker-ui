@@ -37,7 +37,7 @@ function ThemedImage({ darkImageSrc, lightImageSrc, alt }: IThemedImage) {
 			break;
 	}
 
-	return <Image src={src} alt={alt} fill />;
+	return <Image src={src} alt={alt} fill priority />;
 }
 
 export default ThemedImage;

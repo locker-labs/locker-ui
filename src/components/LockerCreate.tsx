@@ -1,14 +1,12 @@
 "use client";
 
 import { useAuth } from "@clerk/nextjs";
-import { getKernelAddressFromECDSA } from "@zerodev/ecdsa-validator";
-import { ENTRYPOINT_ADDRESS_V07 } from "permissionless";
 import { useEffect, useState } from "react";
-import type { PublicClient } from "viem";
-import { useAccount, useClient } from "wagmi";
+import { useAccount } from "wagmi";
 
 import Loader from "@/components/Loader";
 import { useConnectModal } from "@/hooks/useConnectModal";
+import useSmartAccount from "@/hooks/useSmartAccount";
 import { createLocker } from "@/services/lockers";
 import type { Locker } from "@/types";
 
@@ -23,25 +21,24 @@ function LockerCreate({ lockerIndex, fetchLockers }: ILockerCreate) {
 	const [errorMessage, setErrorMessage] = useState<string | null>(null);
 	const { isConnected, address } = useAccount();
 	const { openConnectModal, renderConnectModal } = useConnectModal();
+	const { genSmartAccountAddress } = useSmartAccount();
 	const { getToken } = useAuth();
-	const client = useClient();
 
 	const createNewLocker = async () => {
 		setErrorMessage(null);
 		setIsLoading(true);
-		// Show Loader for 2 seconds
+		// Show Loader for 1.5 seconds
 		await new Promise((resolve) => {
-			setTimeout(resolve, 2000);
+			setTimeout(resolve, 1500);
 		});
 
 		// Proceed
 		try {
-			const smartAccountAddress = await getKernelAddressFromECDSA({
-				publicClient: client as PublicClient,
-				eoaAddress: address as `0x${string}`,
-				index: BigInt(lockerIndex),
-				entryPointAddress: ENTRYPOINT_ADDRESS_V07,
-			});
+			const smartAccountAddress = await genSmartAccountAddress(
+				address as `0x${string}`,
+				lockerIndex
+			);
+
 			const locker: Locker = {
 				seed: lockerIndex,
 				provider: "ZeroDev",
@@ -96,7 +93,7 @@ function LockerCreate({ lockerIndex, fetchLockers }: ILockerCreate) {
 						<span className="bg-gradient-to-r from-secondary-200 to-primary-200 bg-clip-text text-2xl text-transparent">
 							Customize
 						</span>{" "}
-						how your locker distributes future deposits.
+						how your locker distributes payments.
 					</span>
 					<span className="text-xl">
 						<span className="bg-gradient-to-r from-secondary-200 to-primary-200 bg-clip-text text-2xl text-transparent">
@@ -106,7 +103,7 @@ function LockerCreate({ lockerIndex, fetchLockers }: ILockerCreate) {
 						automatically go where you want it.
 					</span>
 					<button
-						className="h-12 w-40 items-center justify-center rounded-full bg-secondary-100 text-light-100 outline-none hover:bg-secondary-200 dark:bg-primary-200 dark:hover:bg-primary-100"
+						className="h-12 w-40 items-center justify-center rounded-full bg-secondary-100 text-light-100 hover:bg-secondary-200 dark:bg-primary-200 dark:hover:bg-primary-100"
 						onClick={() => handleLockerCreation()}
 						disabled={isLoading}
 					>
