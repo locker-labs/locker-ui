@@ -11,12 +11,18 @@ const config: Config = {
 		"text-arbitrum",
 		"bg-optimism/20",
 		"text-optimism",
+		"bg-base/20",
+		"text-base",
 		"bg-polygon/20",
 		"text-polygon",
 		"bg-avalanche/20",
 		"text-avalanche",
 		"bg-ethereum/20",
 		"text-ethereum",
+		"bg-celo/20",
+		"text-celo",
+		"bg-binance/20",
+		"text-binance",
 	],
 	theme: {
 		screens: {
