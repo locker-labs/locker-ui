@@ -4,11 +4,10 @@ import AutomationSettings from "@/components/AutomationSettings";
 import MultiChainOverview from "@/components/MultiChainOverview";
 import PortfolioIconButtonGroup from "@/components/PortfolioIconButtonGroup";
 import Tooltip from "@/components/Tooltip";
+import TxTable from "@/components/TxTable";
 import { getLockerNetWorth } from "@/services/moralis";
 import { Locker, Policy } from "@/types";
 import { isTestnet } from "@/utils/isTestnet";
-
-import TxTable from "./TxTable";
 
 export interface ILockerPortfolio {
 	lockers: Locker[];

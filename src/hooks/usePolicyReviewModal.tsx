@@ -16,7 +16,10 @@ export const usePolicyReviewModal = () => {
 
 	const renderPolicyReviewModal = (
 		createNewPolicy: () => void,
-		chainId: number
+		chainId: number,
+		savePercent: string,
+		hotWalletPercent: string,
+		bankPercent: string
 	) => {
 		if (!isOpen) return null;
 		return ReactDOM.createPortal(
@@ -25,6 +28,9 @@ export const usePolicyReviewModal = () => {
 				closeModal={closePolicyReviewModal}
 				createNewPolicy={createNewPolicy}
 				chainId={chainId}
+				savePercent={savePercent}
+				hotWalletPercent={hotWalletPercent}
+				bankPercent={bankPercent}
 			/>,
 			document.body
 		);

@@ -7,12 +7,11 @@ import { useAccount, useSwitchChain, useWalletClient } from "wagmi";
 
 import AddressInput from "@/components/AddressInput";
 import CurrencyInput from "@/components/CurrencyInput";
+import TokenDropdown from "@/components/TokenDropdown";
 import { errors } from "@/data/constants/errorMessages";
 import { successes } from "@/data/constants/successMessages";
 import useSmartAccount from "@/hooks/useSmartAccount";
 import { Locker, Token } from "@/types";
-
-import TokenDropdown from "./TokenDropdown";
 
 export interface ISendModal {
 	isOpen: boolean;

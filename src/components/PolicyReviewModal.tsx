@@ -2,6 +2,7 @@ import { Dialog, Transition } from "@headlessui/react";
 import { Fragment } from "react";
 import { IoClose } from "react-icons/io5";
 
+import AllocationBox from "@/components/AllocationBox";
 import ChainIcon from "@/components/ChainIcon";
 import { getChainIconStyling } from "@/utils/getChainIconStyling";
 import { getChainNameFromId } from "@/utils/getChainName";
@@ -11,6 +12,9 @@ export interface IPolicyReviewModal {
 	closeModal: () => void;
 	createNewPolicy: () => void;
 	chainId: number;
+	savePercent: string;
+	hotWalletPercent: string;
+	bankPercent: string;
 }
 
 function PolicyReviewModal({
@@ -18,6 +22,9 @@ function PolicyReviewModal({
 	closeModal,
 	createNewPolicy,
 	chainId,
+	savePercent,
+	hotWalletPercent,
+	bankPercent,
 }: IPolicyReviewModal) {
 	return (
 		<Transition appear show={isOpen} as={Fragment}>
@@ -61,9 +68,15 @@ function PolicyReviewModal({
 									</button>
 								</Dialog.Title>
 								<div className="mt-6 flex w-full flex-col items-center justify-center space-y-8">
-									<span className="text-left">
-										Render percentage allocations here.
-									</span>
+									<div className="flex w-full max-w-72 items-center justify-center">
+										<AllocationBox
+											bankPercent={Number(bankPercent)}
+											hotWalletPercent={Number(
+												hotWalletPercent
+											)}
+											savePercent={Number(savePercent)}
+										/>
+									</div>
 									<div className="flex w-full items-center justify-center">
 										<div
 											className={`flex size-7 items-center justify-center rounded-full ${getChainIconStyling(chainId)}`}
@@ -78,6 +91,16 @@ function PolicyReviewModal({
 											{getChainNameFromId(chainId)}
 										</span>
 									</div>
+									<span className="text-left text-sm text-light-600">
+										These settings will only be enabled on{" "}
+										{getChainNameFromId(chainId)}. You can
+										enable other chains later.
+									</span>
+									<span className="text-left text-sm text-light-600">
+										If this is not the chain you want to
+										enable right now, switch to the desired
+										chain in your wallet.
+									</span>
 									<div className="flex w-full flex-col items-center space-y-4">
 										<button
 											className="h-10 w-24 justify-center rounded-full bg-secondary-100 text-light-100 hover:bg-secondary-200 dark:bg-primary-200 dark:hover:bg-primary-100"
