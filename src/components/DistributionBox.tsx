@@ -1,10 +1,9 @@
 /* eslint-disable react/require-default-props */
+import AddressInput from "@/components/AddressInput";
 import BankIcon from "@/components/BankIcon";
 import PercentInput from "@/components/PercentInput";
 import SaveIcon from "@/components/SaveIcon";
 import WalletIcon from "@/components/WalletIcon";
-
-import AddressInput from "./AddressInput";
 
 interface IDistributionBox {
 	savePercent: string;

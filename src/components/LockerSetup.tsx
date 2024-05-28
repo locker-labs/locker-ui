@@ -329,7 +329,14 @@ function LockerSetup({ lockers, fetchPolicies }: ILockerSetup) {
 				<Steps step={step} totalSteps={2} />
 			</div>
 			{renderConnectModal()}
-			{chainId && renderPolicyReviewModal(createNewPolicy, chainId)}
+			{chainId &&
+				renderPolicyReviewModal(
+					createNewPolicy,
+					chainId,
+					savePercent,
+					hotWalletPercent,
+					bankPercent
+				)}
 		</div>
 	);
 }
