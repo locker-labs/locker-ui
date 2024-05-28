@@ -222,22 +222,22 @@ function LockerSetup({ lockers, fetchPolicies }: ILockerSetup) {
 			{step === 1 && (
 				<div className="flex w-full flex-col items-center">
 					<span className="mb-4 text-lg">
-						When money arrives in my locker, I want to:
+						Choose where to allocate funds received at your locker.
 					</span>
 					<div className="flex w-full min-w-60 max-w-sm flex-col space-y-2">
 						<ChannelSelectButton
 							isSelected={selectedChannels.save}
-							label="Save in my locker"
+							label="Save in your locker"
 							onClick={() => handleChannelSelection("save")}
 						/>
 						<ChannelSelectButton
 							isSelected={selectedChannels.wallet}
-							label="Forward to my hot wallet"
+							label="Forward to a hot wallet"
 							onClick={() => handleChannelSelection("wallet")}
 						/>
 						<ChannelSelectButton
 							isSelected={selectedChannels.bank}
-							label="Send to my bank"
+							label="Send to your bank"
 							onClick={() => handleChannelSelection("bank")}
 						/>
 						{selectedChannels.bank && (
@@ -302,7 +302,7 @@ function LockerSetup({ lockers, fetchPolicies }: ILockerSetup) {
 					{disclosures.BANK_SETUP_US_ONLY}
 				</span>
 			)}
-			{txs && (
+			{txs && txs.length > 0 && (
 				<div className="flex w-full flex-col space-y-2">
 					<span className="text-sm">Transaction history</span>
 					<TxTable txs={txs} />

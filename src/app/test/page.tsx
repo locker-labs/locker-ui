@@ -18,7 +18,7 @@ function Test() {
 	// ****************************************************** //
 	const testLockerCreate = false;
 	const testLockerEmpty = false;
-	const testLockerSetup = true;
+	const testLockerSetup = false;
 	const testLockerPortfolio = false;
 	// ****************************************************** //
 	// ****************************************************** //
@@ -85,6 +85,7 @@ function Test() {
 
 	return (
 		<div className="flex w-full flex-1 flex-col items-center py-12">
+			<span className="text-3xl text-error">TEST</span>
 			{isFirstRender.current && <Loader />}
 			{testLockerCreate && (
 				<LockerCreate lockerIndex={0} fetchLockers={fetchLockers} />

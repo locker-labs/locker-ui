@@ -40,7 +40,17 @@ function LockerPortfolio({
 		(a) => a.type === "forward_to"
 	);
 	const saveAutomation = automations.find((a) => a.type === "savings");
-	const fundedChainIds = txs ? txs.map((tx) => tx.chainId) : [];
+
+	const fundedChainIds = txs
+		? txs
+				.filter(
+					(tx) =>
+						tx.lockerDirection === "in" &&
+						chainsNetWorths[tx.chainId] !== "0.00"
+				)
+				.map((tx) => tx.chainId)
+		: [];
+	// const fundedChainIds = txs ? txs.map((tx) => tx.chainId) : [];
 
 	/* For now, we're only handling:
 		- One locker per user (index 0)
