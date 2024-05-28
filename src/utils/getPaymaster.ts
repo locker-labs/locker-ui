@@ -1,6 +1,6 @@
 import { supportedChainIds } from "@/data/constants/supportedChains";
 
-export const getBundler = (chainId: number) => {
+export const getPaymaster = (chainId: number) => {
 	const paymasters = {
 		[supportedChainIds.arbitrum]: process.env.ARBITRUM_PAYMASTER_RPC_URL!,
 		[supportedChainIds.optimism]: process.env.OPTIMISM_PAYMASTER_RPC_URL!,

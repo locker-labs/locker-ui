@@ -6,7 +6,9 @@ import {
 	IoCopyOutline,
 	IoQrCodeOutline,
 } from "react-icons/io5";
+import { useAccount } from "wagmi";
 
+import { useConnectModal } from "@/hooks/useConnectModal";
 import { useQrCodeModal } from "@/hooks/useQrCodeModal";
 import { useSendModal } from "@/hooks/useSendModal";
 import { getTokenBalances } from "@/services/transactions";
@@ -20,6 +22,9 @@ export interface ILockerPortfolio {
 function PortfolioIconButtonGroup({ locker }: ILockerPortfolio) {
 	const [tokenList, setTokenList] = useState<Token[]>([]);
 	const [copied, setCopied] = useState<boolean>(false);
+
+	const { isConnected } = useAccount();
+	const { openConnectModal, renderConnectModal } = useConnectModal();
 	const { openQrCodeModal, renderQrCodeModal } = useQrCodeModal();
 	const { openSendModal, renderSendModal } = useSendModal();
 	const { getToken } = useAuth();
@@ -29,6 +34,14 @@ function PortfolioIconButtonGroup({ locker }: ILockerPortfolio) {
 		if (authToken && locker.id) {
 			const list = await getTokenBalances(authToken, locker.id);
 			setTokenList(list || []);
+		}
+	};
+
+	const handleSendModalPopup = () => {
+		if (isConnected) {
+			openSendModal();
+		} else {
+			openConnectModal();
 		}
 	};
 
@@ -69,14 +82,15 @@ function PortfolioIconButtonGroup({ locker }: ILockerPortfolio) {
 				<button
 					className="flex size-10 shrink-0 items-center justify-center rounded-full bg-dark-500/10 text-dark-600 transition duration-300 ease-in-out hover:scale-105 dark:bg-light-200/10 dark:text-light-100"
 					aria-label="Send money out of locker"
-					onClick={openSendModal}
+					onClick={handleSendModalPopup}
 				>
 					<IoIosSend size="16px" />
 				</button>
 				<span className="text-light-600">Send</span>
 			</div>
 			{renderQrCodeModal(locker.address)}
-			{renderSendModal(tokenList)}
+			{renderSendModal(tokenList, locker)}
+			{renderConnectModal()}
 		</div>
 	);
 }

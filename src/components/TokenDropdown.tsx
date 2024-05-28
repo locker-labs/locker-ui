@@ -1,3 +1,4 @@
+/* eslint-disable react/require-default-props */
 import { Listbox, Transition } from "@headlessui/react";
 import { useState } from "react";
 import {
@@ -12,13 +13,19 @@ import { Token } from "@/types";
 import { copyToClipboard } from "@/utils/copytoClipboard";
 import { getChainIconStyling } from "@/utils/getChainIconStyling";
 
-export interface IToken {
+export interface ITokenDropdown {
 	tokenList: Token[];
 	selectedToken: Token;
 	setSelectedToken: (token: Token) => void;
+	disabled?: boolean;
 }
 
-function TokenDropdown({ tokenList, selectedToken, setSelectedToken }: IToken) {
+function TokenDropdown({
+	tokenList,
+	selectedToken,
+	setSelectedToken,
+	disabled = false,
+}: ITokenDropdown) {
 	const [copied, setCopied] = useState<boolean>(false);
 	const [copiedSymbol, setCopiedSymbol] = useState<string>("");
 
@@ -28,6 +35,7 @@ function TokenDropdown({ tokenList, selectedToken, setSelectedToken }: IToken) {
 			className="flex h-12 w-full flex-col items-center justify-center rounded-md"
 			value={selectedToken}
 			onChange={setSelectedToken}
+			disabled={disabled}
 		>
 			{({ open }) => (
 				<div className="relative h-full w-full">

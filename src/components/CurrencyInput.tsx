@@ -1,3 +1,4 @@
+/* eslint-disable react/require-default-props */
 import { formatUnits, parseUnits } from "viem";
 
 import { errors } from "@/data/constants/errorMessages";
@@ -11,6 +12,7 @@ export interface ICurrencyInput {
 	maxAmount: bigint;
 	token: Token;
 	setErrorMessage: (errorMessage: string) => void;
+	disabled?: boolean;
 }
 
 function CurrencyInput({
@@ -21,6 +23,7 @@ function CurrencyInput({
 	maxAmount,
 	token,
 	setErrorMessage,
+	disabled = false,
 }: ICurrencyInput) {
 	// Handle validity of input based on pattern defined in <input> element
 	const handleChange = (event: React.FormEvent<HTMLInputElement>) => {
@@ -66,12 +69,13 @@ function CurrencyInput({
 				autoComplete="off"
 				value={amountInput}
 				onInput={(event) => handleChange(event)}
-				disabled={isLoading}
+				disabled={isLoading || disabled}
 			/>
 			<div className="flex items-center justify-center pl-1 pr-2">
 				<button
 					className="rounded-lg bg-light-200 px-2 py-1 text-xs hover:text-secondary-100 dark:bg-dark-400 dark:hover:text-primary-100"
 					onClick={() => handleMaxAmountClick()}
+					disabled={isLoading || disabled}
 				>
 					Max
 				</button>
