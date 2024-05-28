@@ -5,4 +5,5 @@ export const paths = {
 	SIGN_IN: "/sign-in",
 	SIGN_UP: "/sign-up",
 	TX: "/tx",
+	TEST: "/test",
 };

@@ -6,6 +6,8 @@ import { paths } from "@/data/constants/paths";
 const isProtectedRoute = createRouteMatcher([
 	`${paths.HOME}(.*)`,
 	`${paths.ACCOUNT}(.*)`,
+	`${paths.TX}(.*)`,
+	`${paths.TEST}(.*)`,
 ]);
 
 export default clerkMiddleware(

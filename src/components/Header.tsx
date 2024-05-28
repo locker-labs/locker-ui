@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useAccount } from "wagmi";
 
-import AuthButton from "@/components/AuthButton";
+// import AuthButton from "@/components/AuthButton";
 import ChainDropdown from "@/components/ChainDropdown";
 import ConnectButton from "@/components/ConnectButton";
 import HeaderMenu from "@/components/HeaderMenu";
@@ -18,10 +18,10 @@ function Header() {
 	const { isSignedIn } = useAuth();
 	const { isConnected, chainId } = useAccount();
 
-	const isAuthRoute =
-		pathname === paths.SIGN_IN || pathname === paths.SIGN_UP;
+	// const isAuthRoute =
+	// 	pathname === paths.SIGN_IN || pathname === paths.SIGN_UP;
 
-	const showAuthButtons = !isSignedIn && !isAuthRoute;
+	// const showAuthButtons = !isSignedIn && !isAuthRoute;
 	const showConnectButton = isSignedIn && !isConnected;
 	const showMenu = isSignedIn && isConnected;
 	const showTestnetBanner = isConnected && chainId && isTestnet(chainId);
@@ -60,24 +60,25 @@ function Header() {
 						</div>
 						<HeaderMenu />
 					</div>
-				) : showAuthButtons ? (
-					<div className="ml-2 flex items-center justify-center sm:space-x-2">
-						<AuthButton
-							type="sign-in"
-							label="Sign in"
-							height="h-10"
-							width="w-24"
-						/>
-						<div className="hidden sm:flex">
-							<AuthButton
-								type="sign-up"
-								label="Sign up"
-								height="h-10"
-								width="w-24"
-							/>
-						</div>
-					</div>
-				) : null}
+				) : // : showAuthButtons ? (
+				// 	<div className="ml-2 flex items-center justify-center sm:space-x-2">
+				// 		<AuthButton
+				// 			type="sign-in"
+				// 			label="Sign in"
+				// 			height="h-10"
+				// 			width="w-24"
+				// 		/>
+				// 		<div className="hidden sm:flex">
+				// 			<AuthButton
+				// 				type="sign-up"
+				// 				label="Sign up"
+				// 				height="h-10"
+				// 				width="w-24"
+				// 			/>
+				// 		</div>
+				// 	</div>
+				// )
+				null}
 			</div>
 		</header>
 	);

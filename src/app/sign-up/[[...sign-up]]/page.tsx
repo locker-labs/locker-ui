@@ -13,6 +13,8 @@ function SignUpPage() {
 	const { isSignedIn } = useAuth();
 	const { resolvedTheme } = useTheme();
 
+	const inviteCodes = process.env.BETA_INVITE_CODES!.split(",");
+
 	// Clerk automatically handles redirect to paths.HOME if user is already signed in,
 	// but sometimes it fails. So will try to redirect every second if user is signed in.
 	useEffect(() => {
@@ -27,6 +29,14 @@ function SignUpPage() {
 		// Clean up the interval when the component unmounts
 		return () => clearInterval(interval);
 	}, [isSignedIn]);
+
+	useEffect(() => {
+		const storedInviteCode = localStorage.getItem("inviteCode");
+		if (!(storedInviteCode && inviteCodes.includes(storedInviteCode))) {
+			router.push(paths.LANDING);
+		}
+	}, []);
+
 	return (
 		<div className="flex w-full flex-1 flex-col items-center py-12">
 			<SignUp
