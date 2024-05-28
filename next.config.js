@@ -63,6 +63,9 @@ module.exports = withPWA({
 
 		// Supported chains (different for dev and prod)
 		SUPPORTED_CHAINS: process.env.SUPPORTED_CHAINS,
+
+		// Beta invite codes
+		BETA_INVITE_CODES: process.env.BETA_INVITE_CODES,
 		// ********************************************* //
 
 		// ****************** PUBLIC ****************** //

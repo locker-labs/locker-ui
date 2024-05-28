@@ -12,4 +12,5 @@ export const errors = {
 	TOO_MANY_DECIMALS: "Too many decimal places.",
 	AT_LEAST_ONE: "Must choose at least one.",
 	SUM_TO_100: "Percentages must add up to 100%.",
+	INVALID_INVITE: "Invalid invite code.",
 };
