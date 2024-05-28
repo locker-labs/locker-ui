@@ -45,7 +45,9 @@ function EditAutomationsModal({
 		? currentSaveAutomation.allocation * 100
 		: 0;
 
-	const [sendToAddress, setSendToAddress] = useState<string>("");
+	const [sendToAddress, setSendToAddress] = useState<string>(
+		locker.ownerAddress
+	);
 	const [savePercent, setSavePercent] = useState<string>(
 		currentSavePercent.toString()
 	);

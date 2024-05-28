@@ -25,7 +25,9 @@ export interface ILockerSetup {
 }
 
 function LockerSetup({ lockers, fetchPolicies }: ILockerSetup) {
-	const [sendToAddress, setSendToAddress] = useState<string>("");
+	const [sendToAddress, setSendToAddress] = useState<string>(
+		lockers[0].ownerAddress
+	);
 	const [savePercent, setSavePercent] = useState<string>("20");
 	const [hotWalletPercent, setHotWalletPercent] = useState<string>("0");
 	const [bankPercent, setBankPercent] = useState<string>("0");
