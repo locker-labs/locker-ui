@@ -9,6 +9,7 @@ import ChannelSelectButton from "@/components/ChannelSelectButton";
 import DistributionBox from "@/components/DistributionBox";
 import { disclosures } from "@/data/constants/disclosures";
 import { errors } from "@/data/constants/errorMessages";
+import { successes } from "@/data/constants/successMessages";
 import { usePolicyReviewModal } from "@/hooks/usePolicyReviewModal";
 import { updateAutomations } from "@/services/lockers";
 import { Automation, Locker, Policy } from "@/types";
@@ -158,7 +159,7 @@ function EditAutomationsModal({
 		// 3. Fetch policies from DB to update state in Home component
 		fetchPolicies();
 
-		setSuccessMessage("Automations updated successfully");
+		setSuccessMessage(successes.UPDATED_AUTOMATIONS);
 		setIsLoading(false);
 	};
 

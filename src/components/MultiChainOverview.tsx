@@ -80,7 +80,7 @@ function MultiChainOverview({
 			return;
 		}
 
-		const sig = await signSessionKey(locker.ownerAddress);
+		const sig = await signSessionKey();
 		if (!sig) {
 			setIsLoading(false);
 			setChainRowLoading(null);

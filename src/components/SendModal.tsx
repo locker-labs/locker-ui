@@ -2,10 +2,15 @@ import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useEffect, useState } from "react";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { IoClose } from "react-icons/io5";
+import { checksumAddress } from "viem";
+import { useAccount, useSwitchChain, useWalletClient } from "wagmi";
 
 import AddressInput from "@/components/AddressInput";
 import CurrencyInput from "@/components/CurrencyInput";
-import { Token } from "@/types";
+import { errors } from "@/data/constants/errorMessages";
+import { successes } from "@/data/constants/successMessages";
+import useSmartAccount from "@/hooks/useSmartAccount";
+import { Locker, Token } from "@/types";
 
 import TokenDropdown from "./TokenDropdown";
 
@@ -13,26 +18,66 @@ export interface ISendModal {
 	isOpen: boolean;
 	closeModal: () => void;
 	tokenList: Token[];
+	locker: Locker;
 }
 
-// TODO:
-// - Craft and send userOp using zerodev sdk
-// - Render success message if transfer is successful
-
-function SendModal({ isOpen, closeModal, tokenList }: ISendModal) {
+function SendModal({ isOpen, closeModal, tokenList, locker }: ISendModal) {
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const [selectedToken, setSelectedToken] = useState<Token>(tokenList[0]);
 	const [sendToAddress, setSendToAddress] = useState<string>("");
 	const [amountInput, setAmountInput] = useState<string>("");
 	const [amount, setAmount] = useState<bigint>(BigInt(0));
 	const [errorMessage, setErrorMessage] = useState<string>("");
+	const [successMessage, setSuccessMessage] = useState<string>("");
 
-	const dummyFunction = async () => {
+	const [chainSwitched, setChainSwitched] = useState<boolean>(false);
+	const [pendingTokenChainId, setPendingTokenChainId] = useState<
+		number | null
+	>(null);
+
+	const { sendUserOp } = useSmartAccount();
+	const { switchChain } = useSwitchChain();
+	const { chainId: walletChainId, address } = useAccount();
+	const { data: walletClient } = useWalletClient();
+
+	const handleChainSwitch = async (tokenChainId: number) => {
+		switchChain({ chainId: tokenChainId });
+		setChainSwitched(true);
+	};
+
+	const handleSendUserOp = async () => {
 		setIsLoading(true);
-		setTimeout(() => {
-			console.log(amount);
+		setErrorMessage("");
+
+		if (checksumAddress(locker.ownerAddress) !== address) {
+			setErrorMessage(errors.UNAUTHORIZED);
 			setIsLoading(false);
-		}, 1000);
+			return;
+		}
+
+		if (walletChainId !== selectedToken.chainId) {
+			await handleChainSwitch(selectedToken.chainId);
+			return; // Exit early as the useEffect will handle calling handleSendUserOp again
+		}
+
+		if (!walletClient) {
+			setPendingTokenChainId(selectedToken.chainId);
+			return;
+		}
+
+		const hash = await sendUserOp(
+			0,
+			selectedToken.chainId,
+			sendToAddress as `0x${string}`,
+			selectedToken.address,
+			amount
+		);
+
+		if (hash) {
+			setSuccessMessage(successes.SENT_TOKEN);
+		}
+
+		setIsLoading(false);
 	};
 
 	const isValid =
@@ -43,12 +88,25 @@ function SendModal({ isOpen, closeModal, tokenList }: ISendModal) {
 		amount > BigInt(0) &&
 		amount <= BigInt(selectedToken.balance);
 
-	// Get token balance and reset amount when selectedToken changes
+	// Reset amount when selectedToken changes
 	useEffect(() => {
-		// getTokenBalance();
 		setAmountInput("");
 		setAmount(BigInt(0));
 	}, [selectedToken]);
+
+	useEffect(() => {
+		if (chainSwitched && walletChainId === selectedToken.chainId) {
+			handleSendUserOp();
+			setChainSwitched(false);
+		}
+	}, [chainSwitched, walletChainId, selectedToken]);
+
+	useEffect(() => {
+		if (walletClient && pendingTokenChainId !== null) {
+			handleSendUserOp();
+			setPendingTokenChainId(null);
+		}
+	}, [walletClient, pendingTokenChainId]);
 
 	return (
 		<Transition appear show={isOpen} as={Fragment}>
@@ -107,6 +165,7 @@ function SendModal({ isOpen, closeModal, tokenList }: ISendModal) {
 												setErrorMessage={
 													setErrorMessage
 												}
+												disabled={!!successMessage}
 											/>
 										</div>
 										<div className="flex w-full flex-col space-y-1">
@@ -119,6 +178,7 @@ function SendModal({ isOpen, closeModal, tokenList }: ISendModal) {
 												setSelectedToken={
 													setSelectedToken
 												}
+												disabled={!!successMessage}
 											/>
 										</div>
 										<div className="flex w-full flex-col space-y-1">
@@ -137,26 +197,41 @@ function SendModal({ isOpen, closeModal, tokenList }: ISendModal) {
 												setErrorMessage={
 													setErrorMessage
 												}
+												disabled={!!successMessage}
 											/>
 										</div>
 									</div>
-									<button
-										className={`${!isValid ? "cursor-not-allowed opacity-80" : "cursor-pointer opacity-100"} flex h-12 w-48 items-center justify-center rounded-full bg-secondary-100 text-light-100 hover:bg-secondary-200 dark:bg-primary-200 dark:hover:bg-primary-100`}
-										onClick={() => dummyFunction()}
-										disabled={!isValid}
-									>
-										{isLoading ? (
-											<AiOutlineLoading3Quarters
-												className="animate-spin"
-												size={22}
-											/>
-										) : (
-											"Send"
-										)}
-									</button>
+									{successMessage ? (
+										<button
+											className="h-10 w-24 justify-center rounded-full bg-light-200 hover:bg-light-300 dark:bg-dark-400 dark:hover:bg-dark-300"
+											onClick={closeModal}
+										>
+											Close
+										</button>
+									) : (
+										<button
+											className={`${!isValid ? "cursor-not-allowed opacity-80" : "cursor-pointer opacity-100"} flex h-12 w-48 items-center justify-center rounded-full bg-secondary-100 text-light-100 hover:bg-secondary-200 dark:bg-primary-200 dark:hover:bg-primary-100`}
+											onClick={() => handleSendUserOp()}
+											disabled={!isValid}
+										>
+											{isLoading ? (
+												<AiOutlineLoading3Quarters
+													className="animate-spin"
+													size={22}
+												/>
+											) : (
+												"Send"
+											)}
+										</button>
+									)}
 									{errorMessage && (
 										<span className="text-sm text-error">
 											{errorMessage}
+										</span>
+									)}
+									{successMessage && (
+										<span className="mt-6 text-success">
+											{successMessage}
 										</span>
 									)}
 								</div>
