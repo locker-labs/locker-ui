@@ -77,7 +77,6 @@ export const getTokenBalances = async (
 	authToken: string,
 	lockerId: number
 ): Promise<Token[] | null> => {
-	console.log("I GOT CALLED");
 	try {
 		const response = await fetch(
 			`${endpoints.GET_TOKEN_BALANCES}/${lockerId}/balances`,
@@ -87,16 +86,10 @@ export const getTokenBalances = async (
 			}
 		);
 
-		const responseData = await response.json();
-
 		if (response.ok) {
+			const responseData = await response.json();
 			return responseData.data;
 		}
-
-		if (!response.ok) {
-			console.error(responseData.data);
-		}
-
 		return null;
 	} catch (error) {
 		console.error(error);

@@ -135,7 +135,7 @@ function MultiChainOverview({
 
 				return (
 					<div key={chainId} className="flex w-full items-center p-3">
-						<div className="flex w-full flex-col xs2:flex-row xs2:items-center xs2:justify-between">
+						<div className="flex w-full flex-col xs1:flex-row xs1:items-center xs1:justify-between">
 							<div className="flex w-full min-w-fit flex-col justify-center space-y-2">
 								<div className="flex w-full items-center">
 									<div
@@ -153,17 +153,17 @@ function MultiChainOverview({
 										{getChainNameFromId(chainId)}
 									</span>
 								</div>
-								{isFunded && !isTestnet(chainId) && (
-									<span className="w-full text-xs text-light-600">
-										Balance: $
-										{chainsNetWorths[chainId]
-											? chainsNetWorths[chainId]
-											: "0.00"}
-									</span>
-								)}
+								<span className="w-full text-xs text-light-600">
+									Value: $
+									{chainsNetWorths[chainId]
+										? chainsNetWorths[chainId]
+										: "0.00"}
+								</span>
 							</div>
-							<div className="mt-4 flex flex-col space-y-2 xs2:mt-0 xs2:flex-row xs2:space-x-2 xs2:space-y-0">
-								{!isFunded && (
+							<div className="mt-4 flex flex-col space-y-2 xs1:mt-0 xs1:flex-row xs1:space-x-2 xs1:space-y-0">
+								{(!isFunded ||
+									(chainsNetWorths[chainId] === "0.00" &&
+										!isTestnet(chainId))) && (
 									<button
 										className="flex h-8 w-16 items-center justify-center rounded-full bg-secondary-100 text-light-100 hover:bg-secondary-200 dark:bg-primary-200 dark:hover:bg-primary-100"
 										onClick={openQrCodeModal}
