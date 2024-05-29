@@ -42,11 +42,7 @@ function LockerPortfolio({
 
 	const fundedChainIds = txs
 		? txs
-				.filter(
-					(tx) =>
-						tx.lockerDirection === "in" &&
-						chainsNetWorths[tx.chainId] !== "0.00"
-				)
+				.filter((tx) => tx.lockerDirection === "in")
 				.map((tx) => tx.chainId)
 		: [];
 	// const fundedChainIds = txs ? txs.map((tx) => tx.chainId) : [];
@@ -87,16 +83,16 @@ function LockerPortfolio({
 	}, []);
 
 	return (
-		<div className="flex w-full flex-1 flex-col items-start">
+		<div className="flex w-full flex-1 flex-col items-center">
 			<div className="flex w-fit flex-col overflow-visible">
-				<div className="flex w-fit flex-col">
+				<div className="flex w-full flex-col items-center">
 					<Tooltip
 						width="w-36"
 						label="Total USD value of your locker across all supported chains."
 						placement="auto-start"
 					>
 						<span className="mb-1 flex cursor-pointer whitespace-nowrap text-sm text-light-600">
-							Total balance <span className="ml-2">ⓘ</span>
+							Total value <span className="ml-2">ⓘ</span>
 						</span>
 					</Tooltip>
 
@@ -108,8 +104,8 @@ function LockerPortfolio({
 					</div>
 				)}
 			</div>
-			<div className="mt-6 flex w-full flex-col space-y-2">
-				<span className="text-sm">Automation settings</span>
+			<div className="mt-6 flex w-full min-w-fit max-w-xs flex-col space-y-2">
+				<span className="self-start text-sm">Automation settings</span>
 				<AutomationSettings
 					currentPolicies={policies}
 					fetchPolicies={fetchPolicies}
@@ -120,8 +116,10 @@ function LockerPortfolio({
 				/>
 			</div>
 			{locker && policies && (
-				<div className="mt-6 flex w-full flex-col space-y-2">
-					<span className="text-sm">Multi-chain overview</span>
+				<div className="mt-6 flex w-full min-w-fit max-w-md flex-col space-y-2">
+					<span className="self-start text-sm">
+						Multi-chain overview
+					</span>
 					<MultiChainOverview
 						fundedChainIds={fundedChainIds}
 						policies={policies}
@@ -138,7 +136,9 @@ function LockerPortfolio({
 			)}
 			{txs && (
 				<div className="mt-6 flex w-full flex-col space-y-2">
-					<span className="text-sm">Transaction history</span>
+					<span className="self-start text-sm">
+						Transaction history
+					</span>
 					<TxTable txs={txs} />
 				</div>
 			)}

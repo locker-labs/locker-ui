@@ -8,6 +8,7 @@ import {
 } from "react-icons/io5";
 import { useAccount } from "wagmi";
 
+import Tooltip from "@/components/Tooltip";
 import { useConnectModal } from "@/hooks/useConnectModal";
 import { useQrCodeModal } from "@/hooks/useQrCodeModal";
 import { useSendModal } from "@/hooks/useSendModal";
@@ -78,16 +79,33 @@ function PortfolioIconButtonGroup({ locker }: ILockerPortfolio) {
 				</button>
 				<span className="text-light-600">Scan</span>
 			</div>
-			<div className="flex flex-col items-center justify-center space-y-1">
-				<button
-					className="flex size-10 shrink-0 items-center justify-center rounded-full bg-dark-500/10 text-dark-600 transition duration-300 ease-in-out hover:scale-105 dark:bg-light-200/10 dark:text-light-100"
-					aria-label="Send money out of locker"
-					onClick={handleSendModalPopup}
-				>
-					<IoIosSend size="16px" />
-				</button>
-				<span className="text-light-600">Send</span>
-			</div>
+			{!tokenList || tokenList.length === 0 ? (
+				<div className="flex flex-col items-center justify-center space-y-1">
+					<Tooltip label="Unable to fetch tokens in locker.">
+						<button
+							className="flex size-10 shrink-0 items-center justify-center rounded-full bg-dark-500/10 text-dark-600 transition duration-300 ease-in-out hover:scale-105 dark:bg-light-200/10 dark:text-light-100"
+							aria-label="Send money out of locker"
+							onClick={handleSendModalPopup}
+							disabled={!tokenList || tokenList.length === 0}
+						>
+							<IoIosSend size="16px" />
+						</button>
+					</Tooltip>
+					<span className="text-light-600">Send</span>
+				</div>
+			) : (
+				<div className="flex flex-col items-center justify-center space-y-1">
+					<button
+						className="flex size-10 shrink-0 items-center justify-center rounded-full bg-dark-500/10 text-dark-600 transition duration-300 ease-in-out hover:scale-105 dark:bg-light-200/10 dark:text-light-100"
+						aria-label="Send money out of locker"
+						onClick={handleSendModalPopup}
+						disabled={!tokenList || tokenList.length === 0}
+					>
+						<IoIosSend size="16px" />
+					</button>
+					<span className="text-light-600">Send</span>
+				</div>
+			)}
 			{renderQrCodeModal(locker.address)}
 			{renderSendModal(tokenList, locker)}
 			{renderConnectModal()}
