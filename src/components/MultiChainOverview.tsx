@@ -15,7 +15,6 @@ import { createPolicy } from "@/services/lockers";
 import { Automation, Locker, Policy } from "@/types";
 import { getChainIconStyling } from "@/utils/getChainIconStyling";
 import { getChainNameFromId } from "@/utils/getChainName";
-import { isTestnet } from "@/utils/isTestnet";
 
 export interface IMultiChainOverview {
 	fundedChainIds: number[];
@@ -161,9 +160,7 @@ function MultiChainOverview({
 								</span>
 							</div>
 							<div className="mt-4 flex flex-col space-y-2 xs1:mt-0 xs1:flex-row xs1:space-x-2 xs1:space-y-0">
-								{(!isFunded ||
-									(chainsNetWorths[chainId] === "0.00" &&
-										!isTestnet(chainId))) && (
+								{!isFunded && (
 									<button
 										className="flex h-8 w-16 items-center justify-center rounded-full bg-secondary-100 text-light-100 hover:bg-secondary-200 dark:bg-primary-200 dark:hover:bg-primary-100"
 										onClick={openQrCodeModal}
