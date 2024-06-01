@@ -1,5 +1,4 @@
-import { useAuth } from "@clerk/nextjs";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { IoIosSend } from "react-icons/io";
 import {
 	IoCheckboxOutline,
@@ -12,31 +11,26 @@ import Tooltip from "@/components/Tooltip";
 import { useConnectModal } from "@/hooks/useConnectModal";
 import { useQrCodeModal } from "@/hooks/useQrCodeModal";
 import { useSendModal } from "@/hooks/useSendModal";
-import { getTokenBalances } from "@/services/transactions";
 import { Locker, Token } from "@/types";
 import { copyToClipboard } from "@/utils/copytoClipboard";
 
 export interface ILockerPortfolio {
 	locker: Locker;
+	tokenList: Token[];
+	getTokenList: () => void;
 }
 
-function PortfolioIconButtonGroup({ locker }: ILockerPortfolio) {
-	const [tokenList, setTokenList] = useState<Token[]>([]);
+function PortfolioIconButtonGroup({
+	locker,
+	tokenList,
+	getTokenList,
+}: ILockerPortfolio) {
 	const [copied, setCopied] = useState<boolean>(false);
 
 	const { isConnected } = useAccount();
 	const { openConnectModal, renderConnectModal } = useConnectModal();
 	const { openQrCodeModal, renderQrCodeModal } = useQrCodeModal();
 	const { openSendModal, renderSendModal } = useSendModal();
-	const { getToken } = useAuth();
-
-	const getTokenList = async () => {
-		const authToken = await getToken();
-		if (authToken && locker.id) {
-			const list = await getTokenBalances(authToken, locker.id);
-			setTokenList(list || []);
-		}
-	};
 
 	const handleSendModalPopup = () => {
 		if (isConnected) {
@@ -45,10 +39,6 @@ function PortfolioIconButtonGroup({ locker }: ILockerPortfolio) {
 			openConnectModal();
 		}
 	};
-
-	useEffect(() => {
-		getTokenList();
-	}, []);
 
 	return (
 		<div className="flex items-center space-x-4 text-xs">

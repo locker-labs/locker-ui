@@ -1,3 +1,4 @@
+import { useAuth } from "@clerk/nextjs";
 import { useEffect, useState } from "react";
 
 import AutomationSettings from "@/components/AutomationSettings";
@@ -5,8 +6,11 @@ import MultiChainOverview from "@/components/MultiChainOverview";
 import PortfolioIconButtonGroup from "@/components/PortfolioIconButtonGroup";
 import Tooltip from "@/components/Tooltip";
 import TxTable from "@/components/TxTable";
+import { supportedChainIdsArray } from "@/data/constants/supportedChains";
 import { getLockerNetWorth } from "@/services/moralis";
-import { Locker, Policy } from "@/types";
+import { getTokenBalances } from "@/services/transactions";
+import { Locker, Policy, Token } from "@/types";
+import { getFundedChainIds } from "@/utils/getFundedChainIds";
 import { isTestnet } from "@/utils/isTestnet";
 
 export interface ILockerPortfolio {
@@ -20,12 +24,15 @@ function LockerPortfolio({
 	policies,
 	fetchPolicies,
 }: ILockerPortfolio) {
-	// State variables
 	const [errorMessage, setErrorMessage] = useState<string>("");
+	const [tokenList, setTokenList] = useState<Token[]>([]);
+	const [fundedChainIds, setFundedChainIds] = useState<number[]>([]);
 	const [lockerNetWorth, setLockerNetWorth] = useState<string>("0.00");
 	const [chainsNetWorths, setChainsNetWorths] = useState<
 		Record<number, string>
 	>({});
+
+	const { getToken } = useAuth();
 
 	// Props destructured variables
 	const locker = lockers[0];
@@ -40,13 +47,6 @@ function LockerPortfolio({
 	);
 	const saveAutomation = automations.find((a) => a.type === "savings");
 
-	const fundedChainIds = txs
-		? txs
-				.filter((tx) => tx.lockerDirection === "in")
-				.map((tx) => tx.chainId)
-		: [];
-	// const fundedChainIds = txs ? txs.map((tx) => tx.chainId) : [];
-
 	/* For now, we're only handling:
 		- One locker per user (index 0)
 			- In the future, we can add a dropdown to choose which locker to display
@@ -58,15 +58,25 @@ function LockerPortfolio({
 				- Use basePolicy to determine whether KYC is complete
 	*/
 
+	const getTokenList = async () => {
+		const authToken = await getToken();
+		if (authToken && locker.id) {
+			const list = await getTokenBalances(authToken, locker.id);
+			const fundedChainIdsList = getFundedChainIds(list || []);
+			setTokenList(list || []);
+			setFundedChainIds(fundedChainIdsList);
+		}
+	};
+
 	const fetchLockerNetWorth = async () => {
 		if (locker && txs) {
-			const fundedMainnetChainIds = fundedChainIds.filter(
+			const mainnetChainIds = supportedChainIdsArray.filter(
 				(chainId) => !isTestnet(chainId)
 			);
 
 			const netWorth = await getLockerNetWorth(
 				locker.address,
-				fundedMainnetChainIds
+				mainnetChainIds
 			);
 
 			if (netWorth) {
@@ -79,6 +89,7 @@ function LockerPortfolio({
 	// Only fetch locker net worth on initial render to prevent call to Moralis API
 	// every 5 seconds. This can be updated once we implement a websocket.
 	useEffect(() => {
+		getTokenList();
 		fetchLockerNetWorth();
 	}, []);
 
@@ -100,7 +111,11 @@ function LockerPortfolio({
 				</div>
 				{locker && (
 					<div className="mt-4 flex items-center">
-						<PortfolioIconButtonGroup locker={locker} />
+						<PortfolioIconButtonGroup
+							locker={locker}
+							tokenList={tokenList}
+							getTokenList={getTokenList}
+						/>
 					</div>
 				)}
 			</div>
