@@ -34,7 +34,7 @@ export const getLockerNetWorth = async (
 	const queryParams = new URLSearchParams({
 		...chainQueryParams,
 		exclude_spam: "true",
-		exclude_unverified_contracts: "true",
+		exclude_unverified_contracts: "false",
 	}).toString();
 
 	try {
