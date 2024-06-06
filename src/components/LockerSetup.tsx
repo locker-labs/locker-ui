@@ -149,7 +149,7 @@ function LockerSetup({ lockers, fetchPolicies }: ILockerSetup) {
 				type: "forward_to",
 				allocation: Number(formatUnits(BigInt(hotWalletPercent), 2)),
 				status: "ready",
-				recipientAddress: locker.ownerAddress,
+				recipientAddress: sendToAddress as `0x${string}`,
 			},
 			{
 				type: "off_ramp",
