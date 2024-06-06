@@ -45,9 +45,14 @@ function EditAutomationsModal({
 		? currentSaveAutomation.allocation * 100
 		: 0;
 
-	const [sendToAddress, setSendToAddress] = useState<string>(
-		locker.ownerAddress
-	);
+	const defaultSendToAddress =
+		currentHotWalletAutomation &&
+		currentHotWalletAutomation.recipientAddress
+			? currentHotWalletAutomation.recipientAddress
+			: locker.ownerAddress;
+
+	const [sendToAddress, setSendToAddress] =
+		useState<string>(defaultSendToAddress);
 	const [savePercent, setSavePercent] = useState<string>(
 		currentSavePercent.toString()
 	);
@@ -136,7 +141,7 @@ function EditAutomationsModal({
 				type: "forward_to",
 				allocation: Number(formatUnits(BigInt(hotWalletPercent), 2)),
 				status: "ready",
-				recipientAddress: locker.ownerAddress,
+				recipientAddress: sendToAddress as `0x${string}`,
 			},
 			{
 				type: "off_ramp",
