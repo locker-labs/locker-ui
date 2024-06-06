@@ -6,7 +6,6 @@ import {
 	serializePermissionAccount,
 	toPermissionValidator,
 } from "@zerodev/permissions";
-import { toSudoPolicy } from "@zerodev/permissions/policies";
 import { toECDSASigner } from "@zerodev/permissions/signers";
 import {
 	addressToEmptyAccount,
@@ -28,6 +27,8 @@ import {
 } from "viem";
 import { usePublicClient, useWalletClient } from "wagmi";
 
+import { getErc20Policy } from "@/data/policies/erc20";
+import { getNativePolicy } from "@/data/policies/native";
 import { getBundler } from "@/utils/getBundler";
 import { getChainObjFromId } from "@/utils/getChainObj";
 import { getPaymaster } from "@/utils/getPaymaster";
@@ -39,8 +40,13 @@ const useSmartAccount = () => {
 	if (!process.env.LOCKER_AGENT_ADDRESS)
 		throw new Error("LOCKER_AGENT_ADDRESS is not set");
 
+	// ************************************************************* //
 	// Prompts user to sign session key for current chain
-	const signSessionKey = async (): Promise<string | undefined> => {
+	// ************************************************************* //
+	const signSessionKey = async (
+		hotWalletAddress?: `0x${string}`,
+		offrampAddress?: `0x${string}`
+	): Promise<string | undefined> => {
 		if (!walletClient) {
 			throw new Error("Wallet client is not available");
 		}
@@ -64,17 +70,43 @@ const useSmartAccount = () => {
 			signer: emptyAccount,
 		});
 
-		const callPolicy = toSudoPolicy({});
+		// Policies to allow Locker agent to send money to user's hot wallet
+		let hotWalletErc20Policy;
+		let hotWalletNativePolicy;
+		if (hotWalletAddress) {
+			hotWalletErc20Policy = getErc20Policy(hotWalletAddress);
+			hotWalletNativePolicy = getNativePolicy(hotWalletAddress);
+		}
+
+		// Policies to allow Locker agent to send money to off-ramp address
+		let offrampErc20Policy;
+		let offrampNativePolicy;
+		if (offrampAddress) {
+			offrampErc20Policy = getErc20Policy(offrampAddress);
+			offrampNativePolicy = getNativePolicy(offrampAddress);
+		}
+
+		// Type guard to filter out undefined values
+		function isDefined<T>(value: T | undefined): value is T {
+			return value !== undefined;
+		}
+
+		// Filter out undefined policies
+		const policies = [
+			hotWalletErc20Policy,
+			hotWalletNativePolicy,
+			offrampErc20Policy,
+			offrampNativePolicy,
+		].filter(isDefined);
 
 		const permissionPlugin = await toPermissionValidator(
 			publicClient as PublicClient,
 			{
 				entryPoint: ENTRYPOINT_ADDRESS_V07,
 				signer: emptySessionKeySigner,
-				policies: [callPolicy],
+				policies,
 			}
 		);
-
 		const kernelAccountObj = await createKernelAccount(
 			publicClient as PublicClient,
 			{
@@ -108,8 +140,11 @@ const useSmartAccount = () => {
 
 		return sig;
 	};
+	// ************************************************************* //
 
-	// Construct and submit userOp to send money out of locker
+	// ************************************************************* //
+	// Constructs and submits userOp to send money out of locker
+	// ************************************************************* //
 	const sendUserOp = async (
 		lockerIndex: number,
 		chainId: number,
@@ -212,8 +247,12 @@ const useSmartAccount = () => {
 
 		return hash;
 	};
+	// ************************************************************* //
 
-	// Generates a smart account addres from an EOA address and a locker index
+	// ************************************************************* //
+	// Generates a smart account address from an EOA address and
+	// a locker index
+	// ************************************************************* //
 	const genSmartAccountAddress = async (
 		eoaAddress: `0x${string}`,
 		lockerIndex: number
@@ -224,6 +263,7 @@ const useSmartAccount = () => {
 			index: BigInt(lockerIndex),
 			entryPointAddress: ENTRYPOINT_ADDRESS_V07,
 		});
+	// ************************************************************* //
 
 	return { genSmartAccountAddress, signSessionKey, sendUserOp };
 };
