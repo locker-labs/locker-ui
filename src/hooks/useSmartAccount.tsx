@@ -40,7 +40,9 @@ const useSmartAccount = () => {
 		throw new Error("LOCKER_AGENT_ADDRESS is not set");
 
 	// Prompts user to sign session key for current chain
-	const signSessionKey = async (): Promise<string | undefined> => {
+	const signSessionKey = async (
+		lockerIndex: number
+	): Promise<string | undefined> => {
 		if (!walletClient) {
 			throw new Error("Wallet client is not available");
 		}
@@ -78,7 +80,9 @@ const useSmartAccount = () => {
 		const kernelAccountObj = await createKernelAccount(
 			publicClient as PublicClient,
 			{
-				// index: lockerIndex,
+				index:
+					BigInt(lockerIndex) +
+					BigInt(process.env.LOCKER_SEED_OFFSET!),
 				entryPoint: ENTRYPOINT_ADDRESS_V07,
 				plugins: {
 					sudo: ecdsaValidator,
@@ -135,7 +139,9 @@ const useSmartAccount = () => {
 		const kernelAccountObj = await createKernelAccount(
 			publicClient as PublicClient,
 			{
-				index: BigInt(lockerIndex),
+				index:
+					BigInt(lockerIndex) +
+					BigInt(process.env.LOCKER_SEED_OFFSET!),
 				entryPoint: ENTRYPOINT_ADDRESS_V07,
 				plugins: {
 					sudo: ecdsaValidator,
