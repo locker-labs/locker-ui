@@ -2,6 +2,7 @@ import { useClerk } from "@clerk/nextjs";
 import { Menu, Transition } from "@headlessui/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { GrConnect } from "react-icons/gr";
 import {
 	IoCheckboxOutline,
 	IoCopyOutline,
@@ -146,12 +147,28 @@ function HeaderMenu() {
 											active &&
 											"rounded-b-xl bg-light-300 dark:bg-dark-300"
 										} flex w-full items-center p-2`}
-										onClick={() => {
-											disconnect();
+										onClick={() => disconnect()}
+									>
+										<GrConnect
+											className="mr-3 flex shrink-0 items-center justify-center"
+											size="16px"
+										/>
+										<span>Disconnect</span>
+									</button>
+								)}
+							</Menu.Item>
+							<Menu.Item>
+								{({ active }) => (
+									<button
+										className={`${
+											active &&
+											"rounded-b-xl bg-light-300 dark:bg-dark-300"
+										} flex w-full items-center p-2`}
+										onClick={() =>
 											signOut(() =>
 												router.push(paths.LANDING)
-											);
-										}}
+											)
+										}
 									>
 										<IoLogOutOutline
 											className="mr-3 flex shrink-0 items-center justify-center"
