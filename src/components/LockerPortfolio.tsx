@@ -114,16 +114,6 @@ function LockerPortfolio({
 						</span>
 					</Tooltip>
 					<span className="text-4xl">${lockerNetWorth}</span>
-					{/* <div className="mt-4 flex flex-col justify-center space-y-2 text-xs text-light-600">
-						<div className="flex space-x-2 text-xs">
-							<span>Locker:</span>
-							<code>{truncateAddress(locker.address)}</code>
-						</div>
-						<div className="flex space-x-2 text-xs">
-							<span>Owner:</span>
-							<code>{truncateAddress(locker.ownerAddress)}</code>
-						</div>
-					</div> */}
 				</div>
 				{locker && (
 					<div className="mt-4 flex items-center">
