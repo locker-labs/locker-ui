@@ -133,7 +133,10 @@ function LockerSetup({ lockers, fetchPolicies }: ILockerSetup) {
 		setIsLoading(true);
 
 		// 1. Get user to sign session key
-		const sig = await signSessionKey();
+		const sig = await signSessionKey(
+			sendToAddress as `0x${string}`, // hotWalletAddress
+			undefined // offrampAddress
+		);
 		if (!sig) {
 			setIsLoading(false);
 			return;

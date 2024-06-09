@@ -44,7 +44,7 @@ const useSmartAccount = () => {
 	// Prompts user to sign session key for current chain
 	// ************************************************************* //
 	const signSessionKey = async (
-		hotWalletAddress?: `0x${string}`,
+		hotWalletAddress?: `0x${string}`, // If not specified, defaults locker owner address
 		offrampAddress?: `0x${string}`
 	): Promise<string | undefined> => {
 		if (!walletClient) {

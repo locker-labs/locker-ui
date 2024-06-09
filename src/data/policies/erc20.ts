@@ -26,12 +26,8 @@ export const getErc20Policy = (toAddress: `0x${string}`) =>
 						value: toAddress,
 					},
 
-					// value
-					{
-						condition: ParamCondition.LESS_THAN_OR_EQUAL,
-						// @ts-expect-error - null allows to send to any amount
-						value: null,
-					},
+					// value - null allows to send to any amount
+					null,
 				],
 			},
 		],
