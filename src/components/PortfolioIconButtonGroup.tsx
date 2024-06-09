@@ -3,6 +3,7 @@ import { IoIosSend } from "react-icons/io";
 import {
 	IoCheckboxOutline,
 	IoCopyOutline,
+	IoOpenOutline,
 	IoQrCodeOutline,
 } from "react-icons/io5";
 import { useAccount } from "wagmi";
@@ -13,6 +14,7 @@ import { useQrCodeModal } from "@/hooks/useQrCodeModal";
 import { useSendModal } from "@/hooks/useSendModal";
 import { Locker, Token } from "@/types";
 import { copyToClipboard } from "@/utils/copytoClipboard";
+import { isChainSupported } from "@/utils/isChainSupported";
 
 export interface ILockerPortfolio {
 	locker: Locker;
@@ -27,7 +29,7 @@ function PortfolioIconButtonGroup({
 }: ILockerPortfolio) {
 	const [copied, setCopied] = useState<boolean>(false);
 
-	const { isConnected } = useAccount();
+	const { isConnected, chain } = useAccount();
 	const { openConnectModal, renderConnectModal } = useConnectModal();
 	const { openQrCodeModal, renderQrCodeModal } = useQrCodeModal();
 	const { openSendModal, renderSendModal } = useSendModal();
@@ -96,6 +98,23 @@ function PortfolioIconButtonGroup({
 					<span className="text-light-600">Send</span>
 				</div>
 			)}
+			{isConnected &&
+				chain &&
+				isChainSupported(chain.id) &&
+				chain.blockExplorers && (
+					<div className="flex flex-col items-center justify-center space-y-1">
+						<a
+							className="flex size-10 shrink-0 items-center justify-center rounded-full bg-dark-500/10 text-dark-600 transition duration-300 ease-in-out hover:scale-105 dark:bg-light-200/10 dark:text-light-100"
+							aria-label="View on block explorer"
+							href={`${chain.blockExplorers.default.url}/address/${locker.address}`}
+							target="_blank"
+							rel="noopener noreferrer"
+						>
+							<IoOpenOutline size="16px" />
+						</a>
+						<span className="text-light-600">View</span>
+					</div>
+				)}
 			{renderQrCodeModal(locker.address)}
 			{renderSendModal(tokenList, locker)}
 			{renderConnectModal()}

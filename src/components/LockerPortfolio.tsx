@@ -1,5 +1,6 @@
 import { useAuth } from "@clerk/nextjs";
 import { useEffect, useState } from "react";
+import Blockies from "react-blockies";
 
 import AutomationSettings from "@/components/AutomationSettings";
 import MultiChainOverview from "@/components/MultiChainOverview";
@@ -96,18 +97,32 @@ function LockerPortfolio({
 	return (
 		<div className="flex w-full flex-1 flex-col items-center">
 			<div className="flex w-fit flex-col overflow-visible">
-				<div className="flex w-full flex-col items-center">
+				<Blockies
+					className="flex self-center rounded-full"
+					seed={locker.address.toLowerCase()}
+					size={14}
+				/>
+				<div className="mt-4 flex w-full flex-col items-center">
 					<Tooltip
 						width="w-36"
 						label="Total USD value of your locker across all supported chains."
-						placement="auto-start"
+						placement="auto"
 					>
-						<span className="mb-1 flex cursor-pointer whitespace-nowrap text-sm text-light-600">
-							Total value <span className="ml-2">ⓘ</span>
+						<span className="mb-1 flex cursor-pointer items-center whitespace-nowrap text-sm text-light-600">
+							Total value <span className="ml-2 text-xs">ⓘ</span>
 						</span>
 					</Tooltip>
-
-					<span className="text-3xl">${lockerNetWorth}</span>
+					<span className="text-4xl">${lockerNetWorth}</span>
+					{/* <div className="mt-4 flex flex-col justify-center space-y-2 text-xs text-light-600">
+						<div className="flex space-x-2 text-xs">
+							<span>Locker:</span>
+							<code>{truncateAddress(locker.address)}</code>
+						</div>
+						<div className="flex space-x-2 text-xs">
+							<span>Owner:</span>
+							<code>{truncateAddress(locker.ownerAddress)}</code>
+						</div>
+					</div> */}
 				</div>
 				{locker && (
 					<div className="mt-4 flex items-center">
