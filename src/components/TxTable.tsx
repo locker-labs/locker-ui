@@ -1,6 +1,8 @@
+import { useRouter } from "next/navigation";
 import { IoOpenOutline } from "react-icons/io5";
 import { formatUnits } from "viem";
 
+import { paths } from "@/data/constants/paths";
 import { supportedChains } from "@/data/constants/supportedChains";
 import { Tx } from "@/types";
 import { formatDateUtc } from "@/utils/formatDateUtc";
@@ -12,6 +14,8 @@ export interface ITxTable {
 }
 
 function TxTable({ txs }: ITxTable) {
+	const router = useRouter();
+
 	const getTxHashContent = (tx: Tx) => {
 		const chain = supportedChains.find(
 			(chainObj) => chainObj.id === tx.chainId
@@ -75,7 +79,15 @@ function TxTable({ txs }: ITxTable) {
 				</thead>
 				<tbody>
 					{txs.map((tx) => (
-						<tr key={tx.txHash}>
+						<tr
+							key={tx.txHash}
+							className="cursor-pointer hover:bg-light-200 dark:hover:bg-dark-400"
+							onClick={() =>
+								router.push(
+									`${paths.TX}/${tx.chainId}/${tx.txHash}`
+								)
+							}
+						>
 							<td className="px-4 py-3">
 								{formatDateUtc(tx.createdAt, false)}
 							</td>
