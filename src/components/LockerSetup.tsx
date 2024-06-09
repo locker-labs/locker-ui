@@ -56,6 +56,9 @@ function LockerSetup({ lockers, fetchPolicies }: ILockerSetup) {
 
 	const locker = lockers[0];
 	const { txs } = locker;
+	const filteredTxs = txs
+		? txs.filter((tx) => isChainSupported(tx.chainId))
+		: [];
 
 	const handleChannelSelection = (channel: keyof typeof selectedChannels) => {
 		setSelectedChannels((prev) => ({
@@ -312,10 +315,10 @@ function LockerSetup({ lockers, fetchPolicies }: ILockerSetup) {
 			>
 				Fund your locker
 			</button>
-			{txs && txs.length > 0 && (
+			{filteredTxs.length > 0 && (
 				<div className="flex w-full flex-col space-y-2">
 					<span className="text-sm">Transaction history</span>
-					<TxTable txs={txs} />
+					<TxTable txs={filteredTxs} />
 				</div>
 			)}
 			<div className="flex w-full flex-1 flex-col items-center justify-between xxs1:flex-row xxs1:items-end">
