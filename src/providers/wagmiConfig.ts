@@ -27,6 +27,7 @@ export const wagmiConfig = createConfig({
 			appName: "Locker",
 			appLogoUrl: "/assets/iconLocker.svg",
 			darkMode: false,
+			preference: "eoaOnly",
 		}),
 	],
 	transports,

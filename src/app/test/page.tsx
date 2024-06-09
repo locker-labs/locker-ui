@@ -5,7 +5,6 @@ import { useEffect, useRef, useState } from "react";
 
 import Loader from "@/components/Loader";
 import LockerCreate from "@/components/LockerCreate";
-import LockerEmpty from "@/components/LockerEmpty";
 import LockerPortfolio from "@/components/LockerPortfolio";
 import LockerSetup from "@/components/LockerSetup";
 import { getLockers, getPolicies } from "@/services/lockers";
@@ -17,7 +16,6 @@ function Test() {
 	// ************************ TEST ************************ //
 	// ****************************************************** //
 	const testLockerCreate = false;
-	const testLockerEmpty = false;
 	const testLockerSetup = false;
 	const testLockerPortfolio = false;
 	// ****************************************************** //
@@ -89,9 +87,6 @@ function Test() {
 			{isFirstRender.current && <Loader />}
 			{testLockerCreate && (
 				<LockerCreate lockerIndex={0} fetchLockers={fetchLockers} />
-			)}
-			{testLockerEmpty && lockers && (
-				<LockerEmpty emptyLocker={lockers[0]} />
 			)}
 			{testLockerSetup && lockers && (
 				<LockerSetup lockers={lockers} fetchPolicies={fetchPolicies} />

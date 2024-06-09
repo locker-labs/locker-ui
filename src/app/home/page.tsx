@@ -6,7 +6,6 @@ import { useEffect, useRef, useState } from "react";
 
 import Loader from "@/components/Loader";
 import LockerCreate from "@/components/LockerCreate";
-import LockerEmpty from "@/components/LockerEmpty";
 import LockerPortfolio from "@/components/LockerPortfolio";
 import LockerSetup from "@/components/LockerSetup";
 import { paths } from "@/data/constants/paths";
@@ -107,15 +106,6 @@ function HomePage() {
 			{lockers &&
 				lockers.length > 0 &&
 				!isFirstRender.current &&
-				(!lockers[0].txs ||
-					(lockers[0].txs && lockers[0].txs.length === 0)) && (
-					<LockerEmpty emptyLocker={lockers[0]} />
-				)}
-			{lockers &&
-				lockers.length > 0 &&
-				!isFirstRender.current &&
-				lockers[0].txs &&
-				lockers[0].txs.length > 0 &&
 				(!policies || (policies && policies.length === 0)) && (
 					<LockerSetup
 						lockers={lockers}
@@ -125,8 +115,6 @@ function HomePage() {
 			{lockers &&
 				lockers.length > 0 &&
 				!isFirstRender.current &&
-				lockers[0].txs &&
-				lockers[0].txs.length > 0 &&
 				policies &&
 				policies.length > 0 && (
 					<LockerPortfolio
