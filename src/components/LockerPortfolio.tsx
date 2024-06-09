@@ -5,6 +5,7 @@ import Blockies from "react-blockies";
 import AutomationSettings from "@/components/AutomationSettings";
 import MultiChainOverview from "@/components/MultiChainOverview";
 import PortfolioIconButtonGroup from "@/components/PortfolioIconButtonGroup";
+import TokenSupportWarning from "@/components/TokenSupportWarning";
 import Tooltip from "@/components/Tooltip";
 import TxTable from "@/components/TxTable";
 import { supportedChainIdsArray } from "@/data/constants/supportedChains";
@@ -133,6 +134,9 @@ function LockerPortfolio({
 						/>
 					</div>
 				)}
+			</div>
+			<div className="mt-6 flex w-full items-center justify-center">
+				<TokenSupportWarning />
 			</div>
 			<div className="mt-6 flex w-full min-w-fit max-w-xs flex-col space-y-2">
 				<span className="self-start text-sm">Automation settings</span>

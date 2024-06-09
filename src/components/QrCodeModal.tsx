@@ -4,6 +4,7 @@ import { IoCheckboxOutline, IoClose, IoCopyOutline } from "react-icons/io5";
 
 import ChainIcon from "@/components/ChainIcon";
 import LockerQrCode from "@/components/LockerQrCode";
+import TokenSupportWarning from "@/components/TokenSupportWarning";
 import { supportedChains } from "@/data/constants/supportedChains";
 import { copyToClipboard } from "@/utils/copytoClipboard";
 import { getChainIconStyling } from "@/utils/getChainIconStyling";
@@ -107,6 +108,9 @@ function QrCodeModal({ isOpen, closeModal, lockerAddress }: IQrCodeModal) {
 												</div>
 											</div>
 										))}
+									</div>
+									<div className="mt-6 flex w-full items-center">
+										<TokenSupportWarning />
 									</div>
 								</div>
 							</Dialog.Panel>
