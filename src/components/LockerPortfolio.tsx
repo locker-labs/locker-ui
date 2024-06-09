@@ -13,6 +13,7 @@ import { getLockerNetWorth } from "@/services/moralis";
 import { getTokenBalances } from "@/services/transactions";
 import { Locker, Policy, Token } from "@/types";
 import { getFundedChainIds } from "@/utils/getFundedChainIds";
+import { isChainSupported } from "@/utils/isChainSupported";
 import { isTestnet } from "@/utils/isTestnet";
 
 export interface ILockerPortfolio {
@@ -39,6 +40,9 @@ function LockerPortfolio({
 	// Props destructured variables
 	const locker = lockers[0];
 	const { txs } = locker;
+	const filteredTxs = txs
+		? txs.filter((tx) => isChainSupported(tx.chainId))
+		: [];
 	const basePolicy = policies[0];
 	const { automations } = basePolicy;
 
@@ -64,14 +68,17 @@ function LockerPortfolio({
 		const authToken = await getToken();
 		if (authToken && locker.id) {
 			const list = await getTokenBalances(authToken, locker.id);
-			const fundedChainIdsList = getFundedChainIds(list || []);
-			setTokenList(list || []);
+			const filteredList = list
+				? list.filter((token) => isChainSupported(token.chainId))
+				: [];
+			const fundedChainIdsList = getFundedChainIds(filteredList);
+			setTokenList(filteredList);
 			setFundedChainIds(fundedChainIdsList);
 		}
 	};
 
 	const fetchLockerNetWorth = async () => {
-		if (locker && txs) {
+		if (locker && filteredTxs.length > 0) {
 			const mainnetChainIds = supportedChainIdsArray.filter(
 				(chainId) => !isTestnet(chainId)
 			);
@@ -158,12 +165,12 @@ function LockerPortfolio({
 			{errorMessage && (
 				<span className="mt-6 text-sm text-error">{errorMessage}</span>
 			)}
-			{txs && (
+			{filteredTxs.length > 0 && (
 				<div className="mt-6 flex w-full flex-col space-y-2">
 					<span className="self-start text-sm">
 						Transaction history
 					</span>
-					<TxTable txs={txs} />
+					<TxTable txs={filteredTxs} />
 				</div>
 			)}
 		</div>

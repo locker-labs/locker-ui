@@ -7,6 +7,7 @@ import { supportedChains } from "@/data/constants/supportedChains";
 import { Tx } from "@/types";
 import { formatDateUtc } from "@/utils/formatDateUtc";
 import { getChainNameFromId } from "@/utils/getChainName";
+import { isChainSupported } from "@/utils/isChainSupported";
 import { truncateAddress } from "@/utils/truncateAddress";
 
 export interface ITxTable {
@@ -78,58 +79,70 @@ function TxTable({ txs }: ITxTable) {
 					</tr>
 				</thead>
 				<tbody>
-					{txs.map((tx) => (
-						<tr
-							key={tx.txHash}
-							className="cursor-pointer hover:bg-light-200 dark:hover:bg-dark-400"
-							onClick={() =>
-								router.push(
-									`${paths.TX}/${tx.chainId}/${tx.txHash}`
-								)
-							}
-						>
-							<td className="px-4 py-3">
-								{formatDateUtc(tx.createdAt, false)}
-							</td>
-							<td className="px-4 py-3">
-								{tx.isConfirmed ? (
-									<span className="w-fit rounded-full bg-success/20 px-3 py-1 text-success">
-										Confirmed
+					{txs
+						.filter((tx) => isChainSupported(tx.chainId))
+						.map((tx) => (
+							<tr
+								key={tx.txHash}
+								className="cursor-pointer hover:bg-light-200 dark:hover:bg-dark-400"
+								onClick={() =>
+									router.push(
+										`${paths.TX}/${tx.chainId}/${tx.txHash}`
+									)
+								}
+							>
+								<td className="px-4 py-3">
+									{formatDateUtc(tx.createdAt, false)}
+								</td>
+								<td className="px-4 py-3">
+									{tx.isConfirmed ? (
+										<span className="w-fit rounded-full bg-success/20 px-3 py-1 text-success">
+											Confirmed
+										</span>
+									) : (
+										<span className="w-fit rounded-full bg-warning/20 px-3 py-1 text-warning">
+											Pending
+										</span>
+									)}
+								</td>
+								<td className="px-4 py-3">
+									<span>
+										{getChainNameFromId(tx.chainId)}
 									</span>
-								) : (
-									<span className="w-fit rounded-full bg-warning/20 px-3 py-1 text-warning">
-										Pending
+								</td>
+								<td className="px-4 py-3">
+									{formatUnits(
+										BigInt(tx.amount),
+										tx.tokenDecimals
+									)}{" "}
+									{tx.tokenSymbol}
+								</td>
+								<td className="px-4 py-3">
+									{getTxHashContent(tx)}
+								</td>
+								<td className="px-4 py-3">
+									{getAddressContent(
+										tx.chainId,
+										tx.toAddress
+									)}
+								</td>
+								<td className="px-4 py-3">
+									<span
+										className={`w-fit rounded-full ${tx.lockerDirection === "in" ? "bg-success/20 px-3 py-1 text-success" : "bg-warning/20 px-3 py-1 text-warning"}`}
+									>
+										{tx.lockerDirection === "in"
+											? "In"
+											: "Out"}
 									</span>
-								)}
-							</td>
-							<td className="px-4 py-3">
-								<span>{getChainNameFromId(tx.chainId)}</span>
-							</td>
-							<td className="px-4 py-3">
-								{formatUnits(
-									BigInt(tx.amount),
-									tx.tokenDecimals
-								)}{" "}
-								{tx.tokenSymbol}
-							</td>
-							<td className="px-4 py-3">
-								{getTxHashContent(tx)}
-							</td>
-							<td className="px-4 py-3">
-								{getAddressContent(tx.chainId, tx.toAddress)}
-							</td>
-							<td className="px-4 py-3">
-								<span
-									className={`w-fit rounded-full ${tx.lockerDirection === "in" ? "bg-success/20 px-3 py-1 text-success" : "bg-warning/20 px-3 py-1 text-warning"}`}
-								>
-									{tx.lockerDirection === "in" ? "In" : "Out"}
-								</span>
-							</td>
-							<td className="px-4 py-3">
-								{getAddressContent(tx.chainId, tx.fromAddress)}
-							</td>
-						</tr>
-					))}
+								</td>
+								<td className="px-4 py-3">
+									{getAddressContent(
+										tx.chainId,
+										tx.fromAddress
+									)}
+								</td>
+							</tr>
+						))}
 				</tbody>
 			</table>
 		</div>
