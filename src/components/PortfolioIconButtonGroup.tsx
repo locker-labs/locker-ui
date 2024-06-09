@@ -36,6 +36,7 @@ function PortfolioIconButtonGroup({
 
 	const handleSendModalPopup = () => {
 		if (isConnected) {
+			getTokenList();
 			openSendModal();
 		} else {
 			openConnectModal();
@@ -62,10 +63,7 @@ function PortfolioIconButtonGroup({
 				<button
 					className="flex size-10 shrink-0 items-center justify-center rounded-full bg-dark-500/10 text-dark-600 transition duration-300 ease-in-out hover:scale-105 dark:bg-light-200/10 dark:text-light-100"
 					aria-label="Display locker QR code"
-					onClick={() => {
-						getTokenList();
-						openQrCodeModal();
-					}}
+					onClick={() => openQrCodeModal()}
 				>
 					<IoQrCodeOutline size="16px" />
 				</button>

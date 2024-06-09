@@ -14,6 +14,7 @@ import { disclosures } from "@/data/constants/disclosures";
 import { errors } from "@/data/constants/errorMessages";
 import { useConnectModal } from "@/hooks/useConnectModal";
 import { usePolicyReviewModal } from "@/hooks/usePolicyReviewModal";
+import { useQrCodeModal } from "@/hooks/useQrCodeModal";
 import useSmartAccount from "@/hooks/useSmartAccount";
 import { createPolicy } from "@/services/lockers";
 import { Automation, Locker, Policy } from "@/types";
@@ -49,6 +50,7 @@ function LockerSetup({ lockers, fetchPolicies }: ILockerSetup) {
 	const { chainId, address, isConnected } = useAccount();
 	const { signSessionKey } = useSmartAccount();
 	const { openConnectModal, renderConnectModal } = useConnectModal();
+	const { openQrCodeModal, renderQrCodeModal } = useQrCodeModal();
 	const { openPolicyReviewModal, renderPolicyReviewModal } =
 		usePolicyReviewModal();
 
@@ -304,6 +306,12 @@ function LockerSetup({ lockers, fetchPolicies }: ILockerSetup) {
 					{disclosures.BANK_SETUP_US_ONLY}
 				</span>
 			)}
+			<button
+				className="flex h-12 w-48 items-center justify-center self-center rounded-full bg-light-200 hover:bg-light-300 dark:bg-dark-400 dark:hover:bg-dark-300"
+				onClick={openQrCodeModal}
+			>
+				Fund your locker
+			</button>
 			{txs && txs.length > 0 && (
 				<div className="flex w-full flex-col space-y-2">
 					<span className="text-sm">Transaction history</span>
@@ -330,6 +338,7 @@ function LockerSetup({ lockers, fetchPolicies }: ILockerSetup) {
 				)}
 				<Steps step={step} totalSteps={2} />
 			</div>
+			{renderQrCodeModal(locker.address)}
 			{renderConnectModal()}
 			{chainId &&
 				renderPolicyReviewModal(

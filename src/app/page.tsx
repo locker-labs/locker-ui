@@ -85,7 +85,7 @@ export default function LandingPage() {
 					<div className="flex w-full max-w-2xl flex-col items-center space-y-4 text-lg">
 						<Link
 							className="flex w-full items-center outline-none"
-							href="https://waitlist.locker.money"
+							href={process.env.LANDING_PAGE_URL!}
 							target="_blank"
 							rel="noopener noreferrer"
 						>

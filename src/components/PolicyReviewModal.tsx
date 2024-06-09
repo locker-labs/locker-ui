@@ -91,12 +91,12 @@ function PolicyReviewModal({
 											{getChainNameFromId(chainId)}
 										</span>
 									</div>
-									<span className="text-left text-sm text-light-600">
+									<span className="text-sm text-light-600">
 										These settings will only be enabled on{" "}
 										{getChainNameFromId(chainId)}. You can
 										enable other chains later.
 									</span>
-									<span className="text-left text-sm text-light-600">
+									<span className="text-sm text-light-600">
 										If this is not the chain you want to
 										enable right now, switch to the desired
 										chain in your wallet.
