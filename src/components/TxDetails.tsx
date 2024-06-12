@@ -85,7 +85,7 @@ function TxDetails({ tx, chain }: ITxDetails) {
 					</tr>
 					<tr className="flex flex-col items-start sm1:flex-row sm1:items-center">
 						<td className="w-36 shrink-0 px-4 py-3 text-light-600">
-							Locker address:
+							To:
 						</td>
 						<td className="break-all px-4 py-3">
 							{chain.blockExplorers ? (
@@ -108,7 +108,7 @@ function TxDetails({ tx, chain }: ITxDetails) {
 					</tr>
 					<tr className="flex flex-col items-start sm1:flex-row sm1:items-center">
 						<td className="w-36 shrink-0 px-4 py-3 text-light-600">
-							Sender address:
+							From:
 						</td>
 						<td className="break-all px-4 py-3">
 							{chain.blockExplorers ? (

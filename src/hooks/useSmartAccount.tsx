@@ -44,6 +44,7 @@ const useSmartAccount = () => {
 	// Prompts user to sign session key for current chain
 	// ************************************************************* //
 	const signSessionKey = async (
+		lockerIndex: number,
 		hotWalletAddress?: `0x${string}`, // If not specified, defaults locker owner address
 		offrampAddress?: `0x${string}`
 	): Promise<string | undefined> => {
@@ -110,7 +111,9 @@ const useSmartAccount = () => {
 		const kernelAccountObj = await createKernelAccount(
 			publicClient as PublicClient,
 			{
-				// index: lockerIndex,
+				index:
+					BigInt(lockerIndex) +
+					BigInt(process.env.LOCKER_SEED_OFFSET!),
 				entryPoint: ENTRYPOINT_ADDRESS_V07,
 				plugins: {
 					sudo: ecdsaValidator,
@@ -170,7 +173,9 @@ const useSmartAccount = () => {
 		const kernelAccountObj = await createKernelAccount(
 			publicClient as PublicClient,
 			{
-				index: BigInt(lockerIndex),
+				index:
+					BigInt(lockerIndex) +
+					BigInt(process.env.LOCKER_SEED_OFFSET!),
 				entryPoint: ENTRYPOINT_ADDRESS_V07,
 				plugins: {
 					sudo: ecdsaValidator,

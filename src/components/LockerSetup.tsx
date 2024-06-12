@@ -14,6 +14,7 @@ import { disclosures } from "@/data/constants/disclosures";
 import { errors } from "@/data/constants/errorMessages";
 import { useConnectModal } from "@/hooks/useConnectModal";
 import { usePolicyReviewModal } from "@/hooks/usePolicyReviewModal";
+import { useQrCodeModal } from "@/hooks/useQrCodeModal";
 import useSmartAccount from "@/hooks/useSmartAccount";
 import { createPolicy } from "@/services/lockers";
 import { Automation, Locker, Policy } from "@/types";
@@ -49,11 +50,15 @@ function LockerSetup({ lockers, fetchPolicies }: ILockerSetup) {
 	const { chainId, address, isConnected } = useAccount();
 	const { signSessionKey } = useSmartAccount();
 	const { openConnectModal, renderConnectModal } = useConnectModal();
+	const { openQrCodeModal, renderQrCodeModal } = useQrCodeModal();
 	const { openPolicyReviewModal, renderPolicyReviewModal } =
 		usePolicyReviewModal();
 
 	const locker = lockers[0];
 	const { txs } = locker;
+	const filteredTxs = txs
+		? txs.filter((tx) => isChainSupported(tx.chainId))
+		: [];
 
 	const handleChannelSelection = (channel: keyof typeof selectedChannels) => {
 		setSelectedChannels((prev) => ({
@@ -134,6 +139,7 @@ function LockerSetup({ lockers, fetchPolicies }: ILockerSetup) {
 
 		// 1. Get user to sign session key
 		const sig = await signSessionKey(
+			0, // lockerIndex
 			sendToAddress as `0x${string}`, // hotWalletAddress
 			undefined // offrampAddress
 		);
@@ -307,10 +313,16 @@ function LockerSetup({ lockers, fetchPolicies }: ILockerSetup) {
 					{disclosures.BANK_SETUP_US_ONLY}
 				</span>
 			)}
-			{txs && txs.length > 0 && (
+			<button
+				className="flex h-12 w-48 items-center justify-center self-center rounded-full bg-light-200 hover:bg-light-300 dark:bg-dark-400 dark:hover:bg-dark-300"
+				onClick={openQrCodeModal}
+			>
+				Fund your locker
+			</button>
+			{filteredTxs.length > 0 && (
 				<div className="flex w-full flex-col space-y-2">
 					<span className="text-sm">Transaction history</span>
-					<TxTable txs={txs} />
+					<TxTable txs={filteredTxs} />
 				</div>
 			)}
 			<div className="flex w-full flex-1 flex-col items-center justify-between xxs1:flex-row xxs1:items-end">
@@ -333,6 +345,7 @@ function LockerSetup({ lockers, fetchPolicies }: ILockerSetup) {
 				)}
 				<Steps step={step} totalSteps={2} />
 			</div>
+			{renderQrCodeModal(locker.address)}
 			{renderConnectModal()}
 			{chainId &&
 				renderPolicyReviewModal(

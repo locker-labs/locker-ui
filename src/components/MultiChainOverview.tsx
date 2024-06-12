@@ -79,7 +79,7 @@ function MultiChainOverview({
 			return;
 		}
 
-		const sig = await signSessionKey();
+		const sig = await signSessionKey(0);
 		if (!sig) {
 			setIsLoading(false);
 			setChainRowLoading(null);

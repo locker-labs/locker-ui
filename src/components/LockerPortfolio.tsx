@@ -1,9 +1,11 @@
 import { useAuth } from "@clerk/nextjs";
 import { useEffect, useState } from "react";
+import Blockies from "react-blockies";
 
 import AutomationSettings from "@/components/AutomationSettings";
 import MultiChainOverview from "@/components/MultiChainOverview";
 import PortfolioIconButtonGroup from "@/components/PortfolioIconButtonGroup";
+import TokenSupportWarning from "@/components/TokenSupportWarning";
 import Tooltip from "@/components/Tooltip";
 import TxTable from "@/components/TxTable";
 import { supportedChainIdsArray } from "@/data/constants/supportedChains";
@@ -11,6 +13,7 @@ import { getLockerNetWorth } from "@/services/moralis";
 import { getTokenBalances } from "@/services/transactions";
 import { Locker, Policy, Token } from "@/types";
 import { getFundedChainIds } from "@/utils/getFundedChainIds";
+import { isChainSupported } from "@/utils/isChainSupported";
 import { isTestnet } from "@/utils/isTestnet";
 
 export interface ILockerPortfolio {
@@ -37,6 +40,9 @@ function LockerPortfolio({
 	// Props destructured variables
 	const locker = lockers[0];
 	const { txs } = locker;
+	const filteredTxs = txs
+		? txs.filter((tx) => isChainSupported(tx.chainId))
+		: [];
 	const basePolicy = policies[0];
 	const { automations } = basePolicy;
 
@@ -62,14 +68,17 @@ function LockerPortfolio({
 		const authToken = await getToken();
 		if (authToken && locker.id) {
 			const list = await getTokenBalances(authToken, locker.id);
-			const fundedChainIdsList = getFundedChainIds(list || []);
-			setTokenList(list || []);
+			const filteredList = list
+				? list.filter((token) => isChainSupported(token.chainId))
+				: [];
+			const fundedChainIdsList = getFundedChainIds(filteredList);
+			setTokenList(filteredList);
 			setFundedChainIds(fundedChainIdsList);
 		}
 	};
 
 	const fetchLockerNetWorth = async () => {
-		if (locker && txs) {
+		if (locker && filteredTxs.length > 0) {
 			const mainnetChainIds = supportedChainIdsArray.filter(
 				(chainId) => !isTestnet(chainId)
 			);
@@ -96,18 +105,22 @@ function LockerPortfolio({
 	return (
 		<div className="flex w-full flex-1 flex-col items-center">
 			<div className="flex w-fit flex-col overflow-visible">
-				<div className="flex w-full flex-col items-center">
+				<Blockies
+					className="flex self-center rounded-full"
+					seed={locker.address.toLowerCase()}
+					size={14}
+				/>
+				<div className="mt-4 flex w-full flex-col items-center">
 					<Tooltip
 						width="w-36"
 						label="Total USD value of your locker across all supported chains."
-						placement="auto-start"
+						placement="auto"
 					>
-						<span className="mb-1 flex cursor-pointer whitespace-nowrap text-sm text-light-600">
-							Total value <span className="ml-2">ⓘ</span>
+						<span className="mb-1 flex cursor-pointer items-center whitespace-nowrap text-sm text-light-600">
+							Total value <span className="ml-2 text-xs">ⓘ</span>
 						</span>
 					</Tooltip>
-
-					<span className="text-3xl">${lockerNetWorth}</span>
+					<span className="text-4xl">${lockerNetWorth}</span>
 				</div>
 				{locker && (
 					<div className="mt-4 flex items-center">
@@ -118,6 +131,9 @@ function LockerPortfolio({
 						/>
 					</div>
 				)}
+			</div>
+			<div className="mt-6 flex w-full items-center justify-center">
+				<TokenSupportWarning />
 			</div>
 			<div className="mt-6 flex w-full min-w-fit max-w-xs flex-col space-y-2">
 				<span className="self-start text-sm">Automation settings</span>
@@ -149,12 +165,12 @@ function LockerPortfolio({
 			{errorMessage && (
 				<span className="mt-6 text-sm text-error">{errorMessage}</span>
 			)}
-			{txs && (
+			{filteredTxs.length > 0 && (
 				<div className="mt-6 flex w-full flex-col space-y-2">
 					<span className="self-start text-sm">
 						Transaction history
 					</span>
-					<TxTable txs={txs} />
+					<TxTable txs={filteredTxs} />
 				</div>
 			)}
 		</div>
