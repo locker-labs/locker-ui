@@ -138,11 +138,17 @@ function LockerSetup({ lockers, fetchPolicies }: ILockerSetup) {
 		setIsLoading(true);
 
 		// 1. Get user to sign session key
-		const sig = await signSessionKey(0);
+		const sig = await signSessionKey(
+			chainId as number, // current chainId in user's connected wallet
+			0, // lockerIndex
+			sendToAddress as `0x${string}` // hotWalletAddress
+			// undefined // offrampAddress
+		);
 		if (!sig) {
 			setIsLoading(false);
 			return;
 		}
+
 		// 2. Craft policy object
 		const automations: Automation[] = [
 			{
@@ -254,7 +260,7 @@ function LockerSetup({ lockers, fetchPolicies }: ILockerSetup) {
 						)}
 					</div>
 					<button
-						className="mt-8 h-12 w-40 items-center justify-center rounded-full bg-secondary-100 text-light-100 hover:bg-secondary-200 dark:bg-primary-200 dark:hover:bg-primary-100"
+						className="mt-8 h-12 w-48 items-center justify-center rounded-full bg-secondary-100 text-light-100 hover:bg-secondary-200 dark:bg-primary-200 dark:hover:bg-primary-100"
 						onClick={proceedToNextStep}
 					>
 						Continue
@@ -262,8 +268,8 @@ function LockerSetup({ lockers, fetchPolicies }: ILockerSetup) {
 				</div>
 			)}
 			{step === 2 && (
-				<div className="flex w-full flex-col items-center space-y-8">
-					<span className="text-lg">Percentage allocation</span>
+				<div className="flex w-full flex-col items-center">
+					<span className="mb-8 text-lg">Percentage allocation</span>
 					<ChannelPieChart
 						bankPercent={Number(bankPercent)}
 						hotWalletPercent={Number(hotWalletPercent)}
@@ -271,20 +277,27 @@ function LockerSetup({ lockers, fetchPolicies }: ILockerSetup) {
 						lineWidth={25}
 						size="size-48"
 					/>
-					<DistributionBox
-						savePercent={savePercent}
-						hotWalletPercent={hotWalletPercent}
-						bankPercent={bankPercent}
-						percentLeft={percentLeft}
-						handlePercentChange={handlePercentChange}
-						selectedChannels={selectedChannels}
-						sendToAddress={sendToAddress}
-						setSendToAddress={setSendToAddress}
-						setErrorMessage={setErrorMessage}
-						isLoading={isLoading}
-					/>
+					<div className="mt-8">
+						<DistributionBox
+							savePercent={savePercent}
+							hotWalletPercent={hotWalletPercent}
+							bankPercent={bankPercent}
+							percentLeft={percentLeft}
+							handlePercentChange={handlePercentChange}
+							selectedChannels={selectedChannels}
+							sendToAddress={sendToAddress}
+							setSendToAddress={setSendToAddress}
+							setErrorMessage={setErrorMessage}
+							isLoading={isLoading}
+						/>
+					</div>
+					{selectedChannels.bank && (
+						<span className="mt-2 w-full min-w-60 max-w-sm text-xs text-light-600">
+							{disclosures.BANK_SETUP_US_ONLY}
+						</span>
+					)}
 					<button
-						className={`${isLoading ? "cursor-not-allowed opacity-80" : "cursor-pointer opacity-100"} flex h-12 w-48 items-center justify-center rounded-full bg-secondary-100 text-light-100 hover:bg-secondary-200 dark:bg-primary-200 dark:hover:bg-primary-100`}
+						className={`${isLoading ? "cursor-not-allowed opacity-80" : "cursor-pointer opacity-100"} mt-8 flex h-12 w-48 items-center justify-center rounded-full bg-secondary-100 text-light-100 hover:bg-secondary-200 dark:bg-primary-200 dark:hover:bg-primary-100`}
 						onClick={() => handlePolicyCreation()}
 						disabled={isLoading}
 					>
@@ -299,22 +312,17 @@ function LockerSetup({ lockers, fetchPolicies }: ILockerSetup) {
 					</button>
 				</div>
 			)}
-			{errorMessage && (
-				<span className="mt-8 self-center text-sm text-error">
-					{errorMessage}
-				</span>
-			)}
-			{selectedChannels.bank && step === 2 && (
-				<span className="w-full min-w-60 max-w-sm self-center text-xs text-light-600">
-					{disclosures.BANK_SETUP_US_ONLY}
-				</span>
-			)}
 			<button
 				className="flex h-12 w-48 items-center justify-center self-center rounded-full bg-light-200 hover:bg-light-300 dark:bg-dark-400 dark:hover:bg-dark-300"
 				onClick={openQrCodeModal}
 			>
 				Fund your locker
 			</button>
+			{errorMessage && (
+				<span className="mt-8 self-center text-sm text-error">
+					{errorMessage}
+				</span>
+			)}
 			{filteredTxs.length > 0 && (
 				<div className="flex w-full flex-col space-y-2">
 					<span className="text-sm">Transaction history</span>
