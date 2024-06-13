@@ -7,8 +7,8 @@ function TokenSupportWarning() {
 				<IoWarningOutline size={16} />
 			</div>
 			<span className="mx-3 text-center text-xs text-light-600">
-				Only ERC-20 tokens are supported at the moment. Native token
-				support is coming soon!
+				Only USDC is supported at the moment. Support for other ERC-20
+				and native tokens is coming soon!
 			</span>
 			<div className="flex size-7 shrink-0 items-center justify-center rounded-full bg-warning/20 text-warning">
 				<IoWarningOutline size={16} />

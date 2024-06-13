@@ -27,8 +27,9 @@ import {
 } from "viem";
 import { usePublicClient, useWalletClient } from "wagmi";
 
-import { getErc20Policy } from "@/data/policies/erc20";
-import { getNativePolicy } from "@/data/policies/native";
+// import { getErc20Policy } from "@/data/policies/erc20";
+// import { getNativePolicy } from "@/data/policies/native";
+import { getUsdcPolicy } from "@/data/policies/usdc";
 import { getBundler } from "@/utils/getBundler";
 import { getChainObjFromId } from "@/utils/getChainObj";
 import { getPaymaster } from "@/utils/getPaymaster";
@@ -44,9 +45,10 @@ const useSmartAccount = () => {
 	// Prompts user to sign session key for current chain
 	// ************************************************************* //
 	const signSessionKey = async (
+		chainId: number,
 		lockerIndex: number,
-		hotWalletAddress?: `0x${string}`, // If not specified, defaults locker owner address
-		offrampAddress?: `0x${string}`
+		hotWalletAddress?: `0x${string}` // If not specified, defaults locker owner address
+		// offrampAddress?: `0x${string}`
 	): Promise<string | undefined> => {
 		if (!walletClient) {
 			throw new Error("Wallet client is not available");
@@ -67,25 +69,27 @@ const useSmartAccount = () => {
 			process.env.LOCKER_AGENT_ADDRESS as `0x${string}`
 		);
 
-		const emptySessionKeySigner = await toECDSASigner({
+		const emptySessionKeySigner = toECDSASigner({
 			signer: emptyAccount,
 		});
 
 		// Policies to allow Locker agent to send money to user's hot wallet
-		let hotWalletErc20Policy;
-		let hotWalletNativePolicy;
+		let hotWalletUsdcPolicy;
+		// let hotWalletErc20Policy;
+		// let hotWalletNativePolicy;
 		if (hotWalletAddress) {
-			hotWalletErc20Policy = getErc20Policy(hotWalletAddress);
-			hotWalletNativePolicy = getNativePolicy(hotWalletAddress);
+			hotWalletUsdcPolicy = getUsdcPolicy(hotWalletAddress, chainId);
+			// hotWalletErc20Policy = getErc20Policy(hotWalletAddress);
+			// hotWalletNativePolicy = getNativePolicy(hotWalletAddress);
 		}
 
 		// Policies to allow Locker agent to send money to off-ramp address
-		let offrampErc20Policy;
-		let offrampNativePolicy;
-		if (offrampAddress) {
-			offrampErc20Policy = getErc20Policy(offrampAddress);
-			offrampNativePolicy = getNativePolicy(offrampAddress);
-		}
+		// let offrampErc20Policy;
+		// let offrampNativePolicy;
+		// if (offrampAddress) {
+		// 	offrampErc20Policy = getErc20Policy(offrampAddress);
+		// 	offrampNativePolicy = getNativePolicy(offrampAddress);
+		// }
 
 		// Type guard to filter out undefined values
 		function isDefined<T>(value: T | undefined): value is T {
@@ -94,10 +98,11 @@ const useSmartAccount = () => {
 
 		// Filter out undefined policies
 		const policies = [
-			hotWalletErc20Policy,
-			hotWalletNativePolicy,
-			offrampErc20Policy,
-			offrampNativePolicy,
+			hotWalletUsdcPolicy,
+			// hotWalletErc20Policy,
+			// hotWalletNativePolicy,
+			// offrampErc20Policy,
+			// offrampNativePolicy,
 		].filter(isDefined);
 
 		const permissionPlugin = await toPermissionValidator(
