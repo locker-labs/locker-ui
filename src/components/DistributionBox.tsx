@@ -3,6 +3,7 @@ import AddressInput from "@/components/AddressInput";
 import BankIcon from "@/components/BankIcon";
 import PercentInput from "@/components/PercentInput";
 import SaveIcon from "@/components/SaveIcon";
+import Tooltip from "@/components/Tooltip";
 import WalletIcon from "@/components/WalletIcon";
 
 interface IDistributionBox {
@@ -49,6 +50,17 @@ function DistributionBox({
 							<span className="ml-3 whitespace-normal text-sm xs2:whitespace-nowrap xs2:text-[16px]">
 								Save in your locker
 							</span>
+							<div className="ml-2">
+								<Tooltip
+									width="w-36"
+									label="When payments are received, save this amount in your locker for later use."
+									placement="auto-end"
+								>
+									<span className="cursor-pointer text-xs">
+										ⓘ
+									</span>
+								</Tooltip>
+							</div>
 						</div>
 						<PercentInput
 							value={savePercent}
@@ -65,6 +77,17 @@ function DistributionBox({
 								<span className="ml-3 whitespace-normal text-sm xs2:whitespace-nowrap xs2:text-[16px]">
 									Forward to a hot wallet
 								</span>
+								<div className="ml-2">
+									<Tooltip
+										width="w-36"
+										label="When payments are received, send this amount to the specified recepient."
+										placement="auto-end"
+									>
+										<span className="cursor-pointer text-xs">
+											ⓘ
+										</span>
+									</Tooltip>
+								</div>
 							</div>
 							<PercentInput
 								value={hotWalletPercent}
@@ -95,6 +118,17 @@ function DistributionBox({
 							<span className="ml-3 whitespace-normal text-sm xs2:whitespace-nowrap xs2:text-[16px]">
 								Send to your bank
 							</span>
+							<div className="ml-2">
+								<Tooltip
+									width="w-36"
+									label="When payments are received, send this amount to your US bank account."
+									placement="auto-end"
+								>
+									<span className="cursor-pointer text-xs">
+										ⓘ
+									</span>
+								</Tooltip>
+							</div>
 						</div>
 						<PercentInput
 							value={bankPercent}

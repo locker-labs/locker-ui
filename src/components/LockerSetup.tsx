@@ -6,7 +6,7 @@ import { checksumAddress, formatUnits } from "viem";
 import { useAccount } from "wagmi";
 
 import ChannelPieChart from "@/components/ChannelPieChart";
-import ChannelSelectButton from "@/components/ChannelSelectButton";
+import ChannelSelection from "@/components/ChannelSelection";
 import DistributionBox from "@/components/DistributionBox";
 import Steps from "@/components/Steps";
 import TxTable from "@/components/TxTable";
@@ -14,7 +14,6 @@ import { disclosures } from "@/data/constants/disclosures";
 import { errors } from "@/data/constants/errorMessages";
 import { useConnectModal } from "@/hooks/useConnectModal";
 import { usePolicyReviewModal } from "@/hooks/usePolicyReviewModal";
-import { useQrCodeModal } from "@/hooks/useQrCodeModal";
 import useSmartAccount from "@/hooks/useSmartAccount";
 import { createPolicy } from "@/services/lockers";
 import { Automation, Locker, Policy } from "@/types";
@@ -50,7 +49,6 @@ function LockerSetup({ lockers, fetchPolicies }: ILockerSetup) {
 	const { chainId, address, isConnected } = useAccount();
 	const { signSessionKey } = useSmartAccount();
 	const { openConnectModal, renderConnectModal } = useConnectModal();
-	const { openQrCodeModal, renderQrCodeModal } = useQrCodeModal();
 	const { openPolicyReviewModal, renderPolicyReviewModal } =
 		usePolicyReviewModal();
 
@@ -60,7 +58,7 @@ function LockerSetup({ lockers, fetchPolicies }: ILockerSetup) {
 		? txs.filter((tx) => isChainSupported(tx.chainId))
 		: [];
 
-	const handleChannelSelection = (channel: keyof typeof selectedChannels) => {
+	const handleChannelSelection = (channel: "save" | "wallet" | "bank") => {
 		setSelectedChannels((prev) => ({
 			...prev,
 			[channel]: !prev[channel],
@@ -233,39 +231,11 @@ function LockerSetup({ lockers, fetchPolicies }: ILockerSetup) {
 				Automation setup
 			</span>
 			{step === 1 && (
-				<div className="flex w-full flex-col items-center">
-					<span className="mb-4 text-lg">
-						Choose where to allocate funds received at your locker.
-					</span>
-					<div className="flex w-full min-w-60 max-w-sm flex-col space-y-2">
-						<ChannelSelectButton
-							isSelected={selectedChannels.save}
-							label="Save in your locker"
-							onClick={() => handleChannelSelection("save")}
-						/>
-						<ChannelSelectButton
-							isSelected={selectedChannels.wallet}
-							label="Forward to a hot wallet"
-							onClick={() => handleChannelSelection("wallet")}
-						/>
-						<ChannelSelectButton
-							isSelected={selectedChannels.bank}
-							label="Send to your bank"
-							onClick={() => handleChannelSelection("bank")}
-						/>
-						{selectedChannels.bank && (
-							<span className="text-xs text-light-600">
-								{disclosures.BANK_SETUP_US_ONLY}
-							</span>
-						)}
-					</div>
-					<button
-						className="mt-8 h-12 w-48 items-center justify-center rounded-full bg-secondary-100 text-light-100 hover:bg-secondary-200 dark:bg-primary-200 dark:hover:bg-primary-100"
-						onClick={proceedToNextStep}
-					>
-						Continue
-					</button>
-				</div>
+				<ChannelSelection
+					selectedChannels={selectedChannels}
+					handleChannelSelection={handleChannelSelection}
+					proceedToNextStep={proceedToNextStep}
+				/>
 			)}
 			{step === 2 && (
 				<div className="flex w-full flex-col items-center">
@@ -312,12 +282,6 @@ function LockerSetup({ lockers, fetchPolicies }: ILockerSetup) {
 					</button>
 				</div>
 			)}
-			<button
-				className="flex h-12 w-48 items-center justify-center self-center rounded-full bg-light-200 hover:bg-light-300 dark:bg-dark-400 dark:hover:bg-dark-300"
-				onClick={openQrCodeModal}
-			>
-				Fund your locker
-			</button>
 			{errorMessage && (
 				<span className="mt-8 self-center text-sm text-error">
 					{errorMessage}
@@ -349,7 +313,6 @@ function LockerSetup({ lockers, fetchPolicies }: ILockerSetup) {
 				)}
 				<Steps step={step} totalSteps={2} />
 			</div>
-			{renderQrCodeModal(locker.address)}
 			{renderConnectModal()}
 			{chainId &&
 				renderPolicyReviewModal(

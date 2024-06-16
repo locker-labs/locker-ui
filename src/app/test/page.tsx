@@ -16,7 +16,7 @@ function Test() {
 	// ************************ TEST ************************ //
 	// ****************************************************** //
 	const testLockerCreate = false;
-	const testLockerSetup = false;
+	const testLockerSetup = true;
 	const testLockerPortfolio = false;
 	// ****************************************************** //
 	// ****************************************************** //
