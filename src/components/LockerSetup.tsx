@@ -91,7 +91,7 @@ function LockerSetup({ lockers, fetchPolicies }: ILockerSetup) {
 			setHotWalletPercent(percentages.wallet || "0");
 			setBankPercent(percentages.bank || "0");
 
-			setStep(2);
+			setStep(3);
 			setErrorMessage("");
 		} else {
 			setErrorMessage(errors.AT_LEAST_ONE);
@@ -231,13 +231,38 @@ function LockerSetup({ lockers, fetchPolicies }: ILockerSetup) {
 				Automation setup
 			</span>
 			{step === 1 && (
+				<div className="flex w-full flex-col items-center space-y-8">
+					<span className="w-full max-w-sm">
+						To set up your locker, here&apos;s what you&apos;ll do
+						in the next steps:
+					</span>
+					<div className="flex w-full max-w-sm flex-col space-y-8 text-left">
+						<span className="">
+							<strong>Choose your destinations:</strong> Decide
+							where your money goes when it arrives in your
+							locker.
+						</span>
+						<span className="">
+							<strong>Set your percentages:</strong> Allocate what
+							percentage of your funds goes to each destination.
+						</span>
+					</div>
+					<button
+						className="h-12 w-48 items-center justify-center rounded-full bg-secondary-100 text-light-100 hover:bg-secondary-200 dark:bg-primary-200 dark:hover:bg-primary-100"
+						onClick={() => setStep(2)}
+					>
+						Continue
+					</button>
+				</div>
+			)}
+			{step === 2 && (
 				<ChannelSelection
 					selectedChannels={selectedChannels}
 					handleChannelSelection={handleChannelSelection}
 					proceedToNextStep={proceedToNextStep}
 				/>
 			)}
-			{step === 2 && (
+			{step === 3 && (
 				<div className="flex w-full flex-col items-center">
 					<span className="mb-8 text-lg">Percentage allocation</span>
 					<ChannelPieChart
@@ -247,6 +272,10 @@ function LockerSetup({ lockers, fetchPolicies }: ILockerSetup) {
 						lineWidth={25}
 						size="size-48"
 					/>
+					<span className="mt-8 w-full min-w-60 max-w-sm">
+						Each time money arrives in your locker, it will be
+						automatically distributed based on the settings below.
+					</span>
 					<div className="mt-8">
 						<DistributionBox
 							savePercent={savePercent}
@@ -308,10 +337,24 @@ function LockerSetup({ lockers, fetchPolicies }: ILockerSetup) {
 							<span>Back</span>
 						</div>
 					</button>
+				) : step === 3 ? (
+					<button
+						className="mb-8 h-10 w-fit hover:text-secondary-200 dark:hover:text-primary-100 xxs1:mb-0"
+						onClick={() => {
+							setErrorMessage("");
+							setStep(2);
+						}}
+						disabled={isLoading}
+					>
+						<div className="flex items-center justify-center space-x-1">
+							<IoChevronBackOutline size={20} />
+							<span>Back</span>
+						</div>
+					</button>
 				) : (
 					<div />
 				)}
-				<Steps step={step} totalSteps={2} />
+				<Steps step={step} totalSteps={3} />
 			</div>
 			{renderConnectModal()}
 			{chainId &&

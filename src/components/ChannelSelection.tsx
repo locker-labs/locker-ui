@@ -19,7 +19,7 @@ function ChannelSelection({
 	return (
 		<div className="flex w-full flex-col items-center">
 			<span className="mb-4 text-lg">
-				Choose where to allocate funds received at your locker.
+				Choose where to allocate money received in your locker.
 			</span>
 			<div className="flex w-full min-w-60 max-w-sm flex-col space-y-2">
 				<ChannelSelectButton
