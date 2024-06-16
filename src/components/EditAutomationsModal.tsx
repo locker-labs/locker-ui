@@ -279,6 +279,7 @@ function EditAutomationsModal({
 										<ChannelSelectButton
 											isSelected={selectedChannels.save}
 											label="Save in your locker"
+											tip="When payments are received, save some funds in your locker for later use."
 											onClick={() =>
 												handleChannelSelection("save")
 											}
@@ -287,6 +288,7 @@ function EditAutomationsModal({
 										<ChannelSelectButton
 											isSelected={selectedChannels.wallet}
 											label="Forward to a hot wallet"
+											tip="When payments are received, send some funds to a hot wallet for immediate use."
 											onClick={() =>
 												handleChannelSelection("wallet")
 											}
@@ -295,6 +297,7 @@ function EditAutomationsModal({
 										<ChannelSelectButton
 											isSelected={selectedChannels.bank}
 											label="Send to your bank"
+											tip="When payments are received, send some funds to your US bank account."
 											onClick={() =>
 												handleChannelSelection("bank")
 											}
