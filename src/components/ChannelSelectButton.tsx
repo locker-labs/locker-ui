@@ -2,9 +2,12 @@
 import { IoCheckmarkCircle } from "react-icons/io5";
 import { MdOutlineRadioButtonUnchecked } from "react-icons/md";
 
+import Tooltip from "@/components/Tooltip";
+
 export interface ISelectionButton {
 	isSelected: boolean;
 	label: string;
+	tip: string;
 	onClick: () => void;
 	disabled?: boolean;
 }
@@ -12,6 +15,7 @@ export interface ISelectionButton {
 function ChannelSelectButton({
 	isSelected,
 	label,
+	tip,
 	onClick,
 	disabled = false,
 }: ISelectionButton) {
@@ -34,13 +38,18 @@ function ChannelSelectButton({
 				/>
 			) : (
 				<MdOutlineRadioButtonUnchecked
-					className="text-light-600"
+					className="shrink-0 text-light-600"
 					size={25}
 				/>
 			)}
 			<span className="ml-3 flex h-7 items-center whitespace-normal text-sm xs:whitespace-nowrap xs:text-[16px]">
 				{label}
 			</span>
+			<div className="ml-2">
+				<Tooltip width="w-36" label={tip} placement="auto-end">
+					<span className="text-xs">ⓘ</span>
+				</Tooltip>
+			</div>
 		</button>
 	);
 }

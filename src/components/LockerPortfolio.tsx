@@ -135,8 +135,19 @@ function LockerPortfolio({
 			<div className="mt-6 flex w-full items-center justify-center">
 				<TokenSupportWarning />
 			</div>
-			<div className="mt-6 flex w-full min-w-fit max-w-xs flex-col space-y-2">
-				<span className="self-start text-sm">Automation settings</span>
+			<div className="mt-6 flex w-full min-w-fit max-w-xs flex-col space-y-2 overflow-visible">
+				<div className="flex w-full items-center">
+					<Tooltip
+						width="w-36"
+						label="These automation settings will be applied to all chains that have been enabled."
+						placement="auto"
+					>
+						<span className="cursor-pointer text-sm text-light-600">
+							Automation settings
+							<span className="ml-2 text-xs">ⓘ</span>
+						</span>
+					</Tooltip>
+				</div>
 				<AutomationSettings
 					currentPolicies={policies}
 					fetchPolicies={fetchPolicies}
@@ -147,10 +158,19 @@ function LockerPortfolio({
 				/>
 			</div>
 			{locker && policies && (
-				<div className="mt-6 flex w-full min-w-fit max-w-md flex-col space-y-2">
-					<span className="self-start text-sm">
-						Multi-chain overview
-					</span>
+				<div className="mt-6 flex w-full min-w-fit max-w-md flex-col space-y-2 overflow-visible">
+					<div className="flex w-full items-center">
+						<Tooltip
+							width="w-40"
+							label="For security reasons, automations must be individually authorized on each chain."
+							placement="auto"
+						>
+							<span className="cursor-pointer text-sm text-light-600">
+								Multi-chain overview
+								<span className="ml-2 text-xs">ⓘ</span>
+							</span>
+						</Tooltip>
+					</div>
 					<MultiChainOverview
 						fundedChainIds={fundedChainIds}
 						policies={policies}
@@ -167,9 +187,18 @@ function LockerPortfolio({
 			)}
 			{filteredTxs.length > 0 && (
 				<div className="mt-6 flex w-full flex-col space-y-2">
-					<span className="self-start text-sm">
-						Transaction history
-					</span>
+					<div className="flex w-full items-center">
+						<Tooltip
+							width="w-40"
+							label="History of all incoming and outgoing transactions from your locker."
+							placement="auto"
+						>
+							<span className="cursor-pointer text-sm text-light-600">
+								Transaction history
+								<span className="ml-2 text-xs">ⓘ</span>
+							</span>
+						</Tooltip>
+					</div>
 					<TxTable txs={filteredTxs} />
 				</div>
 			)}

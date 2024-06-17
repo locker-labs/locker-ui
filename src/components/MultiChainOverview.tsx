@@ -79,7 +79,21 @@ function MultiChainOverview({
 			return;
 		}
 
-		const sig = await signSessionKey(0);
+		const hotWalletAutomation = automations.find(
+			(a) => a.type === "forward_to"
+		);
+
+		const hotWalletAddress =
+			hotWalletAutomation && hotWalletAutomation.recipientAddress
+				? hotWalletAutomation.recipientAddress
+				: locker.ownerAddress;
+
+		const sig = await signSessionKey(
+			walletChainId,
+			0, // lockerIndex
+			hotWalletAddress
+			// undefined // offrampAddress
+		);
 		if (!sig) {
 			setIsLoading(false);
 			setChainRowLoading(null);
