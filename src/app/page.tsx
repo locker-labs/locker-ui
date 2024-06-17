@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import AuthButton from "@/components/AuthButton";
+import FaqAccordion from "@/components/FaqAccordion";
 import { errors } from "@/data/constants/errorMessages";
 import { paths } from "@/data/constants/paths";
 import lockerPaths from "@/data/lottie/lockerPaths.json";
@@ -120,6 +121,12 @@ export default function LandingPage() {
 				)}
 				<div className="flex w-full max-w-2xl flex-1 items-center justify-center py-10">
 					<LottieAnimation animationData={lockerPaths} />
+				</div>
+				<div className="flex w-full flex-col justify-center pb-10">
+					<h1 className="mb-5 text-2xl dark:text-light-100">
+						Frequently asked questions
+					</h1>
+					<FaqAccordion />
 				</div>
 			</div>
 		</div>
