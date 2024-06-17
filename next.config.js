@@ -73,7 +73,7 @@ module.exports = withPWA({
 		// Metadata
 		APP_NAME: "Locker",
 		APP_DESCRIPTION: "Save and invest every time you get paid on-chain.",
-		APP_BASE_URL: "http://localhost:3000",
+		APP_BASE_URL: "http://app.locker.money",
 		LANDING_PAGE_URL: "https://locker.money",
 
 		// Socials

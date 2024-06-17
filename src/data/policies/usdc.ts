@@ -2,8 +2,7 @@ import { ParamCondition, toCallPolicy } from "@zerodev/permissions/policies";
 import { erc20Abi } from "viem";
 
 import { errors } from "@/data/constants/errorMessages";
-
-import { supportedChainIds } from "../constants/supportedChains";
+import { supportedChainIds } from "@/data/constants/supportedChains";
 
 const getUsdcAddress = (chainId: number) => {
 	switch (chainId) {

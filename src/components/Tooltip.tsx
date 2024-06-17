@@ -70,7 +70,7 @@ function Tooltip({
 					pointerEvents: isOpen ? "auto" : "none",
 				}}
 				{...attributes.popper}
-				className={`transition-opacity ${isOpen ? "opacity-100" : "opacity-0"}`}
+				className={`transition-opacity ${isOpen ? "z-50 opacity-100" : "opacity-0"}`}
 			>
 				<span
 					className={`${marginTop && marginTop} flex items-center rounded-xl bg-light-200 p-3 text-left text-xs dark:bg-dark-400 ${width && width}`}
