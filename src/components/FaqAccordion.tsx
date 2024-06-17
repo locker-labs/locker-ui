@@ -3,12 +3,14 @@ import { IoChevronDownOutline } from "react-icons/io5";
 
 function FaqAccordion() {
 	return (
-		<div className="w-full max-w-2xl divide-y divide-light-200 rounded-md border border-light-200 text-left shadow-sm shadow-light-600 dark:divide-dark-200 dark:border-dark-200 dark:shadow-none">
+		<div className="w-full max-w-2xl divide-y divide-light-200 rounded-md border border-light-200 shadow-sm shadow-light-600 dark:divide-dark-200 dark:border-dark-200 dark:shadow-none">
 			<Disclosure as="div" className="p-6">
 				{({ open }) => (
 					<>
 						<Disclosure.Button className="flex w-full items-center justify-between">
-							<span className="font-medium">What is Locker?</span>
+							<span className="text-left font-medium">
+								What is Locker?
+							</span>
 							<IoChevronDownOutline
 								size={20}
 								className={`${open && "rotate-180"} ml-2 shrink-0 text-light-600`}
@@ -43,7 +45,7 @@ function FaqAccordion() {
 				{({ open }) => (
 					<>
 						<Disclosure.Button className="flex w-full items-center justify-between">
-							<span className="font-medium">
+							<span className="text-left font-medium">
 								What can I do with Locker?
 							</span>
 							<IoChevronDownOutline
@@ -75,7 +77,7 @@ function FaqAccordion() {
 				{({ open }) => (
 					<>
 						<Disclosure.Button className="flex w-full items-center justify-between">
-							<span className="font-medium">
+							<span className="text-left font-medium">
 								Does it cost money to use Locker?
 							</span>
 							<IoChevronDownOutline
@@ -100,7 +102,7 @@ function FaqAccordion() {
 				{({ open }) => (
 					<>
 						<Disclosure.Button className="flex w-full items-center justify-between">
-							<span className="font-medium">
+							<span className="text-left font-medium">
 								Are lockers self-custodial?
 							</span>
 							<IoChevronDownOutline
@@ -126,7 +128,7 @@ function FaqAccordion() {
 				{({ open }) => (
 					<>
 						<Disclosure.Button className="flex w-full items-center justify-between">
-							<span className="font-medium">
+							<span className="text-left font-medium">
 								What chains are currently supported?
 							</span>
 							<IoChevronDownOutline
@@ -148,7 +150,7 @@ function FaqAccordion() {
 				{({ open }) => (
 					<>
 						<Disclosure.Button className="flex w-full items-center justify-between">
-							<span className="font-medium">
+							<span className="text-left font-medium">
 								How does Locker securely move users&apos; funds?
 							</span>
 							<IoChevronDownOutline
