@@ -113,7 +113,7 @@ function PortfolioIconButtonGroup({
 						<span className="text-light-600">View</span>
 					</div>
 				)}
-			{renderQrCodeModal(locker.address)}
+			{renderQrCodeModal(locker.address, chain?.id || 10)}
 			{renderSendModal(tokenList, locker)}
 			{renderConnectModal()}
 		</div>

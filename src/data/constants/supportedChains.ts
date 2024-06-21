@@ -61,7 +61,7 @@ export const supportedChains = (
 ) as [Chain, ...Chain[]];
 
 // Set supported chain ids based on environment variable or default
-export const supportedChainIds = envChains.length
+export const supportedChainIds: { [chain: string]: number } = envChains.length
 	? Object.fromEntries(envChains.map((chain) => [chain, chains[chain].id]))
 	: defaultChainIds;
 
