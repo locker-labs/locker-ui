@@ -119,6 +119,13 @@ export default function LandingPage() {
 						)}
 					</div>
 				)}
+				<Link
+					href="https://docs.locker.money"
+					className="h-12 w-full rounded-full text-center text-white"
+					target="_blank"
+				>
+					Documentation
+				</Link>
 				<div className="flex w-full max-w-2xl flex-1 items-center justify-center py-10">
 					<LottieAnimation animationData={lockerPaths} />
 				</div>
