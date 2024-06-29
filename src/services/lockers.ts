@@ -163,3 +163,40 @@ export const updateAutomations = async (
 		}
 	}
 };
+
+export const createOfframp = async (
+	authToken: string,
+	lockerAddress: `0x${string}`,
+	setErrorMessage: (value: string) => void
+) => {
+	try {
+		// response.status should be 201 (Created)
+		const response = await fetch(endpoints.CREATE_OFFRAMP, {
+			method: "POST",
+			headers: {
+				Authorization: `Bearer ${authToken}`,
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({ address: lockerAddress }),
+		});
+
+		if (!response.ok) {
+			// Handle error in catch
+			throw response;
+		}
+	} catch (error) {
+		if (error instanceof Response) {
+			const errorMessage =
+				error.status === 404
+					? errors.LOCKER_NOT_FOUND
+					: error.status === 409
+						? errors.BEAM_ACCOUNT_CONFLICT
+						: `${error.status} (${error.statusText}): ${errors.UNEXPECTED}`;
+			console.error(errorMessage);
+		} else {
+			// Handle other errors like network errors, etc.
+			console.error(error);
+			setErrorMessage(errors.UNEXPECTED);
+		}
+	}
+};

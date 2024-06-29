@@ -51,6 +51,7 @@ export type Policy = {
 	chainId: number;
 	sessionKey?: string;
 	automations: Automation[];
+	sessionKeyIsValid: boolean;
 };
 
 export type Token = {

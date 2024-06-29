@@ -138,8 +138,8 @@ function LockerSetup({ lockers, fetchPolicies }: ILockerSetup) {
 		// 1. Get user to sign session key
 		const sig = await signSessionKey(
 			chainId as number, // current chainId in user's connected wallet
-			0, // lockerIndex
-			sendToAddress as `0x${string}` // hotWalletAddress
+			0 // lockerIndex
+			// sendToAddress as `0x${string}` // hotWalletAddress
 			// undefined // offrampAddress
 		);
 		if (!sig) {
@@ -171,6 +171,7 @@ function LockerSetup({ lockers, fetchPolicies }: ILockerSetup) {
 			chainId: chainId as number,
 			sessionKey: sig as string,
 			automations,
+			sessionKeyIsValid: true,
 		};
 
 		// 3. Get auth token and create policy through locker-api

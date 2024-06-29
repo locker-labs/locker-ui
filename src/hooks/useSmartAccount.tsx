@@ -46,8 +46,8 @@ const useSmartAccount = () => {
 	// ************************************************************* //
 	const signSessionKey = async (
 		chainId: number,
-		lockerIndex: number,
-		hotWalletAddress?: `0x${string}` // If not specified, defaults locker owner address
+		lockerIndex: number
+		// hotWalletAddress?: `0x${string}` // If not specified, defaults locker owner address
 		// offrampAddress?: `0x${string}`
 	): Promise<string | undefined> => {
 		if (!walletClient) {
@@ -74,14 +74,17 @@ const useSmartAccount = () => {
 		});
 
 		// Policies to allow Locker agent to send money to user's hot wallet
-		let hotWalletUsdcPolicy;
+		// let hotWalletUsdcPolicy;
 		// let hotWalletErc20Policy;
 		// let hotWalletNativePolicy;
-		if (hotWalletAddress) {
-			hotWalletUsdcPolicy = getUsdcPolicy(hotWalletAddress, chainId);
-			// hotWalletErc20Policy = getErc20Policy(hotWalletAddress);
-			// hotWalletNativePolicy = getNativePolicy(hotWalletAddress);
-		}
+		// if (hotWalletAddress) {
+		// 	hotWalletUsdcPolicy = getUsdcPolicy(hotWalletAddress, chainId);
+		// hotWalletErc20Policy = getErc20Policy(hotWalletAddress);
+		// hotWalletNativePolicy = getNativePolicy(hotWalletAddress);
+		// }
+
+		// NOTE: currently allowing Locker agent to send USDC to any recipient on behalf of user.
+		const usdcPolicy = getUsdcPolicy(chainId);
 
 		// Policies to allow Locker agent to send money to off-ramp address
 		// let offrampErc20Policy;
@@ -98,7 +101,7 @@ const useSmartAccount = () => {
 
 		// Filter out undefined policies
 		const policies = [
-			hotWalletUsdcPolicy,
+			usdcPolicy,
 			// hotWalletErc20Policy,
 			// hotWalletNativePolicy,
 			// offrampErc20Policy,

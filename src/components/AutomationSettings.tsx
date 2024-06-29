@@ -1,4 +1,4 @@
-// import { IoWarningOutline } from "react-icons/io5";
+import { IoWarningOutline } from "react-icons/io5";
 
 import AllocationBox from "@/components/AllocationBox";
 import { useEditAutomationsModal } from "@/hooks/useEditAutomationsModal";
@@ -45,24 +45,28 @@ function AutomationSettings({
 					Edit
 				</button>
 				{bankAutomation && bankAutomation.status === "new" && (
-					// <button
-					// 	className="w-fit justify-center rounded-full bg-light-200 px-4 py-2 hover:bg-light-300 dark:bg-dark-400 dark:hover:bg-dark-300"
-					// 	onClick={() => console.log("Complete KYC")}
-					// >
-					// 	<div className="flex w-full items-center">
-					// 		<div className="flex size-7 items-center justify-center rounded-full bg-warning/20 text-warning">
-					// 			<IoWarningOutline size={16} />
-					// 		</div>
-					// 		<span className="ml-3 text-sm">Finish setup</span>
-					// 	</div>
-					// </button>
-					<div className="flex w-full max-w-52 flex-col items-center space-y-4 text-center text-xs text-light-600">
-						<span>Bank off-ramp coming soon!</span>
-						<span>
-							Until then, any money allocated to your bank will
-							stay in your locker.
-						</span>
-					</div>
+					<>
+						<button
+							className="w-fit justify-center rounded-full bg-light-200 px-4 py-2 hover:bg-light-300 dark:bg-dark-400 dark:hover:bg-dark-300"
+							onClick={() => console.log("Complete KYC")}
+						>
+							<div className="flex w-full items-center">
+								<div className="flex size-7 items-center justify-center rounded-full bg-warning/20 text-warning">
+									<IoWarningOutline size={16} />
+								</div>
+								<span className="ml-3 text-sm">
+									Finish setup
+								</span>
+							</div>
+						</button>
+						<div className="flex w-full max-w-52 flex-col items-center space-y-4 text-center text-xs text-light-600">
+							<span>
+								If identity verification process is not
+								completed, any money allocated to your bank will
+								stay in your locker.
+							</span>
+						</div>
+					</>
 				)}
 				{bankAutomation && bankAutomation.status === "pending" && (
 					<span className="text-xs text-light-600">

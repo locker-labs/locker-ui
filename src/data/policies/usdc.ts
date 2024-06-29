@@ -1,4 +1,4 @@
-import { ParamCondition, toCallPolicy } from "@zerodev/permissions/policies";
+import { toCallPolicy } from "@zerodev/permissions/policies";
 import { erc20Abi } from "viem";
 
 import { errors } from "@/data/constants/errorMessages";
@@ -25,7 +25,7 @@ const getUsdcAddress = (chainId: number) => {
 	}
 };
 
-export const getUsdcPolicy = (toAddress: `0x${string}`, chainId: number) =>
+export const getUsdcPolicy = (chainId: number) =>
 	toCallPolicy({
 		permissions: [
 			{
@@ -44,14 +44,8 @@ export const getUsdcPolicy = (toAddress: `0x${string}`, chainId: number) =>
 				// Specify the conditions of each argument
 				//     --> transfer(address to, uint256 value)
 				args: [
-					// to
-					{
-						condition: ParamCondition.EQUAL,
-						value: toAddress,
-					},
-
-					// value - null allows to send to any amount
-					null,
+					null, // to - null allows to send to any recipient
+					null, // value - null allows to send to any amount
 				],
 			},
 		],

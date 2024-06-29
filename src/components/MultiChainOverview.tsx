@@ -79,19 +79,19 @@ function MultiChainOverview({
 			return;
 		}
 
-		const hotWalletAutomation = automations.find(
-			(a) => a.type === "forward_to"
-		);
+		// const hotWalletAutomation = automations.find(
+		// 	(a) => a.type === "forward_to"
+		// );
 
-		const hotWalletAddress =
-			hotWalletAutomation && hotWalletAutomation.recipientAddress
-				? hotWalletAutomation.recipientAddress
-				: locker.ownerAddress;
+		// const hotWalletAddress =
+		// 	hotWalletAutomation && hotWalletAutomation.recipientAddress
+		// 		? hotWalletAutomation.recipientAddress
+		// 		: locker.ownerAddress;
 
 		const sig = await signSessionKey(
 			walletChainId,
-			0, // lockerIndex
-			hotWalletAddress
+			0 // lockerIndex
+			// hotWalletAddress
 			// undefined // offrampAddress
 		);
 		if (!sig) {
@@ -105,6 +105,7 @@ function MultiChainOverview({
 			chainId: policyChainId as number,
 			sessionKey: sig as string,
 			automations,
+			sessionKeyIsValid: true,
 		};
 
 		const authToken = await getToken();

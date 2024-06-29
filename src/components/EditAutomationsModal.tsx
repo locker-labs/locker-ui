@@ -155,6 +155,7 @@ function EditAutomationsModal({
 			lockerId: policy.lockerId,
 			chainId: policy.chainId,
 			automations,
+			sessionKeyIsValid: policy.sessionKeyIsValid,
 		}));
 
 		// 2. Get auth token and update policies for all enabled chains through locker-api
