@@ -166,11 +166,10 @@ export const updateAutomations = async (
 
 export const createOfframp = async (
 	authToken: string,
-	lockerAddress: `0x${string}`,
-	setErrorMessage: (value: string) => void
+	lockerAddress: `0x${string}`
 ) => {
 	try {
-		// response.status should be 201 (Created)
+		// response.status should be 200
 		const response = await fetch(endpoints.CREATE_OFFRAMP, {
 			method: "POST",
 			headers: {
@@ -179,6 +178,16 @@ export const createOfframp = async (
 			},
 			body: JSON.stringify({ address: lockerAddress }),
 		});
+
+		// {
+		// 	offrampAccount: offrampAccountInDb,
+		// 	onboardingUrl: onboardingUrl,
+		// }
+
+		if (response.ok) {
+			const responseData = await response.json();
+			return responseData.onboardingUrl;
+		}
 
 		if (!response.ok) {
 			// Handle error in catch
@@ -196,7 +205,7 @@ export const createOfframp = async (
 		} else {
 			// Handle other errors like network errors, etc.
 			console.error(error);
-			setErrorMessage(errors.UNEXPECTED);
 		}
 	}
+	return null;
 };
