@@ -3,9 +3,11 @@ import {
 	signerToEcdsaValidator,
 } from "@zerodev/ecdsa-validator";
 import {
+	CALL_POLICY_CONTRACT_V5_3_2,
 	serializePermissionAccount,
 	toPermissionValidator,
 } from "@zerodev/permissions";
+import { ParamCondition, toCallPolicy } from "@zerodev/permissions/policies";
 import { toECDSASigner } from "@zerodev/permissions/signers";
 import {
 	addressToEmptyAccount,
@@ -13,6 +15,7 @@ import {
 	createKernelAccountClient,
 	createZeroDevPaymasterClient,
 } from "@zerodev/sdk";
+import { KERNEL_V3_1 } from "@zerodev/sdk/constants";
 import {
 	ENTRYPOINT_ADDRESS_V07,
 	walletClientToSmartAccountSigner,
@@ -29,7 +32,7 @@ import { usePublicClient, useWalletClient } from "wagmi";
 
 // import { getErc20Policy } from "@/data/policies/erc20";
 // import { getNativePolicy } from "@/data/policies/native";
-import { getUsdcPolicy } from "@/data/policies/usdc";
+// import { getUsdcPolicy } from "@/data/policies/usdc";
 import { getBundler } from "@/utils/getBundler";
 import { getChainObjFromId } from "@/utils/getChainObj";
 import { getPaymaster } from "@/utils/getPaymaster";
@@ -61,6 +64,7 @@ const useSmartAccount = () => {
 			publicClient as PublicClient,
 			{
 				signer: smartAccountSigner,
+				kernelVersion: KERNEL_V3_1,
 				entryPoint: ENTRYPOINT_ADDRESS_V07,
 			}
 		);
@@ -73,15 +77,37 @@ const useSmartAccount = () => {
 			signer: emptyAccount,
 		});
 
+		const callPolicy = await toCallPolicy({
+			policyAddress: CALL_POLICY_CONTRACT_V5_3_2,
+			permissions: [
+				{
+					abi: erc20Abi,
+					target: zeroAddress,
+					functionName: "transfer",
+					args: [
+						{
+							condition: ParamCondition.EQUAL,
+							value: hotWalletAddress!,
+						},
+						null,
+					],
+				},
+				{
+					target: hotWalletAddress!,
+					valueLimit: BigInt("1000000000000000000"),
+				},
+			],
+		});
+
 		// Policies to allow Locker agent to send money to user's hot wallet
-		let hotWalletUsdcPolicy;
-		// let hotWalletErc20Policy;
-		// let hotWalletNativePolicy;
-		if (hotWalletAddress) {
-			hotWalletUsdcPolicy = getUsdcPolicy(hotWalletAddress, chainId);
-			// hotWalletErc20Policy = getErc20Policy(hotWalletAddress);
-			// hotWalletNativePolicy = getNativePolicy(hotWalletAddress);
-		}
+		// let hotWalletUsdcPolicy;
+		// // let hotWalletErc20Policy;
+		// // let hotWalletNativePolicy;
+		// if (hotWalletAddress) {
+		// 	// hotWalletUsdcPolicy = getUsdcPolicy(hotWalletAddress, chainId);
+		// 	// hotWalletErc20Policy = getErc20Policy(hotWalletAddress);
+		// 	// hotWalletNativePolicy = getNativePolicy(hotWalletAddress);
+		// }
 
 		// Policies to allow Locker agent to send money to off-ramp address
 		// let offrampErc20Policy;
@@ -98,7 +124,8 @@ const useSmartAccount = () => {
 
 		// Filter out undefined policies
 		const policies = [
-			hotWalletUsdcPolicy,
+			callPolicy,
+			// hotWalletUsdcPolicy,
 			// hotWalletErc20Policy,
 			// hotWalletNativePolicy,
 			// offrampErc20Policy,
@@ -111,6 +138,7 @@ const useSmartAccount = () => {
 				entryPoint: ENTRYPOINT_ADDRESS_V07,
 				signer: emptySessionKeySigner,
 				policies,
+				kernelVersion: KERNEL_V3_1,
 			}
 		);
 		const kernelAccountObj = await createKernelAccount(
@@ -124,6 +152,7 @@ const useSmartAccount = () => {
 					sudo: ecdsaValidator,
 					regular: permissionPlugin,
 				},
+				kernelVersion: KERNEL_V3_1,
 			}
 		);
 
@@ -172,6 +201,7 @@ const useSmartAccount = () => {
 			{
 				signer: smartAccountSigner,
 				entryPoint: ENTRYPOINT_ADDRESS_V07,
+				kernelVersion: KERNEL_V3_1,
 			}
 		);
 
@@ -185,6 +215,7 @@ const useSmartAccount = () => {
 				plugins: {
 					sudo: ecdsaValidator,
 				},
+				kernelVersion: KERNEL_V3_1,
 			}
 		);
 
@@ -272,6 +303,7 @@ const useSmartAccount = () => {
 			eoaAddress,
 			index: BigInt(lockerIndex),
 			entryPointAddress: ENTRYPOINT_ADDRESS_V07,
+			kernelVersion: KERNEL_V3_1,
 		});
 	// ************************************************************* //
 
