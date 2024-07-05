@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 
-import "@aarc-dev/deposit-widget/dist/style.css";
-import { AarcProvider, useAarc } from "@aarc-dev/deposit-widget";
+import "@aarc-xyz/deposit-widget/dist/style.css";
+import { AarcProvider, useAarc } from "@aarc-xyz/deposit-widget";
 
 import { getUsdcAddress } from "@/data/policies/usdc";
 import { chainCodeNames } from "@/data/constants/supportedChains";
@@ -41,24 +41,24 @@ function AarcButton({ lockerAddress, chainId }: IAarcButtonProps) {
 		options: {
 			fetchOnlyDestinationBalance: true,
 		},
-		onRamp: {
-			mode: "deposit",
-			sourceTokenData: {
-				sourceTokenCode: "USDC",
-				sourceTokenAmount: 10,
-			},
-			cryptoCurrencyData: {
-				cryptoCurrencyCode: "TRNSK",
-				cryptoCurrencyName: "Transak Test Token",
-				cryptoCurrencyImageURL:
-					"https://assets.coingecko.com/coins/images/11674/standard/aUSDC.png?1696511564",
-			},
-			exchangeScreenTitle:
-				"Deposit into your locker on chain " +
-				chainId +
-				": " +
-				lockerAddress,
-		},
+		// onRamp: {
+		// 	mode: "deposit",
+		// 	sourceTokenData: {
+		// 		sourceTokenCode: "USDC",
+		// 		sourceTokenAmount: 10,
+		// 	},
+		// 	cryptoCurrencyData: {
+		// 		cryptoCurrencyCode: "TRNSK",
+		// 		cryptoCurrencyName: "Transak Test Token",
+		// 		cryptoCurrencyImageURL:
+		// 			"https://assets.coingecko.com/coins/images/11674/standard/aUSDC.png?1696511564",
+		// 	},
+		// 	exchangeScreenTitle:
+		// 		"Deposit into your locker on chain " +
+		// 		chainId +
+		// 		": " +
+		// 		lockerAddress,
+		// },
 		destination,
 		appearance: {
 			logoUrl:
