@@ -173,7 +173,12 @@ function MultiChainOverview({
 			return;
 		}
 
+		const currentPolicy = policies.find(
+			(pol) => pol.chainId === policyChainId
+		) as Policy;
+
 		const policy: Policy = {
+			id: currentPolicy.id,
 			lockerId: locker.id as number,
 			chainId: policyChainId as number,
 			sessionKey: sig as string,
