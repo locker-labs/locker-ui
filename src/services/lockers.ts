@@ -219,6 +219,7 @@ export const createOfframp = async (
 
 		if (response.ok) {
 			const responseData = await response.json();
+			console.log(responseData.onboardingUrl);
 			return responseData.onboardingUrl;
 		}
 

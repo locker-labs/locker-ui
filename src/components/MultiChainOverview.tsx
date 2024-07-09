@@ -39,10 +39,13 @@ function MultiChainOverview({
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const [chainRowLoading, setChainRowLoading] = useState<number | null>(null);
 	const [chainSwitched, setChainSwitched] = useState<boolean>(false);
+	const [updating, setUpdating] = useState<boolean>(false);
 	const [targetChainId, setTargetChainId] = useState<number | null>(null);
 	const [pendingPolicyChainId, setPendingPolicyChainId] = useState<
 		number | null
 	>(null);
+	const [pendingPolicyUpdateChainId, setPendingPolicyUpdateChainId] =
+		useState<number | null>(null);
 
 	const { getToken } = useAuth();
 	const { signSessionKey } = useSmartAccount();
@@ -52,7 +55,14 @@ function MultiChainOverview({
 	const { data: walletClient } = useWalletClient();
 	const { openQrCodeModal, renderQrCodeModal } = useQrCodeModal();
 
-	const handleChainSwitch = async (policyChainId: number) => {
+	const handleChainSwitch = async (
+		policyChainId: number,
+		update: boolean
+	) => {
+		if (update) {
+			setUpdating(true);
+		}
+
 		setTargetChainId(policyChainId);
 		switchChain({ chainId: policyChainId });
 		setChainSwitched(true);
@@ -71,7 +81,7 @@ function MultiChainOverview({
 		}
 
 		if (walletChainId !== policyChainId) {
-			await handleChainSwitch(policyChainId);
+			await handleChainSwitch(policyChainId, false);
 			return; // Exit early as the useEffect will handle calling createNewPolicy again
 		}
 
@@ -133,12 +143,12 @@ function MultiChainOverview({
 		}
 
 		if (walletChainId !== policyChainId) {
-			await handleChainSwitch(policyChainId);
+			await handleChainSwitch(policyChainId, true);
 			return; // Exit early as the useEffect will handle calling createNewPolicy again
 		}
 
 		if (!walletClient) {
-			setPendingPolicyChainId(policyChainId);
+			setPendingPolicyUpdateChainId(policyChainId);
 			return;
 		}
 
@@ -199,18 +209,28 @@ function MultiChainOverview({
 	};
 
 	useEffect(() => {
-		if (chainSwitched && walletChainId === targetChainId) {
+		if (chainSwitched && walletChainId === targetChainId && !updating) {
 			createNewPolicy(targetChainId!);
 			setChainSwitched(false);
 		}
-	}, [chainSwitched, walletChainId, targetChainId]);
+
+		if (chainSwitched && walletChainId === targetChainId && updating) {
+			updateStalePolicy(targetChainId!);
+			setChainSwitched(false);
+		}
+	}, [chainSwitched, walletChainId, targetChainId, updating]);
 
 	useEffect(() => {
 		if (walletClient && pendingPolicyChainId !== null) {
 			createNewPolicy(pendingPolicyChainId);
 			setPendingPolicyChainId(null);
 		}
-	}, [walletClient, pendingPolicyChainId]);
+
+		if (walletClient && pendingPolicyUpdateChainId !== null) {
+			updateStalePolicy(pendingPolicyUpdateChainId);
+			setPendingPolicyUpdateChainId(null);
+		}
+	}, [walletClient, pendingPolicyChainId, pendingPolicyUpdateChainId]);
 
 	return (
 		<div className="flex w-full min-w-52 max-w-lg flex-col divide-y divide-light-200 overflow-hidden rounded-md border border-light-200 text-sm shadow-sm shadow-light-600 dark:divide-dark-200 dark:border-dark-200 dark:shadow-none">
