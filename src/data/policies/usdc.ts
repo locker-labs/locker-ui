@@ -4,7 +4,7 @@ import { erc20Abi } from "viem";
 import { errors } from "@/data/constants/errorMessages";
 import { supportedChainIds } from "@/data/constants/supportedChains";
 
-const getUsdcAddress = (chainId: number) => {
+export const getUsdcAddress = (chainId: number) => {
 	switch (chainId) {
 		case supportedChainIds.arbitrum:
 			return "0xaf88d065e77c8cC2239327C5EDb3A432268e5831";
@@ -21,7 +21,7 @@ const getUsdcAddress = (chainId: number) => {
 		case supportedChainIds.baseSepolia:
 			return "0xd74cc5d436923b8ba2c179b4bCA2841D8A52C5B5";
 		default:
-			throw new Error(errors.UNSUPPORTED_CHAIN);
+			throw new Error(`${chainId}: ${errors.UNSUPPORTED_CHAIN}`);
 	}
 };
 
