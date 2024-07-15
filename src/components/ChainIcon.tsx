@@ -75,6 +75,16 @@ function ChainIcon({
 			);
 			viewBox = "0 0 54 48";
 			break;
+		case supportedChainIds.linea:
+			// Linea Icon
+			svgContent = (
+				<>
+					<path d="M210.678 233.768H92.7656V110.168H119.744V209.825H210.678V233.768Z" />
+					<path d="M175.067 107.743C188.354 107.743 199.128 97.0229 199.128 83.7992C199.128 70.5755 188.354 59.8555 175.067 59.8555C161.774 59.8555 151 70.5755 151 83.7992C151 97.0229 161.774 107.743 175.067 107.743Z" />
+				</>
+			);
+			viewBox = "0 0 54 54";
+			break;
 		default:
 			// Empty Icon
 			svgContent = <path />;

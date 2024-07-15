@@ -13,6 +13,7 @@ import {
 	createKernelAccountClient,
 	createZeroDevPaymasterClient,
 } from "@zerodev/sdk";
+import { KERNEL_V3_1 } from "@zerodev/sdk/constants";
 import {
 	ENTRYPOINT_ADDRESS_V07,
 	walletClientToSmartAccountSigner,
@@ -29,10 +30,11 @@ import { usePublicClient, useWalletClient } from "wagmi";
 
 // import { getErc20Policy } from "@/data/policies/erc20";
 // import { getNativePolicy } from "@/data/policies/native";
-import { getUsdcPolicy } from "@/data/policies/usdc";
+import { getCombinedPolicy } from "@/data/policies/combined";
 import { getBundler } from "@/utils/getBundler";
 import { getChainObjFromId } from "@/utils/getChainObj";
 import { getPaymaster } from "@/utils/getPaymaster";
+import getZerodevIndex from "@/utils/getZerodevIndex";
 
 const useSmartAccount = () => {
 	const publicClient = usePublicClient();
@@ -62,6 +64,7 @@ const useSmartAccount = () => {
 			{
 				signer: smartAccountSigner,
 				entryPoint: ENTRYPOINT_ADDRESS_V07,
+				kernelVersion: KERNEL_V3_1,
 			}
 		);
 
@@ -78,7 +81,7 @@ const useSmartAccount = () => {
 		// let hotWalletErc20Policy;
 		// let hotWalletNativePolicy;
 		if (hotWalletAddress) {
-			hotWalletUsdcPolicy = getUsdcPolicy(hotWalletAddress, chainId);
+			hotWalletUsdcPolicy = getCombinedPolicy(hotWalletAddress);
 			// hotWalletErc20Policy = getErc20Policy(hotWalletAddress);
 			// hotWalletNativePolicy = getNativePolicy(hotWalletAddress);
 		}
@@ -111,14 +114,14 @@ const useSmartAccount = () => {
 				entryPoint: ENTRYPOINT_ADDRESS_V07,
 				signer: emptySessionKeySigner,
 				policies,
+				kernelVersion: KERNEL_V3_1,
 			}
 		);
 		const kernelAccountObj = await createKernelAccount(
 			publicClient as PublicClient,
 			{
-				index:
-					BigInt(lockerIndex) +
-					BigInt(process.env.LOCKER_SEED_OFFSET!),
+				kernelVersion: KERNEL_V3_1,
+				index: getZerodevIndex(lockerIndex),
 				entryPoint: ENTRYPOINT_ADDRESS_V07,
 				plugins: {
 					sudo: ecdsaValidator,
@@ -172,15 +175,15 @@ const useSmartAccount = () => {
 			{
 				signer: smartAccountSigner,
 				entryPoint: ENTRYPOINT_ADDRESS_V07,
+				kernelVersion: KERNEL_V3_1,
 			}
 		);
 
 		const kernelAccountObj = await createKernelAccount(
 			publicClient as PublicClient,
 			{
-				index:
-					BigInt(lockerIndex) +
-					BigInt(process.env.LOCKER_SEED_OFFSET!),
+				kernelVersion: KERNEL_V3_1,
+				index: getZerodevIndex(lockerIndex),
 				entryPoint: ENTRYPOINT_ADDRESS_V07,
 				plugins: {
 					sudo: ecdsaValidator,
@@ -270,8 +273,9 @@ const useSmartAccount = () => {
 		getKernelAddressFromECDSA({
 			publicClient: publicClient as PublicClient,
 			eoaAddress,
-			index: BigInt(lockerIndex),
+			index: getZerodevIndex(lockerIndex),
 			entryPointAddress: ENTRYPOINT_ADDRESS_V07,
+			kernelVersion: KERNEL_V3_1,
 		});
 	// ************************************************************* //
 
