@@ -5,6 +5,7 @@ import {
 	avalanche,
 	base,
 	baseSepolia,
+	linea,
 	optimism,
 	polygon,
 	sepolia,
@@ -18,6 +19,7 @@ const chains = {
 	avalanche,
 	sepolia,
 	baseSepolia,
+	linea,
 };
 
 // Wagmi code names for each chain
@@ -31,6 +33,7 @@ export const chainCodeNames: {
 	[avalanche.id]: "avalanche",
 	[sepolia.id]: "sepolia",
 	[baseSepolia.id]: "baseSepolia",
+	[linea.id]: "linea",
 };
 
 // Private RPC URLs for each chain
@@ -42,6 +45,7 @@ export const transports = {
 	[avalanche.id]: http(process.env.AVALANCHE_RPC_URL),
 	[sepolia.id]: http(process.env.SEPOLIA_RPC_URL),
 	[baseSepolia.id]: http(process.env.BASE_SEPOLIA_RPC_URL),
+	[linea.id]: http(process.env.LINEA_RPC_URL),
 };
 
 // Default chains if no environment variable is set
