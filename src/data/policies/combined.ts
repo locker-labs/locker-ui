@@ -1,5 +1,8 @@
-import { CALL_POLICY_CONTRACT_V5_3_2 } from "@zerodev/permissions";
-import { ParamCondition, toCallPolicy } from "@zerodev/permissions/policies";
+import {
+	CallPolicyVersion,
+	ParamCondition,
+	toCallPolicy,
+} from "@zerodev/permissions/policies";
 import { erc20Abi, zeroAddress } from "viem";
 
 /**
@@ -8,7 +11,7 @@ import { erc20Abi, zeroAddress } from "viem";
  */
 export const getCombinedPolicy = (toAddress: `0x${string}`) =>
 	toCallPolicy({
-		policyAddress: CALL_POLICY_CONTRACT_V5_3_2,
+		policyVersion: CallPolicyVersion.V0_0_2,
 		permissions: [
 			{
 				// zeroAddress is not working
