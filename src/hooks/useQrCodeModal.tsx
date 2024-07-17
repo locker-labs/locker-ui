@@ -18,8 +18,6 @@ export const useQrCodeModal = () => {
 		lockerAddress: `0x${string}`,
 		chainId: number
 	) => {
-		console.log("Locker Address", lockerAddress);
-		console.log("Chain ID", chainId);
 		if (!isOpen) return null;
 		return ReactDOM.createPortal(
 			<QrCodeModal

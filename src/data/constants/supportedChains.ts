@@ -12,40 +12,40 @@ import {
 } from "wagmi/chains";
 
 const chains = {
+	base,
+	linea,
 	arbitrum,
 	optimism,
-	base,
 	polygon,
 	avalanche,
 	sepolia,
 	baseSepolia,
-	linea,
 };
 
 // Wagmi code names for each chain
 export const chainCodeNames: {
 	[key: number]: string;
 } = {
+	[base.id]: "base",
+	[linea.id]: "linea",
 	[arbitrum.id]: "arbitrum",
 	[optimism.id]: "optimism",
-	[base.id]: "base",
 	[polygon.id]: "polygon",
 	[avalanche.id]: "avalanche",
 	[sepolia.id]: "sepolia",
 	[baseSepolia.id]: "baseSepolia",
-	[linea.id]: "linea",
 };
 
 // Private RPC URLs for each chain
 export const transports = {
+	[base.id]: http(process.env.BASE_RPC_URL),
+	[linea.id]: http(process.env.LINEA_RPC_URL),
 	[arbitrum.id]: http(process.env.ARBITRUM_RPC_URL),
 	[optimism.id]: http(process.env.OPTIMISM_RPC_URL),
-	[base.id]: http(process.env.BASE_RPC_URL),
 	[polygon.id]: http(process.env.POLYGON_RPC_URL),
 	[avalanche.id]: http(process.env.AVALANCHE_RPC_URL),
 	[sepolia.id]: http(process.env.SEPOLIA_RPC_URL),
 	[baseSepolia.id]: http(process.env.BASE_SEPOLIA_RPC_URL),
-	[linea.id]: http(process.env.LINEA_RPC_URL),
 };
 
 // Default chains if no environment variable is set
