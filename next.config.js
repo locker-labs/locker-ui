@@ -62,6 +62,10 @@ module.exports = withPWA({
 			process.env.BASE_SEPOLIA_PAYMASTER_RPC_URL,
 		LOCKER_SEED_OFFSET: process.env.LOCKER_SEED_OFFSET || "0",
 
+		LINEA_RPC_URL: process.env.LINEA_RPC_URL,
+		LINEA_BUNDLER_RPC_URL: process.env.LINEA_BUNDLER_RPC_URL,
+		LINEA_PAYMASTER_RPC_URL: process.env.LINEA_PAYMASTER_RPC_URL,
+
 		// Supported chains (different for dev and prod)
 		SUPPORTED_CHAINS: process.env.SUPPORTED_CHAINS,
 

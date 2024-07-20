@@ -14,13 +14,17 @@ export const useQrCodeModal = () => {
 		setIsOpen(false);
 	}, []);
 
-	const renderQrCodeModal = (lockerAddress: `0x${string}`) => {
+	const renderQrCodeModal = (
+		lockerAddress: `0x${string}`,
+		chainId: number
+	) => {
 		if (!isOpen) return null;
 		return ReactDOM.createPortal(
 			<QrCodeModal
 				isOpen={isOpen}
 				closeModal={closeQrCodeModal}
 				lockerAddress={lockerAddress}
+				chainId={chainId}
 			/>,
 			document.body
 		);

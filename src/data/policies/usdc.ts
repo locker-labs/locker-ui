@@ -1,10 +1,8 @@
-import { ParamCondition, toCallPolicy } from "@zerodev/permissions/policies";
-import { erc20Abi } from "viem";
-
 import { errors } from "@/data/constants/errorMessages";
 import { supportedChainIds } from "@/data/constants/supportedChains";
 
-const getUsdcAddress = (chainId: number) => {
+// https://developers.circle.com/stablecoins/docs/usdc-on-main-networks
+export const getUsdcAddress = (chainId: number) => {
 	switch (chainId) {
 		case supportedChainIds.arbitrum:
 			return "0xaf88d065e77c8cC2239327C5EDb3A432268e5831";
@@ -20,39 +18,9 @@ const getUsdcAddress = (chainId: number) => {
 			return "0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238";
 		case supportedChainIds.baseSepolia:
 			return "0xd74cc5d436923b8ba2c179b4bCA2841D8A52C5B5";
+		case supportedChainIds.linea:
+			return "0x176211869cA2b568f2A7D4EE941E073a821EE1ff";
 		default:
-			throw new Error(errors.UNSUPPORTED_CHAIN);
+			throw new Error(`${chainId}: ${errors.UNSUPPORTED_CHAIN}`);
 	}
 };
-
-export const getUsdcPolicy = (toAddress: `0x${string}`, chainId: number) =>
-	toCallPolicy({
-		permissions: [
-			{
-				// USDC address changes across chains
-				target: getUsdcAddress(chainId),
-
-				// BigInt(0) disallows transferring native when calling transfer()
-				valueLimit: BigInt(0),
-
-				// Generic ERC-20 ABI
-				abi: erc20Abi,
-
-				// Limit scope to the transfer() function
-				functionName: "transfer",
-
-				// Specify the conditions of each argument
-				//     --> transfer(address to, uint256 value)
-				args: [
-					// to
-					{
-						condition: ParamCondition.EQUAL,
-						value: toAddress,
-					},
-
-					// value - null allows to send to any amount
-					null,
-				],
-			},
-		],
-	});

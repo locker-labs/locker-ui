@@ -10,13 +10,21 @@ import { copyToClipboard } from "@/utils/copytoClipboard";
 import { getChainIconStyling } from "@/utils/getChainIconStyling";
 import { truncateAddress } from "@/utils/truncateAddress";
 
+import AarcButton from "./AarcButton";
+
 export interface IQrCodeModal {
 	isOpen: boolean;
 	closeModal: () => void;
 	lockerAddress: `0x${string}`;
+	chainId: number;
 }
 
-function QrCodeModal({ isOpen, closeModal, lockerAddress }: IQrCodeModal) {
+function QrCodeModal({
+	isOpen,
+	closeModal,
+	lockerAddress,
+	chainId,
+}: IQrCodeModal) {
 	const [copied, setCopied] = useState<boolean>(false);
 
 	return (
@@ -59,9 +67,16 @@ function QrCodeModal({ isOpen, closeModal, lockerAddress }: IQrCodeModal) {
 									</button>
 								</Dialog.Title>
 								<div className="mt-6 flex w-full flex-col items-center justify-center">
-									<LockerQrCode
+									<AarcButton
 										lockerAddress={lockerAddress}
+										chainId={chainId}
 									/>
+									<div className="mt-8">
+										<LockerQrCode
+											lockerAddress={lockerAddress}
+										/>
+									</div>
+
 									<button
 										className="mt-8 flex items-center justify-center text-sm hover:text-secondary-100 dark:hover:text-primary-100"
 										onClick={() =>
