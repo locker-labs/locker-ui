@@ -10,6 +10,7 @@ export const getPaymaster = (chainId: number) => {
 		[supportedChainIds.sepolia]: process.env.SEPOLIA_PAYMASTER_RPC_URL!,
 		[supportedChainIds.baseSepolia]:
 			process.env.BASE_SEPOLIA_PAYMASTER_RPC_URL!,
+		[supportedChainIds.linea]: process.env.LINEA_PAYMASTER_RPC_URL!,
 	};
 
 	return paymasters[chainId] || null;
