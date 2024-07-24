@@ -77,3 +77,5 @@ SUPPORTED_CHAINS="["arbitrum", "optimism", "base", "polygon", "avalanche", "sepo
 1. getChainIconStyling
 1. Set usdc address in `usdc.ts#getUsdcAddress`.
 1. update next.config.js
+1. getBundler.ts
+1. getPaymaster.ts
