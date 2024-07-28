@@ -1,6 +1,6 @@
 # Locker User Interface
 
-The user interface for the Locker application.
+The user interface for the Locker application
 
 ## Getting Started with Development
 
@@ -53,3 +53,29 @@ Run `npm run lint:check` to run the linter.
 | ci       | Changes to our CI configuration files and scripts                                 |
 | chore    | Other changes that don't modify src or test files                                 |
 | revert   | Reverts a previous commit                                                         |
+
+### Adding new chains
+
+1.  Update `src/data/constants/supportedChains.ts`
+
+```sh
+# Private RPC
+LINEA_RPC_URL=your_linea_rpc_url
+# ZeroDev
+LINEA_PROJECT_ID=your_project_id
+LINEA_BUNDLER_RPC_URL=your_bundler_url
+LINEA_PAYMASTER_RPC_URL=your_paymaster_url
+
+# Supported chains (different for dev and prod)
+# Must be wagmi chain names.
+SUPPORTED_CHAINS="["arbitrum", "optimism", "base", "polygon", "avalanche", "sepolia", "baseSepolia", "linea"]"
+```
+
+1. Update `ChainIcon.tsx`
+1. Update tailwind.config.ts: safelist and color
+1. getChainName
+1. getChainIconStyling
+1. Set usdc address in `usdc.ts#getUsdcAddress`.
+1. update next.config.js
+1. getBundler.ts
+1. getPaymaster.ts

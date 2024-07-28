@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { FaTelegram, FaXTwitter } from "react-icons/fa6";
 
 import FarcasterIcon from "@/components/FarcasterIcon";
@@ -37,6 +38,15 @@ function Footer() {
 				<div className="mt-4 flex xs:mt-0">
 					<ThemeSwitcher />
 				</div>
+			</div>
+			<div className="mt-6 flex text-center ">
+				<Link
+					href="https://docs.locker.money"
+					className="text-sm text-light-600"
+					target="_blank"
+				>
+					Docs
+				</Link>
 			</div>
 			<div className="mt-6 flex text-center text-xs text-light-600">
 				<span className="text-sm">

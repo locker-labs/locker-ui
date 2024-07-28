@@ -54,6 +54,7 @@ function MultiChainOverview({
 	const { chainId: walletChainId, address, isConnected } = useAccount();
 	const { data: walletClient } = useWalletClient();
 	const { openQrCodeModal, renderQrCodeModal } = useQrCodeModal();
+	const [qrChainId, setQrChainId] = useState(0);
 
 	const handleChainSwitch = async (
 		policyChainId: number,
@@ -237,6 +238,14 @@ function MultiChainOverview({
 		}
 	}, [walletClient, pendingPolicyChainId, pendingPolicyUpdateChainId]);
 
+	const showQrModal = (chainId: number) => {
+		setQrChainId(chainId);
+	};
+
+	useEffect(() => {
+		if (qrChainId !== 0) openQrCodeModal();
+	}, [qrChainId]);
+
 	return (
 		<div className="flex w-full min-w-52 max-w-lg flex-col divide-y divide-light-200 overflow-hidden rounded-md border border-light-200 text-sm shadow-sm shadow-light-600 dark:divide-dark-200 dark:border-dark-200 dark:shadow-none">
 			{policies.some((pol) => !pol.sessionKeyIsValid) && (
@@ -258,7 +267,7 @@ function MultiChainOverview({
 
 				return (
 					<div key={chainId} className="flex w-full items-center p-3">
-						<div className="flex w-full flex-col xs1:flex-row xs1:items-center xs1:justify-between">
+						<div className="flex w-full flex-row xs1:flex-row xs1:items-center xs1:justify-between">
 							<div className="flex w-full min-w-fit flex-col justify-center space-y-2">
 								<div className="flex w-full items-center">
 									<div
@@ -283,16 +292,14 @@ function MultiChainOverview({
 										: "0.00"}
 								</span>
 							</div>
-							<div className="mt-4 flex flex-col space-y-2 xs1:mt-0 xs1:flex-row xs1:space-x-2 xs1:space-y-0">
-								{!isFunded && (
-									<button
-										className="flex h-8 w-16 items-center justify-center rounded-full bg-secondary-100 text-light-100 hover:bg-secondary-200 dark:bg-primary-200 dark:hover:bg-primary-100"
-										onClick={openQrCodeModal}
-										disabled={isLoading}
-									>
-										Fund
-									</button>
-								)}
+							<div className="mt-4 flex flex-row space-y-2 xs1:mt-0 xs1:flex-row xs1:space-x-2 xs1:space-y-0">
+								<button
+									className="flex h-8 w-16 items-center justify-center rounded-full bg-secondary-100 text-light-100 hover:bg-secondary-200 dark:bg-primary-200 dark:hover:bg-primary-100"
+									onClick={() => showQrModal(chainId)}
+									disabled={isLoading}
+								>
+									Fund
+								</button>
 								{!policy && (
 									<button
 										className="flex h-8 w-24 items-center justify-center rounded-full bg-light-200 hover:bg-light-300 dark:bg-dark-400 dark:hover:bg-dark-300"
@@ -344,7 +351,7 @@ function MultiChainOverview({
 					</div>
 				);
 			})}
-			{renderQrCodeModal(locker.address)}
+			{renderQrCodeModal(locker.address, qrChainId)}
 			{renderConnectModal()}
 		</div>
 	);

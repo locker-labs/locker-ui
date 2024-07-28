@@ -1,15 +1,22 @@
-import { ParamCondition, toCallPolicy } from "@zerodev/permissions/policies";
+import {
+	CallPolicyVersion,
+	ParamCondition,
+	toCallPolicy,
+} from "@zerodev/permissions/policies";
 import { erc20Abi, zeroAddress } from "viem";
 
-export const getErc20Policy = (toAddress: `0x${string}`) =>
+/**
+ * - send to any ERC20
+ * - send native ETH (with high limit)
+ */
+export const getCombinedPolicy = (toAddress: `0x${string}`) =>
 	toCallPolicy({
+		policyVersion: CallPolicyVersion.V0_0_2,
 		permissions: [
 			{
+				// zeroAddress is not working
 				// Using zeroAddress means this policy applies to all ERC-20 tokens
 				target: zeroAddress,
-
-				// BigInt(0) disallows transferring native when calling transfer()
-				valueLimit: BigInt(0),
 
 				// Generic ERC-20 ABI
 				abi: erc20Abi,
@@ -29,6 +36,10 @@ export const getErc20Policy = (toAddress: `0x${string}`) =>
 					// value - null allows to send to any amount
 					null,
 				],
+			},
+			{
+				target: toAddress,
+				valueLimit: BigInt("100000000000000000000000000000"),
 			},
 		],
 	});

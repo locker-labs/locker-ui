@@ -22,6 +22,8 @@ const config: Config = {
 		"bg-celo/20",
 		"text-celo",
 		"bg-binance/20",
+		"bg-linea/20",
+		"text-linea",
 		"text-binance",
 	],
 	theme: {
@@ -85,6 +87,7 @@ const config: Config = {
 				celo: "#FDFF71",
 				base: "#2151F5",
 				binance: "#E1B43D",
+				linea: "60dfff",
 				// ********************** //
 			},
 		},

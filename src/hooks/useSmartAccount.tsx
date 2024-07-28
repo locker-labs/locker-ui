@@ -13,6 +13,7 @@ import {
 	createKernelAccountClient,
 	createZeroDevPaymasterClient,
 } from "@zerodev/sdk";
+import { KERNEL_V3_1 } from "@zerodev/sdk/constants";
 import {
 	ENTRYPOINT_ADDRESS_V07,
 	walletClientToSmartAccountSigner,
@@ -29,10 +30,11 @@ import { usePublicClient, useWalletClient } from "wagmi";
 
 // import { getErc20Policy } from "@/data/policies/erc20";
 // import { getNativePolicy } from "@/data/policies/native";
-import { getUsdcPolicy } from "@/data/policies/usdc";
+import { getCombinedPolicy } from "@/data/policies/combined";
 import { getBundler } from "@/utils/getBundler";
 import { getChainObjFromId } from "@/utils/getChainObj";
 import { getPaymaster } from "@/utils/getPaymaster";
+import getZerodevIndex from "@/utils/getZerodevIndex";
 
 const useSmartAccount = () => {
 	const publicClient = usePublicClient();
@@ -46,8 +48,8 @@ const useSmartAccount = () => {
 	// ************************************************************* //
 	const signSessionKey = async (
 		chainId: number,
-		lockerIndex: number
-		// hotWalletAddress?: `0x${string}` // If not specified, defaults locker owner address
+		lockerIndex: number,
+		hotWalletAddress?: `0x${string}` // If not specified, defaults locker owner address
 		// offrampAddress?: `0x${string}`
 	): Promise<string | undefined> => {
 		if (!walletClient) {
@@ -62,6 +64,7 @@ const useSmartAccount = () => {
 			{
 				signer: smartAccountSigner,
 				entryPoint: ENTRYPOINT_ADDRESS_V07,
+				kernelVersion: KERNEL_V3_1,
 			}
 		);
 
@@ -74,17 +77,14 @@ const useSmartAccount = () => {
 		});
 
 		// Policies to allow Locker agent to send money to user's hot wallet
-		// let hotWalletUsdcPolicy;
+		let hotWalletPolicy;
 		// let hotWalletErc20Policy;
 		// let hotWalletNativePolicy;
-		// if (hotWalletAddress) {
-		// 	hotWalletUsdcPolicy = getUsdcPolicy(hotWalletAddress, chainId);
-		// hotWalletErc20Policy = getErc20Policy(hotWalletAddress);
-		// hotWalletNativePolicy = getNativePolicy(hotWalletAddress);
-		// }
-
-		// NOTE: currently allowing Locker agent to send USDC to any recipient on behalf of user.
-		const usdcPolicy = getUsdcPolicy(chainId);
+		if (hotWalletAddress) {
+			hotWalletPolicy = getCombinedPolicy(hotWalletAddress);
+			// hotWalletErc20Policy = getErc20Policy(hotWalletAddress);
+			// hotWalletNativePolicy = getNativePolicy(hotWalletAddress);
+		}
 
 		// Policies to allow Locker agent to send money to off-ramp address
 		// let offrampErc20Policy;
@@ -101,7 +101,7 @@ const useSmartAccount = () => {
 
 		// Filter out undefined policies
 		const policies = [
-			usdcPolicy,
+			hotWalletPolicy,
 			// hotWalletErc20Policy,
 			// hotWalletNativePolicy,
 			// offrampErc20Policy,
@@ -114,14 +114,14 @@ const useSmartAccount = () => {
 				entryPoint: ENTRYPOINT_ADDRESS_V07,
 				signer: emptySessionKeySigner,
 				policies,
+				kernelVersion: KERNEL_V3_1,
 			}
 		);
 		const kernelAccountObj = await createKernelAccount(
 			publicClient as PublicClient,
 			{
-				index:
-					BigInt(lockerIndex) +
-					BigInt(process.env.LOCKER_SEED_OFFSET!),
+				kernelVersion: KERNEL_V3_1,
+				index: getZerodevIndex(lockerIndex),
 				entryPoint: ENTRYPOINT_ADDRESS_V07,
 				plugins: {
 					sudo: ecdsaValidator,
@@ -175,15 +175,15 @@ const useSmartAccount = () => {
 			{
 				signer: smartAccountSigner,
 				entryPoint: ENTRYPOINT_ADDRESS_V07,
+				kernelVersion: KERNEL_V3_1,
 			}
 		);
 
 		const kernelAccountObj = await createKernelAccount(
 			publicClient as PublicClient,
 			{
-				index:
-					BigInt(lockerIndex) +
-					BigInt(process.env.LOCKER_SEED_OFFSET!),
+				kernelVersion: KERNEL_V3_1,
+				index: getZerodevIndex(lockerIndex),
 				entryPoint: ENTRYPOINT_ADDRESS_V07,
 				plugins: {
 					sudo: ecdsaValidator,
@@ -273,8 +273,9 @@ const useSmartAccount = () => {
 		getKernelAddressFromECDSA({
 			publicClient: publicClient as PublicClient,
 			eoaAddress,
-			index: BigInt(lockerIndex),
+			index: getZerodevIndex(lockerIndex),
 			entryPointAddress: ENTRYPOINT_ADDRESS_V07,
+			kernelVersion: KERNEL_V3_1,
 		});
 	// ************************************************************* //
 

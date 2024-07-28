@@ -10,6 +10,7 @@ export const getBundler = (chainId: number) => {
 		[supportedChainIds.sepolia]: process.env.SEPOLIA_BUNDLER_RPC_URL!,
 		[supportedChainIds.baseSepolia]:
 			process.env.BASE_SEPOLIA_BUNDLER_RPC_URL!,
+		[supportedChainIds.linea]: process.env.LINEA_BUNDLER_RPC_URL!,
 	};
 
 	return bundlerRpcUrls[chainId] || undefined;

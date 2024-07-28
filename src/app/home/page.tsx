@@ -10,6 +10,7 @@ import LockerSetup from "@/components/LockerSetup";
 import { getLockers, getPolicies } from "@/services/lockers";
 import { getTokenTxs } from "@/services/transactions";
 import type { Locker, Policy } from "@/types";
+import supabaseClient from "@/utils/supabase/client";
 
 function HomePage() {
 	const isFirstRender = useRef(true);
@@ -17,6 +18,18 @@ function HomePage() {
 	const [policies, setPolicies] = useState<Policy[] | null>(null);
 
 	const { getToken } = useAuth();
+
+	const fetchLockersSupbase = async () => {
+		// TODO #2: Replace with your database table name
+		const { data, error } = await supabaseClient
+			.from("lockers")
+			.select(
+				"id, user_id, seed, provider, address, updated_at, usd_value, policies (*), token_transactions (*)"
+			);
+		console.log("Getting data from Supabase");
+		console.log(data);
+		console.log(error);
+	};
 
 	const fetchLockers = async () => {
 		const authToken = await getToken();
@@ -61,6 +74,7 @@ function HomePage() {
 		const interval = setInterval(() => {
 			if (!lockers) {
 				fetchLockers();
+				fetchLockersSupbase();
 			} else if (lockers) {
 				fetchTxs();
 			} else {
