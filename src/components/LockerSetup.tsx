@@ -207,7 +207,11 @@ function LockerSetup({ lockers, fetchPolicies }: ILockerSetup) {
 			}
 
 			if (checksumAddress(locker.ownerAddress) !== address) {
-				setErrorMessage(errors.UNAUTHORIZED);
+				setErrorMessage(
+					`${errors.UNAUTHORIZED} Expected wallet: ${
+						locker.ownerAddress
+					}`
+				);
 				return;
 			}
 

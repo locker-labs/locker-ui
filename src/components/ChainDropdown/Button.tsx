@@ -38,10 +38,7 @@ function Button({ open }: { open: boolean }) {
 	return chain && isChainSupported(chain.id) ? (
 		buttonContent
 	) : (
-		<Tooltip
-			marginTop="mt-4"
-			label="Your wallet's current network is unsupported."
-		>
+		<Tooltip marginTop="mt-4" label="'s current network is unsupported.">
 			{buttonContent}
 		</Tooltip>
 	);

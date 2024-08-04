@@ -75,7 +75,9 @@ function MultiChainOverview({
 		setErrorMessage("");
 
 		if (checksumAddress(locker.ownerAddress) !== address) {
-			setErrorMessage(errors.UNAUTHORIZED);
+			setErrorMessage(
+				`${errors.UNAUTHORIZED} Expected wallet: ${locker.ownerAddress}`
+			);
 			setIsLoading(false);
 			setChainRowLoading(null);
 			return;
@@ -137,7 +139,9 @@ function MultiChainOverview({
 		setErrorMessage("");
 
 		if (checksumAddress(locker.ownerAddress) !== address) {
-			setErrorMessage(errors.UNAUTHORIZED);
+			setErrorMessage(
+				`${errors.UNAUTHORIZED} Expected wallet: ${locker.ownerAddress}`
+			);
 			setIsLoading(false);
 			setChainRowLoading(null);
 			return;
