@@ -30,7 +30,10 @@ import { usePublicClient, useWalletClient } from "wagmi";
 
 // import { getErc20Policy } from "@/data/policies/erc20";
 // import { getNativePolicy } from "@/data/policies/native";
-import { getCombinedPolicy } from "@/data/policies/combined";
+import {
+	getCombinedPolicy,
+	getCombinedPolicyMultRecipient,
+} from "@/data/policies/combined";
 import { getBundler } from "@/utils/getBundler";
 import { getChainObjFromId } from "@/utils/getChainObj";
 import { getPaymaster } from "@/utils/getPaymaster";
@@ -49,9 +52,17 @@ const useSmartAccount = () => {
 	const signSessionKey = async (
 		chainId: number,
 		lockerIndex: number,
-		hotWalletAddress?: `0x${string}` // If not specified, defaults locker owner address
-		// offrampAddress?: `0x${string}`
+		hotWalletAddress: `0x${string}`, // If not specified, defaults locker owner address
+		offrampAddresses: `0x${string}`[]
 	): Promise<string | undefined> => {
+		console.log(
+			"signSessionKey",
+			chainId,
+			lockerIndex,
+			hotWalletAddress,
+			offrampAddresses
+		);
+
 		if (!walletClient) {
 			throw new Error("Wallet client is not available");
 		}
@@ -77,22 +88,17 @@ const useSmartAccount = () => {
 		});
 
 		// Policies to allow Locker agent to send money to user's hot wallet
-		let hotWalletPolicy;
+		let combinedPolicy;
+		const toAddresses = [hotWalletAddress, ...offrampAddresses];
 		// let hotWalletErc20Policy;
 		// let hotWalletNativePolicy;
-		if (hotWalletAddress) {
-			hotWalletPolicy = getCombinedPolicy(hotWalletAddress);
+		if (toAddresses.length === 1) {
+			combinedPolicy = getCombinedPolicy(toAddresses[0]);
 			// hotWalletErc20Policy = getErc20Policy(hotWalletAddress);
 			// hotWalletNativePolicy = getNativePolicy(hotWalletAddress);
+		} else {
+			combinedPolicy = getCombinedPolicyMultRecipient(toAddresses);
 		}
-
-		// Policies to allow Locker agent to send money to off-ramp address
-		// let offrampErc20Policy;
-		// let offrampNativePolicy;
-		// if (offrampAddress) {
-		// 	offrampErc20Policy = getErc20Policy(offrampAddress);
-		// 	offrampNativePolicy = getNativePolicy(offrampAddress);
-		// }
 
 		// Type guard to filter out undefined values
 		function isDefined<T>(value: T | undefined): value is T {
@@ -100,13 +106,7 @@ const useSmartAccount = () => {
 		}
 
 		// Filter out undefined policies
-		const policies = [
-			hotWalletPolicy,
-			// hotWalletErc20Policy,
-			// hotWalletNativePolicy,
-			// offrampErc20Policy,
-			// offrampNativePolicy,
-		].filter(isDefined);
+		const policies = [combinedPolicy].filter(isDefined);
 
 		const permissionPlugin = await toPermissionValidator(
 			publicClient as PublicClient,

@@ -10,7 +10,7 @@ import TxTable from "@/components/TxTable";
 import { supportedChainIdsArray } from "@/data/constants/supportedChains";
 import { getLockerNetWorth } from "@/services/moralis";
 import { getTokenBalances } from "@/services/transactions";
-import { Locker, Policy, Token } from "@/types";
+import { EAutomationType, Locker, Policy, Token } from "@/types";
 import { getFundedChainIds } from "@/utils/getFundedChainIds";
 import { isChainSupported } from "@/utils/isChainSupported";
 import { isTestnet } from "@/utils/isTestnet";
@@ -19,12 +19,14 @@ export interface ILockerPortfolio {
 	lockers: Locker[];
 	policies: Policy[];
 	fetchPolicies: () => void;
+	offrampAddresses: `0x${string}`[];
 }
 
 function LockerPortfolio({
 	lockers,
 	policies,
 	fetchPolicies,
+	offrampAddresses,
 }: ILockerPortfolio) {
 	const [errorMessage, setErrorMessage] = useState<string>("");
 	const [tokenList, setTokenList] = useState<Token[]>([]);
@@ -46,11 +48,15 @@ function LockerPortfolio({
 	const { automations } = basePolicy;
 
 	// Props derived variables
-	const bankAutomation = automations.find((a) => a.type === "off_ramp");
-	const hotWalletAutomation = automations.find(
-		(a) => a.type === "forward_to"
+	const bankAutomation = automations.find(
+		(a) => a.type === EAutomationType.OFF_RAMP
 	);
-	const saveAutomation = automations.find((a) => a.type === "savings");
+	const hotWalletAutomation = automations.find(
+		(a) => a.type === EAutomationType.FORWARD_TO
+	);
+	const saveAutomation = automations.find(
+		(a) => a.type === EAutomationType.SAVINGS
+	);
 
 	/* For now, we're only handling:
 		- One locker per user (index 0)
@@ -175,6 +181,7 @@ function LockerPortfolio({
 						locker={locker}
 						setErrorMessage={setErrorMessage}
 						fetchPolicies={fetchPolicies}
+						offrampAddresses={offrampAddresses}
 					/>
 				</div>
 			)}

@@ -16,6 +16,9 @@ function HomePage() {
 	const isFirstRender = useRef(true);
 	const [lockers, setLockers] = useState<Locker[] | null>(null);
 	const [policies, setPolicies] = useState<Policy[] | null>(null);
+	const [offrampAddresses, setOfframpAddresses] = useState<`0x${string}`[]>(
+		[]
+	);
 
 	const { getToken } = useAuth();
 
@@ -24,11 +27,20 @@ function HomePage() {
 		const { data, error } = await supabaseClient
 			.from("lockers")
 			.select(
-				"id, user_id, seed, provider, address, updated_at, usd_value, policies (*), token_transactions (*)"
+				"id, user_id, seed, provider, address, updated_at, usd_value, policies (*), token_transactions (*), offramp_accounts (offramp_addresses (*))"
 			);
 		console.log("Getting data from Supabase");
 		console.log(data);
 		console.log(error);
+		if (data?.length && data.length > 0) {
+			const addresses =
+				// eslint-disable-next-line @typescript-eslint/no-explicit-any
+				(data[0] as any).offramp_accounts[0].offramp_addresses.map(
+					(a: { address: `0x${string}` }) => a.address
+				);
+			setOfframpAddresses(addresses);
+			console.log("got offramp addresses", offrampAddresses);
+		}
 	};
 
 	const fetchLockers = async () => {
@@ -110,6 +122,7 @@ function HomePage() {
 						lockers={lockers}
 						policies={policies}
 						fetchPolicies={fetchPolicies}
+						offrampAddresses={offrampAddresses}
 					/>
 				)}
 		</div>

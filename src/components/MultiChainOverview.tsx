@@ -13,9 +13,10 @@ import { useConnectModal } from "@/hooks/useConnectModal";
 import { useQrCodeModal } from "@/hooks/useQrCodeModal";
 import useSmartAccount from "@/hooks/useSmartAccount";
 import { createPolicy, updatePolicy } from "@/services/lockers";
-import { Automation, Locker, Policy } from "@/types";
+import { Automation, EAutomationType, Locker, Policy } from "@/types";
 import { getChainIconStyling } from "@/utils/getChainIconStyling";
 import { getChainNameFromId } from "@/utils/getChainName";
+import { isPolicyReady } from "@/utils/isPolicyReady";
 
 export interface IMultiChainOverview {
 	fundedChainIds: number[];
@@ -25,6 +26,7 @@ export interface IMultiChainOverview {
 	locker: Locker;
 	setErrorMessage: (errorMessage: string) => void;
 	fetchPolicies: () => void;
+	offrampAddresses: `0x${string}`[];
 }
 
 function MultiChainOverview({
@@ -35,6 +37,7 @@ function MultiChainOverview({
 	locker,
 	setErrorMessage,
 	fetchPolicies,
+	offrampAddresses,
 }: IMultiChainOverview) {
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const [chainRowLoading, setChainRowLoading] = useState<number | null>(null);
@@ -93,20 +96,21 @@ function MultiChainOverview({
 			return;
 		}
 
-		// const hotWalletAutomation = automations.find(
-		// 	(a) => a.type === "forward_to"
-		// );
+		const hotWalletAutomation = automations.find(
+			(a) => a.type === "forward_to"
+		);
 
-		// const hotWalletAddress =
-		// 	hotWalletAutomation && hotWalletAutomation.recipientAddress
-		// 		? hotWalletAutomation.recipientAddress
-		// 		: locker.ownerAddress;
+		const hotWalletAddress =
+			hotWalletAutomation && hotWalletAutomation.recipientAddress
+				? hotWalletAutomation.recipientAddress
+				: locker.ownerAddress;
 
 		const sig = await signSessionKey(
 			walletChainId,
-			0 // lockerIndex
-			// hotWalletAddress
-			// undefined // offrampAddress
+			// lockerIndex will be non-zero when we support multiple lockers on the same chain
+			0, // lockerIndex
+			hotWalletAddress,
+			offrampAddresses // offrampAddress
 		);
 		if (!sig) {
 			setIsLoading(false);
@@ -119,7 +123,6 @@ function MultiChainOverview({
 			chainId: policyChainId as number,
 			sessionKey: sig as string,
 			automations,
-			sessionKeyIsValid: true,
 		};
 
 		const authToken = await getToken();
@@ -157,21 +160,23 @@ function MultiChainOverview({
 			return;
 		}
 
-		// const hotWalletAutomation = automations.find(
-		// 	(a) => a.type === "forward_to"
-		// );
+		const hotWalletAutomation = automations.find(
+			(a) => a.type === EAutomationType.FORWARD_TO
+		);
 
-		// const hotWalletAddress =
-		// 	hotWalletAutomation && hotWalletAutomation.recipientAddress
-		// 		? hotWalletAutomation.recipientAddress
-		// 		: locker.ownerAddress;
+		const hotWalletAddress =
+			hotWalletAutomation && hotWalletAutomation.recipientAddress
+				? hotWalletAutomation.recipientAddress
+				: locker.ownerAddress;
 
 		const sig = await signSessionKey(
 			walletChainId,
-			0 // lockerIndex
-			// hotWalletAddress
-			// undefined // offrampAddress
-		);
+			0,
+			hotWalletAddress,
+			offrampAddresses
+		); // lockerIndex
+		// hotWalletAddress
+		// undefined // offrampAddress
 		if (!sig) {
 			setIsLoading(false);
 			setChainRowLoading(null);
@@ -188,7 +193,6 @@ function MultiChainOverview({
 			chainId: policyChainId as number,
 			sessionKey: sig as string,
 			automations,
-			sessionKeyIsValid: true,
 		};
 
 		const authToken = await getToken();
@@ -252,7 +256,7 @@ function MultiChainOverview({
 
 	return (
 		<div className="flex w-full min-w-52 max-w-lg flex-col divide-y divide-light-200 overflow-hidden rounded-md border border-light-200 text-sm shadow-sm shadow-light-600 dark:divide-dark-200 dark:border-dark-200 dark:shadow-none">
-			{policies.some((pol) => !pol.sessionKeyIsValid) && (
+			{policies.some((pol) => !isPolicyReady(pol)) && (
 				<div className="flex w-full items-center justify-center p-2 text-center">
 					<div className="flex size-7 shrink-0 items-center justify-center rounded-full bg-warning/20 text-warning">
 						<IoWarningOutline size={16} />
@@ -323,7 +327,7 @@ function MultiChainOverview({
 										)}
 									</button>
 								)}
-								{policy && !policy.sessionKeyIsValid && (
+								{policy && !isPolicyReady(policy) && (
 									<button
 										className="flex h-8 w-24 items-center justify-center rounded-full bg-light-200 hover:bg-light-300 dark:bg-dark-400 dark:hover:bg-dark-300"
 										onClick={() =>
@@ -344,7 +348,7 @@ function MultiChainOverview({
 								)}
 							</div>
 						</div>
-						{policy && policy.sessionKeyIsValid && (
+						{policy && isPolicyReady(policy) && (
 							<div className="ml-3 flex size-7 items-center justify-center">
 								<FaRobot
 									className={`${isFunded ? "text-success" : "text-light-600"} shrink-0`}

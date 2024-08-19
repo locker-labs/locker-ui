@@ -16,7 +16,13 @@ import { useConnectModal } from "@/hooks/useConnectModal";
 import { usePolicyReviewModal } from "@/hooks/usePolicyReviewModal";
 import useSmartAccount from "@/hooks/useSmartAccount";
 import { createPolicy } from "@/services/lockers";
-import { Automation, Locker, Policy } from "@/types";
+import {
+	Automation,
+	EAutomationStatus,
+	EAutomationType,
+	Locker,
+	Policy,
+} from "@/types";
 import { isChainSupported } from "@/utils/isChainSupported";
 
 export interface ILockerSetup {
@@ -138,9 +144,9 @@ function LockerSetup({ lockers, fetchPolicies }: ILockerSetup) {
 		// 1. Get user to sign session key
 		const sig = await signSessionKey(
 			chainId as number, // current chainId in user's connected wallet
-			0 // lockerIndex
-			// sendToAddress as `0x${string}` // hotWalletAddress
-			// undefined // offrampAddress
+			0, // lockerIndex
+			sendToAddress as `0x${string}`, // hotWalletAddress
+			[] // offrampAddress
 		);
 		if (!sig) {
 			setIsLoading(false);
@@ -150,20 +156,20 @@ function LockerSetup({ lockers, fetchPolicies }: ILockerSetup) {
 		// 2. Craft policy object
 		const automations: Automation[] = [
 			{
-				type: "savings",
+				type: EAutomationType.SAVINGS,
 				allocation: Number(formatUnits(BigInt(savePercent), 2)),
-				status: "ready",
+				status: EAutomationStatus.READY,
 			},
 			{
-				type: "forward_to",
+				type: EAutomationType.FORWARD_TO,
 				allocation: Number(formatUnits(BigInt(hotWalletPercent), 2)),
-				status: "ready",
+				status: EAutomationStatus.READY,
 				recipientAddress: sendToAddress as `0x${string}`,
 			},
 			{
-				type: "off_ramp",
+				type: EAutomationType.OFF_RAMP,
 				allocation: Number(formatUnits(BigInt(bankPercent), 2)),
-				status: "new",
+				status: EAutomationStatus.NEW,
 			},
 		];
 		const policy: Policy = {
@@ -171,7 +177,6 @@ function LockerSetup({ lockers, fetchPolicies }: ILockerSetup) {
 			chainId: chainId as number,
 			sessionKey: sig as string,
 			automations,
-			sessionKeyIsValid: true,
 		};
 
 		// 3. Get auth token and create policy through locker-api
