@@ -19,3 +19,4 @@
 **/public/worker-*.js.map
 
 src/components/AarcButton.tsx
+src/utils/supabase/database.types.ts

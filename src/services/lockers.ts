@@ -94,6 +94,44 @@ export const createPolicy = async (
 	}
 };
 
+export const updatePolicy = async (
+	authToken: string,
+	policy: Policy,
+	setErrorMessage: (value: string) => void
+) => {
+	try {
+		// response.status should be 200
+		const response = await fetch(
+			`${endpoints.UPDATE_POLICY}/${policy.id}`,
+			{
+				method: "PATCH",
+				headers: {
+					Authorization: `Bearer ${authToken}`,
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify(policy),
+			}
+		);
+
+		if (!response.ok) {
+			// Handle error in catch
+			throw response;
+		}
+	} catch (error) {
+		if (error instanceof Response) {
+			const errorMessage =
+				error.status === 409
+					? errors.POLICY_CONFLICT
+					: `${error.status} (${error.statusText}): ${errors.UNEXPECTED}`;
+			setErrorMessage(errorMessage);
+		} else {
+			// Handle other errors like network errors, etc.
+			console.error(error);
+			setErrorMessage(errors.UNEXPECTED);
+		}
+	}
+};
+
 export const getPolicies = async (
 	authToken: string,
 	lockerId: number
@@ -162,4 +200,46 @@ export const updateAutomations = async (
 			setErrorMessage(errors.UNEXPECTED);
 		}
 	}
+};
+
+export const createOfframp = async (
+	authToken: string,
+	lockerAddress: `0x${string}`
+) => {
+	try {
+		// response.status should be 200
+		const response = await fetch(endpoints.CREATE_OFFRAMP, {
+			method: "POST",
+			headers: {
+				Authorization: `Bearer ${authToken}`,
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({ address: lockerAddress }),
+		});
+
+		if (response.ok) {
+			const responseData = await response.json();
+			console.log(responseData.onboardingUrl);
+			return responseData.onboardingUrl;
+		}
+
+		if (!response.ok) {
+			// Handle error in catch
+			throw response;
+		}
+	} catch (error) {
+		if (error instanceof Response) {
+			const errorMessage =
+				error.status === 404
+					? errors.LOCKER_NOT_FOUND
+					: error.status === 409
+						? errors.BEAM_ACCOUNT_CONFLICT
+						: `${error.status} (${error.statusText}): ${errors.UNEXPECTED}`;
+			console.error(errorMessage);
+		} else {
+			// Handle other errors like network errors, etc.
+			console.error(error);
+		}
+	}
+	return null;
 };

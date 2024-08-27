@@ -12,7 +12,13 @@ import { errors } from "@/data/constants/errorMessages";
 import { successes } from "@/data/constants/successMessages";
 import { usePolicyReviewModal } from "@/hooks/usePolicyReviewModal";
 import { updateAutomations } from "@/services/lockers";
-import { Automation, Locker, Policy } from "@/types";
+import {
+	Automation,
+	EAutomationStatus,
+	EAutomationType,
+	Locker,
+	Policy,
+} from "@/types";
 
 export interface IEditAutomationsModal {
 	isOpen: boolean;
@@ -133,20 +139,20 @@ function EditAutomationsModal({
 		// 1. Craft policy objects for all enabled chains
 		const automations: Automation[] = [
 			{
-				type: "savings",
+				type: EAutomationType.SAVINGS,
 				allocation: Number(formatUnits(BigInt(savePercent), 2)),
-				status: "ready",
+				status: EAutomationStatus.READY,
 			},
 			{
-				type: "forward_to",
+				type: EAutomationType.FORWARD_TO,
 				allocation: Number(formatUnits(BigInt(hotWalletPercent), 2)),
-				status: "ready",
+				status: EAutomationStatus.READY,
 				recipientAddress: sendToAddress as `0x${string}`,
 			},
 			{
-				type: "off_ramp",
+				type: EAutomationType.OFF_RAMP,
 				allocation: Number(formatUnits(BigInt(bankPercent), 2)),
-				status: currentBankAutomation?.status || "new",
+				status: currentBankAutomation?.status || EAutomationStatus.NEW,
 			},
 		];
 

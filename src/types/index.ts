@@ -38,10 +38,25 @@ export type Locker = {
 	updatedAt?: string;
 };
 
+export enum EAutomationType {
+	SAVINGS = "savings",
+	FORWARD_TO = "forward_to",
+	OFF_RAMP = "off_ramp",
+}
+
+export enum EAutomationStatus {
+	NEW = "new",
+	PENDING = "pending",
+	// only blocker to being READY is regenerating the session key
+	AUTOMATE_THEN_READY = "automate_then_ready",
+	READY = "ready",
+	FAILED = "failed",
+}
+
 export type Automation = {
-	type: "savings" | "forward_to" | "off_ramp";
+	type: EAutomationType;
 	allocation: number; // 0 - 1
-	status: "new" | "pending" | "ready" | "failed"; // Always "ready" for "savings" or "forward_to" types
+	status: EAutomationStatus; // Always "ready" for "savings" or "forward_to" types
 	recipientAddress?: `0x${string}`; // Required if forward_to or off_ramp
 };
 

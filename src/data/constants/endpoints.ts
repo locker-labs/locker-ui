@@ -22,4 +22,7 @@ export const endpoints = {
 
 	// GET --> /public/tokenTxs/${lockerId}/balances
 	GET_TOKEN_BALANCES: `${process.env.LOCKER_API_BASE_URL}/public/tokenTxs`,
+
+	// POST --> /public/offramp/create
+	CREATE_OFFRAMP: `${process.env.LOCKER_API_BASE_URL}/public/offramp/create`,
 };

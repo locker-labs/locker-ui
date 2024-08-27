@@ -49,7 +49,9 @@ function SendModal({ isOpen, closeModal, tokenList, locker }: ISendModal) {
 		setErrorMessage("");
 
 		if (checksumAddress(locker.ownerAddress) !== address) {
-			setErrorMessage(errors.UNAUTHORIZED);
+			setErrorMessage(
+				`${errors.UNAUTHORIZED} Expected wallet: ${locker.ownerAddress}`
+			);
 			setIsLoading(false);
 			return;
 		}

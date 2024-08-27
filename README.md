@@ -1,6 +1,6 @@
 # Locker User Interface
 
-The user interface for the Locker application.
+The user interface for the Locker application
 
 ## Getting Started with Development
 
