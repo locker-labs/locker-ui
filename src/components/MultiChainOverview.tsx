@@ -13,7 +13,13 @@ import { useConnectModal } from "@/hooks/useConnectModal";
 import { useQrCodeModal } from "@/hooks/useQrCodeModal";
 import useSmartAccount from "@/hooks/useSmartAccount";
 import { createPolicy, updatePolicy } from "@/services/lockers";
-import { Automation, EAutomationType, Locker, Policy } from "@/types";
+import {
+	Automation,
+	EAutomationStatus,
+	EAutomationType,
+	Locker,
+	Policy,
+} from "@/types";
 import { getChainIconStyling } from "@/utils/getChainIconStyling";
 import { getChainNameFromId } from "@/utils/getChainName";
 import { isPolicyReady } from "@/utils/isPolicyReady";
@@ -187,12 +193,21 @@ function MultiChainOverview({
 			(pol) => pol.chainId === policyChainId
 		) as Policy;
 
+		const readyAutomations = currentPolicy.automations.map((automation) => {
+			const updatedAutomation = { ...automation };
+			if (automation.status === EAutomationStatus.AUTOMATE_THEN_READY) {
+				updatedAutomation.status = EAutomationStatus.READY;
+			}
+
+			return updatedAutomation;
+		});
+
 		const policy: Policy = {
 			id: currentPolicy.id,
 			lockerId: locker.id as number,
 			chainId: policyChainId as number,
 			sessionKey: sig as string,
-			automations,
+			automations: readyAutomations,
 		};
 
 		const authToken = await getToken();

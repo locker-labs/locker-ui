@@ -1,3 +1,4 @@
+import { useRouter } from "next/navigation";
 import { useCallback, useState } from "react";
 import ReactDOM from "react-dom";
 
@@ -5,6 +6,7 @@ import EditAutomationsModal from "@/components/EditAutomationsModal";
 import { Automation, Locker, Policy } from "@/types";
 
 export const useEditAutomationsModal = () => {
+	const router = useRouter();
 	const [isOpen, setIsOpen] = useState<boolean>(false);
 
 	const openEditAutomationsModal = useCallback(() => {
@@ -13,6 +15,7 @@ export const useEditAutomationsModal = () => {
 
 	const closeEditAutomationsModal = useCallback(() => {
 		setIsOpen(false);
+		router.refresh();
 	}, []);
 
 	const renderEditAutomationsModal = (
