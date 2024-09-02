@@ -1,6 +1,6 @@
 # Locker User Interface
 
-The user interface for the Locker application.
+The user interface for the Locker application
 
 ## Getting Started with Development
 
@@ -79,3 +79,5 @@ SUPPORTED_CHAINS="["arbitrum", "optimism", "base", "polygon", "avalanche", "sepo
 1. update next.config.js
 1. getBundler.ts
 1. getPaymaster.ts
+
+https://www.ssn-verify.com/generate
