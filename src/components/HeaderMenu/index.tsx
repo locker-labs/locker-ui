@@ -1,5 +1,6 @@
 import { useClerk } from "@clerk/nextjs";
 import { Menu, Transition } from "@headlessui/react";
+import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { GrConnect } from "react-icons/gr";
@@ -16,7 +17,6 @@ import { useAccount, useBalance, useDisconnect } from "wagmi";
 import ChainIcon from "@/components/ChainIcon";
 import Button from "@/components/HeaderMenu/Button";
 import { paths } from "@/data/constants/paths";
-import { useConnectModal } from "@/hooks/useConnectModal";
 import { copyToClipboard } from "@/utils/copytoClipboard";
 import { isChainSupported } from "@/utils/isChainSupported";
 import { truncateAddress } from "@/utils/truncateAddress";
@@ -27,11 +27,11 @@ function HeaderMenu() {
 	const router = useRouter();
 	const { signOut } = useClerk();
 	const { address, chain, isConnected } = useAccount();
-	const { openConnectModal, renderConnectModal } = useConnectModal();
 	const { disconnect } = useDisconnect();
 	const { data: balance } = useBalance({
 		address,
 	});
+	const { openConnectModal } = useConnectModal();
 
 	return (
 		<Menu as="div" className="relative inline-block text-left">
@@ -180,7 +180,6 @@ function HeaderMenu() {
 							</Menu.Item>
 						</Menu.Items>
 					</Transition>
-					{renderConnectModal()}
 				</>
 			)}
 		</Menu>

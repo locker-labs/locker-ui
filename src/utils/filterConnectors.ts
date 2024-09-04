@@ -17,7 +17,11 @@ export const filterConnectors = (connectors: readonly Connector[]) => {
 	};
 
 	const filteredConnectors = connectors
-		.filter((connector) => allowedIds.includes(connector.id))
+		.filter((connector) => {
+			console.log("a connector");
+			console.log(connector);
+			return allowedIds.includes(connector.id);
+		})
 		.map((connector) => {
 			const { icon, label } = infoToAdd[connector.id];
 			return { ...connector, icon, label };

@@ -1,11 +1,11 @@
 "use client";
 
 import { useAuth } from "@clerk/nextjs";
+import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { useEffect, useState } from "react";
 import { useAccount } from "wagmi";
 
 import Loader from "@/components/Loader";
-import { useConnectModal } from "@/hooks/useConnectModal";
 import useSmartAccount from "@/hooks/useSmartAccount";
 import { createLocker } from "@/services/lockers";
 import type { Locker } from "@/types";
@@ -20,7 +20,7 @@ function LockerCreate({ lockerIndex, fetchLockers }: ILockerCreate) {
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const [errorMessage, setErrorMessage] = useState<string | null>(null);
 	const { isConnected, address } = useAccount();
-	const { openConnectModal, renderConnectModal } = useConnectModal();
+	const { openConnectModal } = useConnectModal();
 	const { genSmartAccountAddress } = useSmartAccount();
 	const { getToken } = useAuth();
 
@@ -114,7 +114,6 @@ function LockerCreate({ lockerIndex, fetchLockers }: ILockerCreate) {
 					)}
 				</>
 			)}
-			{renderConnectModal()}
 		</div>
 	);
 }
