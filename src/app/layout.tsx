@@ -33,7 +33,7 @@ export default function RootLayout({
 	return (
 		<html lang="en" suppressHydrationWarning>
 			<body
-				className={`${inter.className} flex min-h-screen w-full flex-col items-center bg-light-100 text-dark-500 dark:bg-dark-500 dark:text-light-200`}
+				className={`${inter.className} flex min-h-screen w-full flex-col items-center bg-light-100 text-dark-500`}
 			>
 				<AuthProvider>
 					<EvmProvider initialState={initialState}>

@@ -4,6 +4,7 @@ import { useAuth } from "@clerk/nextjs";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useTheme } from "next-themes";
 import { useEffect } from "react";
 
 import AuthButton from "@/components/AuthButton";
@@ -25,7 +26,8 @@ const LottieAnimation = dynamic(() => import("@/components/LottieAnimation"), {
 export default function LandingPage() {
 	const router = useRouter();
 	const { isSignedIn } = useAuth();
-
+	const { setTheme } = useTheme();
+	setTheme("light");
 	useEffect(() => {
 		if (isSignedIn) {
 			router.push(paths.HOME);
