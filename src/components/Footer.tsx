@@ -1,4 +1,4 @@
-import { FaGithub, FaTelegram, FaXTwitter } from "react-icons/fa6";
+import { FaFile, FaGithub, FaTelegram, FaXTwitter } from "react-icons/fa6";
 
 import FarcasterIcon from "@/components/FarcasterIcon";
 import IconLink from "@/components/IconLink";
@@ -7,6 +7,12 @@ function Footer() {
 	return (
 		<footer className="flex w-full flex-col items-center justify-center">
 			<div className="flex">
+				<IconLink
+					Icon={FaFile}
+					url="https://docs.locker.money"
+					label="Locker Docs"
+					size="20px"
+				/>
 				<IconLink
 					Icon={FaGithub}
 					url="https://github.com/locker-labs"
