@@ -29,7 +29,7 @@ function AuthButton({ type, label, height, width }: IAuthButton) {
 
 	return (
 		<button
-			className={`${type === "sign-in" ? "bg-light-200 text-locker-700 hover:bg-light-300" : "bg-locker-600 text-light-100 hover:bg-locker-800 "} ${height} ${width} items-center justify-center rounded-md`}
+			className={`${type === "sign-in" ? "bg-locker-25 text-locker-700 hover:bg-locker-100" : "bg-locker-600 text-light-100 hover:bg-locker-800"} ${height} ${width} items-center justify-center rounded-md`}
 			onClick={handleOnClick}
 		>
 			{label}

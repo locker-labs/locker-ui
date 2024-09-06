@@ -39,7 +39,7 @@ export default function LandingPage() {
 			<div className="flex w-full flex-row gap-x-36">
 				<div className="flex w-full max-w-2xl flex-col space-y-10">
 					<div>
-						<h1 className="mb-6 text-3xl">
+						<h1 className="mb-6 mt-10 text-[40px]">
 							<span className="bg-gradient-to-r from-secondary-200 to-primary-200 bg-clip-text text-transparent">
 								Save and invest
 							</span>{" "}
