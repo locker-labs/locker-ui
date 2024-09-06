@@ -21,10 +21,11 @@ function HomePage() {
 	const policiesChannels = useRef<RealtimeChannel[]>([]);
 	const [lockers, setLockers] = useState<Locker[] | null>(null);
 	const [policies, setPolicies] = useState<Policy[] | null>(null);
+	const offrampAddresses: `0x${string}`[] = [];
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	const [offrampAddresses, setOfframpAddresses] = useState<`0x${string}`[]>(
-		[]
-	);
+	// const [offrampAddresses, setOfframpAddresses] = useState<`0x${string}`[]>(
+	// 	[]
+	// );
 
 	const { getToken, userId } = useAuth();
 
