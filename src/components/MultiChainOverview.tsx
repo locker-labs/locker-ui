@@ -31,7 +31,6 @@ export interface IMultiChainOverview {
 	chainsNetWorths: Record<number, string>;
 	locker: Locker;
 	setErrorMessage: (errorMessage: string) => void;
-	fetchPolicies: () => void;
 	offrampAddresses: `0x${string}`[];
 }
 
@@ -42,7 +41,6 @@ function MultiChainOverview({
 	chainsNetWorths,
 	locker,
 	setErrorMessage,
-	fetchPolicies,
 	offrampAddresses,
 }: IMultiChainOverview) {
 	const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -136,8 +134,6 @@ function MultiChainOverview({
 			await createPolicy(authToken, policy, setErrorMessage);
 		}
 
-		fetchPolicies();
-
 		setIsLoading(false);
 		setChainRowLoading(null);
 	};
@@ -214,8 +210,6 @@ function MultiChainOverview({
 		if (authToken) {
 			await updatePolicy(authToken, policy, setErrorMessage);
 		}
-
-		fetchPolicies();
 
 		setIsLoading(false);
 		setChainRowLoading(null);

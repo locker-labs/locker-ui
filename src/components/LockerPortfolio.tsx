@@ -1,3 +1,5 @@
+"use client";
+
 import { useAuth } from "@clerk/nextjs";
 import { useEffect, useState } from "react";
 import Blockies from "react-blockies";
@@ -18,14 +20,12 @@ import { isTestnet } from "@/utils/isTestnet";
 export interface ILockerPortfolio {
 	lockers: Locker[];
 	policies: Policy[];
-	fetchPolicies: () => void;
 	offrampAddresses: `0x${string}`[];
 }
 
 function LockerPortfolio({
 	lockers,
 	policies,
-	fetchPolicies,
 	offrampAddresses,
 }: ILockerPortfolio) {
 	const [errorMessage, setErrorMessage] = useState<string>("");
@@ -152,7 +152,6 @@ function LockerPortfolio({
 				</div>
 				<AutomationSettings
 					currentPolicies={policies}
-					fetchPolicies={fetchPolicies}
 					locker={locker}
 					bankAutomation={bankAutomation}
 					hotWalletAutomation={hotWalletAutomation}
@@ -180,7 +179,6 @@ function LockerPortfolio({
 						chainsNetWorths={chainsNetWorths}
 						locker={locker}
 						setErrorMessage={setErrorMessage}
-						fetchPolicies={fetchPolicies}
 						offrampAddresses={offrampAddresses}
 					/>
 				</div>

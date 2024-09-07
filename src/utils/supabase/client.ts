@@ -13,40 +13,40 @@ if (!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
-// declare global {
-// 	interface Window {
-// 		Clerk: {
-// 			session?: {
-// 				getToken: (options: { template: string }) => Promise<string>;
-// 			};
-// 		};
-// 	}
-// }
+declare global {
+	interface Window {
+		Clerk: {
+			session?: {
+				getToken: (options: { template: string }) => Promise<string>;
+			};
+		};
+	}
+}
 
-// function getSupabase() {
-// 	return createClient<Database>(supabaseUrl, supabaseAnonKey, {
-// 		global: {
-// 			fetch: async (url, options = {}) => {
-// 				const clerkToken = await window.Clerk.session?.getToken({
-// 					template: "supabase",
-// 				});
+function getSupabase() {
+	return createClient<Database>(supabaseUrl, supabaseAnonKey, {
+		global: {
+			fetch: async (url, options = {}) => {
+				const clerkToken = await window.Clerk.session?.getToken({
+					template: "supabase",
+				});
 
-// 				const headers = new Headers(options?.headers);
-// 				headers.set("Authorization", `Bearer ${clerkToken}`);
+				const headers = new Headers(options?.headers);
+				headers.set("Authorization", `Bearer ${clerkToken}`);
 
-// 				return fetch(url, {
-// 					...options,
-// 					headers,
-// 				});
-// 			},
-// 		},
-// 	});
-// }
+				return fetch(url, {
+					...options,
+					headers,
+				});
+			},
+		},
+	});
+}
 
 // NOTE: The above errors out. This, along with disabling RLS in Supabase, works.
-function getSupabase() {
-	return createClient<Database>(supabaseUrl, supabaseAnonKey);
-}
+// function getSupabase() {
+// 	return createClient<Database>(supabaseUrl, supabaseAnonKey);
+// }
 
 const supabaseClient = getSupabase();
 

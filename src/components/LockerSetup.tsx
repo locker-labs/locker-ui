@@ -1,4 +1,7 @@
+"use client";
+
 import { useAuth } from "@clerk/nextjs";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { IoChevronBackOutline } from "react-icons/io5";
@@ -27,10 +30,10 @@ import { isChainSupported } from "@/utils/isChainSupported";
 
 export interface ILockerSetup {
 	lockers: Locker[];
-	fetchPolicies: () => void;
 }
 
-function LockerSetup({ lockers, fetchPolicies }: ILockerSetup) {
+function LockerSetup({ lockers }: ILockerSetup) {
+	const router = useRouter();
 	const [sendToAddress, setSendToAddress] = useState<string>(
 		lockers[0].ownerAddress
 	);
@@ -185,9 +188,7 @@ function LockerSetup({ lockers, fetchPolicies }: ILockerSetup) {
 			await createPolicy(authToken, policy, setErrorMessage);
 		}
 
-		// 4. Fetch policies from DB to update state in Home component
-		fetchPolicies();
-
+		router.refresh();
 		setIsLoading(false);
 	};
 
