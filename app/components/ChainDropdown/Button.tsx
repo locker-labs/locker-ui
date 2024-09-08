@@ -1,8 +1,8 @@
 import { IoChevronDown, IoWarningOutline } from "react-icons/io5";
 import { useAccount } from "wagmi";
 
-import { getChainIconStyling } from "../../utils/getChainIconStyling";
-import { isChainSupported } from "../../utils/isChainSupported";
+import { getChainIconStyling } from "../../../utils/getChainIconStyling";
+import { isChainSupported } from "../../../utils/isChainSupported";
 import ChainIcon from "../ChainIcon";
 import Tooltip from "../Tooltip";
 

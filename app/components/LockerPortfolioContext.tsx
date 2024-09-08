@@ -2,13 +2,13 @@
 
 import { createContext, ReactNode, useContext, useMemo, useState } from "react";
 
-import { useRealtimeTable } from "../app/utils/useRealtimeTable";
-import { LockerDb, PolicyDb, Tx } from "../types";
+import { LockerDb, PolicyDb, Tx } from "../../types";
 import {
 	TABLE_LOCKERS,
 	TABLE_POLICIES,
 	TABLE_TOKEN_TXS,
-} from "../utils/supabase/tables";
+} from "../../utils/supabase/tables";
+import { useRealtimeTable } from "../utils/useRealtimeTable";
 
 export interface ILockerPortfolio {
 	initialLockers: LockerDb[];

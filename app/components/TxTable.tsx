@@ -2,13 +2,13 @@ import { Fragment } from "react";
 import { IoOpenOutline } from "react-icons/io5";
 import { formatUnits } from "viem";
 
-import { supportedChains } from "../data/constants/supportedChains";
-import { useTxDetailsModal } from "../hooks/useTxDetailsModal";
-import { Tx } from "../types";
-import { formatDateUtc } from "../utils/formatDateUtc";
-import { getChainNameFromId } from "../utils/getChainName";
-import { isChainSupported } from "../utils/isChainSupported";
-import { truncateAddress } from "../utils/truncateAddress";
+import { supportedChains } from "../../data/constants/supportedChains";
+import { useTxDetailsModal } from "../../hooks/useTxDetailsModal";
+import { Tx } from "../../types";
+import { formatDateUtc } from "../../utils/formatDateUtc";
+import { getChainNameFromId } from "../../utils/getChainName";
+import { isChainSupported } from "../../utils/isChainSupported";
+import { truncateAddress } from "../../utils/truncateAddress";
 
 export interface ITxTable {
 	txs: Tx[];

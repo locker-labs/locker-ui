@@ -8,12 +8,12 @@ import { useEffect, useState } from "react";
 
 import lockerPaths from "@/data/lottie/lockerPaths.json";
 
-import AuthButton from "../components/AuthButton";
-import FaqAccordion from "../components/FaqAccordion";
 import { errors } from "../data/constants/errorMessages";
 import { paths } from "../data/constants/paths";
+import AuthButton from "./components/AuthButton";
+import FaqAccordion from "./components/FaqAccordion";
 
-const LottieAnimation = dynamic(() => import("../components/LottieAnimation"), {
+const LottieAnimation = dynamic(() => import("./components/LottieAnimation"), {
 	ssr: false,
 });
 

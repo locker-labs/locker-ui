@@ -1,7 +1,7 @@
 import { useCallback, useState } from "react";
 import ReactDOM from "react-dom";
 
-import QrCodeModal from "../components/QrCodeModal";
+import QrCodeModal from "../app/components/QrCodeModal";
 
 export const useQrCodeModal = () => {
 	const [isOpen, setIsOpen] = useState<boolean>(false);

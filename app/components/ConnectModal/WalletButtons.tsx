@@ -2,7 +2,7 @@
 import Image from "next/image";
 import { useConnect } from "wagmi";
 
-import { filterConnectors } from "../../utils/filterConnectors";
+import { filterConnectors } from "../../../utils/filterConnectors";
 
 export interface IWalletButtons {
 	closeModal: () => void;

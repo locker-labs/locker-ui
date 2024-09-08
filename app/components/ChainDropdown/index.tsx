@@ -6,10 +6,10 @@ import { FaCheck } from "react-icons/fa6";
 import { useAccount, useSwitchChain } from "wagmi";
 import type { Chain } from "wagmi/chains";
 
-import { supportedChains } from "../../data/constants/supportedChains";
-import { getChainIconStyling } from "../../utils/getChainIconStyling";
-import { getChainNameFromChainObj } from "../../utils/getChainName";
-import { isChainSupported } from "../../utils/isChainSupported";
+import { supportedChains } from "../../../data/constants/supportedChains";
+import { getChainIconStyling } from "../../../utils/getChainIconStyling";
+import { getChainNameFromChainObj } from "../../../utils/getChainName";
+import { isChainSupported } from "../../../utils/isChainSupported";
 import ChainIcon from "../ChainIcon";
 import Button from "./Button";
 

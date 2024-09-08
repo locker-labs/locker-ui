@@ -1,7 +1,7 @@
 import { useCallback, useState } from "react";
 import ReactDOM from "react-dom";
 
-import ConnectModal from "../components/ConnectModal";
+import ConnectModal from "../app/components/ConnectModal";
 
 export const useConnectModal = () => {
 	const [isOpen, setIsOpen] = useState<boolean>(false);

@@ -13,11 +13,11 @@ import {
 } from "react-icons/io5";
 import { useAccount, useBalance, useDisconnect } from "wagmi";
 
-import { paths } from "../../data/constants/paths";
-import { useConnectModal } from "../../hooks/useConnectModal";
-import { copyToClipboard } from "../../utils/copytoClipboard";
-import { isChainSupported } from "../../utils/isChainSupported";
-import { truncateAddress } from "../../utils/truncateAddress";
+import { paths } from "../../../data/constants/paths";
+import { useConnectModal } from "../../../hooks/useConnectModal";
+import { copyToClipboard } from "../../../utils/copytoClipboard";
+import { isChainSupported } from "../../../utils/isChainSupported";
+import { truncateAddress } from "../../../utils/truncateAddress";
 import ChainIcon from "../ChainIcon";
 import Button from "./Button";
 

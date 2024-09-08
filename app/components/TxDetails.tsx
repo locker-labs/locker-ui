@@ -2,9 +2,9 @@ import { IoOpenOutline } from "react-icons/io5";
 import { formatUnits } from "viem";
 import type { Chain } from "wagmi/chains";
 
-import { Tx } from "../types";
-import { getChainIconStyling } from "../utils/getChainIconStyling";
-import { getChainNameFromChainObj } from "../utils/getChainName";
+import { Tx } from "../../types";
+import { getChainIconStyling } from "../../utils/getChainIconStyling";
+import { getChainNameFromChainObj } from "../../utils/getChainName";
 import ChainIcon from "./ChainIcon";
 
 export interface ITxDetails {

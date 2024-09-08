@@ -5,10 +5,10 @@ import { IoClose } from "react-icons/io5";
 import { checksumAddress } from "viem";
 import { useAccount, useSwitchChain, useWalletClient } from "wagmi";
 
-import { errors } from "../data/constants/errorMessages";
-import { successes } from "../data/constants/successMessages";
-import useSmartAccount from "../hooks/useSmartAccount";
-import { Locker, Token } from "../types";
+import { errors } from "../../data/constants/errorMessages";
+import { successes } from "../../data/constants/successMessages";
+import useSmartAccount from "../../hooks/useSmartAccount";
+import { Locker, Token } from "../../types";
 import AddressInput from "./AddressInput";
 import CurrencyInput from "./CurrencyInput";
 import TokenDropdown from "./TokenDropdown";

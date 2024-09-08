@@ -6,22 +6,22 @@ import { IoWarningOutline } from "react-icons/io5";
 import { checksumAddress } from "viem";
 import { useAccount, useSwitchChain, useWalletClient } from "wagmi";
 
-import { errors } from "../data/constants/errorMessages";
-import { supportedChainIdsArray } from "../data/constants/supportedChains";
-import { useConnectModal } from "../hooks/useConnectModal";
-import { useQrCodeModal } from "../hooks/useQrCodeModal";
-import useSmartAccount from "../hooks/useSmartAccount";
-import { createPolicy, updatePolicy } from "../services/lockers";
+import { errors } from "../../data/constants/errorMessages";
+import { supportedChainIdsArray } from "../../data/constants/supportedChains";
+import { useConnectModal } from "../../hooks/useConnectModal";
+import { useQrCodeModal } from "../../hooks/useQrCodeModal";
+import useSmartAccount from "../../hooks/useSmartAccount";
+import { createPolicy, updatePolicy } from "../../services/lockers";
 import {
 	Automation,
 	EAutomationStatus,
 	EAutomationType,
 	Locker,
 	Policy,
-} from "../types";
-import { getChainIconStyling } from "../utils/getChainIconStyling";
-import { getChainNameFromId } from "../utils/getChainName";
-import { isPolicyReady } from "../utils/isPolicyReady";
+} from "../../types";
+import { getChainIconStyling } from "../../utils/getChainIconStyling";
+import { getChainNameFromId } from "../../utils/getChainName";
+import { isPolicyReady } from "../../utils/isPolicyReady";
 import ChainIcon from "./ChainIcon";
 
 export interface IMultiChainOverview {

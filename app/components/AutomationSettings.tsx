@@ -3,10 +3,10 @@ import { useEffect, useState } from "react";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { IoWarningOutline } from "react-icons/io5";
 
-import { useEditAutomationsModal } from "../hooks/useEditAutomationsModal";
-import { useKycModal } from "../hooks/useKycModal";
-import { createOfframp } from "../services/lockers";
-import { Automation, Locker, Policy } from "../types";
+import { useEditAutomationsModal } from "../../hooks/useEditAutomationsModal";
+import { useKycModal } from "../../hooks/useKycModal";
+import { createOfframp } from "../../services/lockers";
+import { Automation, Locker, Policy } from "../../types";
 import AllocationBox from "./AllocationBox";
 
 export interface IAutomationSettings {

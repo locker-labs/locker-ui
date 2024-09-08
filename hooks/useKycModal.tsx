@@ -1,7 +1,7 @@
 import { useCallback, useState } from "react";
 import ReactDOM from "react-dom";
 
-import KycModal from "../components/KycModal";
+import KycModal from "../app/components/KycModal";
 
 export const useKycModal = () => {
 	const [isOpen, setIsOpen] = useState<boolean>(false);

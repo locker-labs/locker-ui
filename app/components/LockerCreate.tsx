@@ -4,10 +4,10 @@ import { useAuth } from "@clerk/nextjs";
 import { useEffect, useState } from "react";
 import { useAccount } from "wagmi";
 
-import { useConnectModal } from "../hooks/useConnectModal";
-import useSmartAccount from "../hooks/useSmartAccount";
-import { createLocker } from "../services/lockers";
-import type { Locker } from "../types";
+import { useConnectModal } from "../../hooks/useConnectModal";
+import useSmartAccount from "../../hooks/useSmartAccount";
+import { createLocker } from "../../services/lockers";
+import type { Locker } from "../../types";
 import Loader from "./Loader";
 
 export interface ILockerCreate {

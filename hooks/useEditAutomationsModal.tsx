@@ -2,7 +2,7 @@ import { useRouter } from "next/navigation";
 import { useCallback, useState } from "react";
 import ReactDOM from "react-dom";
 
-import EditAutomationsModal from "../components/EditAutomationsModal";
+import EditAutomationsModal from "../app/components/EditAutomationsModal";
 import { Automation, Locker, Policy } from "../types";
 
 export const useEditAutomationsModal = () => {

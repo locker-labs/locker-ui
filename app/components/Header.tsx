@@ -5,8 +5,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useAccount } from "wagmi";
 
-import { paths } from "../data/constants/paths";
-import { isTestnet } from "../utils/isTestnet";
+import { paths } from "../../data/constants/paths";
+import { isTestnet } from "../../utils/isTestnet";
 // import AuthButton from "@/components/AuthButton";
 import ChainDropdown from "./ChainDropdown";
 import ConnectButton from "./ConnectButton";

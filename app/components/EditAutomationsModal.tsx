@@ -5,18 +5,18 @@ import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { IoClose } from "react-icons/io5";
 import { formatUnits } from "viem";
 
-import { disclosures } from "../data/constants/disclosures";
-import { errors } from "../data/constants/errorMessages";
-import { successes } from "../data/constants/successMessages";
-import { usePolicyReviewModal } from "../hooks/usePolicyReviewModal";
-import { updateAutomations } from "../services/lockers";
+import { disclosures } from "../../data/constants/disclosures";
+import { errors } from "../../data/constants/errorMessages";
+import { successes } from "../../data/constants/successMessages";
+import { usePolicyReviewModal } from "../../hooks/usePolicyReviewModal";
+import { updateAutomations } from "../../services/lockers";
 import {
 	Automation,
 	EAutomationStatus,
 	EAutomationType,
 	Locker,
 	Policy,
-} from "../types";
+} from "../../types";
 import ChannelSelectButton from "./ChannelSelectButton";
 import DistributionBox from "./DistributionBox";
 

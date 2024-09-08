@@ -1,5 +1,5 @@
 /* eslint-disable react/require-default-props */
-import { supportedChainIds } from "../data/constants/supportedChains";
+import { supportedChainIds } from "../../data/constants/supportedChains";
 
 export interface IChainIcon {
 	chainId: number;

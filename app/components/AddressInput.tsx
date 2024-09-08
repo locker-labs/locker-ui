@@ -1,7 +1,7 @@
 /* eslint-disable react/require-default-props */
 import { isAddress } from "viem";
 
-import { errors } from "../data/constants/errorMessages";
+import { errors } from "../../data/constants/errorMessages";
 
 export interface IAddressInput {
 	sendToAddress: string;

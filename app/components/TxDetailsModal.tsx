@@ -3,10 +3,10 @@ import { Fragment } from "react";
 import { IoClose, IoOpenOutline } from "react-icons/io5";
 import { formatUnits } from "viem";
 
-import { Tx } from "../types";
-import { getChainIconStyling } from "../utils/getChainIconStyling";
-import { getChainNameFromChainObj } from "../utils/getChainName";
-import { getChainObjFromId } from "../utils/getChainObj";
+import { Tx } from "../../types";
+import { getChainIconStyling } from "../../utils/getChainIconStyling";
+import { getChainNameFromChainObj } from "../../utils/getChainName";
+import { getChainObjFromId } from "../../utils/getChainObj";
 import ChainIcon from "./ChainIcon";
 
 export interface ITxDetailsModal {

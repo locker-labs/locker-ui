@@ -8,13 +8,13 @@ import { MdPending } from "react-icons/md";
 import { formatUnits } from "viem";
 import type { Chain } from "wagmi/chains";
 
-import Loader from "../../../../components/Loader";
-import TxDetails from "../../../../components/TxDetails";
 import { paths } from "../../../../data/constants/paths";
 import { supportedChains } from "../../../../data/constants/supportedChains";
 import { getTx } from "../../../../services/transactions";
 import { Tx } from "../../../../types";
 import { getChainNameFromChainObj } from "../../../../utils/getChainName";
+import Loader from "../../../components/Loader";
+import TxDetails from "../../../components/TxDetails";
 
 export default function Transaction({
 	params,

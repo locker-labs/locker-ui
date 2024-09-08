@@ -1,7 +1,7 @@
 import { useCallback, useState } from "react";
 import ReactDOM from "react-dom";
 
-import PolicyReviewModal from "../components/PolicyReviewModal";
+import PolicyReviewModal from "../app/components/PolicyReviewModal";
 
 export const usePolicyReviewModal = () => {
 	const [isOpen, setIsOpen] = useState<boolean>(false);

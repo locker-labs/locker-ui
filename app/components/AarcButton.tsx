@@ -4,9 +4,9 @@ import "@aarc-xyz/deposit-widget/dist/style.css";
 
 import { AarcProvider, useAarc } from "@aarc-xyz/deposit-widget";
 
-import { chainCodeNames } from "../data/constants/supportedChains";
-import { getUsdcAddress } from "../data/policies/usdc";
-import { titleCaseWord } from "../utils/strings";
+import { chainCodeNames } from "../../data/constants/supportedChains";
+import { getUsdcAddress } from "../../data/policies/usdc";
+import { titleCaseWord } from "../../utils/strings";
 
 export type IAarcButtonProps = {
 	lockerAddress: string;

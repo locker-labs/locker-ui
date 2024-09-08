@@ -1,7 +1,7 @@
 import { useCallback, useState } from "react";
 import ReactDOM from "react-dom";
 
-import SendModal from "../components/SendModal";
+import SendModal from "../app/components/SendModal";
 import { Locker, Token } from "../types";
 
 export const useSendModal = () => {

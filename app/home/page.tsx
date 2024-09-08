@@ -2,11 +2,11 @@
 
 import { Suspense } from "react";
 
-import Loader from "../../components/Loader";
-import LockerNav from "../../components/LockerNav";
-import { LockerPortfolioProvider } from "../../components/LockerPortfolioContext";
 import { LockerDb, PolicyDb } from "../../types";
 import { TABLE_LOCKERS } from "../../utils/supabase/tables";
+import Loader from "../components/Loader";
+import LockerNav from "../components/LockerNav";
+import { LockerPortfolioProvider } from "../components/LockerPortfolioContext";
 import { supabaseServerClient } from "../utils/server";
 
 async function HomePage() {

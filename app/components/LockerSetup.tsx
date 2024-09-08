@@ -7,19 +7,19 @@ import { IoChevronBackOutline } from "react-icons/io5";
 import { checksumAddress, formatUnits } from "viem";
 import { useAccount } from "wagmi";
 
-import { disclosures } from "../data/constants/disclosures";
-import { errors } from "../data/constants/errorMessages";
-import { useConnectModal } from "../hooks/useConnectModal";
-import { usePolicyReviewModal } from "../hooks/usePolicyReviewModal";
-import useSmartAccount from "../hooks/useSmartAccount";
-import { createPolicy } from "../services/lockers";
+import { disclosures } from "../../data/constants/disclosures";
+import { errors } from "../../data/constants/errorMessages";
+import { useConnectModal } from "../../hooks/useConnectModal";
+import { usePolicyReviewModal } from "../../hooks/usePolicyReviewModal";
+import useSmartAccount from "../../hooks/useSmartAccount";
+import { createPolicy } from "../../services/lockers";
 import {
 	Automation,
 	EAutomationStatus,
 	EAutomationType,
 	Policy,
-} from "../types";
-import { isChainSupported } from "../utils/isChainSupported";
+} from "../../types";
+import { isChainSupported } from "../../utils/isChainSupported";
 import ChannelPieChart from "./ChannelPieChart";
 import ChannelSelection from "./ChannelSelection";
 import DistributionBox from "./DistributionBox";

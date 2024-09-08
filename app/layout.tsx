@@ -7,13 +7,13 @@ import { headers } from "next/headers";
 import { type ReactNode, Suspense } from "react";
 import { cookieToInitialState } from "wagmi";
 
-import Footer from "../components/Footer";
-import Header from "../components/Header";
 import { globalMetadata } from "../data/seo/globalMetadata";
 import AuthProvider from "../providers/AuthProvider";
 import EvmProvider from "../providers/EvmProvider";
 import ThemeProvider from "../providers/ThemeProvider";
 import { wagmiConfig } from "../providers/wagmiConfig";
+import Footer from "./components/Footer";
+import Header from "./components/Header";
 import Loading from "./loading";
 
 const inter = Inter({ subsets: ["latin"] });

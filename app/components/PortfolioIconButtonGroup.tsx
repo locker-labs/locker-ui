@@ -8,12 +8,12 @@ import {
 } from "react-icons/io5";
 import { useAccount } from "wagmi";
 
-import { useConnectModal } from "../hooks/useConnectModal";
-import { useQrCodeModal } from "../hooks/useQrCodeModal";
-import { useSendModal } from "../hooks/useSendModal";
-import { Locker, Token } from "../types";
-import { copyToClipboard } from "../utils/copytoClipboard";
-import { isChainSupported } from "../utils/isChainSupported";
+import { useConnectModal } from "../../hooks/useConnectModal";
+import { useQrCodeModal } from "../../hooks/useQrCodeModal";
+import { useSendModal } from "../../hooks/useSendModal";
+import { Locker, Token } from "../../types";
+import { copyToClipboard } from "../../utils/copytoClipboard";
+import { isChainSupported } from "../../utils/isChainSupported";
 import Tooltip from "./Tooltip";
 
 export interface ILockerPortfolio {

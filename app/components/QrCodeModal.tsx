@@ -2,10 +2,10 @@ import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useState } from "react";
 import { IoCheckboxOutline, IoClose, IoCopyOutline } from "react-icons/io5";
 
-import { supportedChains } from "../data/constants/supportedChains";
-import { copyToClipboard } from "../utils/copytoClipboard";
-import { getChainIconStyling } from "../utils/getChainIconStyling";
-import { truncateAddress } from "../utils/truncateAddress";
+import { supportedChains } from "../../data/constants/supportedChains";
+import { copyToClipboard } from "../../utils/copytoClipboard";
+import { getChainIconStyling } from "../../utils/getChainIconStyling";
+import { truncateAddress } from "../../utils/truncateAddress";
 import AarcButton from "./AarcButton";
 import ChainIcon from "./ChainIcon";
 import LockerQrCode from "./LockerQrCode";

@@ -1,7 +1,7 @@
 import { useCallback, useState } from "react";
 import ReactDOM from "react-dom";
 
-import TxDetailsModal from "../components/TxDetailsModal";
+import TxDetailsModal from "../app/components/TxDetailsModal";
 import { Tx } from "../types";
 
 export const useTxDetailsModal = () => {

@@ -1,4 +1,4 @@
-import { useConnectModal } from "../hooks/useConnectModal";
+import { useConnectModal } from "../../hooks/useConnectModal";
 
 function ConnectButton() {
 	const { openConnectModal, renderConnectModal } = useConnectModal();

@@ -1,4 +1,4 @@
-import { disclosures } from "../data/constants/disclosures";
+import { disclosures } from "../../data/constants/disclosures";
 import ChannelSelectButton from "./ChannelSelectButton";
 
 export interface IChannelSelection {

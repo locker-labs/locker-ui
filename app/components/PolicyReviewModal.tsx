@@ -2,8 +2,8 @@ import { Dialog, Transition } from "@headlessui/react";
 import { Fragment } from "react";
 import { IoClose } from "react-icons/io5";
 
-import { getChainIconStyling } from "../utils/getChainIconStyling";
-import { getChainNameFromId } from "../utils/getChainName";
+import { getChainIconStyling } from "../../utils/getChainIconStyling";
+import { getChainNameFromId } from "../../utils/getChainName";
 import AllocationBox from "./AllocationBox";
 import ChainIcon from "./ChainIcon";
 

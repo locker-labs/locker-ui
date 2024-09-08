@@ -8,9 +8,9 @@ import {
 } from "react-icons/io5";
 import { formatUnits, zeroAddress } from "viem";
 
-import { Token } from "../types";
-import { copyToClipboard } from "../utils/copytoClipboard";
-import { getChainIconStyling } from "../utils/getChainIconStyling";
+import { Token } from "../../types";
+import { copyToClipboard } from "../../utils/copytoClipboard";
+import { getChainIconStyling } from "../../utils/getChainIconStyling";
 import ChainIcon from "./ChainIcon";
 
 export interface ITokenDropdown {

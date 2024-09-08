@@ -1,8 +1,8 @@
 /* eslint-disable react/require-default-props */
 import { formatUnits, parseUnits } from "viem";
 
-import { errors } from "../data/constants/errorMessages";
-import { Token } from "../types";
+import { errors } from "../../data/constants/errorMessages";
+import { Token } from "../../types";
 
 export interface ICurrencyInput {
 	isLoading: boolean;
