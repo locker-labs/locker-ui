@@ -12,7 +12,6 @@ import { Automation, Locker, Policy } from "@/types";
 export interface IAutomationSettings {
 	locker: Locker;
 	currentPolicies: Policy[];
-	fetchPolicies: () => void;
 	bankAutomation: Automation | undefined;
 	hotWalletAutomation: Automation | undefined;
 	saveAutomation: Automation | undefined;
@@ -21,7 +20,6 @@ export interface IAutomationSettings {
 function AutomationSettings({
 	locker,
 	currentPolicies,
-	fetchPolicies,
 	bankAutomation,
 	hotWalletAutomation,
 	saveAutomation,
@@ -114,7 +112,6 @@ function AutomationSettings({
 			{renderKycModal(offrampUrl)}
 			{renderEditAutomationsModal(
 				currentPolicies,
-				fetchPolicies,
 				locker,
 				bankAutomation,
 				hotWalletAutomation,

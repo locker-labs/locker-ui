@@ -20,7 +20,6 @@ export const useEditAutomationsModal = () => {
 
 	const renderEditAutomationsModal = (
 		currentPolicies: Policy[],
-		fetchPolicies: () => void,
 		locker: Locker,
 		bankAutomation: Automation | undefined,
 		hotWalletAutomation: Automation | undefined,
@@ -31,7 +30,6 @@ export const useEditAutomationsModal = () => {
 			<EditAutomationsModal
 				isOpen={isOpen}
 				closeModal={closeEditAutomationsModal}
-				fetchPolicies={fetchPolicies}
 				currentPolicies={currentPolicies}
 				locker={locker}
 				currentBankAutomation={bankAutomation}

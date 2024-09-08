@@ -1,130 +1,61 @@
-"use client";
+/* eslint-disable no-console */
 
-import { useAuth } from "@clerk/nextjs";
-import { useEffect, useRef, useState } from "react";
+import { Suspense } from "react";
 
 import Loader from "@/components/Loader";
-import LockerCreate from "@/components/LockerCreate";
-import LockerPortfolio from "@/components/LockerPortfolio";
-import LockerSetup from "@/components/LockerSetup";
-import { getLockers, getPolicies } from "@/services/lockers";
-import { getTokenTxs } from "@/services/transactions";
-import type { Locker, Policy } from "@/types";
-import supabaseClient from "@/utils/supabase/client";
+import LockerNav from "@/components/LockerNav";
+import { LockerProvider } from "@/providers/LockerProvider";
+import { LockerDb, PolicyDb } from "@/types";
+import { TABLE_LOCKERS } from "@/utils/supabase/tables";
 
-function HomePage() {
-	const isFirstRender = useRef(true);
-	const [lockers, setLockers] = useState<Locker[] | null>(null);
-	const [policies, setPolicies] = useState<Policy[] | null>(null);
-	const [offrampAddresses, setOfframpAddresses] = useState<`0x${string}`[]>(
-		[]
-	);
+import { createClerkSupabaseClientSsr } from "../utils/server";
 
-	const { getToken } = useAuth();
+async function HomePage() {
+	const supabaseServerClient = createClerkSupabaseClientSsr();
 
-	const fetchLockersSupbase = async () => {
-		// TODO #2: Replace with your database table name
-		const { data, error } = await supabaseClient
-			.from("lockers")
+	const { data: lockersData, error: lockersError } =
+		await supabaseServerClient
+			.from(TABLE_LOCKERS)
 			.select(
-				"id, user_id, seed, provider, address, updated_at, usd_value, policies (*), token_transactions (*), offramp_accounts (offramp_addresses (*))"
-			);
-		console.log("Getting data from Supabase");
-		console.log(data);
-		console.log(error);
-		if (data?.length && data.length > 0) {
-			const addresses =
-				// eslint-disable-next-line @typescript-eslint/no-explicit-any
-				(data[0] as any).offramp_accounts[0].offramp_addresses.map(
-					(a: { address: `0x${string}` }) => a.address
-				);
-			setOfframpAddresses(addresses);
-			console.log("got offramp addresses", offrampAddresses);
-		}
-	};
+				`
+				id, userId:user_id, seed, provider, address, ownerAddress:owner_address, 
+				policies (
+					id, lockerId:locker_id, chainId:chain_id, automations
+				),
+				txs:token_transactions (
+					id, lockerId:locker_id, chainId:chain_id, txHash:tx_hash, fromAddress:from_address, toAddress:to_address,
+					contractAddress:contract_address, tokenSymbol:token_symbol, tokenDecimals:token_decimals,
+					isConfirmed:is_confirmed, triggeredByTokenTxId:triggered_by_token_tx_id, lockerDirection:locker_direction,
+					automationsState:automations_state, createdAt:created_at, updatedAt:updated_at,
+					usdValue:usd_value, amount
+				)
+			`
+			)
+			.order("id", {
+				foreignTable: "txs",
+				ascending: false,
+			});
 
-	const fetchLockers = async () => {
-		const authToken = await getToken();
-		if (authToken) {
-			const lockersArray = await getLockers(authToken);
-			setLockers(lockersArray);
-			if (lockersArray && lockersArray.length > 0) {
-				const lockersWithTxs = await getTokenTxs(
-					authToken,
-					lockersArray
-				);
-				setLockers(lockersWithTxs);
-				const policiesArray = await getPolicies(
-					authToken,
-					lockersWithTxs[0].id as number
-				);
-				setPolicies(policiesArray);
-			}
-		}
-		if (isFirstRender.current) {
-			isFirstRender.current = false;
-		}
-	};
+	const lockers = lockersData as LockerDb[];
+	const policies = lockersData?.flatMap(
+		(locker) => locker.policies
+	) as PolicyDb[];
 
-	const fetchTxs = async () => {
-		const authToken = await getToken();
-		if (authToken && lockers) {
-			const lockersWithTxs = await getTokenTxs(authToken, lockers);
-			setLockers(lockersWithTxs);
-		}
-	};
-
-	const fetchPolicies = async () => {
-		const authToken = await getToken();
-		if (authToken && lockers) {
-			setPolicies(await getPolicies(authToken, lockers[0].id as number));
-		}
-	};
-
-	// Fetch lockers every 5 seconds if lockers is null
-	useEffect(() => {
-		const interval = setInterval(() => {
-			if (!lockers) {
-				fetchLockers();
-				fetchLockersSupbase();
-			} else if (lockers) {
-				fetchTxs();
-			} else {
-				clearInterval(interval);
-			}
-		}, 5000);
-
-		// Clean up the interval when the component unmounts
-		return () => clearInterval(interval);
-	}, [lockers]);
+	if (lockersError) console.error(lockersError);
+	console.log("Got locker data");
+	console.log(lockers);
 
 	return (
 		<div className="flex w-full flex-1 flex-col items-center py-12">
-			{isFirstRender.current && <Loader />}
-			{lockers && lockers.length === 0 && !isFirstRender.current && (
-				<LockerCreate lockerIndex={0} fetchLockers={fetchLockers} />
-			)}
-			{lockers &&
-				lockers.length > 0 &&
-				!isFirstRender.current &&
-				(!policies || (policies && policies.length === 0)) && (
-					<LockerSetup
-						lockers={lockers}
-						fetchPolicies={fetchPolicies}
-					/>
-				)}
-			{lockers &&
-				lockers.length > 0 &&
-				!isFirstRender.current &&
-				policies &&
-				policies.length > 0 && (
-					<LockerPortfolio
-						lockers={lockers}
-						policies={policies}
-						fetchPolicies={fetchPolicies}
-						offrampAddresses={offrampAddresses}
-					/>
-				)}
+			<Suspense fallback={<Loader />}>
+				<LockerProvider
+					initialLockers={lockers}
+					initialPolicies={policies}
+					initialOfframpAddresses={[]}
+				>
+					<LockerNav />
+				</LockerProvider>
+			</Suspense>
 		</div>
 	);
 }

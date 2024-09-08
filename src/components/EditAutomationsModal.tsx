@@ -23,7 +23,6 @@ import {
 export interface IEditAutomationsModal {
 	isOpen: boolean;
 	closeModal: () => void;
-	fetchPolicies: () => void;
 	currentPolicies: Policy[];
 	locker: Locker;
 	currentBankAutomation: Automation | undefined;
@@ -34,7 +33,6 @@ export interface IEditAutomationsModal {
 function EditAutomationsModal({
 	isOpen,
 	closeModal,
-	fetchPolicies,
 	currentPolicies,
 	locker,
 	currentBankAutomation,
@@ -168,9 +166,6 @@ function EditAutomationsModal({
 		if (authToken) {
 			await updateAutomations(authToken, newPolicies, setErrorMessage);
 		}
-
-		// 3. Fetch policies from DB to update state in Home component
-		fetchPolicies();
 
 		setSuccessMessage(successes.UPDATED_AUTOMATIONS);
 		setIsLoading(false);

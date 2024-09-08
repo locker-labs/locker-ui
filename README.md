@@ -81,3 +81,5 @@ SUPPORTED_CHAINS="["arbitrum", "optimism", "base", "polygon", "avalanche", "sepo
 1. getPaymaster.ts
 
 https://www.ssn-verify.com/generate
+
+supabase gen types typescript --project-id xxxx > src/utils/supabase/database.types.ts

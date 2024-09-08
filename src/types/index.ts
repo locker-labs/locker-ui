@@ -38,6 +38,10 @@ export type Locker = {
 	updatedAt?: string;
 };
 
+export interface LockerDb extends Locker {
+	id: number;
+}
+
 export enum EAutomationType {
 	SAVINGS = "savings",
 	FORWARD_TO = "forward_to",
@@ -67,6 +71,10 @@ export type Policy = {
 	sessionKey?: string;
 	automations: Automation[];
 };
+
+export interface PolicyDb extends Policy {
+	id: number;
+}
 
 export type Token = {
 	symbol: string;

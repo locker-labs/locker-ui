@@ -1,3 +1,5 @@
+"use client";
+
 import { useAuth } from "@clerk/nextjs";
 import { useEffect, useState } from "react";
 import Blockies from "react-blockies";
@@ -10,24 +12,15 @@ import TxTable from "@/components/TxTable";
 import { supportedChainIdsArray } from "@/data/constants/supportedChains";
 import { getLockerNetWorth } from "@/services/moralis";
 import { getTokenBalances } from "@/services/transactions";
-import { EAutomationType, Locker, Policy, Token } from "@/types";
+import { EAutomationType, Token } from "@/types";
 import { getFundedChainIds } from "@/utils/getFundedChainIds";
 import { isChainSupported } from "@/utils/isChainSupported";
 import { isTestnet } from "@/utils/isTestnet";
 
-export interface ILockerPortfolio {
-	lockers: Locker[];
-	policies: Policy[];
-	fetchPolicies: () => void;
-	offrampAddresses: `0x${string}`[];
-}
+import { useLocker } from "../providers/LockerProvider";
 
-function LockerPortfolio({
-	lockers,
-	policies,
-	fetchPolicies,
-	offrampAddresses,
-}: ILockerPortfolio) {
+function LockerPortfolio() {
+	const { lockers, policies, txs, offrampAddresses } = useLocker();
 	const [errorMessage, setErrorMessage] = useState<string>("");
 	const [tokenList, setTokenList] = useState<Token[]>([]);
 	const [fundedChainIds, setFundedChainIds] = useState<number[]>([]);
@@ -40,7 +33,7 @@ function LockerPortfolio({
 
 	// Props destructured variables
 	const locker = lockers[0];
-	const { txs } = locker;
+	// const { txs } = locker;
 	const filteredTxs = txs
 		? txs.filter((tx) => isChainSupported(tx.chainId))
 		: [];
@@ -152,7 +145,6 @@ function LockerPortfolio({
 				</div>
 				<AutomationSettings
 					currentPolicies={policies}
-					fetchPolicies={fetchPolicies}
 					locker={locker}
 					bankAutomation={bankAutomation}
 					hotWalletAutomation={hotWalletAutomation}
@@ -180,7 +172,6 @@ function LockerPortfolio({
 						chainsNetWorths={chainsNetWorths}
 						locker={locker}
 						setErrorMessage={setErrorMessage}
-						fetchPolicies={fetchPolicies}
 						offrampAddresses={offrampAddresses}
 					/>
 				</div>

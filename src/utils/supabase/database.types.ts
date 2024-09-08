@@ -80,6 +80,112 @@ export type Database = {
 				};
 				Relationships: [];
 			};
+			offramp_accounts: {
+				Row: {
+					beam_account_id: string;
+					created_at: string;
+					errors: string | null;
+					id: number;
+					locker_id: number | null;
+					onboarding_url: string;
+					status: string;
+					updated_at: string;
+				};
+				Insert: {
+					beam_account_id: string;
+					created_at?: string;
+					errors?: string | null;
+					id?: number;
+					locker_id?: number | null;
+					onboarding_url: string;
+					status: string;
+					updated_at?: string;
+				};
+				Update: {
+					beam_account_id?: string;
+					created_at?: string;
+					errors?: string | null;
+					id?: number;
+					locker_id?: number | null;
+					onboarding_url?: string;
+					status?: string;
+					updated_at?: string;
+				};
+				Relationships: [
+					{
+						foreignKeyName: "offramp_accounts_locker_id_lockers_id_fk";
+						columns: ["locker_id"];
+						isOneToOne: false;
+						referencedRelation: "lockers";
+						referencedColumns: ["id"];
+					},
+				];
+			};
+			offramp_addresses: {
+				Row: {
+					address: string;
+					chain_id: number;
+					contract_address: string;
+					created_at: string;
+					id: number;
+					offramp_account_id: number | null;
+					updated_at: string;
+				};
+				Insert: {
+					address: string;
+					chain_id: number;
+					contract_address: string;
+					created_at?: string;
+					id?: number;
+					offramp_account_id?: number | null;
+					updated_at?: string;
+				};
+				Update: {
+					address?: string;
+					chain_id?: number;
+					contract_address?: string;
+					created_at?: string;
+					id?: number;
+					offramp_account_id?: number | null;
+					updated_at?: string;
+				};
+				Relationships: [
+					{
+						foreignKeyName: "offramp_addresses_offramp_account_id_offramp_accounts_id_fk";
+						columns: ["offramp_account_id"];
+						isOneToOne: false;
+						referencedRelation: "offramp_accounts";
+						referencedColumns: ["id"];
+					},
+				];
+			};
+			offramp_events: {
+				Row: {
+					beam_account_id: string | null;
+					created_at: string;
+					id: number;
+					payload: Json;
+					type: string;
+					updated_at: string;
+				};
+				Insert: {
+					beam_account_id?: string | null;
+					created_at?: string;
+					id?: number;
+					payload: Json;
+					type: string;
+					updated_at?: string;
+				};
+				Update: {
+					beam_account_id?: string | null;
+					created_at?: string;
+					id?: number;
+					payload?: Json;
+					type?: string;
+					updated_at?: string;
+				};
+				Relationships: [];
+			};
 			policies: {
 				Row: {
 					automations: Json;
@@ -197,7 +303,10 @@ export type Database = {
 			[_ in never]: never;
 		};
 		Functions: {
-			[_ in never]: never;
+			requesting_user_id: {
+				Args: Record<PropertyKey, never>;
+				Returns: string;
+			};
 		};
 		Enums: {
 			[_ in never]: never;
