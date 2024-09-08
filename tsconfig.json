@@ -3,6 +3,7 @@
 		"allowJs": true,
 		"alwaysStrict": true,
 		"allowSyntheticDefaultImports": true,
+		"baseUrl": ".",
 		"esModuleInterop": true,
 		"forceConsistentCasingInFileNames": true,
 		"incremental": true,
@@ -18,7 +19,7 @@
 		"noImplicitThis": true,
 		"noUnusedLocals": true,
 		"paths": {
-			"@/*": ["./src/*"]
+			"@/*": ["*"]
 		},
 		"plugins": [
 			{
