@@ -1,16 +1,20 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
-import { Locker, Policy } from "@/types";
-import supabaseClient from "@/utils/supabase/client";
-import { TABLE_TOKEN_TXS } from "@/utils/supabase/tables";
+import { LockerDb, PolicyDb, Tx } from "@/types";
+import {
+	TABLE_LOCKERS,
+	TABLE_POLICIES,
+	TABLE_TOKEN_TXS,
+} from "@/utils/supabase/tables";
+import { useRealtimeTable } from "@/utils/supabase/useRealtimeTable";
 
 import LockerPortfolio from "./LockerPortfolio";
 
 export interface ILockerPortfolio {
-	initialLockers: Locker[];
-	initialPolicies: Policy[];
+	initialLockers: LockerDb[];
+	initialPolicies: PolicyDb[];
 	initialOfframpAddresses: `0x${string}`[];
 }
 
@@ -19,50 +23,29 @@ export default function LockerPortfolioRealtime({
 	initialPolicies,
 	initialOfframpAddresses,
 }: ILockerPortfolio) {
-	const [lockers, setLockers] = useState(initialLockers);
-	const [policies, setPolicies] = useState(initialPolicies);
-	const [offrampAddresses, setOfframpAddresses] = useState(
-		initialOfframpAddresses
+	const [offrampAddresses] = useState(initialOfframpAddresses);
+
+	const initialTxs = initialLockers.flatMap((locker) => locker.txs) as Tx[];
+	const { records: txs } = useRealtimeTable<Tx>(TABLE_TOKEN_TXS, initialTxs);
+	console.log("Tx records", txs);
+
+	const { records: policies } = useRealtimeTable<PolicyDb>(
+		TABLE_POLICIES,
+		initialPolicies
 	);
+	console.log("Policy records", policies);
 
-	const handleInserts = (payload) => {
-		console.log("Change received!", payload);
-	};
-
-	useEffect(() => {
-		console.log(`Subscribing to ${TABLE_TOKEN_TXS}`);
-		const channel = supabaseClient
-			.channel(TABLE_TOKEN_TXS)
-			.on(
-				"postgres_changes",
-				{
-					event: "INSERT",
-					schema: "public",
-					table: TABLE_TOKEN_TXS,
-				},
-				(txPayload) => handleInserts(txPayload)
-			)
-			// .on(
-			// 	"postgres_changes",
-			// 	{
-			// 		event: "UPDATE",
-			// 		schema: "public",
-			// 		table: TABLE_TOKEN_TXS,
-			// 	},
-			// 	(txPayload) => handleInserts(txPayload)
-			// )
-			.subscribe();
-
-		return () => {
-			console.log(`Unsubscribing from ${TABLE_TOKEN_TXS}`);
-			supabaseClient.removeChannel(channel);
-		};
-	}, [supabaseClient]);
+	const { records: lockers } = useRealtimeTable<LockerDb>(
+		TABLE_LOCKERS,
+		initialLockers
+	);
+	console.log("lockers records", lockers);
 
 	return (
 		<LockerPortfolio
 			lockers={lockers}
 			policies={policies}
+			txs={txs}
 			offrampAddresses={offrampAddresses}
 		/>
 	);

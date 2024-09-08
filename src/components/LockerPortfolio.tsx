@@ -12,7 +12,7 @@ import TxTable from "@/components/TxTable";
 import { supportedChainIdsArray } from "@/data/constants/supportedChains";
 import { getLockerNetWorth } from "@/services/moralis";
 import { getTokenBalances } from "@/services/transactions";
-import { EAutomationType, Locker, Policy, Token } from "@/types";
+import { EAutomationType, Locker, Policy, Token, Tx } from "@/types";
 import { getFundedChainIds } from "@/utils/getFundedChainIds";
 import { isChainSupported } from "@/utils/isChainSupported";
 import { isTestnet } from "@/utils/isTestnet";
@@ -20,12 +20,14 @@ import { isTestnet } from "@/utils/isTestnet";
 export interface ILockerPortfolio {
 	lockers: Locker[];
 	policies: Policy[];
+	txs: Tx[];
 	offrampAddresses: `0x${string}`[];
 }
 
 function LockerPortfolio({
 	lockers,
 	policies,
+	txs,
 	offrampAddresses,
 }: ILockerPortfolio) {
 	const [errorMessage, setErrorMessage] = useState<string>("");
@@ -40,7 +42,7 @@ function LockerPortfolio({
 
 	// Props destructured variables
 	const locker = lockers[0];
-	const { txs } = locker;
+	// const { txs } = locker;
 	const filteredTxs = txs
 		? txs.filter((tx) => isChainSupported(tx.chainId))
 		: [];

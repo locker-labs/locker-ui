@@ -3,16 +3,21 @@
 import { Suspense } from "react";
 
 import Loader from "@/components/Loader";
+import LockerCreate from "@/components/LockerCreate";
 import LockerPortfolioRealtime from "@/components/LockerPortfolioRealtime";
 import LockerSetup from "@/components/LockerSetup";
-import { Locker, Policy } from "@/types";
+import { Locker, LockerDb, Policy, PolicyDb } from "@/types";
 import { supabaseServerClient } from "@/utils/supabase/server";
 import { TABLE_LOCKERS } from "@/utils/supabase/tables";
 
 async function HomePage() {
+	const { data, error } = await supabaseServerClient.from("rt").select("*");
+	console.log(data);
 	const { data: lockersData, error: lockersError } =
-		await supabaseServerClient.from(TABLE_LOCKERS).select(
-			`
+		await supabaseServerClient
+			.from(TABLE_LOCKERS)
+			.select(
+				`
 				id, userId:user_id, seed, provider, address, ownerAddress:owner_address, 
 				policies (
 					id, lockerId:locker_id, chainId:chain_id, automations
@@ -25,16 +30,22 @@ async function HomePage() {
 					usdValue:usd_value, amount
 				)
 			`
-		);
+			)
+			.order("id", {
+				foreignTable: "txs",
+				ascending: false,
+			});
 
-	const lockers = lockersData as Locker[];
+	const lockers = lockersData as LockerDb[];
 	const policies = lockersData?.flatMap(
 		(locker) => locker.policies
-	) as Policy[];
+	) as PolicyDb[];
 
 	if (lockersError) console.error(lockersError);
 	console.log("Got locker data");
 	console.log(lockers);
+
+	const shouldCreateLocker = lockers && lockers.length === 0;
 
 	const shouldSetupFirstPolicy =
 		lockers &&
@@ -47,6 +58,7 @@ async function HomePage() {
 	return (
 		<div className="flex w-full flex-1 flex-col items-center py-12">
 			<Suspense fallback={<Loader />}>
+				{shouldCreateLocker && <LockerCreate lockerIndex={0} />}
 				{shouldSetupFirstPolicy && <LockerSetup lockers={lockers} />}
 				{shouldShowPortfolio && (
 					<LockerPortfolioRealtime

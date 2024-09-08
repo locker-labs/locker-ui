@@ -12,10 +12,9 @@ import type { Locker } from "@/types";
 
 export interface ILockerCreate {
 	lockerIndex: number;
-	fetchLockers: () => Promise<void>;
 }
 
-function LockerCreate({ lockerIndex, fetchLockers }: ILockerCreate) {
+function LockerCreate({ lockerIndex }: ILockerCreate) {
 	const [isCreatingLocker, setIsCreatingLocker] = useState<boolean>(false);
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -54,7 +53,6 @@ function LockerCreate({ lockerIndex, fetchLockers }: ILockerCreate) {
 			// eslint-disable-next-line no-console
 			console.error(error);
 		} finally {
-			await fetchLockers();
 			setIsLoading(false);
 		}
 	};
