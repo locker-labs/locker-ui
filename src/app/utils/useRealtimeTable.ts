@@ -7,8 +7,8 @@ import {
 } from "@supabase/supabase-js";
 import { useCallback, useEffect, useState } from "react";
 
-import { convertKeysToCamelCase } from "../strings";
-import { supabaseJwtClient } from "./jwt";
+import { convertKeysToCamelCase } from "../../utils/strings";
+import { supabaseJwtClient } from "../../utils/supabase/jwt";
 import { useJwt } from "./useJwt";
 
 export const useRealtimeTable = <T extends { id: number }>(
@@ -17,17 +17,6 @@ export const useRealtimeTable = <T extends { id: number }>(
 ) => {
 	const { getJwt, getJwtExpiration } = useJwt();
 	const [records, setRecords] = useState<T[]>(initialRecords);
-
-	// const fetchRecords = useCallback(async () => {
-	// 	const supabase = supabaseJwtClient(await getJwt());
-	// 	const { data, error } = await supabase.from(tableName).select("*");
-
-	// 	if (error) {
-	// 		console.log(`Error fetching ${tableName}:`, error);
-	// 	} else {
-	// 		setRecords(data || []);
-	// 	}
-	// }, [tableName, getJwt]);
 
 	const subscribeToTable = useCallback(async () => {
 		const supabase = supabaseJwtClient(await getJwt());
@@ -141,11 +130,6 @@ export const useRealtimeTable = <T extends { id: number }>(
 			cleanup();
 		};
 	}, [tableName, getJwt, getJwtExpiration]);
-
-	// useEffect(() => {
-	// 	fetchRecords();
-	// 	subscribeToTable();
-	// }, [tableName, fetchRecords, subscribeToTable]);
 
 	useEffect(() => {
 		subscribeToTable();

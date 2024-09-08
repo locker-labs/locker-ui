@@ -1,7 +1,6 @@
 "use client";
 
 import { useAuth } from "@clerk/nextjs";
-import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { IoChevronBackOutline } from "react-icons/io5";
@@ -31,7 +30,6 @@ import { useLockerPortfolio } from "./LockerPortfolioContext";
 
 function LockerSetup() {
 	const { lockers } = useLockerPortfolio();
-	const router = useRouter();
 	const [sendToAddress, setSendToAddress] = useState<string>(
 		lockers[0].ownerAddress
 	);
@@ -186,7 +184,6 @@ function LockerSetup() {
 			await createPolicy(authToken, policy, setErrorMessage);
 		}
 
-		router.refresh();
 		setIsLoading(false);
 	};
 

@@ -6,8 +6,9 @@ import Loader from "@/components/Loader";
 import LockerNav from "@/components/LockerNav";
 import { LockerPortfolioProvider } from "@/components/LockerPortfolioContext";
 import { LockerDb, PolicyDb } from "@/types";
-import { supabaseServerClient } from "@/utils/supabase/server";
 import { TABLE_LOCKERS } from "@/utils/supabase/tables";
+
+import { supabaseServerClient } from "../utils/server";
 
 async function HomePage() {
 	const { data: lockersData, error: lockersError } =

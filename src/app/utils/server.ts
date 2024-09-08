@@ -1,7 +1,7 @@
 import { auth } from "@clerk/nextjs/server";
 import { createClient } from "@supabase/supabase-js";
 
-import { Database } from "./database.types";
+import { Database } from "../../utils/supabase/database.types";
 
 export function createClerkSupabaseClientSsr() {
 	// The `useAuth()` hook is used to access the `getToken()` method
