@@ -23,16 +23,14 @@ import {
 	Automation,
 	EAutomationStatus,
 	EAutomationType,
-	Locker,
 	Policy,
 } from "@/types";
 import { isChainSupported } from "@/utils/isChainSupported";
 
-export interface ILockerSetup {
-	lockers: Locker[];
-}
+import { useLockerPortfolio } from "./LockerPortfolioContext";
 
-function LockerSetup({ lockers }: ILockerSetup) {
+function LockerSetup() {
+	const { lockers } = useLockerPortfolio();
 	const router = useRouter();
 	const [sendToAddress, setSendToAddress] = useState<string>(
 		lockers[0].ownerAddress

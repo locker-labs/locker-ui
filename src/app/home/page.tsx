@@ -3,16 +3,13 @@
 import { Suspense } from "react";
 
 import Loader from "@/components/Loader";
-import LockerCreate from "@/components/LockerCreate";
-import LockerPortfolioRealtime from "@/components/LockerPortfolioRealtime";
-import LockerSetup from "@/components/LockerSetup";
-import { Locker, LockerDb, Policy, PolicyDb } from "@/types";
+import LockerNav from "@/components/LockerNav";
+import { LockerPortfolioProvider } from "@/components/LockerPortfolioContext";
+import { LockerDb, PolicyDb } from "@/types";
 import { supabaseServerClient } from "@/utils/supabase/server";
 import { TABLE_LOCKERS } from "@/utils/supabase/tables";
 
 async function HomePage() {
-	const { data, error } = await supabaseServerClient.from("rt").select("*");
-	console.log(data);
 	const { data: lockersData, error: lockersError } =
 		await supabaseServerClient
 			.from(TABLE_LOCKERS)
@@ -45,28 +42,16 @@ async function HomePage() {
 	console.log("Got locker data");
 	console.log(lockers);
 
-	const shouldCreateLocker = lockers && lockers.length === 0;
-
-	const shouldSetupFirstPolicy =
-		lockers &&
-		lockers.length > 0 &&
-		(!policies || (policies && policies.length === 0));
-
-	const shouldShowPortfolio =
-		lockers && lockers.length > 0 && !shouldSetupFirstPolicy;
-
 	return (
 		<div className="flex w-full flex-1 flex-col items-center py-12">
 			<Suspense fallback={<Loader />}>
-				{shouldCreateLocker && <LockerCreate lockerIndex={0} />}
-				{shouldSetupFirstPolicy && <LockerSetup lockers={lockers} />}
-				{shouldShowPortfolio && (
-					<LockerPortfolioRealtime
-						initialLockers={lockers}
-						initialPolicies={policies}
-						initialOfframpAddresses={[]}
-					/>
-				)}
+				<LockerPortfolioProvider
+					initialLockers={lockers}
+					initialPolicies={policies}
+					initialOfframpAddresses={[]}
+				>
+					<LockerNav />
+				</LockerPortfolioProvider>
 			</Suspense>
 		</div>
 	);

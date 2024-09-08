@@ -12,24 +12,15 @@ import TxTable from "@/components/TxTable";
 import { supportedChainIdsArray } from "@/data/constants/supportedChains";
 import { getLockerNetWorth } from "@/services/moralis";
 import { getTokenBalances } from "@/services/transactions";
-import { EAutomationType, Locker, Policy, Token, Tx } from "@/types";
+import { EAutomationType, Token } from "@/types";
 import { getFundedChainIds } from "@/utils/getFundedChainIds";
 import { isChainSupported } from "@/utils/isChainSupported";
 import { isTestnet } from "@/utils/isTestnet";
 
-export interface ILockerPortfolio {
-	lockers: Locker[];
-	policies: Policy[];
-	txs: Tx[];
-	offrampAddresses: `0x${string}`[];
-}
+import { useLockerPortfolio } from "./LockerPortfolioContext";
 
-function LockerPortfolio({
-	lockers,
-	policies,
-	txs,
-	offrampAddresses,
-}: ILockerPortfolio) {
+function LockerPortfolio() {
+	const { lockers, policies, txs, offrampAddresses } = useLockerPortfolio();
 	const [errorMessage, setErrorMessage] = useState<string>("");
 	const [tokenList, setTokenList] = useState<Token[]>([]);
 	const [fundedChainIds, setFundedChainIds] = useState<number[]>([]);
