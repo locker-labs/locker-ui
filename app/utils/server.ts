@@ -32,5 +32,3 @@ export function createClerkSupabaseClientSsr() {
 		}
 	);
 }
-
-export const supabaseServerClient = createClerkSupabaseClientSsr();

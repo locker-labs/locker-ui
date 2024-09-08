@@ -7,9 +7,11 @@ import { TABLE_LOCKERS } from "../../utils/supabase/tables";
 import Loader from "../components/Loader";
 import LockerNav from "../components/LockerNav";
 import { LockerPortfolioProvider } from "../components/LockerPortfolioContext";
-import { supabaseServerClient } from "../utils/server";
+import { createClerkSupabaseClientSsr } from "../utils/server";
 
 async function HomePage() {
+	const supabaseServerClient = createClerkSupabaseClientSsr();
+
 	const { data: lockersData, error: lockersError } =
 		await supabaseServerClient
 			.from(TABLE_LOCKERS)
