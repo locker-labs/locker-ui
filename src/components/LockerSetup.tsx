@@ -10,13 +10,13 @@ import { useAccount } from "wagmi";
 import ChannelPieChart from "@/components/ChannelPieChart";
 import ChannelSelection from "@/components/ChannelSelection";
 import DistributionBox from "@/components/DistributionBox";
-import Steps from "@/components/Steps";
 import TxTable from "@/components/TxTable";
 import { disclosures } from "@/data/constants/disclosures";
 import { errors } from "@/data/constants/errorMessages";
 import { useConnectModal } from "@/hooks/useConnectModal";
 import { usePolicyReviewModal } from "@/hooks/usePolicyReviewModal";
 import useSmartAccount from "@/hooks/useSmartAccount";
+import { useLocker } from "@/providers/LockerProvider";
 import { createPolicy } from "@/services/lockers";
 import {
 	Automation,
@@ -26,10 +26,10 @@ import {
 } from "@/types";
 import { isChainSupported } from "@/utils/isChainSupported";
 
-import { useLockerPortfolio } from "./LockerPortfolioContext";
+import Steps from "./Steps";
 
 function LockerSetup() {
-	const { lockers } = useLockerPortfolio();
+	const { lockers } = useLocker();
 	const [sendToAddress, setSendToAddress] = useState<string>(
 		lockers[0].ownerAddress
 	);

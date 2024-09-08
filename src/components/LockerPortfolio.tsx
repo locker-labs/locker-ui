@@ -17,10 +17,10 @@ import { getFundedChainIds } from "@/utils/getFundedChainIds";
 import { isChainSupported } from "@/utils/isChainSupported";
 import { isTestnet } from "@/utils/isTestnet";
 
-import { useLockerPortfolio } from "./LockerPortfolioContext";
+import { useLocker } from "../providers/LockerProvider";
 
 function LockerPortfolio() {
-	const { lockers, policies, txs, offrampAddresses } = useLockerPortfolio();
+	const { lockers, policies, txs, offrampAddresses } = useLocker();
 	const [errorMessage, setErrorMessage] = useState<string>("");
 	const [tokenList, setTokenList] = useState<Token[]>([]);
 	const [fundedChainIds, setFundedChainIds] = useState<number[]>([]);

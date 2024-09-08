@@ -2,7 +2,7 @@
 
 import { createContext, ReactNode, useContext, useMemo, useState } from "react";
 
-import { useRealtimeTable } from "@/app/utils/useRealtimeTable";
+import { useRealtimeTable } from "@/hooks/useRealtimeTable";
 import { LockerDb, PolicyDb, Tx } from "@/types";
 import {
 	TABLE_LOCKERS,
@@ -29,7 +29,7 @@ const LockerPortfolioContext = createContext<
 >(undefined);
 
 // Provider component
-export function LockerPortfolioProvider({
+export function LockerProvider({
 	initialLockers,
 	initialPolicies,
 	initialOfframpAddresses,
@@ -73,7 +73,7 @@ export function LockerPortfolioProvider({
 }
 
 // Custom hook for accessing the context
-export const useLockerPortfolio = (): LockerPortfolioContextProps => {
+export const useLocker = (): LockerPortfolioContextProps => {
 	const context = useContext(LockerPortfolioContext);
 	if (!context) {
 		throw new Error(

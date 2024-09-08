@@ -7,8 +7,9 @@ import {
 } from "@supabase/supabase-js";
 import { useCallback, useEffect, useState } from "react";
 
-import { convertKeysToCamelCase } from "../../utils/strings";
-import { supabaseJwtClient } from "../../utils/supabase/jwt";
+import { convertKeysToCamelCase } from "@/utils/strings";
+import { supabaseJwtClient } from "@/utils/supabase/jwt";
+
 import { useJwt } from "./useJwt";
 
 export const useRealtimeTable = <T extends { id: number }>(

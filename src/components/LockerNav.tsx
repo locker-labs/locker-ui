@@ -1,12 +1,12 @@
 "use client";
 
+import { useLocker } from "../providers/LockerProvider";
 import LockerCreate from "./LockerCreate";
 import LockerPortfolio from "./LockerPortfolio";
-import { useLockerPortfolio } from "./LockerPortfolioContext";
 import LockerSetup from "./LockerSetup";
 
 function LockerNav() {
-	const { lockers, policies } = useLockerPortfolio();
+	const { lockers, policies } = useLocker();
 
 	const shouldCreateLocker = lockers && lockers.length === 0;
 	if (shouldCreateLocker) return <LockerCreate lockerIndex={0} />;

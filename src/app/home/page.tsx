@@ -4,13 +4,15 @@ import { Suspense } from "react";
 
 import Loader from "@/components/Loader";
 import LockerNav from "@/components/LockerNav";
-import { LockerPortfolioProvider } from "@/components/LockerPortfolioContext";
+import { LockerProvider } from "@/providers/LockerProvider";
 import { LockerDb, PolicyDb } from "@/types";
 import { TABLE_LOCKERS } from "@/utils/supabase/tables";
 
-import { supabaseServerClient } from "../utils/server";
+import { createClerkSupabaseClientSsr } from "../utils/server";
 
 async function HomePage() {
+	const supabaseServerClient = createClerkSupabaseClientSsr();
+
 	const { data: lockersData, error: lockersError } =
 		await supabaseServerClient
 			.from(TABLE_LOCKERS)
@@ -46,13 +48,13 @@ async function HomePage() {
 	return (
 		<div className="flex w-full flex-1 flex-col items-center py-12">
 			<Suspense fallback={<Loader />}>
-				<LockerPortfolioProvider
+				<LockerProvider
 					initialLockers={lockers}
 					initialPolicies={policies}
 					initialOfframpAddresses={[]}
 				>
 					<LockerNav />
-				</LockerPortfolioProvider>
+				</LockerProvider>
 			</Suspense>
 		</div>
 	);
