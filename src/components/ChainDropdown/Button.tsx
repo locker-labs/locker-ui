@@ -4,9 +4,10 @@ import { useAccount } from "wagmi";
 import ChainIcon from "@/components/ChainIcon";
 import Tooltip from "@/components/Tooltip";
 import { getChainIconStyling } from "@/utils/getChainIconStyling";
+import { getChainNameFromChainObj } from "@/utils/getChainName";
 import { isChainSupported } from "@/utils/isChainSupported";
 
-function Button({ open }: { open: boolean }) {
+function Button({ open, showName }: { open: boolean; showName: boolean }) {
 	const { chain } = useAccount();
 
 	const chainIconStyling = chain
@@ -14,7 +15,7 @@ function Button({ open }: { open: boolean }) {
 		: "bg-error/20 text-error";
 
 	const buttonContent = (
-		<div className="flex size-full items-center justify-center space-x-1 rounded-full">
+		<div className="flex size-full items-center justify-center space-x-1 rounded-full px-2">
 			<div
 				className={`flex size-7 shrink-0 items-center justify-center rounded-full ${chainIconStyling}`}
 			>
@@ -22,12 +23,17 @@ function Button({ open }: { open: boolean }) {
 					<ChainIcon
 						className="flex items-center justify-center"
 						chainId={chain.id}
-						size="16px"
 					/>
 				) : (
 					<IoWarningOutline size={16} />
 				)}
 			</div>
+			{showName && (
+				<span>
+					{chain ? getChainNameFromChainObj(chain) : "Invalid chain"}
+				</span>
+			)}
+
 			<IoChevronDown
 				className={`${open && "rotate-180 transform"} hidden xs:flex xs:shrink-0`}
 				size={16}

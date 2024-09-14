@@ -129,3 +129,153 @@ export function IconArrowUpRight() {
 		</svg>
 	);
 }
+
+export function IconRadioSelected() {
+	return (
+		<svg
+			width="44"
+			height="25"
+			viewBox="0 0 44 25"
+			fill="none"
+			xmlns="http://www.w3.org/2000/svg"
+		>
+			<g clipPath="url(#clip0_4112_592)">
+				<rect y="0.5" width="44" height="24" rx="12" fill="#4C54DA" />
+				<g filter="url(#filter0_dd_4112_592)">
+					<circle cx="32" cy="12.5" r="10" fill="white" />
+				</g>
+			</g>
+			<defs>
+				<filter
+					id="filter0_dd_4112_592"
+					x="19"
+					y="0.5"
+					width="26"
+					height="26"
+					filterUnits="userSpaceOnUse"
+					colorInterpolationFilters="sRGB"
+				>
+					<feFlood floodOpacity="0" result="BackgroundImageFix" />
+					<feColorMatrix
+						in="SourceAlpha"
+						type="matrix"
+						values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+						result="hardAlpha"
+					/>
+					<feOffset dy="1" />
+					<feGaussianBlur stdDeviation="1" />
+					<feColorMatrix
+						type="matrix"
+						values="0 0 0 0 0.0627451 0 0 0 0 0.0941176 0 0 0 0 0.156863 0 0 0 0.06 0"
+					/>
+					<feBlend
+						mode="normal"
+						in2="BackgroundImageFix"
+						result="effect1_dropShadow_4112_592"
+					/>
+					<feColorMatrix
+						in="SourceAlpha"
+						type="matrix"
+						values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+						result="hardAlpha"
+					/>
+					<feOffset dy="1" />
+					<feGaussianBlur stdDeviation="1.5" />
+					<feColorMatrix
+						type="matrix"
+						values="0 0 0 0 0.0627451 0 0 0 0 0.0941176 0 0 0 0 0.156863 0 0 0 0.1 0"
+					/>
+					<feBlend
+						mode="normal"
+						in2="effect1_dropShadow_4112_592"
+						result="effect2_dropShadow_4112_592"
+					/>
+					<feBlend
+						mode="normal"
+						in="SourceGraphic"
+						in2="effect2_dropShadow_4112_592"
+						result="shape"
+					/>
+				</filter>
+				<clipPath id="clip0_4112_592">
+					<rect y="0.5" width="44" height="24" rx="12" fill="white" />
+				</clipPath>
+			</defs>
+		</svg>
+	);
+}
+
+export function IconRadioUnselected() {
+	return (
+		<svg
+			width="44"
+			height="25"
+			viewBox="0 0 44 25"
+			fill="none"
+			xmlns="http://www.w3.org/2000/svg"
+		>
+			<g clipPath="url(#clip0_4112_626)">
+				<rect y="0.5" width="44" height="24" rx="12" fill="#D0D5DD" />
+				<g filter="url(#filter0_dd_4112_626)">
+					<circle cx="12" cy="12.5" r="10" fill="white" />
+				</g>
+			</g>
+			<defs>
+				<filter
+					id="filter0_dd_4112_626"
+					x="-1"
+					y="0.5"
+					width="26"
+					height="26"
+					filterUnits="userSpaceOnUse"
+					colorInterpolationFilters="sRGB"
+				>
+					<feFlood floodOpacity="0" result="BackgroundImageFix" />
+					<feColorMatrix
+						in="SourceAlpha"
+						type="matrix"
+						values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+						result="hardAlpha"
+					/>
+					<feOffset dy="1" />
+					<feGaussianBlur stdDeviation="1" />
+					<feColorMatrix
+						type="matrix"
+						values="0 0 0 0 0.0627451 0 0 0 0 0.0941176 0 0 0 0 0.156863 0 0 0 0.06 0"
+					/>
+					<feBlend
+						mode="normal"
+						in2="BackgroundImageFix"
+						result="effect1_dropShadow_4112_626"
+					/>
+					<feColorMatrix
+						in="SourceAlpha"
+						type="matrix"
+						values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+						result="hardAlpha"
+					/>
+					<feOffset dy="1" />
+					<feGaussianBlur stdDeviation="1.5" />
+					<feColorMatrix
+						type="matrix"
+						values="0 0 0 0 0.0627451 0 0 0 0 0.0941176 0 0 0 0 0.156863 0 0 0 0.1 0"
+					/>
+					<feBlend
+						mode="normal"
+						in2="effect1_dropShadow_4112_626"
+						result="effect2_dropShadow_4112_626"
+					/>
+					<feBlend
+						mode="normal"
+						in="SourceGraphic"
+						in2="effect2_dropShadow_4112_626"
+						result="shape"
+					/>
+				</filter>
+				<clipPath id="clip0_4112_626">
+					<rect y="0.5" width="44" height="24" rx="12" fill="white" />
+				</clipPath>
+			</defs>
+		</svg>
+	);
+}

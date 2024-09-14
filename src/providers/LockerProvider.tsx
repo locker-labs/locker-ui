@@ -37,7 +37,9 @@ export function LockerProvider({
 }: ILockerPortfolio & { children: ReactNode }) {
 	const [offrampAddresses] = useState(initialOfframpAddresses);
 
-	const initialTxs = initialLockers.flatMap((locker) => locker.txs) as Tx[];
+	const initialTxs = (initialLockers || []).flatMap(
+		(locker) => locker.txs
+	) as Tx[];
 	const { records: txs } = useRealtimeTable<Tx>(TABLE_TOKEN_TXS, initialTxs);
 	console.log("Tx records", txs);
 
@@ -56,7 +58,7 @@ export function LockerProvider({
 	// Memoize the value to prevent unnecessary re-renders
 	const value = useMemo(
 		() => ({
-			lockers,
+			lockers: lockers || [],
 			policies,
 			txs,
 			offrampAddresses,

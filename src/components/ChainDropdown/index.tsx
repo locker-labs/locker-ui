@@ -13,10 +13,14 @@ import { getChainIconStyling } from "@/utils/getChainIconStyling";
 import { getChainNameFromChainObj } from "@/utils/getChainName";
 import { isChainSupported } from "@/utils/isChainSupported";
 
-function ChainDropdown() {
+type IChainDropdown = {
+	showName: boolean;
+};
+
+function ChainDropdown({ showName }: IChainDropdown = { showName: false }) {
 	const [selectedChain, setSelectedChain] = useState<Chain | null>(null);
 	const { chain } = useAccount();
-	const { switchChain } = useSwitchChain();
+	const { switchChain, isPending } = useSwitchChain();
 
 	useEffect(() => {
 		if (chain && isChainSupported(chain.id)) {
@@ -41,8 +45,12 @@ function ChainDropdown() {
 		>
 			{({ open }) => (
 				<div className="relative">
-					<Listbox.Button className="z-10 flex h-10 w-fit shrink-0 items-center justify-center rounded-full bg-light-200 px-2 hover:bg-light-300 dark:bg-dark-400 dark:hover:bg-dark-300 ">
-						<Button open={open} />
+					<Listbox.Button className="z-10 flex h-10 w-fit shrink-0 items-center justify-center rounded-md bg-light-200 px-2 hover:bg-light-300 ">
+						{!isPending ? (
+							<Button open={open} showName={showName} />
+						) : (
+							<span className="text-sm">Loading...</span>
+						)}
 					</Listbox.Button>
 					<Transition
 						as={Fragment}
@@ -50,7 +58,7 @@ function ChainDropdown() {
 						leaveFrom="opacity-100"
 						leaveTo="opacity-0"
 					>
-						<Listbox.Options className="absolute right-0 z-50 mt-3 max-h-60 w-fit origin-top-right overflow-auto rounded-xl bg-light-200 p-1 text-sm outline-none dark:bg-dark-400">
+						<Listbox.Options className="absolute right-0 z-50 mt-3 max-h-60 w-fit origin-top-right overflow-auto rounded-xl bg-light-200 p-1 text-sm outline-none">
 							{supportedChains.map((chainOption, index) => (
 								<Listbox.Option
 									key={chainOption.id}
@@ -59,8 +67,7 @@ function ChainDropdown() {
 									{({ selected, active }) => (
 										<div
 											className={`${
-												active &&
-												"bg-light-300 dark:bg-dark-300"
+												active && "bg-light-300"
 											} flex w-full cursor-pointer select-none items-center justify-between p-2 ${
 												index === 0 && "rounded-t-xl"
 											} ${index === supportedChains.length - 1 && "rounded-b-xl"}`}
@@ -81,7 +88,7 @@ function ChainDropdown() {
 													)}
 												</span>
 											</div>
-											<div className="flex items-center justify-center text-secondary-100 dark:text-primary-100">
+											<div className="flex items-center justify-center text-secondary-100">
 												{selected ? (
 													<FaCheck size={18} />
 												) : null}
