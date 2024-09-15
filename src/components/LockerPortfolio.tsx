@@ -157,7 +157,6 @@ function LockerPortfolio() {
 					</Tooltip>
 				</div>
 				<AutomationSettings
-					currentPolicies={policies}
 					locker={locker}
 					bankAutomation={bankAutomation}
 					hotWalletAutomation={hotWalletAutomation}

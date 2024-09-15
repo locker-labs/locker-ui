@@ -1,7 +1,5 @@
 /* eslint-disable no-console */
 
-import { Dispatch, SetStateAction } from "react";
-
 import { endpoints } from "@/data/constants/endpoints";
 import { errors } from "@/data/constants/errorMessages";
 import type { Locker, Policy } from "@/types";
@@ -29,7 +27,8 @@ export const getLockers = async (
 export const createLocker = async (
 	authToken: string,
 	locker: Locker,
-	setErrorMessage: Dispatch<SetStateAction<string>>
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	setErrorMessage: any
 ): Promise<Locker | undefined> => {
 	try {
 		// response.status should be 201 (Created)

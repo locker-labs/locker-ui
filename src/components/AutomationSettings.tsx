@@ -7,11 +7,10 @@ import AllocationBox from "@/components/AllocationBox";
 import { useEditAutomationsModal } from "@/hooks/useEditAutomationsModal";
 import { useKycModal } from "@/hooks/useKycModal";
 import { createOfframp } from "@/services/lockers";
-import { Automation, Locker, Policy } from "@/types";
+import { Automation, Locker } from "@/types";
 
 export interface IAutomationSettings {
 	locker: Locker;
-	currentPolicies: Policy[];
 	bankAutomation: Automation | undefined;
 	hotWalletAutomation: Automation | undefined;
 	saveAutomation: Automation | undefined;
@@ -19,7 +18,6 @@ export interface IAutomationSettings {
 
 function AutomationSettings({
 	locker,
-	currentPolicies,
 	bankAutomation,
 	hotWalletAutomation,
 	saveAutomation,
@@ -110,13 +108,7 @@ function AutomationSettings({
 				)}
 			</div>
 			{renderKycModal(offrampUrl)}
-			{renderEditAutomationsModal(
-				currentPolicies,
-				locker,
-				bankAutomation,
-				hotWalletAutomation,
-				saveAutomation
-			)}
+			{renderEditAutomationsModal()}
 		</div>
 	);
 }

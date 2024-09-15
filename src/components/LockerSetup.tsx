@@ -245,11 +245,7 @@ function LockerSetup() {
 
 	const leftPanel = (
 		<div className="flex w-full flex-col items-start space-y-8">
-			<DistributionBox
-				boxlets={boxlets}
-				updateBoxlet={updateBoxlet}
-				setErrorMessage={setErrorMessage}
-			/>
+			<DistributionBox boxlets={boxlets} updateBoxlet={updateBoxlet} />
 		</div>
 	);
 
@@ -316,7 +312,7 @@ function LockerSetup() {
 			{leftPanel}
 			{rightPanel}
 			{renderConnectModal()}
-			{chainId && renderChainSelectModal(createNewPolicy, chainId)}
+			{chainId && renderChainSelectModal(createNewPolicy)}
 		</div>
 	);
 }

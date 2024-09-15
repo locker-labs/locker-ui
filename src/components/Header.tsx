@@ -50,7 +50,7 @@ function Header() {
 							pathname === paths.ACCOUNT && "hidden"
 						} ml-2 flex items-center justify-center space-x-1`}
 					>
-						<ChainDropdown />
+						<ChainDropdown showName={false} />
 						<HeaderMenu />
 					</div>
 				) : showConnectButton ? (
