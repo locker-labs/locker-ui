@@ -1,6 +1,7 @@
 "use client";
 
 import { useAuth } from "@clerk/nextjs";
+import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import Blockies from "react-blockies";
 
@@ -10,6 +11,7 @@ import PortfolioIconButtonGroup from "@/components/PortfolioIconButtonGroup";
 import Tooltip from "@/components/Tooltip";
 import TxTable from "@/components/TxTable";
 import { supportedChainIdsArray } from "@/data/constants/supportedChains";
+import { useLockerOnboardedModal } from "@/hooks/useLockerOnboardedModal";
 import { getLockerNetWorth } from "@/services/moralis";
 import { getTokenBalances } from "@/services/transactions";
 import { EAutomationType, Token } from "@/types";
@@ -30,6 +32,17 @@ function LockerPortfolio() {
 	>({});
 
 	const { getToken } = useAuth();
+
+	const searchParams = useSearchParams();
+
+	const { openLockerOnboardedModal, renderLockerOnboardedModal } =
+		useLockerOnboardedModal();
+	const onboardingFlag = searchParams.get("o");
+	console.log(`Got onboarding flag ${onboardingFlag}`);
+
+	useEffect(() => {
+		if (onboardingFlag) openLockerOnboardedModal();
+	}, [onboardingFlag]);
 
 	// Props destructured variables
 	const locker = lockers[0];
@@ -196,6 +209,7 @@ function LockerPortfolio() {
 					<TxTable txs={filteredTxs} />
 				</div>
 			)}
+			{onboardingFlag && renderLockerOnboardedModal()}
 		</div>
 	);
 }

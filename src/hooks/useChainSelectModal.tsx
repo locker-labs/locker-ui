@@ -14,17 +14,13 @@ export const useChainSelectModal = () => {
 		setIsOpen(false);
 	}, []);
 
-	const renderChainSelectModal = (
-		createNewPolicy: () => void,
-		chainId: number
-	) => {
+	const renderChainSelectModal = (createNewPolicy: () => void) => {
 		if (!isOpen) return null;
 		return ReactDOM.createPortal(
 			<ChainSelectModal
 				isOpen={isOpen}
 				closeModal={closeChainSelectModal}
 				createNewPolicy={createNewPolicy}
-				chainId={chainId}
 			/>,
 			document.body
 		);
