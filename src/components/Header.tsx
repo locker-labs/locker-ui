@@ -52,14 +52,6 @@ function Header() {
 							pathname === paths.ACCOUNT && "hidden"
 						} ml-2 flex items-center justify-center space-x-1`}
 					>
-						<div className="w-full">
-							<ChainDropdown
-								showName={false}
-								switchChain={switchChain}
-								isPending={isPending}
-							/>
-						</div>
-
 						<HeaderMenu />
 					</div>
 				) : showConnectButton ? (

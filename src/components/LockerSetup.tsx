@@ -8,6 +8,7 @@ import { checksumAddress, formatUnits, isAddress } from "viem";
 import { useAccount } from "wagmi";
 
 import DistributionBox from "@/components/DistributionBox";
+import { BOXLET, DEFAULT_BOXLETS } from "@/data/constants/boxlets";
 import { errors } from "@/data/constants/errorMessages";
 import { paths } from "@/data/constants/paths";
 import { useChainSelectModal } from "@/hooks/useChainSelectModal";
@@ -27,31 +28,6 @@ import { isChainSupported } from "@/utils/isChainSupported";
 import BoxletPieChart from "./BoxletPieChart";
 import { calcPrecentLeft, IDistributionBoxlet } from "./DistributionBoxlet";
 
-const initialBoxlets: { [id: string]: IDistributionBoxlet } = {
-	[EAutomationType.SAVINGS]: {
-		id: EAutomationType.SAVINGS,
-		title: "Save in your locker",
-		color: "#6A30C3",
-		percent: 25,
-		tooltip:
-			"When payments are received, save this amount in your locker for later use.",
-	},
-	[EAutomationType.FORWARD_TO]: {
-		id: EAutomationType.FORWARD_TO,
-		title: "Forward to a hot wallet",
-		color: "#5490D9",
-		percent: 75,
-		tooltip: "When payments are received, send this amount somewhere else.",
-		forwardToAddress: "",
-	},
-	[EAutomationType.OFF_RAMP]: {
-		id: EAutomationType.OFF_RAMP,
-		title: "Send to your bank",
-		color: "#49BFE3",
-		percent: 0,
-		tooltip: "When payments are received, send this amount to your bank.",
-	},
-};
 function LockerSetup() {
 	const { lockers } = useLocker();
 	const [errorMessage, setErrorMessage] = useState<string>("");
@@ -67,7 +43,7 @@ function LockerSetup() {
 
 	const router = useRouter();
 
-	const [boxlets, setBoxlets] = useState(initialBoxlets);
+	const [boxlets, setBoxlets] = useState(DEFAULT_BOXLETS);
 
 	const updateBoxlet = (updatedBoxlet: IDistributionBoxlet) => {
 		setBoxlets((prevBoxlets) => ({
@@ -77,10 +53,7 @@ function LockerSetup() {
 	};
 
 	let locker: Locker | undefined = lockers[0];
-	// const { txs } = locker;
-	// const filteredTxs = txs
-	// 	? txs.filter((tx) => isChainSupported(tx.chainId))
-	// 	: [];
+
 	const saveDecimal = Number(
 		formatUnits(BigInt(boxlets[EAutomationType.SAVINGS].percent), 2)
 	);
@@ -309,12 +282,7 @@ function LockerSetup() {
 
 	const rightPanel = (
 		<div className="flex w-full flex-col space-y-3">
-			<BoxletPieChart
-				boxlets={boxlets}
-				lineWidth={100}
-				size="size-48"
-				percentLeft={percentLeft}
-			/>
+			<BoxletPieChart boxlets={boxlets} lineWidth={100} size="size-48" />
 			<div>
 				<span className="ml-2 text-sm text-dark-100">
 					Left to allocate:{" "}

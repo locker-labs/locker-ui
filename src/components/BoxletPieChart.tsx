@@ -1,20 +1,17 @@
 import { PieChart } from "react-minimal-pie-chart";
 
-import { IDistributionBoxlet } from "./DistributionBoxlet";
+import { useEditAutomationsModal } from "@/hooks/useEditAutomationsModal";
+
+import { calcPrecentLeft, IDistributionBoxlet } from "./DistributionBoxlet";
 
 export interface IBoxletPieChart {
 	boxlets: { [id: string]: IDistributionBoxlet };
 	lineWidth: number;
 	size: string;
-	percentLeft: number;
 }
 
-function BoxletPieChart({
-	boxlets,
-	lineWidth,
-	size,
-	percentLeft,
-}: IBoxletPieChart) {
+function BoxletPieChart({ boxlets, lineWidth, size }: IBoxletPieChart) {
+	console.log("BoxletPieChart", boxlets);
 	// Remove non-zero boxlets
 	const nonZero = { ...boxlets };
 	Object.entries(boxlets).forEach((kv) => {
@@ -28,6 +25,7 @@ function BoxletPieChart({
 	}));
 
 	// Add grey region for unallocated percent
+	const percentLeft = calcPrecentLeft(boxlets);
 	let data = dataWithoutZero;
 	if (percentLeft > 0) {
 		data = dataWithoutZero.concat({

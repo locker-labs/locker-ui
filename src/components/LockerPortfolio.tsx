@@ -21,6 +21,7 @@ import { isChainSupported } from "@/utils/isChainSupported";
 import { isTestnet } from "@/utils/isTestnet";
 
 import { useLocker } from "../providers/LockerProvider";
+import ChainIcon from "./ChainIcon";
 import LockerPortfolioAutomations from "./LockerPortfolioAutomations";
 import LockerPortfolioSavingsGoals from "./LockerPortfolioSavingsGoals";
 import LockerPortfolioValue from "./LockerPortfolioValue";
@@ -60,17 +61,6 @@ function LockerPortfolio() {
 		: [];
 	const basePolicy = policies[0];
 	const { automations } = basePolicy;
-
-	// Props derived variables
-	const bankAutomation = automations.find(
-		(a) => a.type === EAutomationType.OFF_RAMP
-	);
-	const hotWalletAutomation = automations.find(
-		(a) => a.type === EAutomationType.FORWARD_TO
-	);
-	const saveAutomation = automations.find(
-		(a) => a.type === EAutomationType.SAVINGS
-	);
 
 	/* For now, we're only handling:
 		- One locker per user (index 0)
@@ -124,33 +114,25 @@ function LockerPortfolio() {
 	return (
 		<div className="flex w-full flex-col bg-locker-25">
 			<div className="flex flex-row space-x-4">
-				<div className="h-96 w-[35%]">
-					<LockerPortfolioValue portfolioValue={lockerNetWorth} />
+				<div className="h-96 w-[35%] rounded-md bg-white p-3">
+					<LockerPortfolioValue
+						portfolioValue={lockerNetWorth}
+						policies={policies}
+					/>
 				</div>
-				<div className="h-96 w-[30%]">
-					<LockerPortfolioAutomations />
+
+				<div className="h-96 w-[30%] rounded-md bg-white p-3">
+					<LockerPortfolioAutomations
+						locker={locker}
+						automations={automations}
+					/>
 				</div>
+
 				<div className="h-96 w-[35%]">
 					<LockerPortfolioSavingsGoals />
 				</div>
 			</div>
-			<Blockies
-				className="flex self-center rounded-md bg-white"
-				seed={locker.address.toLowerCase()}
-				size={14}
-			/>
-			<div className="mt-4 flex w-full flex-col items-center">
-				<Tooltip
-					width="w-36"
-					label="Total USD value of your locker across all supported chains."
-					placement="auto"
-				>
-					<span className="mb-1 flex cursor-pointer items-center whitespace-nowrap text-sm text-light-600">
-						Total value <span className="ml-2 text-xs">ⓘ</span>
-					</span>
-				</Tooltip>
-				<span className="text-4xl">${lockerNetWorth}</span>
-			</div>
+
 			{locker && (
 				<div className="mt-4 flex items-center">
 					<PortfolioIconButtonGroup
@@ -173,12 +155,6 @@ function LockerPortfolio() {
 						</span>
 					</Tooltip>
 				</div>
-				<AutomationSettings
-					locker={locker}
-					bankAutomation={bankAutomation}
-					hotWalletAutomation={hotWalletAutomation}
-					saveAutomation={saveAutomation}
-				/>
 			</div>
 			{locker && policies && (
 				<div className="mt-6 flex w-full min-w-fit max-w-md flex-col space-y-2 overflow-visible">
