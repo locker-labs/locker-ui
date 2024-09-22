@@ -30,7 +30,6 @@ function ChainDropdown(
 ) {
 	const [selectedChain, setSelectedChain] = useState<Chain | null>(null);
 	const { chain } = useAccount();
-	// const { switchChain, isPending } = useSwitchChain();
 
 	useEffect(() => {
 		if (chain && isChainSupported(chain.id)) {
@@ -55,7 +54,9 @@ function ChainDropdown(
 		>
 			{({ open }) => (
 				<div className="relative">
-					<Listbox.Button className="z-10 flex h-10 w-full shrink-0 items-center justify-center rounded-md bg-light-200 px-2 hover:bg-light-300 ">
+					<Listbox.Button
+						className={`z-10 flex h-10 w-full shrink-0 items-center justify-center rounded-md bg-light-200 px-2 hover:bg-light-300 ${isPending && "cursor-not-allowed"}`}
+					>
 						{!isPending ? (
 							<Button open={open} showName={showName} />
 						) : (

@@ -41,7 +41,6 @@ function LockerPortfolio() {
 	const { openLockerOnboardedModal, renderLockerOnboardedModal } =
 		useLockerOnboardedModal();
 	const onboardingFlag = searchParams.get("o");
-	console.log(`Got onboarding flag ${onboardingFlag}`);
 
 	useEffect(() => {
 		if (onboardingFlag) openLockerOnboardedModal();
@@ -119,13 +118,13 @@ function LockerPortfolio() {
 	return (
 		<div className="flex w-full flex-col bg-locker-25">
 			<div className="flex flex-row space-x-4">
-				<div className="h-96 basis-2/5">
+				<div className="h-96 w-[35%]">
 					<LockerPortfolioValue portfolioValue={lockerNetWorth} />
 				</div>
-				<div className="h-96 basis-1/5">
+				<div className="h-96 w-[30%]">
 					<LockerPortfolioAutomations />
 				</div>
-				<div className="h-96 basis-2/5">
+				<div className="h-96 w-[35%]">
 					<LockerPortfolioSavingsGoals />
 				</div>
 			</div>

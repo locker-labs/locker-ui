@@ -1,15 +1,15 @@
 "use client";
 
 import { useAuth } from "@clerk/nextjs";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useAccount } from "wagmi";
+import { useAccount, useSwitchChain } from "wagmi";
 
 // import AuthButton from "@/components/AuthButton";
 import ChainDropdown from "@/components/ChainDropdown";
 import ConnectButton from "@/components/ConnectButton";
 import HeaderMenu from "@/components/HeaderMenu";
-import ThemedImage from "@/components/ThemedImage";
 import { paths } from "@/data/constants/paths";
 import { isTestnet } from "@/utils/isTestnet";
 
@@ -17,6 +17,7 @@ function Header() {
 	const pathname = usePathname();
 	const { isSignedIn } = useAuth();
 	const { isConnected, chainId } = useAccount();
+	const { switchChain, isPending } = useSwitchChain();
 
 	// const isAuthRoute =
 	// 	pathname === paths.SIGN_IN || pathname === paths.SIGN_UP;
@@ -38,10 +39,11 @@ function Header() {
 					className="relative mr-2 flex h-9 w-28 shrink-0 justify-center"
 					href={paths.LANDING}
 				>
-					<ThemedImage
-						darkImageSrc="/assets/logoLockerWhiteLetters.svg"
-						lightImageSrc="/assets/logoLockerDarkLetters.svg"
-						alt="Locker Logo"
+					<Image
+						src="/assets/logoLockerDarkLetters.svg"
+						alt="Locker logo"
+						priority
+						fill
 					/>
 				</Link>
 				{showMenu ? (
@@ -50,7 +52,14 @@ function Header() {
 							pathname === paths.ACCOUNT && "hidden"
 						} ml-2 flex items-center justify-center space-x-1`}
 					>
-						<ChainDropdown showName={false} />
+						<div className="w-36">
+							<ChainDropdown
+								showName={false}
+								switchChain={switchChain}
+								isPending={isPending}
+							/>
+						</div>
+
 						<HeaderMenu />
 					</div>
 				) : showConnectButton ? (

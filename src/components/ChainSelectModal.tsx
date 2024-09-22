@@ -1,6 +1,6 @@
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment } from "react";
-import { useAccount, useSwitchChain } from "wagmi";
+import { useSwitchChain } from "wagmi";
 
 import ChainDropdown from "./ChainDropdown";
 
@@ -15,11 +15,7 @@ function ChainSelectModal({
 	closeModal,
 	createNewPolicy,
 }: IChainSelectModal) {
-	const { isConnecting } = useAccount();
-	console.log("ChainSelectModal", isConnecting);
-
 	const { isPending, switchChain } = useSwitchChain();
-	console.log("isPending", isPending);
 	return (
 		<Transition appear show={isOpen} as={Fragment}>
 			<Dialog as="div" className="relative z-10" onClose={closeModal}>

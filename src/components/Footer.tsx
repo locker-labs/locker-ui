@@ -5,7 +5,7 @@ import IconLink from "@/components/IconLink";
 
 function Footer() {
 	return (
-		<footer className="mt-10 flex w-full flex-col items-center justify-center">
+		<footer className="my-10 flex w-full flex-col items-center justify-center">
 			<div className="flex">
 				<IconLink
 					Icon={FaFile}

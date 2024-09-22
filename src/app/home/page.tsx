@@ -1,9 +1,7 @@
 /* eslint-disable no-console */
 
-import { Suspense } from "react";
-
-import Loader from "@/components/Loader";
 import LockerNav from "@/components/LockerNav";
+import Main from "@/components/Main";
 import { LockerProvider } from "@/providers/LockerProvider";
 import { LockerDb, PolicyDb } from "@/types";
 import { TABLE_LOCKERS } from "@/utils/supabase/tables";
@@ -42,11 +40,11 @@ async function HomePage() {
 	) as PolicyDb[];
 
 	if (lockersError) console.error(lockersError);
-	console.log("Got locker data");
-	console.log(lockers);
+	// console.log("Got locker data");
+	// console.log(lockers);
 
 	return (
-		<Suspense fallback={<Loader />}>
+		<Main>
 			<LockerProvider
 				initialLockers={lockers}
 				initialPolicies={policies}
@@ -54,7 +52,7 @@ async function HomePage() {
 			>
 				<LockerNav />
 			</LockerProvider>
-		</Suspense>
+		</Main>
 	);
 }
 

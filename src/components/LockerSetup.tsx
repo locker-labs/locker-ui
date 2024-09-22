@@ -77,7 +77,6 @@ function LockerSetup() {
 	};
 
 	let locker: Locker | undefined = lockers[0];
-	console.log("locker", locker);
 	// const { txs } = locker;
 	// const filteredTxs = txs
 	// 	? txs.filter((tx) => isChainSupported(tx.chainId))
@@ -130,8 +129,6 @@ function LockerSetup() {
 					lockerArgs,
 					setErrorMessage
 				);
-				console.log("Got new locker");
-				console.log(newLocker);
 				return newLocker;
 			}
 		} catch (error) {
@@ -198,9 +195,6 @@ function LockerSetup() {
 	const isForwardToMissing = isForwardSelected && !isAddress(sendToAddress!);
 	const handlePolicyCreation = async () => {
 		setIsLoading(true);
-		console.log("handlePolicyCreation");
-		console.log(isConnected);
-		console.log(locker);
 		// TODO: Improve error handling
 		if (isConnected) {
 			if (isSaveSelected && errorMessage === errors.INVALID_ADDRESS)
@@ -231,9 +225,13 @@ function LockerSetup() {
 				return;
 			}
 
+			console.log("Trying to create policy");
+			console.log(locker);
 			if (!locker) {
 				locker = await createNewLocker();
 
+				console.log("Created locker");
+				console.log(locker);
 				// Locker may already exist or some other issue
 				if (!locker) {
 					setIsLoading(false);
@@ -256,7 +254,6 @@ function LockerSetup() {
 			setIsLoading(false);
 			openChainSelectModal();
 		} else {
-			console.log("openConnectModal");
 			openConnectModal();
 		}
 	};
@@ -267,8 +264,6 @@ function LockerSetup() {
 		</div>
 	);
 
-	console.log("isLoading", isLoading);
-	console.log("locker", locker);
 	let cta = null;
 	if (isLoading) {
 		cta = (

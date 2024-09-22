@@ -41,20 +41,20 @@ export function LockerProvider({
 		(locker) => locker.txs
 	) as Tx[];
 	const { records: txs } = useRealtimeTable<Tx>(TABLE_TOKEN_TXS, initialTxs);
-	console.log("Tx records", txs);
+	// console.log("Tx records", txs);
 
 	const { records: policies } = useRealtimeTable<PolicyDb>(
 		TABLE_POLICIES,
 		initialPolicies
 	);
-	console.log("Policy records", policies);
+	// console.log("Policy records", policies);
 
 	const { records: lockers } = useRealtimeTable<LockerDb>(
 		TABLE_LOCKERS,
 		initialLockers
 	);
-	console.log("lockers records", lockers);
-	console.log("lockers initialLockers", initialLockers);
+	// console.log("lockers records", lockers);
+	// console.log("lockers initialLockers", initialLockers);
 
 	// Memoize the value to prevent unnecessary re-renders
 	const value = useMemo(
