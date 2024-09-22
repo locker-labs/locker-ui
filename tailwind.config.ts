@@ -104,7 +104,7 @@ const config: Config = {
 				celo: "#FDFF71",
 				base: "#2151F5",
 				binance: "#E1B43D",
-				linea: "60dfff",
+				linea: "#60DFFF",
 				background: "hsl(var(--background))",
 				foreground: "hsl(var(--foreground))",
 				card: {

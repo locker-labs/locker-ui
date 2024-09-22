@@ -9,7 +9,13 @@ function LockerNav() {
 
 	const shouldSetupFirstPolicy =
 		!policies || (policies && policies.length === 0);
-	if (shouldSetupFirstPolicy) return <LockerOnboarding />;
+
+	if (shouldSetupFirstPolicy)
+		return (
+			<div className="flex w-full flex-1 flex-col items-center py-12">
+				<LockerOnboarding />
+			</div>
+		);
 
 	const shouldShowPortfolio =
 		lockers && lockers.length > 0 && !shouldSetupFirstPolicy;

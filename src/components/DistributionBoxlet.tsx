@@ -102,7 +102,8 @@ function DistributionBoxlet({
 					<span className="text-sm">Recipient address</span>
 					<input
 						type="text"
-						className="w-100 border border-solid border-gray-300 bg-white"
+						className="w-100 rounded-md border border-solid border-gray-300 bg-white p-2 text-xs placeholder:text-gray-400"
+						placeholder="0x"
 						disabled={false}
 						value={boxlet.forwardToAddress}
 						onChange={handleForwardToChange}

@@ -20,7 +20,7 @@ function LockerOnboarding() {
 	);
 
 	return (
-		<div className="space-y-8">
+		<div className="flex w-full flex-col space-y-12">
 			{heading}
 			<LockerSetup />
 		</div>

@@ -54,6 +54,7 @@ export function LockerProvider({
 		initialLockers
 	);
 	console.log("lockers records", lockers);
+	console.log("lockers initialLockers", initialLockers);
 
 	// Memoize the value to prevent unnecessary re-renders
 	const value = useMemo(

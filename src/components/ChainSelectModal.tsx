@@ -1,5 +1,6 @@
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment } from "react";
+import { useAccount, useSwitchChain } from "wagmi";
 
 import ChainDropdown from "./ChainDropdown";
 
@@ -14,6 +15,11 @@ function ChainSelectModal({
 	closeModal,
 	createNewPolicy,
 }: IChainSelectModal) {
+	const { isConnecting } = useAccount();
+	console.log("ChainSelectModal", isConnecting);
+
+	const { isPending, switchChain } = useSwitchChain();
+	console.log("isPending", isPending);
 	return (
 		<Transition appear show={isOpen} as={Fragment}>
 			<Dialog as="div" className="relative z-10" onClose={closeModal}>
@@ -42,7 +48,7 @@ function ChainSelectModal({
 							<Dialog.Panel className="flex w-full min-w-64 max-w-sm flex-col items-center justify-center rounded-2xl bg-light-100 p-6 shadow-xl">
 								<Dialog.Title
 									as="h3"
-									className="flex w-full flex-col items-center justify-between text-center"
+									className="flex w-full flex-col items-center justify-between space-y-2 text-center"
 								>
 									<p className="w-full text-center text-lg font-medium">
 										Select a chain for your locker
@@ -53,23 +59,36 @@ function ChainSelectModal({
 									</p>
 								</Dialog.Title>
 								<div className="mt-6 flex w-full flex-col items-center justify-center space-y-8">
-									<ChainDropdown showName />
+									<ChainDropdown
+										showName
+										switchChain={switchChain}
+										isPending={isPending}
+									/>
 
 									<div className="flex w-full flex-col items-center space-y-4">
+										{isPending ? (
+											<button
+												className="h-10 w-full cursor-not-allowed select-none justify-center rounded-md bg-locker-300 text-light-100"
+												disabled
+											>
+												Switching chains
+											</button>
+										) : (
+											<button
+												className="h-10 w-full  cursor-pointer select-none justify-center rounded-md bg-locker-600 text-light-100 hover:bg-secondary-200"
+												onClick={() => {
+													createNewPolicy();
+													closeModal();
+												}}
+											>
+												Finish setup
+											</button>
+										)}
 										<button
-											className="h-10 w-full justify-center rounded-md bg-secondary-100 text-light-100 hover:bg-secondary-200"
-											onClick={() => {
-												createNewPolicy();
-												closeModal();
-											}}
-										>
-											Enable automations
-										</button>
-										<button
-											className="text-sm hover:text-secondary-100"
+											className="text-xs hover:text-secondary-100"
 											onClick={closeModal}
 										>
-											Edit distributions
+											&lt; Edit distributions
 										</button>
 									</div>
 								</div>

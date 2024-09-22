@@ -20,6 +20,9 @@ import { isChainSupported } from "@/utils/isChainSupported";
 import { isTestnet } from "@/utils/isTestnet";
 
 import { useLocker } from "../providers/LockerProvider";
+import LockerPortfolioAutomations from "./LockerPortfolioAutomations";
+import LockerPortfolioSavingsGoals from "./LockerPortfolioSavingsGoals";
+import LockerPortfolioValue from "./LockerPortfolioValue";
 
 function LockerPortfolio() {
 	const { lockers, policies, txs, offrampAddresses } = useLocker();
@@ -114,35 +117,44 @@ function LockerPortfolio() {
 	}, []);
 
 	return (
-		<div className="flex w-full flex-1 flex-col items-center">
-			<div className="flex w-fit flex-col overflow-visible">
-				<Blockies
-					className="flex self-center rounded-full"
-					seed={locker.address.toLowerCase()}
-					size={14}
-				/>
-				<div className="mt-4 flex w-full flex-col items-center">
-					<Tooltip
-						width="w-36"
-						label="Total USD value of your locker across all supported chains."
-						placement="auto"
-					>
-						<span className="mb-1 flex cursor-pointer items-center whitespace-nowrap text-sm text-light-600">
-							Total value <span className="ml-2 text-xs">ⓘ</span>
-						</span>
-					</Tooltip>
-					<span className="text-4xl">${lockerNetWorth}</span>
+		<div className="flex w-full flex-col bg-locker-25">
+			<div className="flex flex-row space-x-4">
+				<div className="h-96 basis-2/5">
+					<LockerPortfolioValue portfolioValue={lockerNetWorth} />
 				</div>
-				{locker && (
-					<div className="mt-4 flex items-center">
-						<PortfolioIconButtonGroup
-							locker={locker}
-							tokenList={tokenList}
-							getTokenList={getTokenList}
-						/>
-					</div>
-				)}
+				<div className="h-96 basis-1/5">
+					<LockerPortfolioAutomations />
+				</div>
+				<div className="h-96 basis-2/5">
+					<LockerPortfolioSavingsGoals />
+				</div>
 			</div>
+			<Blockies
+				className="flex self-center rounded-md bg-white"
+				seed={locker.address.toLowerCase()}
+				size={14}
+			/>
+			<div className="mt-4 flex w-full flex-col items-center">
+				<Tooltip
+					width="w-36"
+					label="Total USD value of your locker across all supported chains."
+					placement="auto"
+				>
+					<span className="mb-1 flex cursor-pointer items-center whitespace-nowrap text-sm text-light-600">
+						Total value <span className="ml-2 text-xs">ⓘ</span>
+					</span>
+				</Tooltip>
+				<span className="text-4xl">${lockerNetWorth}</span>
+			</div>
+			{locker && (
+				<div className="mt-4 flex items-center">
+					<PortfolioIconButtonGroup
+						locker={locker}
+						tokenList={tokenList}
+						getTokenList={getTokenList}
+					/>
+				</div>
+			)}
 			<div className="mt-6 flex w-full min-w-fit max-w-xs flex-col space-y-2 overflow-visible">
 				<div className="flex w-full items-center">
 					<Tooltip

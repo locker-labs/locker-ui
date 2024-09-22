@@ -9,7 +9,7 @@ export const getChainIconStyling = (chainId: number) => {
 		[supportedChainIds.avalanche]: "bg-avalanche/20 text-avalanche",
 		[supportedChainIds.sepolia]: "bg-ethereum/20 text-ethereum",
 		[supportedChainIds.baseSepolia]: "bg-base/20 text-base",
-		[supportedChainIds.linea]: "linea-base/20 text-linea",
+		[supportedChainIds.linea]: "bg-linea/20 text-linea",
 	};
 
 	return chainClasses[chainId] || "bg-error/20 text-error";

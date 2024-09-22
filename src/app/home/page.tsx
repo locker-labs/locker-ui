@@ -46,17 +46,15 @@ async function HomePage() {
 	console.log(lockers);
 
 	return (
-		<div className="flex w-full flex-1 flex-col items-center py-12">
-			<Suspense fallback={<Loader />}>
-				<LockerProvider
-					initialLockers={lockers}
-					initialPolicies={policies}
-					initialOfframpAddresses={[]}
-				>
-					<LockerNav />
-				</LockerProvider>
-			</Suspense>
-		</div>
+		<Suspense fallback={<Loader />}>
+			<LockerProvider
+				initialLockers={lockers}
+				initialPolicies={policies}
+				initialOfframpAddresses={[]}
+			>
+				<LockerNav />
+			</LockerProvider>
+		</Suspense>
 	);
 }
 

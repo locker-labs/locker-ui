@@ -38,7 +38,7 @@ export default function RootLayout({
 				<AuthProvider>
 					<EvmProvider initialState={initialState}>
 						<ThemeProvider>
-							<main className="flex w-full min-w-[230px] max-w-5xl flex-1 flex-col items-center p-5">
+							<main className="flex w-full min-w-[230px] flex-1 flex-col items-center p-5">
 								<Header />
 								<Suspense fallback={<Loading />}>
 									{children}

@@ -90,7 +90,7 @@ function LockerSetup() {
 	const forwardDecimal = Number(
 		formatUnits(BigInt(boxlets[EAutomationType.FORWARD_TO].percent), 2)
 	);
-	// const isForwardSelected = forwardDecimal > 0;
+	const isForwardSelected = forwardDecimal > 0;
 
 	const offrampDecimal = Number(
 		formatUnits(BigInt(boxlets[EAutomationType.OFF_RAMP].percent), 2)
@@ -130,7 +130,7 @@ function LockerSetup() {
 					lockerArgs,
 					setErrorMessage
 				);
-				console.log("GOt new locker");
+				console.log("Got new locker");
 				console.log(newLocker);
 				return newLocker;
 			}
@@ -195,7 +195,9 @@ function LockerSetup() {
 		setIsLoading(false);
 	};
 
+	const isForwardToMissing = isForwardSelected && !isAddress(sendToAddress!);
 	const handlePolicyCreation = async () => {
+		setIsLoading(true);
 		console.log("handlePolicyCreation");
 		console.log(isConnected);
 		console.log(locker);
@@ -207,35 +209,51 @@ function LockerSetup() {
 			setErrorMessage("");
 			if (chainId && !isChainSupported(chainId)) {
 				setErrorMessage(errors.UNSUPPORTED_CHAIN);
+				setIsLoading(false);
 				return;
 			}
 
 			if (isSaveSelected && !sendToAddress) {
 				setErrorMessage(errors.NO_ADDRESS);
+				setIsLoading(false);
 				return;
 			}
 
-			if (isSaveSelected && !isAddress(sendToAddress!)) {
+			if (isForwardToMissing) {
 				setErrorMessage(errors.RECIPIENT_EVM);
+				setIsLoading(false);
 				return;
 			}
 
 			if (Number(percentLeft) !== 0) {
 				setErrorMessage(errors.SUM_TO_100);
+				setIsLoading(false);
 				return;
 			}
 
-			if (!locker) locker = await createNewLocker();
+			if (!locker) {
+				locker = await createNewLocker();
 
-			if (!locker || checksumAddress(locker?.ownerAddress) !== address) {
+				// Locker may already exist or some other issue
+				if (!locker) {
+					setIsLoading(false);
+					return;
+				}
+			}
+
+			const isNotOwner =
+				locker && checksumAddress(locker.ownerAddress) !== address;
+			if (isNotOwner) {
 				setErrorMessage(
 					`${errors.UNAUTHORIZED} Expected wallet: ${
 						locker?.ownerAddress
 					}`
 				);
+				setIsLoading(false);
 				return;
 			}
 
+			setIsLoading(false);
 			openChainSelectModal();
 		} else {
 			console.log("openConnectModal");
@@ -249,6 +267,8 @@ function LockerSetup() {
 		</div>
 	);
 
+	console.log("isLoading", isLoading);
+	console.log("locker", locker);
 	let cta = null;
 	if (isLoading) {
 		cta = (
@@ -260,13 +280,22 @@ function LockerSetup() {
 				<AiOutlineLoading3Quarters className="animate-spin" size={22} />
 			</button>
 		);
+	} else if (percentLeft !== 0) {
+		cta = (
+			<button
+				aria-label="Connect wallet"
+				className="mt-8 flex h-12 w-full cursor-not-allowed items-center justify-center rounded-md bg-locker-600 text-light-100 opacity-80 hover:bg-blue-200"
+				disabled
+			>
+				Adjust percentages
+			</button>
+		);
 	} else if (isConnected) {
 		cta = (
 			<button
 				aria-label="Enable automations"
 				className="mt-8 flex h-12 w-full cursor-pointer items-center justify-center rounded-md bg-locker-600 text-light-100 opacity-100 hover:bg-blue-200"
 				onClick={() => handlePolicyCreation()}
-				disabled={isLoading}
 			>
 				Enable automations
 			</button>
@@ -277,7 +306,6 @@ function LockerSetup() {
 				aria-label="Continue"
 				className="mt-8 flex h-12 w-full cursor-pointer items-center justify-center rounded-md bg-locker-600 text-light-100 opacity-100 hover:bg-blue-200"
 				onClick={() => openConnectModal()}
-				disabled={isLoading}
 			>
 				Connect wallet
 			</button>
@@ -285,8 +313,13 @@ function LockerSetup() {
 	}
 
 	const rightPanel = (
-		<div className="space-y-3">
-			<BoxletPieChart boxlets={boxlets} lineWidth={100} size="size-48" />
+		<div className="flex w-full flex-col space-y-3">
+			<BoxletPieChart
+				boxlets={boxlets}
+				lineWidth={100}
+				size="size-48"
+				percentLeft={percentLeft}
+			/>
 			<div>
 				<span className="ml-2 text-sm text-dark-100">
 					Left to allocate:{" "}
@@ -299,20 +332,22 @@ function LockerSetup() {
 			</div>
 
 			{cta}
-			{errorMessage && (
-				<span className="self-center text-sm text-error">
-					{errorMessage}
-				</span>
-			)}
+			<div>
+				{errorMessage && (
+					<span className="text-wrap text-sm text-error">
+						{errorMessage}
+					</span>
+				)}
+			</div>
+			{renderConnectModal()}
+			{chainId && renderChainSelectModal(createNewPolicy)}
 		</div>
 	);
 
 	return (
-		<div className="flex w-full flex-1 flex-row items-start">
+		<div className="flex w-full flex-row items-start gap-16 px-20">
 			{leftPanel}
 			{rightPanel}
-			{renderConnectModal()}
-			{chainId && renderChainSelectModal(createNewPolicy)}
 		</div>
 	);
 }

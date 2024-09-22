@@ -12,7 +12,7 @@ interface IDistributionBox {
 
 function DistributionBox({ boxlets, updateBoxlet }: IDistributionBox) {
 	return (
-		<div className="flex w-full min-w-60 max-w-sm flex-col space-y-4">
+		<div className="flex w-full min-w-60 flex-col space-y-4">
 			{Object.keys(boxlets).map((boxletId) => (
 				<DistributionBoxlet
 					key={boxletId}
