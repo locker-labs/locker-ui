@@ -72,7 +72,7 @@ function ChainDropdown(
 						leaveFrom="opacity-100"
 						leaveTo="opacity-0"
 					>
-						<Listbox.Options className="absolute right-0 z-50 mt-3 max-h-60 w-full origin-top-right overflow-auto rounded-xl bg-light-200 p-1 text-sm outline-none">
+						<Listbox.Options className="absolute right-0 z-50 mt-3 max-h-60 w-44 origin-top-right overflow-auto rounded-xl bg-light-200 p-1 text-sm outline-none">
 							{supportedChains.map((chainOption, index) => (
 								<Listbox.Option
 									key={chainOption.id}
@@ -86,7 +86,7 @@ function ChainDropdown(
 												index === 0 && "rounded-t-xl"
 											} ${index === supportedChains.length - 1 && "rounded-b-xl"}`}
 										>
-											<div className="flex w-32 items-center">
+											<div className="flex w-full items-center">
 												<div
 													className={`flex size-7 shrink-0 items-center justify-center rounded-full ${getChainIconStyling(chainOption.id)}`}
 												>
