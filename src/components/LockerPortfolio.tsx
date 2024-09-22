@@ -1,7 +1,7 @@
 "use client";
 
 import { useAuth } from "@clerk/nextjs";
-import { useSearchParams } from "next/navigation";
+import { redirect, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import Blockies from "react-blockies";
 
@@ -10,6 +10,7 @@ import MultiChainOverview from "@/components/MultiChainOverview";
 import PortfolioIconButtonGroup from "@/components/PortfolioIconButtonGroup";
 import Tooltip from "@/components/Tooltip";
 import TxTable from "@/components/TxTable";
+import { paths } from "@/data/constants/paths";
 import { supportedChainIdsArray } from "@/data/constants/supportedChains";
 import { useLockerOnboardedModal } from "@/hooks/useLockerOnboardedModal";
 import { getLockerNetWorth } from "@/services/moralis";
@@ -45,6 +46,11 @@ function LockerPortfolio() {
 	useEffect(() => {
 		if (onboardingFlag) openLockerOnboardedModal();
 	}, [onboardingFlag]);
+
+	const shouldSetupFirstPolicy =
+		!policies || (policies && policies.length === 0);
+
+	if (shouldSetupFirstPolicy) redirect(paths.ONBOARDING);
 
 	// Props destructured variables
 	const locker = lockers[0];

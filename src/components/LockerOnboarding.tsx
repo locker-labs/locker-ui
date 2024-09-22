@@ -1,8 +1,22 @@
 "use client";
 
+import { redirect } from "next/navigation";
+
+import { paths } from "@/data/constants/paths";
+import { useLocker } from "@/providers/LockerProvider";
+
 import LockerSetup from "./LockerSetup";
 
 function LockerOnboarding() {
+	const { lockers, policies } = useLocker();
+
+	const shouldSetupFirstPolicy =
+		!policies || (policies && policies.length === 0);
+
+	const shouldShowPortfolio =
+		lockers && lockers.length > 0 && !shouldSetupFirstPolicy;
+	if (shouldShowPortfolio) redirect(paths.HOME);
+
 	const heading = (
 		<div className="flex flex-col items-center">
 			<div className="flex w-2/3 flex-col space-y-2 text-center">

@@ -1,7 +1,7 @@
 "use client";
 
 import { useAuth } from "@clerk/nextjs";
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { checksumAddress, formatUnits, isAddress } from "viem";
@@ -9,6 +9,7 @@ import { useAccount } from "wagmi";
 
 import DistributionBox from "@/components/DistributionBox";
 import { errors } from "@/data/constants/errorMessages";
+import { paths } from "@/data/constants/paths";
 import { useChainSelectModal } from "@/hooks/useChainSelectModal";
 import { useConnectModal } from "@/hooks/useConnectModal";
 import useSmartAccount from "@/hooks/useSmartAccount";
@@ -65,7 +66,6 @@ function LockerSetup() {
 	const { genSmartAccountAddress } = useSmartAccount();
 
 	const router = useRouter();
-	const pathname = usePathname();
 
 	const [boxlets, setBoxlets] = useState(initialBoxlets);
 
@@ -188,7 +188,7 @@ function LockerSetup() {
 			await createPolicy(authToken, policy, setErrorMessage);
 		}
 
-		router.push(`${pathname}?o=o`);
+		router.push(`${paths.HOME}?o=o`);
 		setIsLoading(false);
 	};
 

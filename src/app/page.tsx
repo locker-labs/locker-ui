@@ -2,7 +2,6 @@
 
 import { useAuth } from "@clerk/nextjs";
 import dynamic from "next/dynamic";
-import { Inter } from "next/font/google";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useTheme } from "next-themes";
@@ -23,8 +22,6 @@ import lockerPaths from "@/data/lottie/lockerPaths.json";
 
 import Loading from "./loading";
 
-const inter = Inter({ subsets: ["latin"] });
-
 const LottieAnimation = dynamic(() => import("@/components/LottieAnimation"), {
 	ssr: false,
 });
@@ -43,9 +40,7 @@ export default function LandingPage() {
 	return (
 		<main className="flex min-h-[50vh] w-full min-w-[230px] flex-1 flex-col items-center p-24">
 			<Suspense fallback={<Loading />}>
-				<div
-					className={`${inter.className} flex min-h-screen w-full flex-col items-center bg-light-100 text-dark-500`}
-				>
+				<div className="bg-light-100 text-dark-500">
 					<div className="flex w-full flex-row gap-x-36">
 						<div className="flex w-full max-w-2xl flex-col space-y-10">
 							<div className="w-full">
