@@ -3,9 +3,7 @@
 import { useAuth } from "@clerk/nextjs";
 import { redirect, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import Blockies from "react-blockies";
 
-import AutomationSettings from "@/components/AutomationSettings";
 import MultiChainOverview from "@/components/MultiChainOverview";
 import PortfolioIconButtonGroup from "@/components/PortfolioIconButtonGroup";
 import Tooltip from "@/components/Tooltip";
@@ -15,13 +13,12 @@ import { supportedChainIdsArray } from "@/data/constants/supportedChains";
 import { useLockerOnboardedModal } from "@/hooks/useLockerOnboardedModal";
 import { getLockerNetWorth } from "@/services/moralis";
 import { getTokenBalances } from "@/services/transactions";
-import { EAutomationType, Token } from "@/types";
+import { Token } from "@/types";
 import { getFundedChainIds } from "@/utils/getFundedChainIds";
 import { isChainSupported } from "@/utils/isChainSupported";
 import { isTestnet } from "@/utils/isTestnet";
 
 import { useLocker } from "../providers/LockerProvider";
-import ChainIcon from "./ChainIcon";
 import LockerPortfolioAutomations from "./LockerPortfolioAutomations";
 import LockerPortfolioSavingsGoals from "./LockerPortfolioSavingsGoals";
 import LockerPortfolioValue from "./LockerPortfolioValue";
@@ -29,7 +26,7 @@ import LockerPortfolioValue from "./LockerPortfolioValue";
 function LockerPortfolio() {
 	const { lockers, policies, txs, offrampAddresses } = useLocker();
 	const [errorMessage, setErrorMessage] = useState<string>("");
-	const [tokenList, setTokenList] = useState<Token[]>([]);
+	const [tokens, setTokens] = useState<Token[]>([]);
 	const [fundedChainIds, setFundedChainIds] = useState<number[]>([]);
 	const [lockerNetWorth, setLockerNetWorth] = useState<string>("0.00");
 	const [chainsNetWorths, setChainsNetWorths] = useState<
@@ -81,7 +78,7 @@ function LockerPortfolio() {
 				? list.filter((token) => isChainSupported(token.chainId))
 				: [];
 			const fundedChainIdsList = getFundedChainIds(filteredList);
-			setTokenList(filteredList);
+			setTokens(filteredList);
 			setFundedChainIds(fundedChainIdsList);
 		}
 	};
@@ -114,21 +111,19 @@ function LockerPortfolio() {
 	return (
 		<div className="flex w-full flex-col bg-locker-25">
 			<div className="flex flex-row space-x-4">
-				<div className="h-96 w-[35%] rounded-md bg-white p-3">
+				<div className="h-96 w-[35%] overflow-auto rounded-md bg-white p-4">
 					<LockerPortfolioValue
 						portfolioValue={lockerNetWorth}
 						policies={policies}
+						tokens={tokens}
 					/>
 				</div>
 
-				<div className="h-96 w-[30%] rounded-md bg-white p-3">
-					<LockerPortfolioAutomations
-						locker={locker}
-						automations={automations}
-					/>
+				<div className="h-96 w-[30%] overflow-auto rounded-md bg-white p-4">
+					<LockerPortfolioAutomations automations={automations} />
 				</div>
 
-				<div className="h-96 w-[35%]">
+				<div className="h-96 w-[35%] overflow-auto rounded-md bg-white p-4">
 					<LockerPortfolioSavingsGoals />
 				</div>
 			</div>
@@ -137,7 +132,7 @@ function LockerPortfolio() {
 				<div className="mt-4 flex items-center">
 					<PortfolioIconButtonGroup
 						locker={locker}
-						tokenList={tokenList}
+						tokenList={tokens}
 						getTokenList={getTokenList}
 					/>
 				</div>

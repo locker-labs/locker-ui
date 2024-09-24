@@ -4,10 +4,9 @@ import { useAuth } from "@clerk/nextjs";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useAccount, useSwitchChain } from "wagmi";
+import { useAccount } from "wagmi";
 
 // import AuthButton from "@/components/AuthButton";
-import ChainDropdown from "@/components/ChainDropdown";
 import ConnectButton from "@/components/ConnectButton";
 import HeaderMenu from "@/components/HeaderMenu";
 import { paths } from "@/data/constants/paths";
@@ -17,7 +16,6 @@ function Header() {
 	const pathname = usePathname();
 	const { isSignedIn } = useAuth();
 	const { isConnected, chainId } = useAccount();
-	const { switchChain, isPending } = useSwitchChain();
 
 	// const isAuthRoute =
 	// 	pathname === paths.SIGN_IN || pathname === paths.SIGN_UP;

@@ -2,13 +2,13 @@
 
 import { useAuth } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { checksumAddress, formatUnits, isAddress } from "viem";
 import { useAccount } from "wagmi";
 
 import DistributionBox from "@/components/DistributionBox";
-import { BOXLET, DEFAULT_BOXLETS } from "@/data/constants/boxlets";
+import { DEFAULT_BOXLETS } from "@/data/constants/boxlets";
 import { errors } from "@/data/constants/errorMessages";
 import { paths } from "@/data/constants/paths";
 import { useChainSelectModal } from "@/hooks/useChainSelectModal";
@@ -51,6 +51,15 @@ function LockerSetup() {
 			[updatedBoxlet.id]: updatedBoxlet, // Override the existing boxlet with the same id
 		}));
 	};
+
+	useEffect(() => {
+		// Prefill forwarding address with owner's address unless it already has a value
+		if (address && !boxlets[EAutomationType.FORWARD_TO].forwardToAddress)
+			updateBoxlet({
+				...DEFAULT_BOXLETS[EAutomationType.FORWARD_TO],
+				forwardToAddress: address,
+			});
+	}, [address]);
 
 	let locker: Locker | undefined = lockers[0];
 

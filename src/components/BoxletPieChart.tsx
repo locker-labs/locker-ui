@@ -1,7 +1,5 @@
 import { PieChart } from "react-minimal-pie-chart";
 
-import { useEditAutomationsModal } from "@/hooks/useEditAutomationsModal";
-
 import { calcPrecentLeft, IDistributionBoxlet } from "./DistributionBoxlet";
 
 export interface IBoxletPieChart {

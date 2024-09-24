@@ -1,15 +1,12 @@
 import { Dialog, Transition } from "@headlessui/react";
-import { Fragment, useState } from "react";
-import { IoCheckboxOutline, IoClose, IoCopyOutline } from "react-icons/io5";
+import { Fragment } from "react";
+import { IoClose } from "react-icons/io5";
+import { useChainId } from "wagmi";
 
-import { supportedChainIdsArray } from "@/data/constants/supportedChains";
 import { useLocker } from "@/providers/LockerProvider";
-import { copyToClipboard } from "@/utils/copytoClipboard";
-import { getChainIconStyling } from "@/utils/getChainIconStyling";
 
-import ChainIcon from "./ChainIcon";
 import { IconGreenCheck } from "./Icons";
-import LockerQrCode from "./LockerQrCode";
+import QrModalContent from "./QrModalContent";
 
 export interface ILockerOnboardedModal {
 	isOpen: boolean;
@@ -17,8 +14,8 @@ export interface ILockerOnboardedModal {
 }
 
 function LockerOnboardedModal({ isOpen, closeModal }: ILockerOnboardedModal) {
-	const [copied, setCopied] = useState<boolean>(false);
 	const { lockers } = useLocker();
+	const chainId = useChainId();
 
 	if (!lockers) return null;
 	const locker = lockers[0];
@@ -61,51 +58,10 @@ function LockerOnboardedModal({ isOpen, closeModal }: ILockerOnboardedModal) {
 									Fund your locker using the address below to
 									see your first auto dispursement in action.
 								</Dialog.Description>
-								<p className="mt-6 w-full text-center text-xs font-semibold">
-									Your locker address
-								</p>
-								<div className="mt-3 flex flex-row space-x-2 text-xs">
-									<div className="rounded-sm border border-solid border-gray-600 p-2 text-xs">
-										<code>{locker.address}</code>
-									</div>
-									<button
-										className="flex flex-row rounded-md bg-locker-600 p-2 text-xs text-white"
-										onClick={() =>
-											copyToClipboard(
-												lockerAddress,
-												setCopied
-											)
-										}
-									>
-										{copied ? "Copied" : "Copy"}
-										{copied ? (
-											<IoCheckboxOutline
-												className="ml-3 shrink-0"
-												size={18}
-											/>
-										) : (
-											<IoCopyOutline
-												className="ml-3 shrink-0"
-												size={18}
-											/>
-										)}
-									</button>
-								</div>
-								<div className="my-6 flex flex-row space-x-2">
-									{supportedChainIdsArray.map((chainId) => (
-										<div
-											key={chainId}
-											className={`flex size-7 items-center justify-center rounded-full ${getChainIconStyling(chainId)}}`}
-										>
-											<ChainIcon
-												className="flex items-center justify-center"
-												chainId={chainId}
-												size={16}
-											/>
-										</div>
-									))}
-								</div>
-								<LockerQrCode lockerAddress={lockerAddress} />
+								<QrModalContent
+									lockerAddress={lockerAddress}
+									chainId={chainId}
+								/>
 							</Dialog.Panel>
 						</Transition.Child>
 					</div>
