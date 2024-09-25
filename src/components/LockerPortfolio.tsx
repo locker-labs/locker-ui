@@ -4,32 +4,27 @@ import { useAuth } from "@clerk/nextjs";
 import { redirect, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
-import MultiChainOverview from "@/components/MultiChainOverview";
-import PortfolioIconButtonGroup from "@/components/PortfolioIconButtonGroup";
-import Tooltip from "@/components/Tooltip";
-import TxTable from "@/components/TxTable";
 import { paths } from "@/data/constants/paths";
 import { supportedChainIdsArray } from "@/data/constants/supportedChains";
 import { useLockerOnboardedModal } from "@/hooks/useLockerOnboardedModal";
 import { getLockerNetWorth } from "@/services/moralis";
 import { getTokenBalances } from "@/services/transactions";
 import { Token } from "@/types";
-import { getFundedChainIds } from "@/utils/getFundedChainIds";
 import { isChainSupported } from "@/utils/isChainSupported";
 import { isTestnet } from "@/utils/isTestnet";
 
 import { useLocker } from "../providers/LockerProvider";
 import LockerPortfolioAutomations from "./LockerPortfolioAutomations";
 import LockerPortfolioSavingsGoals from "./LockerPortfolioSavingsGoals";
+import LockerPortfolioTxHistory from "./LockerPortfolioTxHistory";
 import LockerPortfolioValue from "./LockerPortfolioValue";
 
 function LockerPortfolio() {
-	const { lockers, policies, txs, offrampAddresses } = useLocker();
-	const [errorMessage, setErrorMessage] = useState<string>("");
+	const { locker, policies, txs } = useLocker();
 	const [tokens, setTokens] = useState<Token[]>([]);
-	const [fundedChainIds, setFundedChainIds] = useState<number[]>([]);
 	const [lockerNetWorth, setLockerNetWorth] = useState<string>("0.00");
-	const [chainsNetWorths, setChainsNetWorths] = useState<
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	const [_chainsNetWorths, setChainsNetWorths] = useState<
 		Record<number, string>
 	>({});
 
@@ -51,7 +46,6 @@ function LockerPortfolio() {
 	if (shouldSetupFirstPolicy) redirect(paths.ONBOARDING);
 
 	// Props destructured variables
-	const locker = lockers[0];
 	// const { txs } = locker;
 	const filteredTxs = txs
 		? txs.filter((tx) => isChainSupported(tx.chainId))
@@ -72,14 +66,12 @@ function LockerPortfolio() {
 
 	const getTokenList = async () => {
 		const authToken = await getToken();
-		if (authToken && locker.id) {
+		if (authToken && locker?.id) {
 			const list = await getTokenBalances(authToken, locker.id);
 			const filteredList = list
 				? list.filter((token) => isChainSupported(token.chainId))
 				: [];
-			const fundedChainIdsList = getFundedChainIds(filteredList);
 			setTokens(filteredList);
-			setFundedChainIds(fundedChainIdsList);
 		}
 	};
 
@@ -109,12 +101,11 @@ function LockerPortfolio() {
 	}, []);
 
 	return (
-		<div className="flex w-full flex-col bg-locker-25">
+		<div className="flex w-full flex-col space-y-4 bg-locker-25">
 			<div className="flex flex-row space-x-4">
 				<div className="h-96 w-[35%] overflow-auto rounded-md bg-white p-4">
 					<LockerPortfolioValue
 						portfolioValue={lockerNetWorth}
-						policies={policies}
 						tokens={tokens}
 					/>
 				</div>
@@ -127,75 +118,9 @@ function LockerPortfolio() {
 					<LockerPortfolioSavingsGoals />
 				</div>
 			</div>
-
-			{locker && (
-				<div className="mt-4 flex items-center">
-					<PortfolioIconButtonGroup
-						locker={locker}
-						tokenList={tokens}
-						getTokenList={getTokenList}
-					/>
-				</div>
-			)}
-			<div className="mt-6 flex w-full min-w-fit max-w-xs flex-col space-y-2 overflow-visible">
-				<div className="flex w-full items-center">
-					<Tooltip
-						width="w-36"
-						label="These automation settings will be applied to all chains that have been enabled."
-						placement="auto"
-					>
-						<span className="cursor-pointer text-sm text-light-600">
-							Automation settings
-							<span className="ml-2 text-xs">ⓘ</span>
-						</span>
-					</Tooltip>
-				</div>
+			<div className="max-h-96 w-full overflow-auto rounded-md bg-white p-4">
+				<LockerPortfolioTxHistory />
 			</div>
-			{locker && policies && (
-				<div className="mt-6 flex w-full min-w-fit max-w-md flex-col space-y-2 overflow-visible">
-					<div className="flex w-full items-center">
-						<Tooltip
-							width="w-40"
-							label="For security reasons, automations must be individually authorized on each chain."
-							placement="auto"
-						>
-							<span className="cursor-pointer text-sm text-light-600">
-								Multi-chain overview
-								<span className="ml-2 text-xs">ⓘ</span>
-							</span>
-						</Tooltip>
-					</div>
-					<MultiChainOverview
-						fundedChainIds={fundedChainIds}
-						policies={policies}
-						automations={automations}
-						chainsNetWorths={chainsNetWorths}
-						locker={locker}
-						setErrorMessage={setErrorMessage}
-						offrampAddresses={offrampAddresses}
-					/>
-				</div>
-			)}
-			{errorMessage && (
-				<span className="mt-6 text-sm text-error">{errorMessage}</span>
-			)}
-			{filteredTxs.length > 0 && (
-				<div className="mt-6 flex w-full flex-col space-y-2">
-					<div className="flex w-full items-center">
-						<Tooltip
-							width="w-40"
-							label="History of all incoming and outgoing transactions from your locker."
-							placement="auto"
-						>
-							<span className="cursor-pointer text-sm text-light-600">
-								Transaction history
-								<span className="ml-2 text-xs">ⓘ</span>
-							</span>
-						</Tooltip>
-					</div>
-					<TxTable txs={filteredTxs} />
-				</div>
-			)}
 			{onboardingFlag && renderLockerOnboardedModal()}
 		</div>
 	);

@@ -3,22 +3,19 @@ import { useChainId } from "wagmi";
 
 import { useQrCodeModal } from "@/hooks/useQrCodeModal";
 import { useLocker } from "@/providers/LockerProvider";
-import { PolicyDb, Token } from "@/types";
-import { getChainIconStyling } from "@/utils/getChainIconStyling";
+import { Token } from "@/types";
 import { getChainNameFromId } from "@/utils/getChainName";
 
-import ChainIcon from "./ChainIcon";
+import AutomateChainsModal from "./AutomateChainsModal";
 import { IconReceive, IconSend } from "./Icons";
 
 type ILockerPortfolioValue = {
 	portfolioValue: string;
-	policies: PolicyDb[];
 	tokens: Token[];
 };
 
 function LockerPortfolioValue({
 	portfolioValue,
-	policies,
 	tokens,
 }: ILockerPortfolioValue) {
 	const { openQrCodeModal, renderQrCodeModal } = useQrCodeModal();
@@ -48,44 +45,35 @@ function LockerPortfolioValue({
 					</div>
 				</button>
 			</div>
-			<button onClick={() => {}}>
-				<div className="flex flex-row justify-between rounded-md p-2 outline outline-gray-300">
-					{policies.map((policy) => (
-						<div
-							className={`rounded-full ${getChainIconStyling(policy.chainId)}`}
-						>
-							<ChainIcon
-								chainId={policy.chainId}
-								key={policy.chainId}
-							/>
-						</div>
-					))}
-					<div className="text-sm text-gray-700 underline underline-offset-8">
-						Manage chains
-					</div>
-				</div>
-			</button>
-
-			<div className="h-48 space-y-2 overflow-auto">
+			<AutomateChainsModal />
+			<div className="h-48 space-y-2 overflow-auto pr-2">
 				{tokens.map((token) => {
 					const rawAmount = formatUnits(
 						BigInt(token.balance),
 						token.decimals
 					);
+
+					const key = `${token.chainId}-${token.address}`;
 					return (
-						<div className="flex flex-row justify-between">
-							<div className="flex flex-col">
-								<div className="text font-semibold">
-									{token.symbol}
+						<>
+							<div
+								className="flex flex-row justify-between"
+								key={key}
+							>
+								<div className="flex flex-col">
+									<div className="text font-semibold">
+										{token.symbol}
+									</div>
+									<div className="text-sm text-gray-500">
+										{getChainNameFromId(token.chainId)}
+									</div>
 								</div>
-								<div className="text-sm text-gray-500">
-									{getChainNameFromId(token.chainId)}
+								<div className="text-sm font-semibold">
+									{rawAmount}
 								</div>
 							</div>
-							<div className="text-sm font-semibold">
-								{rawAmount}
-							</div>
-						</div>
+							<hr />
+						</>
 					);
 				})}
 			</div>

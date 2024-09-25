@@ -19,7 +19,7 @@ function LockerPortfolioAutomations({
 
 	const boxlets = adaptAutomations2Boxlets(automations);
 	return (
-		<div className="flex flex-col space-y-5">
+		<div className="flex flex-col space-y-6">
 			<div className="flex flex-col justify-between">
 				<div className="flex flex-row items-center justify-between space-x-8">
 					<p className="text-lg font-bold">Automation Details</p>
@@ -41,7 +41,7 @@ function LockerPortfolioAutomations({
 					size="size-36"
 				/>
 			</div>
-			<div className="space-y-3">
+			<div className="space-y-3 pt-3">
 				{automations.map((automation) => {
 					const { color, title } = DEFAULT_BOXLETS[automation.type];
 

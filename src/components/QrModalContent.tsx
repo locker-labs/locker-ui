@@ -16,9 +16,6 @@ export default function QrModalContent({
 				<LockerQrCode lockerAddress={lockerAddress} />
 			</div>
 			<div>
-				<p className="w-full text-center text-xs font-semibold">
-					Your locker address
-				</p>
 				<div className="mt-3">
 					<CopyButton text={lockerAddress} />
 				</div>

@@ -38,9 +38,9 @@ export default function LandingPage() {
 	}, [isSignedIn]);
 
 	return (
-		<main className="flex min-h-[50vh] w-full min-w-[230px] flex-1 flex-col items-center p-24">
+		<main className="bx-24 flex min-h-[50vh] w-full min-w-[230px] flex-1 flex-col items-center pb-24">
 			<Suspense fallback={<Loading />}>
-				<div className="bg-light-100 text-dark-500">
+				<div className="mb-24 bg-light-100 text-dark-500">
 					<div className="flex w-full flex-row gap-x-36">
 						<div className="flex w-full max-w-2xl flex-col space-y-10">
 							<div className="w-full">

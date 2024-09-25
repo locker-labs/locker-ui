@@ -3,7 +3,7 @@
 import { createContext, ReactNode, useContext, useMemo, useState } from "react";
 
 import { useRealtimeTable } from "@/hooks/useRealtimeTable";
-import { LockerDb, PolicyDb, Tx } from "@/types";
+import { Automation, LockerDb, PolicyDb, Tx } from "@/types";
 import {
 	TABLE_LOCKERS,
 	TABLE_POLICIES,
@@ -18,7 +18,9 @@ export interface ILockerPortfolio {
 
 interface LockerPortfolioContextProps {
 	lockers: LockerDb[];
+	locker: LockerDb | undefined;
 	policies: PolicyDb[];
+	automations: Automation[] | undefined;
 	txs: Tx[];
 	offrampAddresses: `0x${string}`[];
 }
@@ -60,7 +62,9 @@ export function LockerProvider({
 	const value = useMemo(
 		() => ({
 			lockers: lockers || [],
+			locker: lockers[0],
 			policies,
+			automations: policies[0]?.automations,
 			txs,
 			offrampAddresses,
 		}),
