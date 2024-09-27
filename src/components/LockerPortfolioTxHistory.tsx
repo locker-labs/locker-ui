@@ -3,6 +3,8 @@ import { useChainId } from "wagmi";
 import { useQrCodeModal } from "@/hooks/useQrCodeModal";
 import { useLocker } from "@/providers/LockerProvider";
 
+import LockerPortfolioTxHistoryContent from "./LockerPortfolioTxHistoryContent";
+
 export default function LockerPortfolioTxHistory() {
 	const { openQrCodeModal, renderQrCodeModal } = useQrCodeModal();
 	const chainId = useChainId();
@@ -12,7 +14,9 @@ export default function LockerPortfolioTxHistory() {
 	const hasTxs = txs.length > 0;
 
 	const body = hasTxs ? (
-		<p>tx</p>
+		<div>
+			<LockerPortfolioTxHistoryContent />
+		</div>
 	) : (
 		<div className="flex flex-col space-y-7">
 			<div className="text-sm">
@@ -36,7 +40,7 @@ export default function LockerPortfolioTxHistory() {
 	);
 
 	return (
-		<div className="flex w-full flex-col space-y-7">
+		<div className="flex h-full w-full flex-col space-y-7">
 			<p className="text-lg font-bold">Transaction History</p>
 			{body}
 		</div>

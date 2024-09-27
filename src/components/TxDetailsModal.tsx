@@ -63,7 +63,7 @@ function TxDetailsModal({ isOpen, closeModal, tx }: ITxDetailsModal) {
 								<div className="mt-6 flex w-full flex-col items-center justify-center overflow-x-auto">
 									<table className="min-w-full divide-y divide-light-200 text-left text-sm dark:divide-dark-200">
 										<tbody className="divide-y divide-light-200 dark:divide-dark-200">
-											<tr className="flex flex-col items-start sm1:flex-row sm1:items-center">
+											<tr className="sm1:flex-row sm1:items-center flex flex-col items-start">
 												<td className="w-36 shrink-0 px-4 py-3 text-light-600">
 													Date (UTC):
 												</td>
@@ -71,7 +71,7 @@ function TxDetailsModal({ isOpen, closeModal, tx }: ITxDetailsModal) {
 													{tx.createdAt}
 												</td>
 											</tr>
-											<tr className="flex flex-col items-start sm1:flex-row sm1:items-center">
+											<tr className="sm1:flex-row sm1:items-center flex flex-col items-start">
 												<td className="w-36 shrink-0 px-4 py-3 text-light-600">
 													Status:
 												</td>
@@ -87,7 +87,7 @@ function TxDetailsModal({ isOpen, closeModal, tx }: ITxDetailsModal) {
 													)}
 												</td>
 											</tr>
-											<tr className="flex flex-col items-start sm1:flex-row sm1:items-center">
+											<tr className="sm1:flex-row sm1:items-center flex flex-col items-start">
 												<td className="w-36 shrink-0 px-4 py-3 text-light-600">
 													Chain:
 												</td>
@@ -112,7 +112,7 @@ function TxDetailsModal({ isOpen, closeModal, tx }: ITxDetailsModal) {
 													</div>
 												</td>
 											</tr>
-											<tr className="flex flex-col items-start sm1:flex-row sm1:items-center">
+											<tr className="sm1:flex-row sm1:items-center flex flex-col items-start">
 												<td className="w-36 shrink-0 px-4 py-3 text-light-600">
 													Tx hash:
 												</td>
@@ -137,7 +137,7 @@ function TxDetailsModal({ isOpen, closeModal, tx }: ITxDetailsModal) {
 													)}
 												</td>
 											</tr>
-											<tr className="flex flex-col items-start sm1:flex-row sm1:items-center">
+											<tr className="sm1:flex-row sm1:items-center flex flex-col items-start">
 												<td className="w-36 shrink-0 px-4 py-3 text-light-600">
 													To:
 												</td>
@@ -164,7 +164,7 @@ function TxDetailsModal({ isOpen, closeModal, tx }: ITxDetailsModal) {
 													)}
 												</td>
 											</tr>
-											<tr className="flex flex-col items-start sm1:flex-row sm1:items-center">
+											<tr className="sm1:flex-row sm1:items-center flex flex-col items-start">
 												<td className="w-36 shrink-0 px-4 py-3 text-light-600">
 													From:
 												</td>
@@ -191,7 +191,7 @@ function TxDetailsModal({ isOpen, closeModal, tx }: ITxDetailsModal) {
 													)}
 												</td>
 											</tr>
-											<tr className="flex flex-col items-start sm1:flex-row sm1:items-center">
+											<tr className="sm1:flex-row sm1:items-center flex flex-col items-start">
 												<td className="w-36 shrink-0 px-4 py-3 text-light-600">
 													Amount:
 												</td>
@@ -203,7 +203,7 @@ function TxDetailsModal({ isOpen, closeModal, tx }: ITxDetailsModal) {
 													{tx.tokenSymbol}
 												</td>
 											</tr>
-											<tr className="flex flex-col items-start sm1:flex-row sm1:items-center">
+											<tr className="sm1:flex-row sm1:items-center flex flex-col items-start">
 												<td className="w-36 shrink-0 px-4 py-3 text-light-600">
 													Token Type
 												</td>

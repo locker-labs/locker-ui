@@ -29,15 +29,11 @@ const config: Config = {
 	theme: {
 		screens: {
 			xxs: "230px",
-			xxs1: "280px",
-			xs: "300px",
-			xs1: "360px",
-			xs2: "380px",
-			sm: "400px",
-			sm1: "550px",
-			md: "815px",
-			lg: "1024px",
+			xs: "500px",
+			sm: "640px",
+			lg: "768px",
 			xl: "1280px",
+			xxl: "1536px",
 		},
 		extend: {
 			colors: {
@@ -73,6 +69,9 @@ const config: Config = {
 				"alt-8": "#63DFDF",
 				"alt-9": "#72EFDD",
 				"alt-10": "#7FFFDA",
+				"tx-confirmed": "#B7EDD3",
+				"tx-forward": "#FFD09A",
+				"tx-offramp": "#B6E5F4",
 				"blue-200": "#A6AAED",
 				"primary-100": "#4C4EDD",
 				"primary-200": "#4546C4",
@@ -102,7 +101,7 @@ const config: Config = {
 				polygon: "#8D5BF6",
 				avalanche: "#D64F49",
 				celo: "#FDFF71",
-				base: "#2151F5",
+				bbase: "#2151F5",
 				binance: "#E1B43D",
 				linea: "#60DFFF",
 				background: "hsl(var(--background))",
@@ -147,9 +146,12 @@ const config: Config = {
 				},
 			},
 			borderRadius: {
-				lg: "var(--radius)",
-				md: "calc(var(--radius) - 2px)",
+				md: "var(--radius)",
+				lg: "calc(var(--radius) - 2px)",
 				sm: "calc(var(--radius) - 4px)",
+			},
+			fontSize: {
+				xxs: ".65rem",
 			},
 		},
 	},

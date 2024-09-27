@@ -1,3 +1,8 @@
+export enum ELockerDirection {
+	IN = "in",
+	OUT = "out",
+}
+
 export type Tx = {
 	id: number;
 	lockerId: number;
@@ -11,7 +16,7 @@ export type Tx = {
 	chainId: number;
 	isConfirmed: boolean;
 	triggeredByTokenTxId: number | null;
-	lockerDirection: "in" | "out";
+	lockerDirection: ELockerDirection;
 	automationsState: "started" | "not_started";
 	createdAt: string;
 	updatedAt: string;

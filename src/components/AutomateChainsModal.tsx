@@ -115,7 +115,7 @@ export default function AutomateChainsModal() {
 								>
 									<ChainIcon
 										chainId={policy.chainId}
-										key={policy.chainId}
+										key={`icon-${policy.chainId}`}
 									/>
 								</div>
 							))}
@@ -161,7 +161,7 @@ export default function AutomateChainsModal() {
 
 								const enableButton = (
 									<div
-										key={chain.id}
+										key={`enable-${chain.id}`}
 										className={`flex items-center justify-between rounded-lg p-4 ${iconStyling}`}
 									>
 										<div className="flex items-center space-x-4">
@@ -170,7 +170,7 @@ export default function AutomateChainsModal() {
 												{chain.name}
 											</p>
 										</div>
-										{!isEnabled && (
+										{!isEnabled ? (
 											<button
 												className="flex items-center justify-center rounded-md px-4 py-1 text-xs text-locker-500 outline outline-2 outline-locker-300 hover:bg-locker-300"
 												onClick={() =>
@@ -180,11 +180,15 @@ export default function AutomateChainsModal() {
 											>
 												Enable
 											</button>
+										) : (
+											<span className="px-4 text-xs text-locker-500">
+												Enabled
+											</span>
 										)}
 									</div>
 								);
 
-								if (isConnected) {
+								if (isConnected || isEnabled) {
 									return enableButton;
 								}
 								return (

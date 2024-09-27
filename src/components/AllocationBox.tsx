@@ -15,7 +15,7 @@ function AllocationBox({
 	savePercent,
 }: IAllocationBox) {
 	return (
-		<div className="flex w-full flex-col items-center justify-between xs1:flex-row">
+		<div className="xs1:flex-row flex w-full flex-col items-center justify-between">
 			<ChannelPieChart
 				bankPercent={bankPercent}
 				hotWalletPercent={hotWalletPercent}
@@ -23,7 +23,7 @@ function AllocationBox({
 				lineWidth={30}
 				size="size-24"
 			/>
-			<div className="ml-0 mt-4 flex w-40 flex-col space-y-4 px-2 text-sm xs1:ml-4 xs1:mt-0 xs1:px-0">
+			<div className="xs1:ml-4 xs1:mt-0 xs1:px-0 ml-0 mt-4 flex w-40 flex-col space-y-4 px-2 text-sm">
 				{savePercent > 0 && (
 					<div className="flex items-center justify-between">
 						<div className="flex items-center">

@@ -1,7 +1,7 @@
 import "@/styles/globals.css";
 
 import { Analytics as VercelAnalytics } from "@vercel/analytics/react";
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import { headers } from "next/headers";
 import { type ReactNode, Suspense } from "react";
@@ -17,6 +17,11 @@ import Loading from "./loading";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = globalMetadata;
+
+export const viewport: Viewport = {
+	initialScale: 1,
+	width: "device-width",
+};
 
 export default function RootLayout({
 	children,

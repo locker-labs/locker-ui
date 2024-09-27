@@ -53,8 +53,8 @@ function Header() {
 						<HeaderMenu />
 					</div>
 				) : showConnectButton ? (
-					<div className="ml-2 flex items-center justify-center xs1:space-x-2">
-						<div className="hidden xs1:flex">
+					<div className="xs1:space-x-2 ml-2 flex items-center justify-center">
+						<div className="xs1:flex hidden">
 							<ConnectButton />
 						</div>
 						<HeaderMenu />

@@ -61,7 +61,7 @@ function DistributionBoxlet({
 						className="flex size-7 shrink-0 items-center justify-center rounded-full"
 						style={{ backgroundColor: color }}
 					/>
-					<span className="ml-3 whitespace-normal text-sm xs2:whitespace-nowrap xs2:text-[16px]">
+					<span className="xs2:whitespace-nowrap xs2:text-[16px] ml-3 whitespace-normal text-sm">
 						{title}
 					</span>
 					<div className="ml-2">

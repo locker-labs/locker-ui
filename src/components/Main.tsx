@@ -11,7 +11,7 @@ export default async function Main({
 	children: ReactNode;
 }>) {
 	return (
-		<main className="flex w-full min-w-[230px] flex-1 flex-col items-center px-12">
+		<main>
 			<Header />
 			<Suspense fallback={<Loading />}>{children}</Suspense>
 			<Footer />

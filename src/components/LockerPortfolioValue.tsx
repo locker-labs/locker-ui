@@ -28,12 +28,16 @@ function LockerPortfolioValue({
 		<div className="flex flex-col space-y-5">
 			<div className="flex flex-row justify-between">
 				<div className="flex flex-col">
-					<p className="text-gray-500">Portfolio value</p>
-					<p className="text-2xl font-bold">${portfolioValue}</p>
+					<p className="xxs:text-2xs text-gray-500 sm:text-sm lg:text-base">
+						Portfolio value
+					</p>
+					<p className="sm:text sm1:text-lg font-bold xs:text-sm lg:text-2xl">
+						${portfolioValue}
+					</p>
 				</div>
 				<button onClick={openQrCodeModal}>
 					<div className="flex flex-row space-x-4">
-						<div className="flex h-20 w-20 flex-col items-center justify-center rounded-sm bg-gray-100">
+						<div className="xxs:text-2xs sm1:h-20 sm1:w-20 sm1:text-base flex flex-col items-center justify-center rounded-sm bg-gray-100 xs:h-10 xs:w-10 xs:p-2 sm:h-12 sm:w-12">
 							<IconSend />
 							<p className="text-sm text-gray-500">Send</p>
 						</div>
@@ -55,11 +59,8 @@ function LockerPortfolioValue({
 
 					const key = `${token.chainId}-${token.address}`;
 					return (
-						<>
-							<div
-								className="flex flex-row justify-between"
-								key={key}
-							>
+						<div key={key}>
+							<div className="flex flex-row justify-between">
 								<div className="flex flex-col">
 									<div className="text font-semibold">
 										{token.symbol}
@@ -73,7 +74,7 @@ function LockerPortfolioValue({
 								</div>
 							</div>
 							<hr />
-						</>
+						</div>
 					);
 				})}
 			</div>
