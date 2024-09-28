@@ -19,7 +19,7 @@ export default function LockerPortfolioTxHistory() {
 		</div>
 	) : (
 		<div className="flex flex-col space-y-7">
-			<div className="text-sm">
+			<div className="flex flex-col space-y-3 text-sm">
 				<p>No transactions yet.</p>
 				<p>
 					Fund your Locker address to start automatically moving funds

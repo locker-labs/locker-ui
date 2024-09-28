@@ -240,18 +240,12 @@ function LockerSetup() {
 		}
 	};
 
-	const leftPanel = (
-		<div className="flex w-full flex-col items-start space-y-8">
-			<DistributionBox boxlets={boxlets} updateBoxlet={updateBoxlet} />
-		</div>
-	);
-
 	let cta = null;
 	if (isLoading) {
 		cta = (
 			<button
 				aria-label="Connect wallet"
-				className="mt-8 flex h-12 w-full cursor-not-allowed items-center justify-center rounded-md bg-locker-600 text-light-100 opacity-80 hover:bg-blue-200"
+				className="flex h-12 w-full cursor-not-allowed items-center justify-center rounded-md bg-locker-600 text-light-100 opacity-80 hover:bg-blue-200"
 				disabled
 			>
 				<AiOutlineLoading3Quarters className="animate-spin" size={22} />
@@ -261,7 +255,7 @@ function LockerSetup() {
 		cta = (
 			<button
 				aria-label="Connect wallet"
-				className="mt-8 flex h-12 w-full cursor-not-allowed items-center justify-center rounded-md bg-locker-600 text-light-100 opacity-80 hover:bg-blue-200"
+				className="flex h-12 w-full cursor-not-allowed items-center justify-center rounded-md bg-locker-600 text-light-100 opacity-80 hover:bg-blue-200"
 				disabled
 			>
 				Adjust percentages
@@ -271,7 +265,7 @@ function LockerSetup() {
 		cta = (
 			<button
 				aria-label="Enable automations"
-				className="mt-8 flex h-12 w-full cursor-pointer items-center justify-center rounded-md bg-locker-600 text-light-100 opacity-100 hover:bg-blue-200"
+				className="flex h-12 w-full cursor-pointer items-center justify-center rounded-md bg-locker-600 text-light-100 opacity-100 hover:bg-blue-200"
 				onClick={() => handlePolicyCreation()}
 			>
 				Enable automations
@@ -281,7 +275,7 @@ function LockerSetup() {
 		cta = (
 			<button
 				aria-label="Continue"
-				className="mt-8 flex h-12 w-full cursor-pointer items-center justify-center rounded-md bg-locker-600 text-light-100 opacity-100 hover:bg-blue-200"
+				className="flex h-12 w-full cursor-pointer items-center justify-center rounded-md bg-locker-600 text-light-100 opacity-100 hover:bg-blue-200"
 				onClick={() => openConnectModal()}
 			>
 				Connect wallet
@@ -289,35 +283,64 @@ function LockerSetup() {
 		);
 	}
 
-	const rightPanel = (
-		<div className="flex w-full flex-col space-y-3">
-			<BoxletPieChart boxlets={boxlets} lineWidth={100} size="size-48" />
-			<div>
-				<span className="ml-2 text-sm text-dark-100">
-					Left to allocate:{" "}
-					<span
-						className={`${Number(percentLeft) < 0 ? "text-error" : "text-success"}`}
-					>
-						{percentLeft}%
-					</span>
+	const errorSection = (
+		<div>
+			{errorMessage && (
+				<span className="text-wrap text-sm text-error">
+					{errorMessage}
 				</span>
+			)}
+		</div>
+	);
+
+	const absAllocation = Math.abs(Number(percentLeft));
+	const isPerfectlyAllocated = absAllocation === 0;
+	const isOverAllocated = Number(percentLeft) < 0;
+	let allocationString = "left to allocate";
+	if (isOverAllocated) allocationString = "over allocated";
+
+	const leftToAllocate = (
+		<span className="ml-2 text-sm text-dark-100">
+			<span
+				className={`${isPerfectlyAllocated ? "text-success" : "text-error"}`}
+			>
+				{absAllocation}% {allocationString}
+			</span>
+		</span>
+	);
+
+	const rightPanel = (
+		<div className="grid grid-cols-1 justify-center text-center xxs:order-1 xxs:col-span-2 sm:order-2 sm:col-span-1">
+			<div className="flex justify-center">
+				<div className="xxs:size-64 lg:size-80 xxl:size-96">
+					<BoxletPieChart boxlets={boxlets} lineWidth={100} />
+				</div>
 			</div>
 
-			{cta}
-			<div>
-				{errorMessage && (
-					<span className="text-wrap text-sm text-error">
-						{errorMessage}
-					</span>
-				)}
+			<div className="xxs:hidden sm:block">{leftToAllocate}</div>
+
+			<div className="xxs:hidden sm:block">
+				{cta}
+				{errorSection}
 			</div>
+
 			{renderConnectModal()}
 			{chainId && renderChainSelectModal(createNewPolicy)}
 		</div>
 	);
 
+	const leftPanel = (
+		<div className="xxs:order-2 xxs:col-span-2 sm:order-1 sm:col-span-1">
+			<DistributionBox boxlets={boxlets} updateBoxlet={updateBoxlet} />
+			<div className="mt-6 text-center font-bold sm:hidden">
+				{leftToAllocate}
+			</div>
+			<div className="mt-3 sm:hidden">{cta}</div>
+		</div>
+	);
+
 	return (
-		<div className="flex w-full flex-row items-start gap-16 px-20">
+		<div className="grid grid-flow-row grid-cols-2 xxs:gap-12 lg:gap-x-24">
 			{leftPanel}
 			{rightPanel}
 		</div>

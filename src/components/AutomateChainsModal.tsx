@@ -107,7 +107,7 @@ export default function AutomateChainsModal() {
 		<Dialog>
 			<DialogTrigger>
 				<button className="w-full">
-					<div className="flex flex-row justify-between rounded-md p-2 outline outline-gray-300">
+					<div className="flex w-full flex-row justify-between rounded-md p-2 outline outline-gray-300">
 						<div className="flex flex-row space-x-1">
 							{policies.map((policy) => (
 								<div

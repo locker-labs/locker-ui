@@ -19,16 +19,16 @@ function LockerOnboarding() {
 
 	const heading = (
 		<div className="flex flex-col items-center">
-			<div className="flex w-2/3 flex-col space-y-2 text-center">
+			<div className="flex flex-col space-y-2 xxs:text-left sm:items-center sm:justify-center sm:text-center">
 				<p className="text-2xl font-bold">Create Your Locker</p>
-				<p className="text-sm text-gray-600">
-					Allocate what percentage of your funds goes to each
-					destination.
-				</p>
-				<p className="text-sm text-gray-600">
-					Each time the money arrives in your locker, it will be
-					automatically distributed based on the settings below.
-				</p>
+				<div className="sm:w-4/5 lg:w-2/3 xl:w-1/2">
+					<p className="text-gray-600 xxs:text-sm sm:text-base lg:text-lg">
+						Allocate what percentage of your funds goes to each
+						destination. Every time money (native or any ERC20)
+						arrives in your locker, it will be automatically
+						distributed based on the settings below.
+					</p>
+				</div>
 			</div>
 		</div>
 	);

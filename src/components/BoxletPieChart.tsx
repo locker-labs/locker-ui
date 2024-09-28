@@ -5,10 +5,9 @@ import { calcPrecentLeft, IDistributionBoxlet } from "./DistributionBoxlet";
 export interface IBoxletPieChart {
 	boxlets: { [id: string]: IDistributionBoxlet };
 	lineWidth: number;
-	size: string;
 }
 
-function BoxletPieChart({ boxlets, lineWidth, size }: IBoxletPieChart) {
+function BoxletPieChart({ boxlets, lineWidth }: IBoxletPieChart) {
 	console.log("BoxletPieChart", boxlets);
 	// Remove non-zero boxlets
 	const nonZero = { ...boxlets };
@@ -40,11 +39,7 @@ function BoxletPieChart({ boxlets, lineWidth, size }: IBoxletPieChart) {
 	// 	totalValue += -percentLeft;
 	// }
 
-	return (
-		<div className={`flex ${size} items-center justify-center`}>
-			<PieChart data={data} lineWidth={lineWidth} />
-		</div>
-	);
+	return <PieChart data={data} lineWidth={lineWidth} />;
 }
 
 export default BoxletPieChart;

@@ -69,7 +69,7 @@ export default function LockerPortfolioTxHistoryContent() {
 				<Tooltip>
 					<TooltipTrigger asChild>
 						<div
-							className={`${bgColor} rounded-full px-2 py-1 sm:text-xs lg:text-lg`}
+							className={`${bgColor} w-32 rounded-full px-2 py-1 text-center`}
 						>
 							{text}
 						</div>
@@ -90,13 +90,13 @@ export default function LockerPortfolioTxHistoryContent() {
 		const chain = getChainObjFromId(tx.chainId)!;
 
 		return (
-			<tr key={tx.id} className="text-sm">
+			<tr key={tx.id}>
 				{/* Label: Received/Sent with Icon, Amount and Currency */}
 				<td>
-					<div className="flex items-center justify-start text-sm">
+					<div className="flex items-center justify-start">
 						<div className="flex flex-row space-x-2">
 							{!isIncoming && amount && (
-								<div className="flex size-8 items-center justify-center border-b-2 border-l-2 text-xs font-bold">
+								<div className="flex size-8 items-center justify-center border-b-2 border-l-2 pl-2 text-xs font-bold">
 									{Big(tx.amount)
 										.div(amount)
 										.mul(100)
@@ -124,40 +124,9 @@ export default function LockerPortfolioTxHistoryContent() {
 					</div>
 				</td>
 
-				{/* From */}
-				<td>
-					<div className="flex flex-row items-center justify-start space-x-2 text-sm">
-						<span className="font-semibold">From</span>
-						{getCounterpartyLabel(tx.fromAddress)}
-					</div>
-				</td>
-
-				{/* To */}
-				<td>
-					<div className="flex flex-row items-center justify-start space-x-2 text-sm">
-						<span className="font-semibold">To</span>
-						{getCounterpartyLabel(tx.toAddress)}
-					</div>
-				</td>
-
-				{/* Confirmed/Pending */}
-				<td>
-					<div className="flex flex-row items-center justify-start space-x-2">
-						<span
-							className={`${
-								isConfirmed
-									? "rounded-full bg-tx-confirmed px-2 py-1 text-sm"
-									: "rounded-full px-2 py-1 text-sm text-gray-300"
-							}`}
-						>
-							{isConfirmed ? "Confirmed" : "Pending"}
-						</span>
-					</div>
-				</td>
-
 				{/* Time */}
 				<td>
-					<span className="text-xs text-gray-500">
+					<span className=" text-gray-500">
 						<TooltipProvider>
 							<Tooltip>
 								<TooltipTrigger asChild>
@@ -171,13 +140,44 @@ export default function LockerPortfolioTxHistoryContent() {
 					</span>
 				</td>
 
+				{/* From */}
+				<td>
+					<div className="flex flex-row items-center justify-start space-x-2">
+						<span className="font-semibold">From</span>
+						{getCounterpartyLabel(tx.fromAddress)}
+					</div>
+				</td>
+
+				{/* To */}
+				<td>
+					<div className="flex flex-row items-center justify-start space-x-2">
+						<span className="font-semibold">To</span>
+						{getCounterpartyLabel(tx.toAddress)}
+					</div>
+				</td>
+
+				{/* Confirmed/Pending */}
+				<td>
+					<div className="flex flex-row items-center justify-start space-x-2">
+						<span
+							className={`${
+								isConfirmed
+									? "rounded-full bg-tx-confirmed px-2 py-1"
+									: "rounded-full px-2 py-1 text-gray-300"
+							}`}
+						>
+							{isConfirmed ? "Confirmed" : "Pending"}
+						</span>
+					</div>
+				</td>
+
 				{/* View on Explorer */}
-				<td className="py-2 text-sm">
+				<td className="py-2">
 					<a
 						href={`${chain.blockExplorers?.default.url}/tx/${tx.txHash}`}
 						target="_blank"
 						rel="noopener noreferrer"
-						className="text-semibold flex flex-row justify-center space-x-2 text-xs font-semibold text-locker-700"
+						className="text-semibold flex flex-row justify-center space-x-2 font-semibold text-locker-700"
 					>
 						<span>View on Explorer</span> <ArrowUpRight size={18} />
 					</a>
@@ -198,9 +198,9 @@ export default function LockerPortfolioTxHistoryContent() {
 
 		return (
 			<div key={incomingTx.id}>
-				<table className="w-full table-fixed border-separate border-spacing-y-2 text-left">
+				<table className="w-full border-separate border-spacing-y-2 text-left xxs:table-auto xxs:border-spacing-x-3 lg:table-fixed">
 					<thead className="text-xs uppercase text-gray-600" />
-					<tbody className="">
+					<tbody className="xxs:text-xs lg:text-sm xxl:text-base">
 						{/* Render the "in" transaction first */}
 						{renderTxRow(incomingTx)}
 

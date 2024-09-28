@@ -102,23 +102,23 @@ function LockerPortfolio() {
 
 	return (
 		<div className="flex w-full flex-col space-y-4 bg-locker-25">
-			<div className="grid grid-flow-row-dense grid-cols-2 gap-2 sm:grid-cols-11">
-				<div className="h-96 overflow-auto rounded-md bg-white p-4 sm:col-span-4">
+			<div className="grid grid-flow-row-dense grid-cols-2 gap-2 xxs:grid-cols-1 sm:grid-cols-11">
+				<div className="xxs:col-span1 overflow-auto rounded-md bg-white p-4 sm:col-span-4 sm:h-96">
 					<LockerPortfolioValue
 						portfolioValue={lockerNetWorth}
 						tokens={tokens}
 					/>
 				</div>
 
-				<div className="h-96 overflow-auto rounded-md bg-white p-4 sm:col-span-3">
+				<div className="overflow-auto rounded-md bg-white p-4 xxs:col-span-1 sm:col-span-3 sm:h-96">
 					<LockerPortfolioAutomations automations={automations} />
 				</div>
 
-				<div className="col-span-2 h-48 overflow-auto rounded-md bg-white p-4 sm:col-span-4 sm:h-96">
+				<div className="col-span-2 overflow-auto rounded-md bg-white p-4 xxs:col-span-1 sm:col-span-4 sm:h-96">
 					<LockerPortfolioSavingsGoals />
 				</div>
 			</div>
-			<div className="min-h-96 w-full overflow-auto rounded-md bg-white p-4">
+			<div className="w-full overflow-auto rounded-md bg-white p-4 xxs:col-span-1 sm:min-h-96">
 				<LockerPortfolioTxHistory />
 			</div>
 			{onboardingFlag && renderLockerOnboardedModal()}
