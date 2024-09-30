@@ -31,7 +31,6 @@ export interface IMultiChainOverview {
 	chainsNetWorths: Record<number, string>;
 	locker: Locker;
 	setErrorMessage: (errorMessage: string) => void;
-	fetchPolicies: () => void;
 	offrampAddresses: `0x${string}`[];
 }
 
@@ -42,7 +41,6 @@ function MultiChainOverview({
 	chainsNetWorths,
 	locker,
 	setErrorMessage,
-	fetchPolicies,
 	offrampAddresses,
 }: IMultiChainOverview) {
 	const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -136,8 +134,6 @@ function MultiChainOverview({
 			await createPolicy(authToken, policy, setErrorMessage);
 		}
 
-		fetchPolicies();
-
 		setIsLoading(false);
 		setChainRowLoading(null);
 	};
@@ -215,8 +211,6 @@ function MultiChainOverview({
 			await updatePolicy(authToken, policy, setErrorMessage);
 		}
 
-		fetchPolicies();
-
 		setIsLoading(false);
 		setChainRowLoading(null);
 	};
@@ -290,7 +284,7 @@ function MultiChainOverview({
 
 				return (
 					<div key={chainId} className="flex w-full items-center p-3">
-						<div className="flex w-full flex-row xs1:flex-row xs1:items-center xs1:justify-between">
+						<div className="xs1:flex-row xs1:items-center xs1:justify-between flex w-full flex-row">
 							<div className="flex w-full min-w-fit flex-col justify-center space-y-2">
 								<div className="flex w-full items-center">
 									<div
@@ -315,7 +309,7 @@ function MultiChainOverview({
 										: "0.00"}
 								</span>
 							</div>
-							<div className="mt-4 flex flex-row space-y-2 xs1:mt-0 xs1:flex-row xs1:space-x-2 xs1:space-y-0">
+							<div className="xs1:mt-0 xs1:flex-row xs1:space-x-2 xs1:space-y-0 mt-4 flex flex-row space-y-2">
 								<button
 									className="flex h-8 w-16 items-center justify-center rounded-full bg-secondary-100 text-light-100 hover:bg-secondary-200 dark:bg-primary-200 dark:hover:bg-primary-100"
 									onClick={() => showQrModal(chainId)}

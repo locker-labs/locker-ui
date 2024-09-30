@@ -1,62 +1,57 @@
-import { useAuth } from "@clerk/nextjs";
-import { useEffect, useState } from "react";
-import Blockies from "react-blockies";
+"use client";
 
-import AutomationSettings from "@/components/AutomationSettings";
-import MultiChainOverview from "@/components/MultiChainOverview";
-import PortfolioIconButtonGroup from "@/components/PortfolioIconButtonGroup";
-import Tooltip from "@/components/Tooltip";
-import TxTable from "@/components/TxTable";
+import { useAuth } from "@clerk/nextjs";
+import { redirect, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
+
+import { paths } from "@/data/constants/paths";
 import { supportedChainIdsArray } from "@/data/constants/supportedChains";
+import { useLockerOnboardedModal } from "@/hooks/useLockerOnboardedModal";
 import { getLockerNetWorth } from "@/services/moralis";
 import { getTokenBalances } from "@/services/transactions";
-import { EAutomationType, Locker, Policy, Token } from "@/types";
-import { getFundedChainIds } from "@/utils/getFundedChainIds";
+import { Token } from "@/types";
 import { isChainSupported } from "@/utils/isChainSupported";
 import { isTestnet } from "@/utils/isTestnet";
 
-export interface ILockerPortfolio {
-	lockers: Locker[];
-	policies: Policy[];
-	fetchPolicies: () => void;
-	offrampAddresses: `0x${string}`[];
-}
+import { useLocker } from "../providers/LockerProvider";
+import LockerPortfolioAutomations from "./LockerPortfolioAutomations";
+import LockerPortfolioSavingsGoals from "./LockerPortfolioSavingsGoals";
+import LockerPortfolioTxHistory from "./LockerPortfolioTxHistory";
+import LockerPortfolioValue from "./LockerPortfolioValue";
 
-function LockerPortfolio({
-	lockers,
-	policies,
-	fetchPolicies,
-	offrampAddresses,
-}: ILockerPortfolio) {
-	const [errorMessage, setErrorMessage] = useState<string>("");
-	const [tokenList, setTokenList] = useState<Token[]>([]);
-	const [fundedChainIds, setFundedChainIds] = useState<number[]>([]);
+function LockerPortfolio() {
+	const { locker, policies, txs } = useLocker();
+	const [tokens, setTokens] = useState<Token[]>([]);
 	const [lockerNetWorth, setLockerNetWorth] = useState<string>("0.00");
-	const [chainsNetWorths, setChainsNetWorths] = useState<
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	const [_chainsNetWorths, setChainsNetWorths] = useState<
 		Record<number, string>
 	>({});
 
 	const { getToken } = useAuth();
 
+	const searchParams = useSearchParams();
+
+	const { openLockerOnboardedModal, renderLockerOnboardedModal } =
+		useLockerOnboardedModal();
+	const onboardingFlag = searchParams.get("o");
+
+	useEffect(() => {
+		if (onboardingFlag) openLockerOnboardedModal();
+	}, [onboardingFlag]);
+
+	const shouldSetupFirstPolicy =
+		!policies || (policies && policies.length === 0);
+
+	if (shouldSetupFirstPolicy) redirect(paths.ONBOARDING);
+
 	// Props destructured variables
-	const locker = lockers[0];
-	const { txs } = locker;
+	// const { txs } = locker;
 	const filteredTxs = txs
 		? txs.filter((tx) => isChainSupported(tx.chainId))
 		: [];
 	const basePolicy = policies[0];
 	const { automations } = basePolicy;
-
-	// Props derived variables
-	const bankAutomation = automations.find(
-		(a) => a.type === EAutomationType.OFF_RAMP
-	);
-	const hotWalletAutomation = automations.find(
-		(a) => a.type === EAutomationType.FORWARD_TO
-	);
-	const saveAutomation = automations.find(
-		(a) => a.type === EAutomationType.SAVINGS
-	);
 
 	/* For now, we're only handling:
 		- One locker per user (index 0)
@@ -71,14 +66,13 @@ function LockerPortfolio({
 
 	const getTokenList = async () => {
 		const authToken = await getToken();
-		if (authToken && locker.id) {
+		if (authToken && locker?.id) {
 			const list = await getTokenBalances(authToken, locker.id);
 			const filteredList = list
 				? list.filter((token) => isChainSupported(token.chainId))
 				: [];
-			const fundedChainIdsList = getFundedChainIds(filteredList);
-			setTokenList(filteredList);
-			setFundedChainIds(fundedChainIdsList);
+			setTokens(filteredList);
+			console.log("Token list: ", filteredList);
 		}
 	};
 
@@ -108,103 +102,27 @@ function LockerPortfolio({
 	}, []);
 
 	return (
-		<div className="flex w-full flex-1 flex-col items-center">
-			<div className="flex w-fit flex-col overflow-visible">
-				<Blockies
-					className="flex self-center rounded-full"
-					seed={locker.address.toLowerCase()}
-					size={14}
-				/>
-				<div className="mt-4 flex w-full flex-col items-center">
-					<Tooltip
-						width="w-36"
-						label="Total USD value of your locker across all supported chains."
-						placement="auto"
-					>
-						<span className="mb-1 flex cursor-pointer items-center whitespace-nowrap text-sm text-light-600">
-							Total value <span className="ml-2 text-xs">ⓘ</span>
-						</span>
-					</Tooltip>
-					<span className="text-4xl">${lockerNetWorth}</span>
-				</div>
-				{locker && (
-					<div className="mt-4 flex items-center">
-						<PortfolioIconButtonGroup
-							locker={locker}
-							tokenList={tokenList}
-							getTokenList={getTokenList}
-						/>
-					</div>
-				)}
-			</div>
-			<div className="mt-6 flex w-full min-w-fit max-w-xs flex-col space-y-2 overflow-visible">
-				<div className="flex w-full items-center">
-					<Tooltip
-						width="w-36"
-						label="These automation settings will be applied to all chains that have been enabled."
-						placement="auto"
-					>
-						<span className="cursor-pointer text-sm text-light-600">
-							Automation settings
-							<span className="ml-2 text-xs">ⓘ</span>
-						</span>
-					</Tooltip>
-				</div>
-				<AutomationSettings
-					currentPolicies={policies}
-					fetchPolicies={fetchPolicies}
-					locker={locker}
-					bankAutomation={bankAutomation}
-					hotWalletAutomation={hotWalletAutomation}
-					saveAutomation={saveAutomation}
-				/>
-			</div>
-			{locker && policies && (
-				<div className="mt-6 flex w-full min-w-fit max-w-md flex-col space-y-2 overflow-visible">
-					<div className="flex w-full items-center">
-						<Tooltip
-							width="w-40"
-							label="For security reasons, automations must be individually authorized on each chain."
-							placement="auto"
-						>
-							<span className="cursor-pointer text-sm text-light-600">
-								Multi-chain overview
-								<span className="ml-2 text-xs">ⓘ</span>
-							</span>
-						</Tooltip>
-					</div>
-					<MultiChainOverview
-						fundedChainIds={fundedChainIds}
-						policies={policies}
-						automations={automations}
-						chainsNetWorths={chainsNetWorths}
-						locker={locker}
-						setErrorMessage={setErrorMessage}
-						fetchPolicies={fetchPolicies}
-						offrampAddresses={offrampAddresses}
+		<div className="flex w-full flex-col space-y-4 bg-locker-25">
+			<div className="grid grid-flow-row-dense grid-cols-2 gap-2 xxs:grid-cols-1 sm:grid-cols-11">
+				<div className="xxs:col-span1 overflow-auto rounded-md bg-white p-4 sm:col-span-4 sm:h-96">
+					<LockerPortfolioValue
+						portfolioValue={lockerNetWorth}
+						tokens={tokens}
 					/>
 				</div>
-			)}
-			{errorMessage && (
-				<span className="mt-6 text-sm text-error">{errorMessage}</span>
-			)}
-			{filteredTxs.length > 0 && (
-				<div className="mt-6 flex w-full flex-col space-y-2">
-					<div className="flex w-full items-center">
-						<Tooltip
-							width="w-40"
-							label="History of all incoming and outgoing transactions from your locker."
-							placement="auto"
-						>
-							<span className="cursor-pointer text-sm text-light-600">
-								Transaction history
-								<span className="ml-2 text-xs">ⓘ</span>
-							</span>
-						</Tooltip>
-					</div>
-					<TxTable txs={filteredTxs} />
+
+				<div className="overflow-auto rounded-md bg-white p-4 xxs:col-span-1 sm:col-span-3 sm:h-96">
+					<LockerPortfolioAutomations automations={automations} />
 				</div>
-			)}
+
+				<div className="col-span-2 overflow-auto rounded-md bg-white p-4 xxs:col-span-1 sm:col-span-4 sm:h-96">
+					<LockerPortfolioSavingsGoals />
+				</div>
+			</div>
+			<div className="w-full overflow-auto rounded-md bg-white p-4 xxs:col-span-1 sm:min-h-96">
+				<LockerPortfolioTxHistory />
+			</div>
+			{onboardingFlag && renderLockerOnboardedModal()}
 		</div>
 	);
 }

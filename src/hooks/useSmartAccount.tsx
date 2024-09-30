@@ -55,14 +55,6 @@ const useSmartAccount = () => {
 		hotWalletAddress: `0x${string}`, // If not specified, defaults locker owner address
 		offrampAddresses: `0x${string}`[]
 	): Promise<string | undefined> => {
-		console.log(
-			"signSessionKey",
-			chainId,
-			lockerIndex,
-			hotWalletAddress,
-			offrampAddresses
-		);
-
 		if (!walletClient) {
 			throw new Error("Wallet client is not available");
 		}

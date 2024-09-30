@@ -17,13 +17,13 @@ function TxDetails({ tx, chain }: ITxDetails) {
 		<div className="flex w-full flex-col overflow-x-auto rounded-md border border-light-200 shadow-sm shadow-light-600 dark:border-dark-200 dark:shadow-none">
 			<table className="min-w-full divide-y divide-light-200 text-left text-sm dark:divide-dark-200">
 				<tbody className="divide-y divide-light-200 dark:divide-dark-200">
-					<tr className="flex flex-col items-start sm1:flex-row sm1:items-center">
+					<tr className="sm1:flex-row sm1:items-center flex flex-col items-start">
 						<td className="w-36 shrink-0 px-4 py-3 text-light-600">
 							Date (UTC):
 						</td>
 						<td className="px-4 py-3">{tx.createdAt}</td>
 					</tr>
-					<tr className="flex flex-col items-start sm1:flex-row sm1:items-center">
+					<tr className="sm1:flex-row sm1:items-center flex flex-col items-start">
 						<td className="w-36 shrink-0 px-4 py-3 text-light-600">
 							Status:
 						</td>
@@ -39,7 +39,7 @@ function TxDetails({ tx, chain }: ITxDetails) {
 							)}
 						</td>
 					</tr>
-					<tr className="flex flex-col items-start sm1:flex-row sm1:items-center">
+					<tr className="sm1:flex-row sm1:items-center flex flex-col items-start">
 						<td className="w-36 shrink-0 px-4 py-3 text-light-600">
 							Chain:
 						</td>
@@ -60,7 +60,7 @@ function TxDetails({ tx, chain }: ITxDetails) {
 							</div>
 						</td>
 					</tr>
-					<tr className="flex flex-col items-start sm1:flex-row sm1:items-center">
+					<tr className="sm1:flex-row sm1:items-center flex flex-col items-start">
 						<td className="w-36 shrink-0 px-4 py-3 text-light-600">
 							Tx hash:
 						</td>
@@ -83,7 +83,7 @@ function TxDetails({ tx, chain }: ITxDetails) {
 							)}
 						</td>
 					</tr>
-					<tr className="flex flex-col items-start sm1:flex-row sm1:items-center">
+					<tr className="sm1:flex-row sm1:items-center flex flex-col items-start">
 						<td className="w-36 shrink-0 px-4 py-3 text-light-600">
 							To:
 						</td>
@@ -106,7 +106,7 @@ function TxDetails({ tx, chain }: ITxDetails) {
 							)}
 						</td>
 					</tr>
-					<tr className="flex flex-col items-start sm1:flex-row sm1:items-center">
+					<tr className="sm1:flex-row sm1:items-center flex flex-col items-start">
 						<td className="w-36 shrink-0 px-4 py-3 text-light-600">
 							From:
 						</td>
@@ -129,7 +129,7 @@ function TxDetails({ tx, chain }: ITxDetails) {
 							)}
 						</td>
 					</tr>
-					<tr className="flex flex-col items-start sm1:flex-row sm1:items-center">
+					<tr className="sm1:flex-row sm1:items-center flex flex-col items-start">
 						<td className="w-36 shrink-0 px-4 py-3 text-light-600">
 							Amount:
 						</td>
@@ -138,7 +138,7 @@ function TxDetails({ tx, chain }: ITxDetails) {
 							{tx.tokenSymbol}
 						</td>
 					</tr>
-					<tr className="flex flex-col items-start sm1:flex-row sm1:items-center">
+					<tr className="sm1:flex-row sm1:items-center flex flex-col items-start">
 						<td className="w-36 shrink-0 px-4 py-3 text-light-600">
 							Token Type
 						</td>

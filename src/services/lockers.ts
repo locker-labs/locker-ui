@@ -27,10 +27,12 @@ export const getLockers = async (
 export const createLocker = async (
 	authToken: string,
 	locker: Locker,
-	setErrorMessage: (value: string | null) => void
-) => {
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	setErrorMessage: any
+): Promise<Locker | undefined> => {
 	try {
 		// response.status should be 201 (Created)
+		console.log("Going to create locker");
 		const response = await fetch(endpoints.CREATE_LOCKER, {
 			method: "POST",
 			headers: {
@@ -40,10 +42,17 @@ export const createLocker = async (
 			body: JSON.stringify(locker),
 		});
 
+		console.log("Create locker response");
+
 		if (!response.ok) {
 			// Handle error in catch
 			throw response;
 		}
+
+		const {
+			data: { locker: createdLocker },
+		} = await response.json();
+		return createdLocker;
 	} catch (error) {
 		if (error instanceof Response) {
 			const errorMessage =
@@ -57,6 +66,8 @@ export const createLocker = async (
 			setErrorMessage(errors.UNEXPECTED);
 		}
 	}
+
+	return undefined;
 };
 
 export const createPolicy = async (

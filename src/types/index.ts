@@ -1,3 +1,8 @@
+export enum ELockerDirection {
+	IN = "in",
+	OUT = "out",
+}
+
 export type Tx = {
 	id: number;
 	lockerId: number;
@@ -11,7 +16,7 @@ export type Tx = {
 	chainId: number;
 	isConfirmed: boolean;
 	triggeredByTokenTxId: number | null;
-	lockerDirection: "in" | "out";
+	lockerDirection: ELockerDirection;
 	automationsState: "started" | "not_started";
 	createdAt: string;
 	updatedAt: string;
@@ -37,6 +42,10 @@ export type Locker = {
 	createdAt?: string;
 	updatedAt?: string;
 };
+
+export interface LockerDb extends Locker {
+	id: number;
+}
 
 export enum EAutomationType {
 	SAVINGS = "savings",
@@ -67,6 +76,10 @@ export type Policy = {
 	sessionKey?: string;
 	automations: Automation[];
 };
+
+export interface PolicyDb extends Policy {
+	id: number;
+}
 
 export type Token = {
 	symbol: string;

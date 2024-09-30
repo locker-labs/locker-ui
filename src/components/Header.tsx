@@ -1,15 +1,15 @@
 "use client";
 
 import { useAuth } from "@clerk/nextjs";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { Suspense } from "react";
 import { useAccount } from "wagmi";
 
 // import AuthButton from "@/components/AuthButton";
-import ChainDropdown from "@/components/ChainDropdown";
 import ConnectButton from "@/components/ConnectButton";
 import HeaderMenu from "@/components/HeaderMenu";
-import ThemedImage from "@/components/ThemedImage";
 import { paths } from "@/data/constants/paths";
 import { isTestnet } from "@/utils/isTestnet";
 
@@ -18,13 +18,26 @@ function Header() {
 	const { isSignedIn } = useAuth();
 	const { isConnected, chainId } = useAccount();
 
-	// const isAuthRoute =
-	// 	pathname === paths.SIGN_IN || pathname === paths.SIGN_UP;
-
-	// const showAuthButtons = !isSignedIn && !isAuthRoute;
 	const showConnectButton = isSignedIn && !isConnected;
 	const showMenu = isSignedIn && isConnected;
 	const showTestnetBanner = isConnected && chainId && isTestnet(chainId);
+
+	const menu = showMenu ? (
+		<div
+			className={`${
+				pathname === paths.ACCOUNT && "hidden"
+			} ml-2 flex items-center justify-center space-x-1`}
+		>
+			<HeaderMenu />
+		</div>
+	) : showConnectButton ? (
+		<div className="xs1:space-x-2 ml-2 flex items-center justify-center">
+			<div className="xs1:flex hidden">
+				<ConnectButton />
+			</div>
+			<HeaderMenu />
+		</div>
+	) : null;
 
 	return (
 		<header className="relative top-0 z-10 w-full">
@@ -38,47 +51,14 @@ function Header() {
 					className="relative mr-2 flex h-9 w-28 shrink-0 justify-center"
 					href={paths.LANDING}
 				>
-					<ThemedImage
-						darkImageSrc="/assets/logoLockerWhiteLetters.svg"
-						lightImageSrc="/assets/logoLockerDarkLetters.svg"
-						alt="Locker Logo"
+					<Image
+						src="/assets/logoLockerDarkLetters.svg"
+						alt="Locker logo"
+						priority
+						fill
 					/>
 				</Link>
-				{showMenu ? (
-					<div
-						className={`${
-							pathname === paths.ACCOUNT && "hidden"
-						} ml-2 flex items-center justify-center space-x-1`}
-					>
-						<ChainDropdown />
-						<HeaderMenu />
-					</div>
-				) : showConnectButton ? (
-					<div className="ml-2 flex items-center justify-center xs1:space-x-2">
-						<div className="hidden xs1:flex">
-							<ConnectButton />
-						</div>
-						<HeaderMenu />
-					</div>
-				) : // : showAuthButtons ? (
-				// 	<div className="ml-2 flex items-center justify-center sm:space-x-2">
-				// 		<AuthButton
-				// 			type="sign-in"
-				// 			label="Sign in"
-				// 			height="h-10"
-				// 			width="w-24"
-				// 		/>
-				// 		<div className="hidden sm:flex">
-				// 			<AuthButton
-				// 				type="sign-up"
-				// 				label="Sign up"
-				// 				height="h-10"
-				// 				width="w-24"
-				// 			/>
-				// 		</div>
-				// 	</div>
-				// )
-				null}
+				<Suspense fallback={null}>{menu}</Suspense>
 			</div>
 		</header>
 	);

@@ -11,8 +11,12 @@ export const errors = {
 		"Your wallet's current account is not the owner of this locker. Please switch to the correct account.",
 	INVALID_ADDRESS: "Invalid address.",
 	NO_ADDRESS: "Enter a recipient address.",
+	RECIPIENT_EVM: "Recipient must be valid 0x address.",
 	TOO_MANY_DECIMALS: "Too many decimal places.",
 	AT_LEAST_ONE: "Must choose at least one.",
 	SUM_TO_100: "Percentages must add up to 100%.",
 	INVALID_INVITE: "Invalid invite code.",
+	NO_LOCKER: "No locker. Contact support@geeky.rocks.",
+	NO_AUTOMATIONS: "No automations. Contact support@geeky.rocks.",
+	INVALID_AMOUNT: "Invalid amount.",
 };

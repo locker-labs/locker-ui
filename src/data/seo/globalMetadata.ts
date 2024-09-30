@@ -3,7 +3,7 @@ export const globalMetadata = {
 	title: process.env.APP_NAME,
 	description: process.env.APP_DESCRIPTION,
 	keywords: [
-		"Chain Rule",
+		"Locker",
 		"DeFi",
 		"Crypto",
 		"Smart Contracts",
@@ -23,6 +23,7 @@ export const globalMetadata = {
 		"Sepolia",
 		"Gnosis",
 		"Base",
+		"Linea",
 	],
 	icons: {
 		icon: [
