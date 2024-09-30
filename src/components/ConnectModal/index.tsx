@@ -52,6 +52,10 @@ function ConnectModal({ isOpen, closeModal }: IConnectModal) {
 										<IoClose className="" size="22px" />
 									</button>
 								</Dialog.Title>
+								<span className="text-left text-sm">
+									We use your public address to generate an
+									on-chain account that belongs to you.
+								</span>
 								<div className="mt-4 flex w-full flex-col items-center space-y-2">
 									<WalletButtons closeModal={closeModal} />
 								</div>

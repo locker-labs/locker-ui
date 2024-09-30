@@ -11,7 +11,6 @@ import { useAccount } from "wagmi";
 import Tooltip from "@/components/Tooltip";
 import { useConnectModal } from "@/hooks/useConnectModal";
 import { useQrCodeModal } from "@/hooks/useQrCodeModal";
-import { useSendModal } from "@/hooks/useSendModal";
 import { Locker, Token } from "@/types";
 import { copyToClipboard } from "@/utils/copytoClipboard";
 import { isChainSupported } from "@/utils/isChainSupported";
@@ -32,12 +31,10 @@ function PortfolioIconButtonGroup({
 	const { isConnected, chain } = useAccount();
 	const { openConnectModal, renderConnectModal } = useConnectModal();
 	const { openQrCodeModal, renderQrCodeModal } = useQrCodeModal();
-	const { openSendModal, renderSendModal } = useSendModal();
 
 	const handleSendModalPopup = () => {
 		if (isConnected) {
 			getTokenList();
-			openSendModal();
 		} else {
 			openConnectModal();
 		}
@@ -114,7 +111,6 @@ function PortfolioIconButtonGroup({
 					</div>
 				)}
 			{renderQrCodeModal(locker.address, chain?.id || 10)}
-			{renderSendModal(tokenList, locker)}
 			{renderConnectModal()}
 		</div>
 	);

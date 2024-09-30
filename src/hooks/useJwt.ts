@@ -13,8 +13,8 @@ export const useJwt = () => {
 	}, [getToken]);
 
 	const getJwtExpiration = useCallback(async (): Promise<number | null> => {
-		const jwt = await getJwt();
 		try {
+			const jwt = await getJwt();
 			const decoded = jwtDecode.decode(jwt) as { exp: number } | null;
 			return decoded?.exp || null;
 		} catch (error) {

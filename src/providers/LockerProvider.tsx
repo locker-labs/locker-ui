@@ -3,7 +3,7 @@
 import { createContext, ReactNode, useContext, useMemo, useState } from "react";
 
 import { useRealtimeTable } from "@/hooks/useRealtimeTable";
-import { LockerDb, PolicyDb, Tx } from "@/types";
+import { Automation, LockerDb, PolicyDb, Tx } from "@/types";
 import {
 	TABLE_LOCKERS,
 	TABLE_POLICIES,
@@ -18,7 +18,9 @@ export interface ILockerPortfolio {
 
 interface LockerPortfolioContextProps {
 	lockers: LockerDb[];
+	locker: LockerDb | undefined;
 	policies: PolicyDb[];
+	automations: Automation[] | undefined;
 	txs: Tx[];
 	offrampAddresses: `0x${string}`[];
 }
@@ -37,27 +39,34 @@ export function LockerProvider({
 }: ILockerPortfolio & { children: ReactNode }) {
 	const [offrampAddresses] = useState(initialOfframpAddresses);
 
-	const initialTxs = initialLockers.flatMap((locker) => locker.txs) as Tx[];
+	const initialTxs = (initialLockers || []).flatMap(
+		(locker) => locker.txs
+	) as Tx[];
 	const { records: txs } = useRealtimeTable<Tx>(TABLE_TOKEN_TXS, initialTxs);
-	console.log("Tx records", txs);
+	// console.log("Tx records", txs);
 
 	const { records: policies } = useRealtimeTable<PolicyDb>(
 		TABLE_POLICIES,
 		initialPolicies
 	);
-	console.log("Policy records", policies);
+	// console.log("Policy records", policies);
 
 	const { records: lockers } = useRealtimeTable<LockerDb>(
 		TABLE_LOCKERS,
 		initialLockers
 	);
-	console.log("lockers records", lockers);
+	// console.log("lockers records", lockers);
+	// console.log("lockers initialLockers", initialLockers);
+	const locker = lockers && lockers.length > 0 ? lockers[0] : undefined;
+	const automations = policies[0]?.automations ?? [];
 
 	// Memoize the value to prevent unnecessary re-renders
 	const value = useMemo(
 		() => ({
-			lockers,
+			lockers: lockers || [],
+			locker,
 			policies,
+			automations,
 			txs,
 			offrampAddresses,
 		}),

@@ -4,12 +4,13 @@ export const getChainIconStyling = (chainId: number) => {
 	const chainClasses = {
 		[supportedChainIds.arbitrum]: "bg-arbitrum/20 text-arbitrum",
 		[supportedChainIds.optimism]: "bg-optimism/20 text-optimism",
-		[supportedChainIds.base]: "bg-base/20 text-base",
+		// bbase is not a typo. 'base' is already used in tailwind.
+		[supportedChainIds.base]: "bg-bbase/20 text-bbase",
 		[supportedChainIds.polygon]: "bg-polygon/20 text-polygon",
 		[supportedChainIds.avalanche]: "bg-avalanche/20 text-avalanche",
 		[supportedChainIds.sepolia]: "bg-ethereum/20 text-ethereum",
 		[supportedChainIds.baseSepolia]: "bg-base/20 text-base",
-		[supportedChainIds.linea]: "linea-base/20 text-linea",
+		[supportedChainIds.linea]: "bg-linea/20 text-linea",
 	};
 
 	return chainClasses[chainId] || "bg-error/20 text-error";

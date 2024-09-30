@@ -14,20 +14,21 @@ import { copyToClipboard } from "@/utils/copytoClipboard";
 import { getChainIconStyling } from "@/utils/getChainIconStyling";
 
 export interface ITokenDropdown {
-	tokenList: Token[];
+	tokens: Token[];
 	selectedToken: Token;
 	setSelectedToken: (token: Token) => void;
 	disabled?: boolean;
 }
 
 function TokenDropdown({
-	tokenList,
+	tokens,
 	selectedToken,
 	setSelectedToken,
 	disabled = false,
 }: ITokenDropdown) {
 	const [copied, setCopied] = useState<boolean>(false);
 	const [copiedSymbol, setCopiedSymbol] = useState<string>("");
+	if (!selectedToken) return null;
 
 	return (
 		<Listbox
@@ -82,7 +83,7 @@ function TokenDropdown({
 								open && "relative z-10"
 							} mt-2 max-h-64 overflow-hidden overflow-y-auto rounded-md border border-light-200 bg-light-100 outline-none dark:border-dark-200 dark:bg-dark-500`}
 						>
-							{tokenList.map((token) => (
+							{tokens.map((token) => (
 								<Listbox.Option
 									key={`${token.address}${token.symbol}${token.chainId}`}
 									value={token}

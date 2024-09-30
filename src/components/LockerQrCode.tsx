@@ -28,19 +28,6 @@ function LockerQrCode({ lockerAddress }: ILockerQrCode) {
 			<div className="absolute bottom-[-0.5px] left-[-0.5px] h-10 w-10 rounded-md border-b-[7px] border-l-[7px] border-primary-100" />
 			<div className="absolute bottom-[-0.5px] right-[-0.5px] h-10 w-10 rounded-md border-b-[7px] border-r-[7px] border-secondary-100" />
 		</div>
-		// <QRCodeSVG
-		// 	className="rounded-xl border border-light-200 shadow-sm shadow-light-600 dark:border-dark-200 dark:shadow-none"
-		// 	value={lockerAddress}
-		// 	size={225}
-		// 	includeMargin
-		// 	level="H"
-		// 	imageSettings={{
-		// 		src: "/assets/iconLockerWithMargin.svg",
-		// 		height: 45,
-		// 		width: 45,
-		// 		excavate: true,
-		// 	}}
-		// />
 	);
 }
 

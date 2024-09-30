@@ -16,7 +16,7 @@ function AccountPage() {
 		<div className="flex w-full flex-1 flex-col items-center py-12">
 			<div className="flex-col0 mb-8 flex w-full">
 				<button
-					className="h-10 w-fit hover:text-secondary-200 dark:hover:text-primary-100"
+					className="h-10 w-fit hover:text-secondary-200 "
 					onClick={() => router.push(paths.HOME)}
 				>
 					<div className="flex items-center justify-center space-x-1">

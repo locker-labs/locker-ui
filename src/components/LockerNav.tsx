@@ -1,21 +1,21 @@
 "use client";
 
 import { useLocker } from "../providers/LockerProvider";
-import LockerCreate from "./LockerCreate";
+import LockerOnboarding from "./LockerOnboarding";
 import LockerPortfolio from "./LockerPortfolio";
-import LockerSetup from "./LockerSetup";
 
 function LockerNav() {
 	const { lockers, policies } = useLocker();
 
-	const shouldCreateLocker = lockers && lockers.length === 0;
-	if (shouldCreateLocker) return <LockerCreate lockerIndex={0} />;
-
 	const shouldSetupFirstPolicy =
-		lockers &&
-		lockers.length > 0 &&
-		(!policies || (policies && policies.length === 0));
-	if (shouldSetupFirstPolicy) return <LockerSetup />;
+		!policies || (policies && policies.length === 0);
+
+	if (shouldSetupFirstPolicy)
+		return (
+			<div className="flex w-full flex-1 flex-col items-center py-12">
+				<LockerOnboarding />
+			</div>
+		);
 
 	const shouldShowPortfolio =
 		lockers && lockers.length > 0 && !shouldSetupFirstPolicy;

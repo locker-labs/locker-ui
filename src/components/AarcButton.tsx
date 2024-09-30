@@ -6,6 +6,7 @@ import { AarcProvider, useAarc } from "@aarc-xyz/deposit-widget";
 import { getUsdcAddress } from "@/data/policies/usdc";
 import { chainCodeNames } from "@/data/constants/supportedChains";
 import { titleCaseWord } from "@/utils/strings";
+import { IconArrowUpRight } from "./Icons";
 
 export type IAarcButtonProps = {
 	lockerAddress: string;
@@ -17,9 +18,12 @@ function AarcButtonContent() {
 	return (
 		<button
 			onClick={() => deposit()}
-			className="w-full rounded-md bg-primary-100 p-2"
+			className="flex w-full flex-row space-x-2 rounded-md bg-locker-600 px-3 py-1 text-sm text-white outline "
 		>
-			Deposit USDC
+			Quick Deposit{" "}
+			<span className="ml-2">
+				<IconArrowUpRight />
+			</span>
 		</button>
 	);
 }

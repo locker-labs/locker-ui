@@ -20,7 +20,7 @@ function SignInPage() {
 	useEffect(() => {
 		const interval = setInterval(() => {
 			if (isSignedIn) {
-				router.push(paths.HOME);
+				router.push(paths.ONBOARDING);
 			} else {
 				clearInterval(interval);
 			}
