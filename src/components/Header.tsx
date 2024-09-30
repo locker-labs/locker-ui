@@ -18,10 +18,6 @@ function Header() {
 	const { isSignedIn } = useAuth();
 	const { isConnected, chainId } = useAccount();
 
-	// const isAuthRoute =
-	// 	pathname === paths.SIGN_IN || pathname === paths.SIGN_UP;
-
-	// const showAuthButtons = !isSignedIn && !isAuthRoute;
 	const showConnectButton = isSignedIn && !isConnected;
 	const showMenu = isSignedIn && isConnected;
 	const showTestnetBanner = isConnected && chainId && isTestnet(chainId);

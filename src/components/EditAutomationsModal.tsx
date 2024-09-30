@@ -1,61 +1,38 @@
-import { Dialog, Transition } from "@headlessui/react";
-import { Fragment } from "react";
-import { IoClose } from "react-icons/io5";
+import { Pencil } from "lucide-react";
 
-export interface IEditAutomationsModal {
-	isOpen: boolean;
-	closeModal: () => void;
-}
+import {
+	Dialog,
+	DialogContent,
+	DialogDescription,
+	DialogFooter,
+	DialogHeader,
+	DialogTitle,
+	DialogTrigger,
+} from "@/components/ui/dialog";
 
-function EditAutomationsModal({ isOpen, closeModal }: IEditAutomationsModal) {
+export function EditAutomationsModal() {
 	return (
-		<Transition appear show={isOpen} as={Fragment}>
-			<Dialog as="div" className="relative z-10" onClose={closeModal}>
-				<Transition.Child
-					as={Fragment}
-					enter="ease-out duration-300"
-					enterFrom="opacity-0"
-					enterTo="opacity-100"
-					leave="ease-in duration-200"
-					leaveFrom="opacity-100"
-					leaveTo="opacity-0"
-				>
-					<div className="fixed inset-0 bg-dark-600/75" />
-				</Transition.Child>
-				<div className="fixed inset-0 overflow-y-auto">
-					<div className="flex min-h-full items-center justify-center p-4 text-center">
-						<Transition.Child
-							as={Fragment}
-							enter="ease-out duration-300"
-							enterFrom="opacity-0 scale-95"
-							enterTo="opacity-100 scale-100"
-							leave="ease-in duration-200"
-							leaveFrom="opacity-100 scale-100"
-							leaveTo="opacity-0 scale-95"
-						>
-							<Dialog.Panel className="flex w-full min-w-64 max-w-sm flex-col items-center justify-center rounded-2xl bg-light-100 p-6 shadow-xl dark:bg-dark-500">
-								<Dialog.Title
-									as="h3"
-									className="flex w-full items-center justify-between"
-								>
-									<span className="text-lg font-medium">
-										Edit automations
-									</span>
-									<button
-										className="rounded-full bg-light-200 p-1 hover:bg-light-300 dark:bg-dark-400 dark:hover:bg-dark-300"
-										aria-label="Close modal"
-										onClick={closeModal}
-									>
-										<IoClose className="" size="22px" />
-									</button>
-								</Dialog.Title>
-							</Dialog.Panel>
-						</Transition.Child>
-					</div>
-				</div>
-			</Dialog>
-		</Transition>
+		<Dialog>
+			<DialogTrigger asChild>
+				<button className="outline-solid flex cursor-pointer flex-row items-center justify-center rounded-md px-2 py-1 text-sm outline outline-gray-300">
+					<Pencil size={14} />
+					<span className="lg:text-md ml-2 xs:text-xs lg:text-sm">
+						Edit
+					</span>
+				</button>
+			</DialogTrigger>
+			<DialogContent className="sm:max-w-[425px]">
+				<DialogHeader>
+					<DialogTitle>Edit automations</DialogTitle>
+					<DialogDescription>
+						Coming soon! Contact support@geeky.rocks for help today.
+					</DialogDescription>
+				</DialogHeader>
+				<div className="grid gap-4 py-4" />
+				<DialogFooter>
+					{/* <Button type="submit">Save changes</Button> */}
+				</DialogFooter>
+			</DialogContent>
+		</Dialog>
 	);
 }
-
-export default EditAutomationsModal;

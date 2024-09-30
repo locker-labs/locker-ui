@@ -1,4 +1,4 @@
-import { QrCode, Send } from "lucide-react";
+import { QrCode } from "lucide-react";
 import { formatUnits } from "viem";
 import { useChainId } from "wagmi";
 
@@ -8,6 +8,7 @@ import { Token } from "@/types";
 import { getChainNameFromId } from "@/utils/getChainName";
 
 import AutomateChainsModal from "./AutomateChainsModal";
+import { SendTokensModal } from "./SendTokensModal";
 
 type ILockerPortfolioValue = {
 	portfolioValue: string;
@@ -36,19 +37,8 @@ function LockerPortfolioValue({
 					</p>
 				</div>
 				<div className="flex flex-row space-x-4">
-					<button onClick={openQrCodeModal}>
-						<div className="flex flex-col items-center justify-center rounded-sm bg-gray-100 xxs:h-20 xxs:w-20 xxs:space-y-2 xxs:p-2 sm:space-y-1 sm:p-4">
-							<div className="sm:hidden">
-								<Send className="text-locker-600" size={28} />
-							</div>
-							<div className=" xxs:hidden sm:block">
-								<Send className="text-locker-600" size={34} />
-							</div>
-							<p className="text-gray-500 xxs:text-sm sm:text-base lg:text-lg">
-								Send
-							</p>
-						</div>
-					</button>
+					<SendTokensModal tokens={tokens} />
+
 					<button onClick={openQrCodeModal}>
 						<div className="flex flex-col items-center justify-center rounded-sm bg-gray-100 xxs:h-20 xxs:w-20 xxs:space-y-2 xxs:p-2 sm:space-y-1 sm:p-4">
 							<div className="sm:hidden">

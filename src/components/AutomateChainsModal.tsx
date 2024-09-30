@@ -112,6 +112,7 @@ export default function AutomateChainsModal() {
 							{policies.map((policy) => (
 								<div
 									className={`rounded-full ${getChainIconStyling(policy.chainId)}`}
+									key={`policy-div-${policy.chainId}`}
 								>
 									<ChainIcon
 										chainId={policy.chainId}

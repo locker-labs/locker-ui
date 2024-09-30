@@ -116,7 +116,7 @@ export default function LandingPage() {
 						{renderSteps("mobile")}
 					</div>
 					<div className="pb-10 xs:col-span-8">
-						<p className="mb-5 text-xl font-bold dark:text-light-100">
+						<p className="mb-5 text-xl font-bold">
 							Frequently asked questions
 						</p>
 						<FaqAccordion />

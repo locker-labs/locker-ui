@@ -71,7 +71,7 @@ function ChainSelectModal({
 											</button>
 										) : (
 											<button
-												className="h-10 w-full  cursor-pointer select-none justify-center rounded-md bg-locker-600 text-light-100 hover:bg-secondary-200"
+												className="h-10 w-full cursor-pointer select-none justify-center rounded-md bg-locker-600 text-light-100 hover:bg-secondary-200"
 												onClick={() => {
 													createNewPolicy();
 													closeModal();

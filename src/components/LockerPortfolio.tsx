@@ -72,6 +72,7 @@ function LockerPortfolio() {
 				? list.filter((token) => isChainSupported(token.chainId))
 				: [];
 			setTokens(filteredList);
+			console.log("Token list: ", filteredList);
 		}
 	};
 

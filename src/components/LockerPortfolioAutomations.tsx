@@ -1,11 +1,9 @@
-import { Pencil } from "lucide-react";
-
 import { DEFAULT_BOXLETS } from "@/data/constants/boxlets";
-import { useEditAutomationsModal } from "@/hooks/useEditAutomationsModal";
 import { Automation } from "@/types";
 import adaptAutomations2Boxlets from "@/utils/adaptAutomations2Boxlets";
 
 import BoxletPieChart from "./BoxletPieChart";
+import { EditAutomationsModal } from "./EditAutomationsModal";
 
 export interface ILockerPortfolioAutomations {
 	automations: Automation[];
@@ -14,9 +12,6 @@ export interface ILockerPortfolioAutomations {
 function LockerPortfolioAutomations({
 	automations,
 }: ILockerPortfolioAutomations) {
-	const { openEditAutomationsModal, renderEditAutomationsModal } =
-		useEditAutomationsModal();
-
 	const boxlets = adaptAutomations2Boxlets(automations);
 	return (
 		<div className="flex flex-col space-y-6">
@@ -25,18 +20,8 @@ function LockerPortfolioAutomations({
 					<p className="font-bold xs:text-xs lg:text-lg">
 						Automation Details
 					</p>
-					<button
-						className="outline-solid flex cursor-pointer flex-row items-center justify-center rounded-md px-2 py-1 text-sm outline outline-gray-300"
-						onClick={openEditAutomationsModal}
-					>
-						<Pencil size={14} />
-						<span className="lg:text-md ml-2 xs:text-xs lg:text-sm">
-							Edit
-						</span>
-					</button>
+					<EditAutomationsModal />
 				</div>
-
-				{renderEditAutomationsModal()}
 			</div>
 			<div className="grid grid-flow-row xxs:grid-cols-3 xxs:gap-x-4 sm:grid-cols-1">
 				<div className="flex flex-col items-center justify-center xxs:col-span-1">

@@ -12,11 +12,7 @@ function AutomationSettings({ automations }: IAutomationSettings) {
 
 	return (
 		<div className="flex w-full max-w-xs flex-col items-center space-y-6 rounded-md">
-			<BoxletPieChart
-				boxlets={boxletsFromAutomations}
-				lineWidth={100}
-				size="size-48"
-			/>
+			<BoxletPieChart boxlets={boxletsFromAutomations} lineWidth={100} />
 		</div>
 	);
 }

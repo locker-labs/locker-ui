@@ -1,4 +1,3 @@
-/* eslint-disable react/require-default-props */
 import { formatUnits, parseUnits } from "viem";
 
 import { errors } from "@/data/constants/errorMessages";
@@ -12,7 +11,7 @@ export interface ICurrencyInput {
 	maxAmount: bigint;
 	token: Token;
 	setErrorMessage: (errorMessage: string) => void;
-	disabled?: boolean;
+	disabled: boolean;
 }
 
 function CurrencyInput({
@@ -44,15 +43,25 @@ function CurrencyInput({
 				setErrorMessage(errors.TOO_MANY_DECIMALS);
 			} else {
 				setErrorMessage("");
-				setAmount(parseUnits(amountString, token.decimals));
+				try {
+					const parsedAmount = parseUnits(
+						amountString,
+						token.decimals
+					);
+					setAmount(parsedAmount);
+				} catch (error) {
+					setErrorMessage(errors.INVALID_AMOUNT);
+				}
 			}
 		}
+
 		setAmountInput(amountString);
 	};
 
 	const handleMaxAmountClick = () => {
 		if (maxAmount) {
-			setAmountInput(formatUnits(maxAmount, token.decimals));
+			const maxAmountString = formatUnits(maxAmount, token.decimals);
+			setAmountInput(maxAmountString);
 			setAmount(maxAmount);
 		}
 	};
@@ -68,13 +77,13 @@ function CurrencyInput({
 				onWheel={(event) => (event.target as HTMLInputElement).blur()}
 				autoComplete="off"
 				value={amountInput}
-				onInput={(event) => handleChange(event)}
+				onInput={handleChange} // Make sure the state update happens within an event handler
 				disabled={isLoading || disabled}
 			/>
 			<div className="flex items-center justify-center pl-1 pr-2">
 				<button
 					className="rounded-lg bg-light-200 px-2 py-1 text-xs hover:text-secondary-100 dark:bg-dark-400 dark:hover:text-primary-100"
-					onClick={() => handleMaxAmountClick()}
+					onClick={handleMaxAmountClick}
 					disabled={isLoading || disabled}
 				>
 					Max
