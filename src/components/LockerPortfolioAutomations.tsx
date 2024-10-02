@@ -1,8 +1,9 @@
 import { DEFAULT_BOXLETS } from "@/data/constants/boxlets";
-import { Automation } from "@/types";
+import { Automation, EAutomationType } from "@/types";
 import adaptAutomations2Boxlets from "@/utils/adaptAutomations2Boxlets";
 
 import BoxletPieChart from "./BoxletPieChart";
+import { SetupOfframpModal } from "./SetupOfframpModal";
 // import { EditAutomationsModal } from "./EditAutomationsModal";
 
 export interface ILockerPortfolioAutomations {
@@ -31,19 +32,28 @@ function LockerPortfolioAutomations({
 					{automations.map((automation) => {
 						const { color, title } =
 							DEFAULT_BOXLETS[automation.type];
+						const isOfframp =
+							automation.type === EAutomationType.OFF_RAMP;
 
 						return (
-							<div className="flex flex-row justify-between xxs:text-base lg:text-xs xl:text-base">
-								<div className="flex flex-row items-center justify-center space-x-2">
-									<div
-										className="size-5 rounded-full"
-										style={{ backgroundColor: color }}
-									/>
-									<span>{title}</span>
+							<div className="flex flex-col space-y-2">
+								<div className="flex flex-row justify-between xxs:text-base lg:text-xs xl:text-base">
+									<div className="flex flex-row items-center justify-center space-x-2">
+										<div
+											className="size-5 rounded-full"
+											style={{ backgroundColor: color }}
+										/>
+										<span>{title}</span>
+									</div>
+									<span className="font-semibold">
+										{automation.allocation * 100}%
+									</span>
 								</div>
-								<span className="font-semibold">
-									{automation.allocation * 100}%
-								</span>
+								{isOfframp && (
+									<div className="flex flex-row">
+										<SetupOfframpModal />
+									</div>
+								)}
 							</div>
 						);
 					})}
