@@ -163,7 +163,7 @@ export default function LockerPortfolioTxHistoryContent() {
 							className={`${
 								isConfirmed
 									? "rounded-full bg-tx-confirmed px-2 py-1"
-									: "rounded-full px-2 py-1 text-gray-300"
+									: "rounded-full bg-gray-300 px-2 py-1"
 							}`}
 						>
 							{isConfirmed ? "Confirmed" : "Pending"}
@@ -200,7 +200,7 @@ export default function LockerPortfolioTxHistoryContent() {
 			<div key={incomingTx.id}>
 				<table className="w-full border-separate border-spacing-y-2 text-left xxs:table-auto xxs:border-spacing-x-3 lg:table-fixed">
 					<thead className="text-xs uppercase text-gray-600" />
-					<tbody className="xxs:text-xs lg:text-sm xxl:text-base">
+					<tbody className="xxl:text-base xxs:text-xs lg:text-sm">
 						{/* Render the "in" transaction first */}
 						{renderTxRow(incomingTx)}
 

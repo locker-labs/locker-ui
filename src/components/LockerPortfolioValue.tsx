@@ -29,10 +29,10 @@ function LockerPortfolioValue({
 		<div className="flex flex-col space-y-5">
 			<div className="flex flex-row justify-between">
 				<div className="flex flex-col">
-					<p className="xxs:text-2xs text-gray-500 sm:text-sm lg:text-base">
+					<p className="xxs:text-2xs text-gray-500 lg:text-sm xl:text-base">
 						Portfolio value
 					</p>
-					<p className="xxl:text-xxl font-bold xxs:text-base lg:text-xl">
+					<p className="xxl:text-xxl font-bold xxs:text-base lg:text-lg xxl:text-xl">
 						${portfolioValue}
 					</p>
 				</div>
@@ -42,12 +42,12 @@ function LockerPortfolioValue({
 					<button onClick={openQrCodeModal}>
 						<div className="flex flex-col items-center justify-center rounded-sm bg-gray-100 xxs:h-20 xxs:w-20 xxs:space-y-2 xxs:p-2 sm:space-y-1 sm:p-4">
 							<div className="sm:hidden">
-								<QrCode className="text-locker-600" size={28} />
+								<QrCode className="text-locker-600" size={24} />
 							</div>
 							<div className=" xxs:hidden sm:block">
-								<QrCode className="text-locker-600" size={34} />
+								<QrCode className="text-locker-600" size={30} />
 							</div>
-							<p className="text-gray-500 xxs:text-sm sm:text-base lg:text-lg">
+							<p className="text-gray-500 xxs:text-sm lg:text-base xl:text-lg">
 								Receive
 							</p>
 							{renderQrCodeModal(lockerAddress, chainId)}

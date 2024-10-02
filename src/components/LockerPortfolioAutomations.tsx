@@ -3,7 +3,7 @@ import { Automation } from "@/types";
 import adaptAutomations2Boxlets from "@/utils/adaptAutomations2Boxlets";
 
 import BoxletPieChart from "./BoxletPieChart";
-import { EditAutomationsModal } from "./EditAutomationsModal";
+// import { EditAutomationsModal } from "./EditAutomationsModal";
 
 export interface ILockerPortfolioAutomations {
 	automations: Automation[];
@@ -17,15 +17,13 @@ function LockerPortfolioAutomations({
 		<div className="flex flex-col space-y-6">
 			<div className="flex flex-col justify-between">
 				<div className="flex flex-row items-center justify-between xs:space-x-2 lg:space-x-8">
-					<p className="font-bold xs:text-xs lg:text-lg">
-						Automation Details
-					</p>
-					<EditAutomationsModal />
+					<p className="text-lg font-bold">Automation Details</p>
+					{/* <EditAutomationsModal /> */}
 				</div>
 			</div>
-			<div className="grid grid-flow-row xxs:grid-cols-3 xxs:gap-x-4 sm:grid-cols-1">
+			<div className="grid grid-flow-row xxs:grid-cols-3 xxs:gap-x-4 lg:grid-cols-1">
 				<div className="flex flex-col items-center justify-center xxs:col-span-1">
-					<div className="sm:w-2/3">
+					<div className="lg:w-2/3 xl:w-1/2">
 						<BoxletPieChart boxlets={boxlets} lineWidth={100} />
 					</div>
 				</div>
@@ -35,7 +33,7 @@ function LockerPortfolioAutomations({
 							DEFAULT_BOXLETS[automation.type];
 
 						return (
-							<div className="flex flex-row justify-between text-sm">
+							<div className="flex flex-row justify-between xxs:text-base lg:text-xs xl:text-base">
 								<div className="flex flex-row items-center justify-center space-x-2">
 									<div
 										className="size-5 rounded-full"
