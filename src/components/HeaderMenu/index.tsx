@@ -64,7 +64,7 @@ function HeaderMenu() {
 			</div>
 			<div className="flex w-full flex-col">
 				<button
-					className="flex w-full items-center p-2 outline-none hover:bg-light-300 "
+					className="hover:bg-light-300 flex w-full items-center p-2 outline-none "
 					onClick={() =>
 						copyToClipboard(address as string, setCopied)
 					}
@@ -109,11 +109,11 @@ function HeaderMenu() {
 		<Menu as="div" className="relative inline-block text-left">
 			{({ open }) => (
 				<>
-					<Menu.Button className="z-10 flex h-10 w-fit shrink-0 items-center justify-center rounded-full bg-light-200 px-2 hover:bg-light-300 ">
+					<Menu.Button className="bg-light-200 hover:bg-light-300 z-10 flex h-10 w-fit shrink-0 items-center justify-center rounded-full px-2 ">
 						<Button open={open} />
 					</Menu.Button>
 					<Transition show={open}>
-						<Menu.Items className="absolute right-0 z-50 mt-3 w-fit origin-top-right rounded-xl bg-light-200 p-1 text-sm outline-none ">
+						<Menu.Items className="bg-light-200 absolute right-0 z-50 mt-3 w-fit origin-top-right rounded-xl p-1 text-sm outline-none ">
 							{isConnected ? connectedItems : disconnectedItems}
 							<Menu.Item>
 								{({ active }) => (
@@ -138,7 +138,7 @@ function HeaderMenu() {
 									<button
 										className={`${
 											active &&
-											"rounded-b-xl bg-light-300"
+											"bg-light-300 rounded-b-xl"
 										} flex w-full items-center p-2`}
 										onClick={() => disconnect()}
 									>
@@ -155,7 +155,7 @@ function HeaderMenu() {
 									<button
 										className={`${
 											active &&
-											"rounded-b-xl bg-light-300"
+											"bg-light-300 rounded-b-xl"
 										} flex w-full items-center p-2`}
 										onClick={() =>
 											signOut(() =>

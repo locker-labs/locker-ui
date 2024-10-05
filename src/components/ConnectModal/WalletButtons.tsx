@@ -17,7 +17,7 @@ function WalletButtons({ closeModal }: IWalletButtons) {
 		<div className="flex w-full min-w-52 max-w-64 flex-col items-center justify-center space-y-2">
 			{filteredConnectors.map((connector) => (
 				<button
-					className="flex h-fit w-full min-w-44 items-center justify-center rounded-full bg-light-200 p-2 hover:bg-light-300 dark:bg-dark-400 dark:hover:bg-dark-300"
+					className="bg-light-200 hover:bg-light-300 dark:bg-dark-400 dark:hover:bg-dark-300 flex h-fit w-full min-w-44 items-center justify-center rounded-full p-2"
 					key={connector.uid}
 					onClick={() => {
 						connect({ connector });

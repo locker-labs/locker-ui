@@ -9,7 +9,7 @@ export interface ISaveIcon {
 function SaveIcon({ divSize = "size-7", iconSize = "16px" }) {
 	return (
 		<div
-			className={`flex ${divSize} shrink-0 items-center justify-center rounded-full bg-primary-100/20 text-primary-100`}
+			className={`flex ${divSize} bg-primary-100/20 text-primary-100 shrink-0 items-center justify-center rounded-full`}
 		>
 			<FaPiggyBank size={iconSize} />
 		</div>

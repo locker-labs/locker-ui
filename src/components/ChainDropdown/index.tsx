@@ -55,7 +55,7 @@ function ChainDropdown(
 			{({ open }) => (
 				<div className="relative">
 					<Listbox.Button
-						className={`z-10 flex h-10 w-full shrink-0 items-center justify-center rounded-md bg-light-200 px-2 hover:bg-light-300 ${isPending && "cursor-not-allowed"}`}
+						className={`bg-light-200 hover:bg-light-300 z-10 flex h-10 w-full shrink-0 items-center justify-center rounded-md px-2 ${isPending && "cursor-not-allowed"}`}
 					>
 						{!isPending ? (
 							<Button open={open} showName={showName} />
@@ -72,7 +72,7 @@ function ChainDropdown(
 						leaveFrom="opacity-100"
 						leaveTo="opacity-0"
 					>
-						<Listbox.Options className="absolute right-0 z-50 mt-3 max-h-60 w-44 origin-top-right overflow-auto rounded-xl bg-light-200 p-1 text-sm outline-none">
+						<Listbox.Options className="bg-light-200 absolute right-0 z-50 mt-3 max-h-60 w-44 origin-top-right overflow-auto rounded-xl p-1 text-sm outline-none">
 							{supportedChains.map((chainOption, index) => (
 								<Listbox.Option
 									key={chainOption.id}
@@ -102,7 +102,7 @@ function ChainDropdown(
 													)}
 												</span>
 											</div>
-											<div className="flex items-center justify-center text-secondary-100">
+											<div className="text-secondary-100 flex items-center justify-center">
 												{selected ? (
 													<FaCheck size={18} />
 												) : null}

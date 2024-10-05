@@ -28,7 +28,7 @@ function ChainSelectModal({
 					leaveFrom="opacity-100"
 					leaveTo="opacity-0"
 				>
-					<div className="fixed inset-0 bg-dark-600/75" />
+					<div className="bg-dark-600/75 fixed inset-0" />
 				</Transition.Child>
 				<div className="fixed inset-0 overflow-y-auto">
 					<div className="flex min-h-full items-center justify-center p-4 text-center">
@@ -41,7 +41,7 @@ function ChainSelectModal({
 							leaveFrom="opacity-100 scale-100"
 							leaveTo="opacity-0 scale-95"
 						>
-							<Dialog.Panel className="flex w-full min-w-64 max-w-sm flex-col items-center justify-center rounded-2xl bg-light-100 p-6 shadow-xl">
+							<Dialog.Panel className="bg-light-100 flex w-full min-w-64 max-w-sm flex-col items-center justify-center rounded-2xl p-6 shadow-xl">
 								<Dialog.Title
 									as="h3"
 									className="flex w-full flex-col items-center justify-between space-y-2 text-center"
@@ -64,14 +64,14 @@ function ChainSelectModal({
 									<div className="flex w-full flex-col items-center space-y-4">
 										{isPending ? (
 											<button
-												className="h-10 w-full cursor-not-allowed select-none justify-center rounded-md bg-locker-300 text-light-100"
+												className="text-light-100 h-10 w-full cursor-not-allowed select-none justify-center rounded-md bg-locker-300"
 												disabled
 											>
 												Switching chains
 											</button>
 										) : (
 											<button
-												className="h-10 w-full cursor-pointer select-none justify-center rounded-md bg-locker-600 text-light-100 hover:bg-secondary-200"
+												className="text-light-100 hover:bg-secondary-200 h-10 w-full cursor-pointer select-none justify-center rounded-md bg-locker-600"
 												onClick={() => {
 													createNewPolicy();
 													closeModal();
@@ -81,7 +81,7 @@ function ChainSelectModal({
 											</button>
 										)}
 										<button
-											className="text-xs hover:text-secondary-100"
+											className="hover:text-secondary-100 text-xs"
 											onClick={closeModal}
 										>
 											&lt; Edit distributions

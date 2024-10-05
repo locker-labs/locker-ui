@@ -7,7 +7,7 @@ export default function SupportedChainsIcons() {
 	return supportedChains.map((chain, index) => (
 		<div
 			key={chain.id}
-			className="flex w-full items-center rounded-full bg-light-100"
+			className="bg-light-100 flex w-full items-center rounded-full"
 			style={{ zIndex: index * 10 }}
 		>
 			<div

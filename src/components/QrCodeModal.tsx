@@ -29,7 +29,7 @@ function QrCodeModal({
 					leaveFrom="opacity-100"
 					leaveTo="opacity-0"
 				>
-					<div className="fixed inset-0 bg-dark-600/75" />
+					<div className="bg-dark-600/75 fixed inset-0" />
 				</Transition.Child>
 
 				<div className="fixed inset-0 overflow-y-auto">
@@ -43,13 +43,13 @@ function QrCodeModal({
 							leaveFrom="opacity-100 scale-100"
 							leaveTo="opacity-0 scale-95"
 						>
-							<Dialog.Panel className="flex w-full min-w-64 max-w-sm flex-col items-center justify-center overflow-hidden rounded-2xl bg-light-100 p-6 shadow-xl dark:bg-dark-500">
+							<Dialog.Panel className="bg-light-100 dark:bg-dark-500 flex w-full min-w-64 max-w-sm flex-col items-center justify-center overflow-hidden rounded-2xl p-6 shadow-xl">
 								<Dialog.Title
 									as="h3"
 									className="flex w-full items-center justify-end"
 								>
 									<button
-										className="rounded-full bg-light-200 p-1 hover:bg-light-300 dark:bg-dark-400 dark:hover:bg-dark-300"
+										className="bg-light-200 hover:bg-light-300 dark:bg-dark-400 dark:hover:bg-dark-300 rounded-full p-1"
 										aria-label="Close modal"
 										onClick={closeModal}
 									>

@@ -31,9 +31,9 @@ function AddressInput({
 	};
 
 	return (
-		<div className="flex h-12 w-full items-center rounded-md border border-light-200 bg-light-100 p-2 focus-within:border-light-600 dark:border-dark-200 dark:bg-dark-500 dark:focus-within:border-light-600">
+		<div className="border-light-200 bg-light-100 focus-within:border-light-600 dark:border-dark-200 dark:bg-dark-500 dark:focus-within:border-light-600 flex h-12 w-full items-center rounded-md border p-2">
 			<input
-				className="h-full w-full bg-light-100 text-start text-sm outline-none dark:bg-dark-500"
+				className="bg-light-100 dark:bg-dark-500 h-full w-full text-start text-sm outline-none"
 				type="text"
 				inputMode="text"
 				autoComplete="off"

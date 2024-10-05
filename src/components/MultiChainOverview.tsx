@@ -264,13 +264,13 @@ function MultiChainOverview({
 	}, [qrChainId]);
 
 	return (
-		<div className="flex w-full min-w-52 max-w-lg flex-col divide-y divide-light-200 overflow-hidden rounded-md border border-light-200 text-sm shadow-sm shadow-light-600 dark:divide-dark-200 dark:border-dark-200 dark:shadow-none">
+		<div className="divide-light-200 border-light-200 shadow-light-600 dark:divide-dark-200 dark:border-dark-200 flex w-full min-w-52 max-w-lg flex-col divide-y overflow-hidden rounded-md border text-sm shadow-sm dark:shadow-none">
 			{policies.some((pol) => !isPolicyReady(pol)) && (
 				<div className="flex w-full items-center justify-center p-2 text-center">
 					<div className="flex size-7 shrink-0 items-center justify-center rounded-full bg-warning/20 text-warning">
 						<IoWarningOutline size={16} />
 					</div>
-					<span className="ml-3 text-xs text-light-600">
+					<span className="text-light-600 ml-3 text-xs">
 						One or more chains requires re-enabling automations.
 						<br /> Automations must be individually authorized on
 						each chain.
@@ -302,7 +302,7 @@ function MultiChainOverview({
 										{getChainNameFromId(chainId)}
 									</span>
 								</div>
-								<span className="w-full text-xs text-light-600">
+								<span className="text-light-600 w-full text-xs">
 									Value: $
 									{chainsNetWorths[chainId]
 										? chainsNetWorths[chainId]
@@ -311,7 +311,7 @@ function MultiChainOverview({
 							</div>
 							<div className="xs1:mt-0 xs1:flex-row xs1:space-x-2 xs1:space-y-0 mt-4 flex flex-row space-y-2">
 								<button
-									className="flex h-8 w-16 items-center justify-center rounded-full bg-secondary-100 text-light-100 hover:bg-secondary-200 dark:bg-primary-200 dark:hover:bg-primary-100"
+									className="bg-secondary-100 text-light-100 hover:bg-secondary-200 dark:bg-primary-200 dark:hover:bg-primary-100 flex h-8 w-16 items-center justify-center rounded-full"
 									onClick={() => showQrModal(chainId)}
 									disabled={isLoading}
 								>
@@ -319,7 +319,7 @@ function MultiChainOverview({
 								</button>
 								{!policy && (
 									<button
-										className="flex h-8 w-24 items-center justify-center rounded-full bg-light-200 hover:bg-light-300 dark:bg-dark-400 dark:hover:bg-dark-300"
+										className="bg-light-200 hover:bg-light-300 dark:bg-dark-400 dark:hover:bg-dark-300 flex h-8 w-24 items-center justify-center rounded-full"
 										onClick={() =>
 											handlePolicyCreation(chainId)
 										}
@@ -338,7 +338,7 @@ function MultiChainOverview({
 								)}
 								{policy && !isPolicyReady(policy) && (
 									<button
-										className="flex h-8 w-24 items-center justify-center rounded-full bg-light-200 hover:bg-light-300 dark:bg-dark-400 dark:hover:bg-dark-300"
+										className="bg-light-200 hover:bg-light-300 dark:bg-dark-400 dark:hover:bg-dark-300 flex h-8 w-24 items-center justify-center rounded-full"
 										onClick={() =>
 											handlePolicyUpdate(chainId)
 										}

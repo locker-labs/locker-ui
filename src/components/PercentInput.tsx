@@ -6,9 +6,9 @@ interface IPercentInput {
 
 function PercentInput({ value, onInput, disabled }: IPercentInput) {
 	return (
-		<div className="flex items-center rounded border border-light-200 bg-light-100 p-1 focus-within:border-light-600">
+		<div className="border-light-200 bg-light-100 focus-within:border-light-600 flex items-center rounded border p-1">
 			<input
-				className={`${disabled && "cursor-not-allowed bg-light-100"} w-12 bg-light-100 text-center outline-none `}
+				className={`${disabled && "bg-light-100 cursor-not-allowed"} bg-light-100 w-12 text-center outline-none `}
 				type="text"
 				pattern="[0-9]*"
 				inputMode="numeric"

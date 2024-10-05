@@ -78,30 +78,30 @@ function LockerCreate({ lockerIndex }: ILockerCreate) {
 				<Loader text="Setting up your locker" />
 			) : (
 				<>
-					<h1 className="text-4xl dark:text-light-100">
+					<h1 className="dark:text-light-100 text-4xl">
 						How Locker works
 					</h1>
 					<span className="text-xl">
-						<span className="bg-gradient-to-r from-secondary-200 to-primary-200 bg-clip-text text-2xl text-transparent">
+						<span className="from-secondary-200 to-primary-200 bg-gradient-to-r bg-clip-text text-2xl text-transparent">
 							Create
 						</span>{" "}
 						a locker smart account.
 					</span>
 					<span className="text-xl">
-						<span className="bg-gradient-to-r from-secondary-200 to-primary-200 bg-clip-text text-2xl text-transparent">
+						<span className="from-secondary-200 to-primary-200 bg-gradient-to-r bg-clip-text text-2xl text-transparent">
 							Customize
 						</span>{" "}
 						how your locker distributes payments.
 					</span>
 					<span className="text-xl">
-						<span className="bg-gradient-to-r from-secondary-200 to-primary-200 bg-clip-text text-2xl text-transparent">
+						<span className="from-secondary-200 to-primary-200 bg-gradient-to-r bg-clip-text text-2xl text-transparent">
 							Get paid
 						</span>{" "}
 						at your locker address and watch your crypto
 						automatically go where you want it.
 					</span>
 					<button
-						className="h-12 w-40 items-center justify-center rounded-full bg-secondary-100 text-light-100 hover:bg-secondary-200 dark:bg-primary-200 dark:hover:bg-primary-100"
+						className="bg-secondary-100 text-light-100 hover:bg-secondary-200 dark:bg-primary-200 dark:hover:bg-primary-100 h-12 w-40 items-center justify-center rounded-full"
 						onClick={() => handleLockerCreation()}
 						disabled={isLoading}
 					>

@@ -2,8 +2,14 @@
 
 @tailwind base;
 @tailwind components;
+
+/* html {
+	/* @apply text-[20pt] sm:text-[20pt];
+	@apply text-[18px] leading-[27.24px] sm:text-[20px];
+} */
+
 @tailwind utilities;
-@layer base {
+/* @layer base {
 	:root {
 		--background: 0 0% 100%;
 		--foreground: 240 10% 3.9%;
@@ -31,42 +37,16 @@
 		--chart-5: 27 87% 67%;
 		--radius: 0.5rem;
 	}
-	.dark {
-		--background: 240 10% 3.9%;
-		--foreground: 0 0% 98%;
-		--card: 240 10% 3.9%;
-		--card-foreground: 0 0% 98%;
-		--popover: 240 10% 3.9%;
-		--popover-foreground: 0 0% 98%;
-		--primary: 0 0% 98%;
-		--primary-foreground: 240 5.9% 10%;
-		--secondary: 240 3.7% 15.9%;
-		--secondary-foreground: 0 0% 98%;
-		--muted: 240 3.7% 15.9%;
-		--muted-foreground: 240 5% 64.9%;
-		--accent: 240 3.7% 15.9%;
-		--accent-foreground: 0 0% 98%;
-		--destructive: 0 62.8% 30.6%;
-		--destructive-foreground: 0 0% 98%;
-		--border: 240 3.7% 15.9%;
-		--input: 240 3.7% 15.9%;
-		--ring: 240 4.9% 83.9%;
-		--chart-1: 220 70% 50%;
-		--chart-2: 160 60% 45%;
-		--chart-3: 30 80% 55%;
-		--chart-4: 280 65% 60%;
-		--chart-5: 340 75% 55%;
-	}
-}
+}*/
 @layer base {
-	* {
-		@apply border-border;
-	}
-	body {
-		@apply bg-background text-foreground;
+	html {
+		@apply text-[18px] sm:text-[16px] lg:text-[18px] xl:text-[20px];
+
+		/* font-size: 20px; Setting rem base value */
+		/* line-height: 1.36; */
 	}
 }
 
 main {
-	@apply flex w-full min-w-[230px] flex-1 flex-col items-center xxs:p-4 lg:px-12;
+	@apply flex w-full min-w-[230px] flex-1 flex-col items-center xxs:p-4 lg:px-6;
 }

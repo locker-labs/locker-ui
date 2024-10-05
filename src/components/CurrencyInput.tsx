@@ -67,9 +67,9 @@ function CurrencyInput({
 	};
 
 	return (
-		<div className="flex h-12 w-full items-center rounded-md border border-light-200 bg-light-100 p-2 focus-within:border-light-600 dark:border-dark-200 dark:bg-dark-500 dark:focus-within:border-light-600">
+		<div className="border-light-200 bg-light-100 focus-within:border-light-600 dark:border-dark-200 dark:bg-dark-500 dark:focus-within:border-light-600 flex h-12 w-full items-center rounded-md border p-2">
 			<input
-				className="h-full w-full bg-light-100 text-start outline-none dark:bg-dark-500"
+				className="bg-light-100 dark:bg-dark-500 h-full w-full text-start outline-none"
 				type="text"
 				pattern="[0-9]*\.?[0-9]*"
 				inputMode="decimal"
@@ -89,7 +89,7 @@ function CurrencyInput({
 					Max
 				</button>
 			</div>
-			<span className="ml-2 text-sm text-light-600">{token.symbol}</span>
+			<span className="text-light-600 ml-2 text-sm">{token.symbol}</span>
 		</div>
 	);
 }

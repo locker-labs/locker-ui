@@ -21,7 +21,7 @@ export default function QrModalContent({
 				</div>
 			</div>
 
-			<span className="w-full text-sm text-light-600">
+			<span className="text-light-600 w-full text-sm">
 				You can receive native and ERC-20 tokens at this locker address
 				on all supported chains.
 			</span>

@@ -2,7 +2,8 @@ import "@/styles/globals.css";
 
 import { Analytics as VercelAnalytics } from "@vercel/analytics/react";
 import type { Metadata, Viewport } from "next";
-import { Inter } from "next/font/google";
+// eslint-disable-next-line camelcase
+import { Open_Sans } from "next/font/google";
 import { headers } from "next/headers";
 import { type ReactNode, Suspense } from "react";
 import { cookieToInitialState } from "wagmi";
@@ -14,7 +15,7 @@ import { wagmiConfig } from "@/providers/wagmiConfig";
 
 import Loading from "./loading";
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Open_Sans({ subsets: ["latin"] });
 
 export const metadata: Metadata = globalMetadata;
 

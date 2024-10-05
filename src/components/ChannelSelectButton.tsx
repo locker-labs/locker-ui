@@ -21,7 +21,7 @@ function ChannelSelectButton({
 }: ISelectionButton) {
 	return (
 		<button
-			className={`flex w-full items-center rounded-md border p-3 shadow-sm shadow-light-600 dark:shadow-none ${isSelected ? "border-secondary-100 dark:border-primary-100 dark:bg-dark-400" : "border-light-200 bg-light-200/30 dark:border-dark-200 dark:bg-dark-400/50"}`}
+			className={`shadow-light-600 flex w-full items-center rounded-md border p-3 shadow-sm dark:shadow-none ${isSelected ? "border-secondary-100 dark:border-primary-100 dark:bg-dark-400" : "border-light-200 bg-light-200/30 dark:border-dark-200 dark:bg-dark-400/50"}`}
 			onClick={onClick}
 			disabled={disabled}
 		>
@@ -38,7 +38,7 @@ function ChannelSelectButton({
 				/>
 			) : (
 				<MdOutlineRadioButtonUnchecked
-					className="shrink-0 text-light-600"
+					className="text-light-600 shrink-0"
 					size={25}
 				/>
 			)}

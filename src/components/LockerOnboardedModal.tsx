@@ -34,10 +34,10 @@ function LockerOnboardedModal({ isOpen, closeModal }: ILockerOnboardedModal) {
 							leaveFrom="opacity-100 scale-100"
 							leaveTo="opacity-0 scale-95"
 						>
-							<Dialog.Panel className="flex w-full min-w-64 max-w-md flex-col items-center justify-center rounded-2xl bg-light-100 p-6 shadow-xl">
+							<Dialog.Panel className="bg-light-100 flex w-full min-w-64 max-w-md flex-col items-center justify-center rounded-2xl p-6 shadow-xl">
 								<div className="flex w-full items-end justify-end">
 									<button
-										className="rounded-full bg-light-200 p-1 hover:bg-light-300"
+										className="bg-light-200 hover:bg-light-300 rounded-full p-1"
 										aria-label="Close modal"
 										onClick={closeModal}
 									>

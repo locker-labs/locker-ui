@@ -1,35 +1,26 @@
 "use client";
 
 import { useClerk } from "@clerk/nextjs";
-import { dark } from "@clerk/themes";
-import { useTheme } from "next-themes";
 
 export interface IAuthButton {
 	type: "sign-in" | "sign-up";
 	label: string;
-	height: string;
-	width: string;
 }
 
-function AuthButton({ type, label, height, width }: IAuthButton) {
+function AuthButton({ type, label }: IAuthButton) {
 	const { openSignUp, openSignIn } = useClerk();
-	const { resolvedTheme } = useTheme();
-
-	const clerKTheme = {
-		baseTheme: resolvedTheme === "dark" ? dark : undefined,
-	};
 
 	const handleOnClick = () => {
 		if (type === "sign-in") {
-			openSignIn({ appearance: clerKTheme });
+			openSignIn({ appearance: undefined });
 		} else {
-			openSignUp({ appearance: clerKTheme });
+			openSignUp({ appearance: undefined });
 		}
 	};
 
 	return (
 		<button
-			className={`${type === "sign-in" ? "bg-locker-25 text-locker-700 hover:bg-locker-100" : "bg-locker-600 text-light-100 hover:bg-locker-800"} ${height} ${width} items-center justify-center rounded-md font-semibold`}
+			className={`${type === "sign-in" ? "w-full items-center justify-center rounded-md bg-locker-25 px-[1rem] py-[.6rem] text-xs font-semibold text-locker-700 hover:bg-locker-100" : "w-full items-center justify-center rounded-md bg-locker-600 px-[20px] py-[12px] text-xs font-semibold text-white hover:bg-locker-800"} `}
 			onClick={handleOnClick}
 		>
 			{label}

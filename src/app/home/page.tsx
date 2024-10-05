@@ -3,7 +3,7 @@ import Main from "@/components/Main";
 
 async function HomePage() {
 	return (
-		<div className="min-h-[100vh] w-full bg-locker-25 text-dark-500">
+		<div className="text-dark-500 min-h-[100vh] w-full bg-locker-25">
 			<Main>
 				<LockerPortfolio />
 			</Main>

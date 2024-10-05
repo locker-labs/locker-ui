@@ -44,7 +44,7 @@ function PortfolioIconButtonGroup({
 		<div className="flex items-center space-x-4 text-xs">
 			<div className="flex flex-col items-center justify-center space-y-1">
 				<button
-					className="flex size-10 shrink-0 items-center justify-center rounded-full bg-dark-500/10 text-dark-600 transition duration-300 ease-in-out hover:scale-105 dark:bg-light-200/10 dark:text-light-100"
+					className="bg-dark-500/10 text-dark-600 dark:bg-light-200/10 dark:text-light-100 flex size-10 shrink-0 items-center justify-center rounded-full transition duration-300 ease-in-out hover:scale-105"
 					aria-label="Copy locker address"
 					onClick={() => copyToClipboard(locker.address, setCopied)}
 				>
@@ -58,7 +58,7 @@ function PortfolioIconButtonGroup({
 			</div>
 			<div className="flex flex-col items-center justify-center space-y-1">
 				<button
-					className="flex size-10 shrink-0 items-center justify-center rounded-full bg-dark-500/10 text-dark-600 transition duration-300 ease-in-out hover:scale-105 dark:bg-light-200/10 dark:text-light-100"
+					className="bg-dark-500/10 text-dark-600 dark:bg-light-200/10 dark:text-light-100 flex size-10 shrink-0 items-center justify-center rounded-full transition duration-300 ease-in-out hover:scale-105"
 					aria-label="Display locker QR code"
 					onClick={() => openQrCodeModal()}
 				>
@@ -70,7 +70,7 @@ function PortfolioIconButtonGroup({
 				<div className="flex flex-col items-center justify-center space-y-1">
 					<Tooltip label="Unable to fetch tokens in locker.">
 						<button
-							className="flex size-10 shrink-0 items-center justify-center rounded-full bg-dark-500/10 text-dark-600 transition duration-300 ease-in-out hover:scale-105 dark:bg-light-200/10 dark:text-light-100"
+							className="bg-dark-500/10 text-dark-600 dark:bg-light-200/10 dark:text-light-100 flex size-10 shrink-0 items-center justify-center rounded-full transition duration-300 ease-in-out hover:scale-105"
 							aria-label="Send money out of locker"
 							onClick={handleSendModalPopup}
 							disabled={!tokenList || tokenList.length === 0}
@@ -83,7 +83,7 @@ function PortfolioIconButtonGroup({
 			) : (
 				<div className="flex flex-col items-center justify-center space-y-1">
 					<button
-						className="flex size-10 shrink-0 items-center justify-center rounded-full bg-dark-500/10 text-dark-600 transition duration-300 ease-in-out hover:scale-105 dark:bg-light-200/10 dark:text-light-100"
+						className="bg-dark-500/10 text-dark-600 dark:bg-light-200/10 dark:text-light-100 flex size-10 shrink-0 items-center justify-center rounded-full transition duration-300 ease-in-out hover:scale-105"
 						aria-label="Send money out of locker"
 						onClick={handleSendModalPopup}
 						disabled={!tokenList || tokenList.length === 0}
@@ -99,7 +99,7 @@ function PortfolioIconButtonGroup({
 				chain.blockExplorers && (
 					<div className="flex flex-col items-center justify-center space-y-1">
 						<a
-							className="flex size-10 shrink-0 items-center justify-center rounded-full bg-dark-500/10 text-dark-600 transition duration-300 ease-in-out hover:scale-105 dark:bg-light-200/10 dark:text-light-100"
+							className="bg-dark-500/10 text-dark-600 dark:bg-light-200/10 dark:text-light-100 flex size-10 shrink-0 items-center justify-center rounded-full transition duration-300 ease-in-out hover:scale-105"
 							aria-label="View on block explorer"
 							href={`${chain.blockExplorers.default.url}/address/${locker.address}`}
 							target="_blank"

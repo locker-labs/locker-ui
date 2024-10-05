@@ -245,7 +245,7 @@ function LockerSetup() {
 		cta = (
 			<button
 				aria-label="Connect wallet"
-				className="flex h-12 w-full cursor-not-allowed items-center justify-center rounded-md bg-locker-600 text-light-100 opacity-80 hover:bg-blue-200"
+				className="text-light-100 flex h-12 w-full cursor-not-allowed items-center justify-center rounded-md bg-locker-600 opacity-80 hover:bg-blue-200"
 				disabled
 			>
 				<AiOutlineLoading3Quarters className="animate-spin" size={22} />
@@ -255,7 +255,7 @@ function LockerSetup() {
 		cta = (
 			<button
 				aria-label="Connect wallet"
-				className="flex h-12 w-full cursor-not-allowed items-center justify-center rounded-md bg-locker-600 text-light-100 opacity-80 hover:bg-blue-200"
+				className="text-light-100 flex h-12 w-full cursor-not-allowed items-center justify-center rounded-md bg-locker-600 opacity-80 hover:bg-blue-200"
 				disabled
 			>
 				Adjust percentages
@@ -265,7 +265,7 @@ function LockerSetup() {
 		cta = (
 			<button
 				aria-label="Enable automations"
-				className="flex h-12 w-full cursor-pointer items-center justify-center rounded-md bg-locker-600 text-light-100 opacity-100 hover:bg-blue-200"
+				className="text-light-100 flex h-12 w-full cursor-pointer items-center justify-center rounded-md bg-locker-600 opacity-100 hover:bg-blue-200"
 				onClick={() => handlePolicyCreation()}
 			>
 				Enable automations
@@ -275,7 +275,7 @@ function LockerSetup() {
 		cta = (
 			<button
 				aria-label="Continue"
-				className="flex h-12 w-full cursor-pointer items-center justify-center rounded-md bg-locker-600 text-light-100 opacity-100 hover:bg-blue-200"
+				className="text-light-100 flex h-12 w-full cursor-pointer items-center justify-center rounded-md bg-locker-600 opacity-100 hover:bg-blue-200"
 				onClick={() => openConnectModal()}
 			>
 				Connect wallet
@@ -300,7 +300,7 @@ function LockerSetup() {
 	if (isOverAllocated) allocationString = "over allocated";
 
 	const leftToAllocate = (
-		<span className="ml-2 text-sm text-dark-100">
+		<span className="text-dark-100 ml-2 text-sm">
 			<span
 				className={`${isPerfectlyAllocated ? "text-success" : "text-error"}`}
 			>

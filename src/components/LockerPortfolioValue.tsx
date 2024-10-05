@@ -32,7 +32,7 @@ function LockerPortfolioValue({
 					<p className="xxs:text-2xs text-gray-500 lg:text-sm xl:text-base">
 						Portfolio value
 					</p>
-					<p className="xxl:text-xxl font-bold xxs:text-base lg:text-lg xxl:text-xl">
+					<p className="font-bold xxs:text-base lg:text-lg xxl:text-xl xxl:text-xxl">
 						${portfolioValue}
 					</p>
 				</div>

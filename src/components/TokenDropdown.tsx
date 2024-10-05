@@ -41,7 +41,7 @@ function TokenDropdown({
 			{({ open }) => (
 				<div className="relative h-full w-full">
 					<span className="inline-block h-full w-full">
-						<Listbox.Button className="flex h-12 w-full items-center justify-between rounded-md border border-light-200 bg-light-100 p-2 hover:border-light-600 dark:border-dark-200 dark:bg-dark-500  dark:hover:border-light-600">
+						<Listbox.Button className="border-light-200 bg-light-100 hover:border-light-600 dark:border-dark-200 dark:bg-dark-500 dark:hover:border-light-600 flex h-12 w-full items-center justify-between rounded-md border  p-2">
 							<div className="flex items-center justify-center">
 								<div
 									className={`mr-4 flex size-7 shrink-0 items-center justify-center rounded-full ${getChainIconStyling(selectedToken.chainId)}`}
@@ -56,7 +56,7 @@ function TokenDropdown({
 									<span className="flex items-center justify-center text-sm">
 										{selectedToken.symbol}
 									</span>
-									<span className="text-xs text-light-600">
+									<span className="text-light-600 text-xs">
 										{formatUnits(
 											BigInt(selectedToken.balance),
 											selectedToken.decimals
@@ -81,7 +81,7 @@ function TokenDropdown({
 							static
 							className={`${
 								open && "relative z-10"
-							} mt-2 max-h-64 overflow-hidden overflow-y-auto rounded-md border border-light-200 bg-light-100 outline-none dark:border-dark-200 dark:bg-dark-500`}
+							} border-light-200 bg-light-100 dark:border-dark-200 dark:bg-dark-500 mt-2 max-h-64 overflow-hidden overflow-y-auto rounded-md border outline-none`}
 						>
 							{tokens.map((token) => (
 								<Listbox.Option
@@ -117,7 +117,7 @@ function TokenDropdown({
 														<span className="text-sm">
 															{token.symbol}
 														</span>
-														<span className="text-xs text-light-600">
+														<span className="text-light-600 text-xs">
 															{formatUnits(
 																BigInt(
 																	token.balance
@@ -131,7 +131,7 @@ function TokenDropdown({
 												{token.address !==
 													zeroAddress && (
 													<button
-														className="flex h-12 items-center justify-center outline-none hover:text-secondary-100 dark:hover:text-primary-100"
+														className="hover:text-secondary-100 dark:hover:text-primary-100 flex h-12 items-center justify-center outline-none"
 														onClick={(e) => {
 															e.stopPropagation();
 															setCopiedSymbol(
