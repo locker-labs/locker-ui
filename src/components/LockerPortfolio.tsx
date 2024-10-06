@@ -103,19 +103,19 @@ function LockerPortfolio() {
 
 	return (
 		<div className="flex w-full flex-col space-y-4 bg-locker-25">
-			<div className="grid grid-flow-row-dense grid-cols-1 grid-cols-2 gap-2 lg:grid-cols-11">
-				<div className="col-span1 overflow-auto rounded-md bg-white p-4 lg:col-span-4 lg:h-96">
+			<div className="grid grid-flow-row-dense grid-cols-1 gap-2 lg:grid-cols-2 xl:grid-cols-11">
+				<div className="col-span-1 overflow-auto rounded-md bg-white p-4 lg:col-span-1 lg:h-96 xl:col-span-4">
 					<LockerPortfolioValue
 						portfolioValue={lockerNetWorth}
 						tokens={tokens}
 					/>
 				</div>
 
-				<div className="col-span-1 overflow-auto rounded-md bg-white p-4 lg:col-span-3 lg:h-96">
+				<div className="col-span-1 overflow-auto rounded-md bg-white p-4 lg:col-span-1 lg:h-96 xl:col-span-3">
 					<LockerPortfolioAutomations automations={automations} />
 				</div>
 
-				<div className="col-span-1 col-span-2 overflow-auto rounded-md bg-white p-4 lg:col-span-4 lg:h-96">
+				<div className="col-span-1 overflow-auto rounded-md bg-white p-4 lg:col-span-2 xl:col-span-4 xl:h-96">
 					<LockerPortfolioSavingsGoals />
 				</div>
 			</div>

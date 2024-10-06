@@ -42,7 +42,7 @@ export function SetupOfframpModal() {
 		<Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
 			<DialogTrigger asChild>
 				<button
-					className={`flex flex-row items-center justify-center rounded-xl px-2 text-xs outline outline-2 outline-gray-300 ${isLoading ? "cursor-not-allowed opacity-50" : ""}`}
+					className={`flex flex-row items-center justify-center rounded-xl px-2 text-xs outline outline-1 outline-gray-300 ${isLoading ? "cursor-not-allowed opacity-50" : ""}`}
 					onClick={handleOfframpCreation}
 					disabled={isLoading}
 				>
@@ -53,9 +53,9 @@ export function SetupOfframpModal() {
 							<TriangleAlert
 								color="white"
 								fill="#FFA336"
-								size={20}
+								size={16}
 							/>
-							<span className="ml-1 font-semibold">
+							<span className="ml-1 text-xxxs font-semibold">
 								Finish setup
 							</span>
 						</>

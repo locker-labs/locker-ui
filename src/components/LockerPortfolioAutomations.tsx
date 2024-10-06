@@ -18,13 +18,13 @@ function LockerPortfolioAutomations({
 		<div className="flex flex-col space-y-6">
 			<div className="flex flex-col justify-between">
 				<div className="flex flex-row items-center justify-between xs:space-x-2 lg:space-x-8">
-					<p className="text-lg font-bold">Automation Details</p>
+					<p className="font-bold">Locker Automation</p>
 					{/* <EditAutomationsModal /> */}
 				</div>
 			</div>
 			<div className="grid grid-flow-row grid-cols-3 gap-x-4 lg:grid-cols-1">
 				<div className="col-span-1 flex flex-col items-center justify-center">
-					<div className="lg:w-2/3 xl:w-1/2">
+					<div className="lg:w-1/3 xl:w-1/2">
 						<BoxletPieChart boxlets={boxlets} lineWidth={100} />
 					</div>
 				</div>
@@ -36,8 +36,11 @@ function LockerPortfolioAutomations({
 							automation.type === EAutomationType.OFF_RAMP;
 
 						return (
-							<div className="flex flex-col space-y-2">
-								<div className="flex flex-row justify-between text-base lg:text-xs xl:text-base">
+							<div
+								className="flex flex-col space-y-2"
+								key={`${automation.type}-${automation.recipientAddress}-div`}
+							>
+								<div className="flex flex-row justify-between text-xs">
 									<div className="flex flex-row items-center justify-center space-x-2">
 										<div
 											className="size-5 rounded-full"

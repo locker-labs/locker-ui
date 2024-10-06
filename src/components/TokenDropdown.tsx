@@ -53,15 +53,19 @@ function TokenDropdown({
 									/>
 								</div>
 								<div className="flex w-full flex-col items-start">
-									<span className="flex items-center justify-center text-sm">
+									<span className="flex items-center justify-center text-sm font-semibold">
 										{selectedToken.symbol}
 									</span>
-									<span className="text-light-600 text-xs">
-										{formatUnits(
-											BigInt(selectedToken.balance),
-											selectedToken.decimals
-										)}{" "}
-										available
+									<span className="text-xs">
+										<span className="text-gray-400">
+											Balance:
+										</span>{" "}
+										<span className="text-gray-700">
+											{formatUnits(
+												BigInt(selectedToken.balance),
+												selectedToken.decimals
+											)}
+										</span>
 									</span>
 								</div>
 							</div>
@@ -81,7 +85,7 @@ function TokenDropdown({
 							static
 							className={`${
 								open && "relative z-10"
-							} border-light-200 bg-light-100 dark:border-dark-200 dark:bg-dark-500 mt-2 max-h-64 overflow-hidden overflow-y-auto rounded-md border outline-none`}
+							} border-light-200 bg-light-100 dark:border-dark-200 dark:bg-dark-500 mt-2 max-h-64 overflow-hidden overflow-y-auto rounded-md border bg-white outline-none`}
 						>
 							{tokens.map((token) => (
 								<Listbox.Option

@@ -178,7 +178,7 @@ export default function AutomateChainsModal() {
 		<Dialog>
 			<DialogTrigger>
 				<button className="w-full">
-					<div className="flex w-full flex-row justify-between rounded-md p-2 outline outline-gray-300">
+					<div className="flex w-full flex-row justify-between rounded-md p-2 shadow-md outline outline-1 outline-gray-300">
 						<div className="flex flex-row space-x-1">
 							{policies.map((policy) => {
 								// Grey out the chain if any automation has "automate_then_ready" status
@@ -204,7 +204,7 @@ export default function AutomateChainsModal() {
 							})}
 						</div>
 
-						<div className="text-sm text-gray-700 underline underline-offset-8">
+						<div className="text-xxs text-gray-700 underline underline-offset-8">
 							Manage chains
 						</div>
 					</div>

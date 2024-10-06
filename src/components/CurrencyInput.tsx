@@ -67,9 +67,9 @@ function CurrencyInput({
 	};
 
 	return (
-		<div className="border-light-200 bg-light-100 focus-within:border-light-600 dark:border-dark-200 dark:bg-dark-500 dark:focus-within:border-light-600 flex h-12 w-full items-center rounded-md border p-2">
+		<div className="border-light-200 focus-within:border-light-600 flex h-12 w-full items-center rounded-md border p-2 text-xs">
 			<input
-				className="bg-light-100 dark:bg-dark-500 h-full w-full text-start outline-none"
+				className="h-full w-full text-start text-gray-500 outline-none"
 				type="text"
 				pattern="[0-9]*\.?[0-9]*"
 				inputMode="decimal"
@@ -80,16 +80,17 @@ function CurrencyInput({
 				onInput={handleChange} // Make sure the state update happens within an event handler
 				disabled={isLoading || disabled}
 			/>
+
+			<span className="text-light-600 ml-2">{token.symbol}</span>
 			<div className="flex items-center justify-center pl-1 pr-2">
 				<button
-					className="rounded-xl bg-locker-50 px-2 py-1 text-xs hover:bg-locker-200"
+					className="rounded-xl bg-locker-50 px-2 py-1 text-xxs hover:bg-locker-200"
 					onClick={handleMaxAmountClick}
 					disabled={isLoading || disabled}
 				>
 					Max
 				</button>
 			</div>
-			<span className="text-light-600 ml-2 text-sm">{token.symbol}</span>
 		</div>
 	);
 }

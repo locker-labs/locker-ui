@@ -135,29 +135,31 @@ export function SendTokensModal({ tokens }: ISendTokensModal) {
 		<Dialog>
 			<DialogTrigger asChild>
 				<button>
-					<div className="flex h-20 w-20 flex-col items-center justify-center space-y-2 rounded-sm bg-gray-100 p-2 sm:space-y-1 sm:p-4">
+					<div className="flex h-[3.6rem] w-[3.6rem] flex-col items-center justify-center space-y-2 rounded-sm bg-gray-100 p-2 sm:space-y-1 sm:p-4">
 						<div className="sm:hidden">
 							<Send className="text-locker-600" size={24} />
 						</div>
 						<div className="hidden sm:block">
-							<Send className="text-locker-600" size={30} />
+							<Send className="text-locker-600" size={24} />
 						</div>
-						<p className="text-sm text-gray-500 lg:text-base xl:text-lg">
-							Send
-						</p>
+						<p className="text-xxxs text-gray-500">Send</p>
 					</div>
 				</button>
 			</DialogTrigger>
-			<DialogContent className="sm:max-w-[425px]">
+			<DialogContent className="sm:max-w-[640px]">
 				<DialogHeader>
-					<DialogTitle>Send Tokens</DialogTitle>
-					<DialogDescription />
+					<DialogTitle className="text-xl">
+						Transfer funds
+					</DialogTitle>
+					<DialogDescription className="text-sm text-gray-600">
+						Withdraw from your locker to another on-chain addres
+					</DialogDescription>
 				</DialogHeader>
 				{selectedToken && (
 					<div className="grid gap-4 py-4">
 						{/* Address Input */}
 						<div className="flex w-full flex-col space-y-1">
-							<span className="self-start text-xs font-bold text-black">
+							<span className="self-start font-semibold text-black">
 								Recipient address
 							</span>
 							<AddressInput
