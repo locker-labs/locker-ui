@@ -42,7 +42,7 @@ function Footer() {
 				<span className="text-sm">
 					Need help?{" "}
 					<a
-						href="mailto:support@chainrule.io"
+						href="mailto:support@geeky.rocks"
 						className="hover:text-secondary-100 dark:hover:text-primary-100 underline underline-offset-2"
 					>
 						Contact us

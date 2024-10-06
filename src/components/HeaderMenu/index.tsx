@@ -16,7 +16,6 @@ import { useAccount, useBalance, useDisconnect } from "wagmi";
 import ChainIcon from "@/components/ChainIcon";
 import Button from "@/components/HeaderMenu/Button";
 import { paths } from "@/data/constants/paths";
-import { useConnectModal } from "@/hooks/useConnectModal";
 import { copyToClipboard } from "@/utils/copytoClipboard";
 import { isChainSupported } from "@/utils/isChainSupported";
 import { truncateAddress } from "@/utils/truncateAddress";
@@ -27,7 +26,6 @@ function HeaderMenu() {
 	const router = useRouter();
 	const { signOut } = useClerk();
 	const { address, chain, isConnected } = useAccount();
-	const { openConnectModal, renderConnectModal } = useConnectModal();
 	const { disconnect } = useDisconnect();
 	const { data: balance } = useBalance({
 		address,
@@ -93,7 +91,6 @@ function HeaderMenu() {
 					className={`${
 						active && "bg-light-300"
 					} flex w-full items-center p-2`}
-					onClick={openConnectModal}
 				>
 					<IoWalletOutline
 						className="mr-3 flex shrink-0 items-center justify-center"
@@ -173,7 +170,6 @@ function HeaderMenu() {
 							</Menu.Item>
 						</Menu.Items>
 					</Transition>
-					{renderConnectModal()}
 				</>
 			)}
 		</Menu>

@@ -135,14 +135,14 @@ export function SendTokensModal({ tokens }: ISendTokensModal) {
 		<Dialog>
 			<DialogTrigger asChild>
 				<button>
-					<div className="flex flex-col items-center justify-center rounded-sm bg-gray-100 xxs:h-20 xxs:w-20 xxs:space-y-2 xxs:p-2 sm:space-y-1 sm:p-4">
+					<div className="flex h-20 w-20 flex-col items-center justify-center space-y-2 rounded-sm bg-gray-100 p-2 sm:space-y-1 sm:p-4">
 						<div className="sm:hidden">
 							<Send className="text-locker-600" size={24} />
 						</div>
-						<div className="xxs:hidden sm:block">
+						<div className="hidden sm:block">
 							<Send className="text-locker-600" size={30} />
 						</div>
-						<p className="text-gray-500 xxs:text-sm lg:text-base xl:text-lg">
+						<p className="text-sm text-gray-500 lg:text-base xl:text-lg">
 							Send
 						</p>
 					</div>

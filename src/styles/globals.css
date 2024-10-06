@@ -9,7 +9,7 @@
 } */
 
 @tailwind utilities;
-/* @layer base {
+@layer base {
 	:root {
 		--background: 0 0% 100%;
 		--foreground: 240 10% 3.9%;
@@ -37,13 +37,21 @@
 		--chart-5: 27 87% 67%;
 		--radius: 0.5rem;
 	}
-}*/
+}
+
+@layer base {
+	* {
+		@apply border-border;
+	}
+	body {
+		@apply bg-background text-foreground;
+	}
+}
+
 @layer base {
 	html {
 		@apply text-[18px] sm:text-[16px] lg:text-[18px] xl:text-[20px];
-
 		/* font-size: 20px; Setting rem base value */
-		/* line-height: 1.36; */
 	}
 }
 

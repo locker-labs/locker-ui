@@ -198,9 +198,9 @@ export default function LockerPortfolioTxHistoryContent() {
 
 		return (
 			<div key={incomingTx.id}>
-				<table className="w-full border-separate border-spacing-y-2 text-left xxs:table-auto xxs:border-spacing-x-3 lg:table-fixed">
+				<table className="w-full table-auto border-separate border-spacing-x-3 border-spacing-y-2 text-left lg:table-fixed">
 					<thead className="text-xs uppercase text-gray-600" />
-					<tbody className="xxs:text-xs lg:text-sm xxl:text-base">
+					<tbody className="text-xs lg:text-sm xxl:text-base">
 						{/* Render the "in" transaction first */}
 						{renderTxRow(incomingTx)}
 

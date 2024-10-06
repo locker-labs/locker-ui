@@ -35,7 +35,7 @@ export default function LandingPage() {
 	}, [isSignedIn]);
 
 	const renderSteps = (idSuffix: string) => (
-		<div className="grid grid-cols-3 gap-x-3 text-xs xxs:my-4">
+		<div className="my-4 grid grid-cols-3 gap-x-3 text-xs">
 			<StepInfo
 				text="Create a locker account"
 				icon={<IconPlus idSuffix={idSuffix} />}
@@ -57,7 +57,7 @@ export default function LandingPage() {
 				<img
 					src="/assets/logoLockerDarkLetters.svg"
 					alt="Locker logo"
-					className="xxs:w-1/3 xs:w-1/4 sm:w-1/3"
+					className="w-1/3 xs:w-1/4 sm:w-1/3"
 				/>
 			</div>
 			<div className="my-[2.4rem]">
@@ -89,7 +89,7 @@ export default function LandingPage() {
 				</span>{" "}
 				<IconArrowUpRight />
 			</Link>
-			<div className="mt-[1.6rem] text-xs xxs:hidden sm:block">
+			<div className="mt-[1.6rem] hidden text-xs sm:block">
 				{renderSteps("desktop")}
 			</div>
 		</div>
@@ -98,14 +98,14 @@ export default function LandingPage() {
 	return (
 		<main className="px-4 py-4 lg:p-10 xl:px-[6rem] xl:py-[4rem]">
 			<div className="bg-light-100 text-dark-500 lg:gap-x-18 mb-24 grid grid-flow-row-dense gap-y-2 sm:grid-cols-2 sm:gap-x-12 xl:gap-x-48">
-				<div className="xxs:space-y-4 sm:max-w-[480px]">{intro}</div>
-				<div className="grid space-y-8 xxs:grid-cols-1 xs:grid-cols-12 sm:max-w-[520px]">
+				<div className="space-y-4 sm:max-w-[480px]">{intro}</div>
+				<div className="grid grid-cols-1 space-y-8 xs:grid-cols-12 sm:max-w-[520px]">
 					<Suspense fallback={<Loading />}>
 						<div className="col-span-12 xs:col-span-10 xs:col-start-2">
 							<LottieAnimation animationData={lockerPaths} />
 						</div>
 					</Suspense>
-					<div className="col-span-12 xxs:block sm:hidden">
+					<div className="col-span-12 block sm:hidden">
 						{renderSteps("mobile")}
 					</div>
 					<div className="col-span-12 pb-10">

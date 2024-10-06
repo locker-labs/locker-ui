@@ -17,6 +17,7 @@ export const DEFAULT_BOXLETS: { [id: string]: IDistributionBoxlet } = {
 		tooltip: "When payments are received, send this amount somewhere else.",
 		color: "#5490D9",
 		percent: 75,
+		forwardToAddress: "",
 	},
 
 	[EAutomationType.OFF_RAMP]: {

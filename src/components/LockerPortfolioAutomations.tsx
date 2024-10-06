@@ -22,13 +22,13 @@ function LockerPortfolioAutomations({
 					{/* <EditAutomationsModal /> */}
 				</div>
 			</div>
-			<div className="grid grid-flow-row xxs:grid-cols-3 xxs:gap-x-4 lg:grid-cols-1">
-				<div className="flex flex-col items-center justify-center xxs:col-span-1">
+			<div className="grid grid-flow-row grid-cols-3 gap-x-4 lg:grid-cols-1">
+				<div className="col-span-1 flex flex-col items-center justify-center">
 					<div className="lg:w-2/3 xl:w-1/2">
 						<BoxletPieChart boxlets={boxlets} lineWidth={100} />
 					</div>
 				</div>
-				<div className="space-y-3 pt-3 xxs:col-span-2">
+				<div className="col-span-2 space-y-3 pt-3">
 					{automations.map((automation) => {
 						const { color, title } =
 							DEFAULT_BOXLETS[automation.type];
@@ -37,7 +37,7 @@ function LockerPortfolioAutomations({
 
 						return (
 							<div className="flex flex-col space-y-2">
-								<div className="flex flex-row justify-between xxs:text-base lg:text-xs xl:text-base">
+								<div className="flex flex-row justify-between text-base lg:text-xs xl:text-base">
 									<div className="flex flex-row items-center justify-center space-x-2">
 										<div
 											className="size-5 rounded-full"

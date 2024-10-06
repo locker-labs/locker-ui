@@ -55,7 +55,7 @@ function ChainDropdown(
 			{({ open }) => (
 				<div className="relative">
 					<Listbox.Button
-						className={`bg-light-200 hover:bg-light-300 z-10 flex h-10 w-full shrink-0 items-center justify-center rounded-md px-2 ${isPending && "cursor-not-allowed"}`}
+						className={`border-1 hover:bg-light-300 z-10 flex h-10 w-full shrink-0 items-center justify-center rounded-md border border-gray-300 bg-gray-50 px-2 ${isPending && "cursor-not-allowed"}`}
 					>
 						{!isPending ? (
 							<Button open={open} showName={showName} />
@@ -72,7 +72,7 @@ function ChainDropdown(
 						leaveFrom="opacity-100"
 						leaveTo="opacity-0"
 					>
-						<Listbox.Options className="bg-light-200 absolute right-0 z-50 mt-3 max-h-60 w-44 origin-top-right overflow-auto rounded-xl p-1 text-sm outline-none">
+						<Listbox.Options className="absolute right-0 z-50 mt-3 max-h-60 w-44 origin-top-right overflow-auto rounded-xl bg-gray-50 p-1 text-sm outline-none">
 							{supportedChains.map((chainOption, index) => (
 								<Listbox.Option
 									key={chainOption.id}

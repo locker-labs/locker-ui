@@ -19,4 +19,5 @@ export const errors = {
 	NO_LOCKER: "No locker. Contact support@geeky.rocks.",
 	NO_AUTOMATIONS: "No automations. Contact support@geeky.rocks.",
 	INVALID_AMOUNT: "Invalid amount.",
+	WALLET_DISCONNECTED: "Wallet is not connected.",
 };

@@ -81,7 +81,7 @@ module.exports = withPWA({
 		LANDING_PAGE_URL: "https://locker.money",
 
 		// Socials
-		GITHUB_URL: "https://github.com/chainrule-labs",
+		GITHUB_URL: "https://github.com/locker-labs",
 		TWITTER_URL: "https://twitter.com/locker_money",
 		FARCASTER_URL: "https://warpcast.com/locker",
 		TELEGRAM_URL: "https://t.me/+stsNEbe16tU5MTY5",

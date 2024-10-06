@@ -29,10 +29,10 @@ function LockerPortfolioValue({
 		<div className="flex flex-col space-y-5">
 			<div className="flex flex-row justify-between">
 				<div className="flex flex-col">
-					<p className="xxs:text-2xs text-gray-500 lg:text-sm xl:text-base">
+					<p className="text-2xs text-gray-500 lg:text-sm xl:text-base">
 						Portfolio value
 					</p>
-					<p className="font-bold xxs:text-base lg:text-lg xxl:text-xl xxl:text-xxl">
+					<p className="text-base font-bold lg:text-lg xxl:text-xl xxl:text-xxl">
 						${portfolioValue}
 					</p>
 				</div>
@@ -40,14 +40,14 @@ function LockerPortfolioValue({
 					<SendTokensModal tokens={tokens} />
 
 					<button onClick={openQrCodeModal}>
-						<div className="flex flex-col items-center justify-center rounded-sm bg-gray-100 xxs:h-20 xxs:w-20 xxs:space-y-2 xxs:p-2 sm:space-y-1 sm:p-4">
+						<div className="flex h-20 w-20 flex-col items-center justify-center space-y-2 rounded-sm bg-gray-100 p-2 sm:space-y-1 sm:p-4">
 							<div className="sm:hidden">
 								<QrCode className="text-locker-600" size={24} />
 							</div>
-							<div className=" xxs:hidden sm:block">
+							<div className=" hidden sm:block">
 								<QrCode className="text-locker-600" size={30} />
 							</div>
-							<p className="text-gray-500 xxs:text-sm lg:text-base xl:text-lg">
+							<p className="text-sm text-gray-500 lg:text-base xl:text-lg">
 								Receive
 							</p>
 							{renderQrCodeModal(lockerAddress, chainId)}
@@ -55,10 +55,10 @@ function LockerPortfolioValue({
 					</button>
 				</div>
 			</div>
-			<div className="w-full flex-col xxs:hidden sm:flex">
+			<div className="hidden w-full flex-col sm:flex">
 				<AutomateChainsModal />
 			</div>
-			<div className="space-y-2 overflow-auto pr-2 xxs:hidden sm:block sm:h-48">
+			<div className="hidden space-y-2 overflow-auto pr-2 sm:block sm:h-48">
 				{tokens.map((token) => {
 					const rawAmount = formatUnits(
 						BigInt(token.balance),
