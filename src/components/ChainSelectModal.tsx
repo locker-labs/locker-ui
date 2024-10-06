@@ -27,7 +27,7 @@ function ChainSelectModal({
 		<Dialog open={open} onOpenChange={onClose}>
 			<DialogContent className="sm:max-w-[644px]">
 				<DialogHeader>
-					<DialogTitle className="text-center text-xl font-bold">
+					<DialogTitle className="max-w-[544px] text-center text-xl font-bold">
 						Select a chain for your locker
 					</DialogTitle>
 					<DialogDescription className="max-w-[544px] text-center text-sm text-gray-600">

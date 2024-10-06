@@ -277,7 +277,10 @@ function LockerSetup() {
 				</button>
 				<ChainSelectModal
 					open={isChainSelectModalOpen}
-					onClose={() => setIsChainSelectModalOpen(false)} // Close modal handler
+					onClose={() => {
+						setDidUserClick(false);
+						setIsChainSelectModalOpen(false);
+					}} // Close modal handler
 					createNewPolicy={createNewPolicy}
 				/>
 			</>
