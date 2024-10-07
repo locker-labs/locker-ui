@@ -38,14 +38,14 @@ export default async function HomeLayout({
 				ascending: false,
 			});
 
+	if (lockersError) console.error(lockersError);
+	// console.log("Got locker data");
+	// console.log(lockers);
+
 	const lockers = lockersData as LockerDb[];
 	const policies = lockersData?.flatMap(
 		(locker) => locker.policies
 	) as PolicyDb[];
-
-	if (lockersError) console.error(lockersError);
-	// console.log("Got locker data");
-	// console.log(lockers);
 
 	return (
 		<LockerProvider

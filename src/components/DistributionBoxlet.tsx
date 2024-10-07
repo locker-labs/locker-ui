@@ -61,7 +61,7 @@ function DistributionBoxlet({
 						className="flex size-7 shrink-0 items-center justify-center rounded-full"
 						style={{ backgroundColor: color }}
 					/>
-					<span className="xs2:whitespace-nowrap xs2:text-[16px] ml-3 whitespace-normal text-sm">
+					<span className="ml-3 whitespace-normal font-bold">
 						{title}
 					</span>
 					<div className="ml-2">
@@ -99,10 +99,12 @@ function DistributionBoxlet({
 			</div>
 			{isForwardTo && (
 				<div className="flex flex-col">
-					<span className="text-sm">Recipient address</span>
+					<span className="mb-1 text-xxs font-semibold text-gray-700">
+						Recipient address
+					</span>
 					<input
 						type="text"
-						className="w-100 rounded-md border border-solid border-gray-300 bg-white p-2 text-xs placeholder:text-gray-400"
+						className="w-100 rounded-md border border-solid border-gray-300 bg-white p-2 text-xxs placeholder:text-gray-400"
 						placeholder="0x"
 						disabled={false}
 						value={boxlet.forwardToAddress}

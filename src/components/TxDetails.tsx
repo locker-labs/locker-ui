@@ -14,17 +14,17 @@ export interface ITxDetails {
 
 function TxDetails({ tx, chain }: ITxDetails) {
 	return (
-		<div className="flex w-full flex-col overflow-x-auto rounded-md border border-light-200 shadow-sm shadow-light-600 dark:border-dark-200 dark:shadow-none">
-			<table className="min-w-full divide-y divide-light-200 text-left text-sm dark:divide-dark-200">
-				<tbody className="divide-y divide-light-200 dark:divide-dark-200">
+		<div className="border-light-200 shadow-light-600 dark:border-dark-200 flex w-full flex-col overflow-x-auto rounded-md border shadow-sm dark:shadow-none">
+			<table className="divide-light-200 dark:divide-dark-200 min-w-full divide-y text-left text-sm">
+				<tbody className="divide-light-200 dark:divide-dark-200 divide-y">
 					<tr className="sm1:flex-row sm1:items-center flex flex-col items-start">
-						<td className="w-36 shrink-0 px-4 py-3 text-light-600">
+						<td className="text-light-600 w-36 shrink-0 px-4 py-3">
 							Date (UTC):
 						</td>
 						<td className="px-4 py-3">{tx.createdAt}</td>
 					</tr>
 					<tr className="sm1:flex-row sm1:items-center flex flex-col items-start">
-						<td className="w-36 shrink-0 px-4 py-3 text-light-600">
+						<td className="text-light-600 w-36 shrink-0 px-4 py-3">
 							Status:
 						</td>
 						<td className="px-4 py-3">
@@ -40,7 +40,7 @@ function TxDetails({ tx, chain }: ITxDetails) {
 						</td>
 					</tr>
 					<tr className="sm1:flex-row sm1:items-center flex flex-col items-start">
-						<td className="w-36 shrink-0 px-4 py-3 text-light-600">
+						<td className="text-light-600 w-36 shrink-0 px-4 py-3">
 							Chain:
 						</td>
 						<td className="px-4 py-3">
@@ -61,13 +61,13 @@ function TxDetails({ tx, chain }: ITxDetails) {
 						</td>
 					</tr>
 					<tr className="sm1:flex-row sm1:items-center flex flex-col items-start">
-						<td className="w-36 shrink-0 px-4 py-3 text-light-600">
+						<td className="text-light-600 w-36 shrink-0 px-4 py-3">
 							Tx hash:
 						</td>
 						<td className="break-all px-4 py-3">
 							{chain.blockExplorers ? (
 								<a
-									className="flex items-center space-x-2 hover:text-secondary-100 hover:underline dark:hover:text-primary-100"
+									className="hover:text-secondary-100 dark:hover:text-primary-100 flex items-center space-x-2 hover:underline"
 									href={`${chain.blockExplorers.default.url}/tx/${tx.txHash}`}
 									target="_blank"
 									rel="noopener noreferrer"
@@ -84,13 +84,13 @@ function TxDetails({ tx, chain }: ITxDetails) {
 						</td>
 					</tr>
 					<tr className="sm1:flex-row sm1:items-center flex flex-col items-start">
-						<td className="w-36 shrink-0 px-4 py-3 text-light-600">
+						<td className="text-light-600 w-36 shrink-0 px-4 py-3">
 							To:
 						</td>
 						<td className="break-all px-4 py-3">
 							{chain.blockExplorers ? (
 								<a
-									className="flex items-center space-x-2 hover:text-secondary-100 hover:underline dark:hover:text-primary-100"
+									className="hover:text-secondary-100 dark:hover:text-primary-100 flex items-center space-x-2 hover:underline"
 									href={`${chain.blockExplorers.default.url}/address/${tx.toAddress}`}
 									target="_blank"
 									rel="noopener noreferrer"
@@ -107,13 +107,13 @@ function TxDetails({ tx, chain }: ITxDetails) {
 						</td>
 					</tr>
 					<tr className="sm1:flex-row sm1:items-center flex flex-col items-start">
-						<td className="w-36 shrink-0 px-4 py-3 text-light-600">
+						<td className="text-light-600 w-36 shrink-0 px-4 py-3">
 							From:
 						</td>
 						<td className="break-all px-4 py-3">
 							{chain.blockExplorers ? (
 								<a
-									className="flex items-center space-x-2 hover:text-secondary-100 hover:underline dark:hover:text-primary-100"
+									className="hover:text-secondary-100 dark:hover:text-primary-100 flex items-center space-x-2 hover:underline"
 									href={`${chain.blockExplorers.default.url}/address/${tx.fromAddress}`}
 									target="_blank"
 									rel="noopener noreferrer"
@@ -130,7 +130,7 @@ function TxDetails({ tx, chain }: ITxDetails) {
 						</td>
 					</tr>
 					<tr className="sm1:flex-row sm1:items-center flex flex-col items-start">
-						<td className="w-36 shrink-0 px-4 py-3 text-light-600">
+						<td className="text-light-600 w-36 shrink-0 px-4 py-3">
 							Amount:
 						</td>
 						<td className="px-4 py-3">
@@ -139,7 +139,7 @@ function TxDetails({ tx, chain }: ITxDetails) {
 						</td>
 					</tr>
 					<tr className="sm1:flex-row sm1:items-center flex flex-col items-start">
-						<td className="w-36 shrink-0 px-4 py-3 text-light-600">
+						<td className="text-light-600 w-36 shrink-0 px-4 py-3">
 							Token Type
 						</td>
 						<td className="px-4 py-3">

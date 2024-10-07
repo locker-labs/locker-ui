@@ -30,7 +30,7 @@ function TxDetailsModal({ isOpen, closeModal, tx }: ITxDetailsModal) {
 					leaveFrom="opacity-100"
 					leaveTo="opacity-0"
 				>
-					<div className="fixed inset-0 bg-dark-600/75" />
+					<div className="bg-dark-600/75 fixed inset-0" />
 				</Transition.Child>
 
 				<div className="fixed inset-0 overflow-y-auto">
@@ -44,7 +44,7 @@ function TxDetailsModal({ isOpen, closeModal, tx }: ITxDetailsModal) {
 							leaveFrom="opacity-100 scale-100"
 							leaveTo="opacity-0 scale-95"
 						>
-							<Dialog.Panel className="flex w-full min-w-64 max-w-4xl flex-col items-center justify-center overflow-hidden rounded-2xl bg-light-100 p-6 shadow-xl dark:bg-dark-500">
+							<Dialog.Panel className="bg-light-100 dark:bg-dark-500 flex w-full min-w-64 max-w-4xl flex-col items-center justify-center overflow-hidden rounded-2xl p-6 shadow-xl">
 								<Dialog.Title
 									as="h3"
 									className="flex w-full items-center justify-between"
@@ -53,7 +53,7 @@ function TxDetailsModal({ isOpen, closeModal, tx }: ITxDetailsModal) {
 										Transaction details
 									</span>
 									<button
-										className="rounded-full bg-light-200 p-1 hover:bg-light-300 dark:bg-dark-400 dark:hover:bg-dark-300"
+										className="bg-light-200 hover:bg-light-300 dark:bg-dark-400 dark:hover:bg-dark-300 rounded-full p-1"
 										aria-label="Close modal"
 										onClick={closeModal}
 									>
@@ -61,10 +61,10 @@ function TxDetailsModal({ isOpen, closeModal, tx }: ITxDetailsModal) {
 									</button>
 								</Dialog.Title>
 								<div className="mt-6 flex w-full flex-col items-center justify-center overflow-x-auto">
-									<table className="min-w-full divide-y divide-light-200 text-left text-sm dark:divide-dark-200">
-										<tbody className="divide-y divide-light-200 dark:divide-dark-200">
+									<table className="divide-light-200 dark:divide-dark-200 min-w-full divide-y text-left text-sm">
+										<tbody className="divide-light-200 dark:divide-dark-200 divide-y">
 											<tr className="sm1:flex-row sm1:items-center flex flex-col items-start">
-												<td className="w-36 shrink-0 px-4 py-3 text-light-600">
+												<td className="text-light-600 w-36 shrink-0 px-4 py-3">
 													Date (UTC):
 												</td>
 												<td className="px-4 py-3">
@@ -72,7 +72,7 @@ function TxDetailsModal({ isOpen, closeModal, tx }: ITxDetailsModal) {
 												</td>
 											</tr>
 											<tr className="sm1:flex-row sm1:items-center flex flex-col items-start">
-												<td className="w-36 shrink-0 px-4 py-3 text-light-600">
+												<td className="text-light-600 w-36 shrink-0 px-4 py-3">
 													Status:
 												</td>
 												<td className="px-4 py-3">
@@ -88,7 +88,7 @@ function TxDetailsModal({ isOpen, closeModal, tx }: ITxDetailsModal) {
 												</td>
 											</tr>
 											<tr className="sm1:flex-row sm1:items-center flex flex-col items-start">
-												<td className="w-36 shrink-0 px-4 py-3 text-light-600">
+												<td className="text-light-600 w-36 shrink-0 px-4 py-3">
 													Chain:
 												</td>
 												<td className="px-4 py-3">
@@ -113,13 +113,13 @@ function TxDetailsModal({ isOpen, closeModal, tx }: ITxDetailsModal) {
 												</td>
 											</tr>
 											<tr className="sm1:flex-row sm1:items-center flex flex-col items-start">
-												<td className="w-36 shrink-0 px-4 py-3 text-light-600">
+												<td className="text-light-600 w-36 shrink-0 px-4 py-3">
 													Tx hash:
 												</td>
 												<td className="break-all px-4 py-3">
 													{chain.blockExplorers ? (
 														<a
-															className="flex items-center space-x-2 hover:text-secondary-100 hover:underline dark:hover:text-primary-100"
+															className="hover:text-secondary-100 dark:hover:text-primary-100 flex items-center space-x-2 hover:underline"
 															href={`${chain.blockExplorers.default.url}/tx/${tx.txHash}`}
 															target="_blank"
 															rel="noopener noreferrer"
@@ -138,13 +138,13 @@ function TxDetailsModal({ isOpen, closeModal, tx }: ITxDetailsModal) {
 												</td>
 											</tr>
 											<tr className="sm1:flex-row sm1:items-center flex flex-col items-start">
-												<td className="w-36 shrink-0 px-4 py-3 text-light-600">
+												<td className="text-light-600 w-36 shrink-0 px-4 py-3">
 													To:
 												</td>
 												<td className="break-all px-4 py-3">
 													{chain.blockExplorers ? (
 														<a
-															className="flex items-center space-x-2 hover:text-secondary-100 hover:underline dark:hover:text-primary-100"
+															className="hover:text-secondary-100 dark:hover:text-primary-100 flex items-center space-x-2 hover:underline"
 															href={`${chain.blockExplorers.default.url}/address/${tx.toAddress}`}
 															target="_blank"
 															rel="noopener noreferrer"
@@ -165,13 +165,13 @@ function TxDetailsModal({ isOpen, closeModal, tx }: ITxDetailsModal) {
 												</td>
 											</tr>
 											<tr className="sm1:flex-row sm1:items-center flex flex-col items-start">
-												<td className="w-36 shrink-0 px-4 py-3 text-light-600">
+												<td className="text-light-600 w-36 shrink-0 px-4 py-3">
 													From:
 												</td>
 												<td className="break-all px-4 py-3">
 													{chain.blockExplorers ? (
 														<a
-															className="flex items-center space-x-2 hover:text-secondary-100 hover:underline dark:hover:text-primary-100"
+															className="hover:text-secondary-100 dark:hover:text-primary-100 flex items-center space-x-2 hover:underline"
 															href={`${chain.blockExplorers.default.url}/address/${tx.fromAddress}`}
 															target="_blank"
 															rel="noopener noreferrer"
@@ -192,7 +192,7 @@ function TxDetailsModal({ isOpen, closeModal, tx }: ITxDetailsModal) {
 												</td>
 											</tr>
 											<tr className="sm1:flex-row sm1:items-center flex flex-col items-start">
-												<td className="w-36 shrink-0 px-4 py-3 text-light-600">
+												<td className="text-light-600 w-36 shrink-0 px-4 py-3">
 													Amount:
 												</td>
 												<td className="px-4 py-3">
@@ -204,7 +204,7 @@ function TxDetailsModal({ isOpen, closeModal, tx }: ITxDetailsModal) {
 												</td>
 											</tr>
 											<tr className="sm1:flex-row sm1:items-center flex flex-col items-start">
-												<td className="w-36 shrink-0 px-4 py-3 text-light-600">
+												<td className="text-light-600 w-36 shrink-0 px-4 py-3">
 													Token Type
 												</td>
 												<td className="px-4 py-3">

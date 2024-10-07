@@ -35,7 +35,7 @@ export default function LandingPage() {
 	}, [isSignedIn]);
 
 	const renderSteps = (idSuffix: string) => (
-		<div className="grid grid-cols-3 gap-x-3 xxs:my-4 xxs:text-sm lg:text-base">
+		<div className="my-4 grid grid-cols-3 gap-x-3 text-xs">
 			<StepInfo
 				text="Create a locker account"
 				icon={<IconPlus idSuffix={idSuffix} />}
@@ -52,71 +52,64 @@ export default function LandingPage() {
 	);
 
 	const intro = (
-		<>
+		<div className="flex flex-col">
 			<div className="w-full">
 				<img
 					src="/assets/logoLockerDarkLetters.svg"
 					alt="Locker logo"
-					className="xxs:w-1/3 xs:w-1/4 sm:w-1/3"
+					className="w-1/3 xs:w-1/4 sm:w-1/3"
 				/>
 			</div>
-			<div>
-				<p className="mb-3 text-3xl font-bold">
-					<span className="bg-gradient-to-r from-secondary-200 to-primary-200 bg-clip-text text-transparent">
+			<div className="my-[2.4rem]">
+				<p className="mb-[1.6rem] text-xxxl font-bold">
+					<span className="bg-gradient-to-r from-[#63C8CD] to-[#4F4EE2] bg-clip-text text-transparent">
 						Save and invest
 					</span>{" "}
 					<span>every time you get paid</span>
 				</p>
-				<p className="my-6 text-gray-600">
+				<p className="font-sm text-gray-600">
 					Set up your locker and watch your crypto go where you want
 					it.
 				</p>
 			</div>
+
 			<Suspense fallback={<Loading />}>
-				<div className="flex flex-row items-center space-x-4 text-lg">
-					<AuthButton
-						type="sign-up"
-						label="Sign up"
-						height="h-12"
-						width="w-full"
-					/>
-					<AuthButton
-						type="sign-in"
-						label="Sign in"
-						height="h-12"
-						width="w-full"
-					/>
+				<div className="mb-[1rem] flex flex-row items-center space-x-6">
+					<AuthButton type="sign-up" label="Sign Up" />
+					<AuthButton type="sign-in" label="Sign In" />
 				</div>
 			</Suspense>
 			<Link
 				href="https://docs.locker.money"
-				className="flex h-12 items-center justify-center rounded-md text-center outline outline-1 outline-gray-400"
+				className="flex items-center justify-center rounded-md px-[1rem] py-[.6rem] text-center outline outline-1 outline-gray-300"
 				target="_blank"
 			>
-				<span className="mr-2 font-semibold">Documentation</span>{" "}
+				<span className="mr-2 text-xs font-semibold">
+					Documentation
+				</span>{" "}
 				<IconArrowUpRight />
 			</Link>
-			<div className="xxs:hidden sm:block lg:mt-6">
+			<div className="mt-[1.6rem] hidden text-xs sm:block">
 				{renderSteps("desktop")}
 			</div>
-		</>
+		</div>
 	);
 
 	return (
-		<main className="xxs:px-4 xxs:py-4 lg:p-12 xl:px-32">
-			<div className="mb-24 grid grid-flow-row-dense gap-y-2 bg-light-100 text-dark-500  sm:grid-cols-2 sm:gap-x-12 xl:gap-x-36">
-				<div className="xxs:space-y-4">{intro}</div>
-				<div className="grid space-y-8 xxs:grid-cols-1 xs:grid-cols-8">
+		<main className="px-4 py-4 lg:p-10 xl:px-[6rem] xl:py-[4rem]">
+			<div className="bg-light-100 text-dark-500 lg:gap-x-18 mb-24 grid grid-flow-row-dense gap-y-2 sm:grid-cols-2 sm:gap-x-12 xl:gap-x-24">
+				<div className="space-y-4 sm:max-w-[480px]">{intro}</div>
+				<div className="grid grid-cols-1 space-y-8 xs:grid-cols-12 sm:max-w-[520px]">
 					<Suspense fallback={<Loading />}>
-						<div className="xxs:mt-8 xs:col-span-6 xs:col-start-2 sm:col-span-8 sm:mb-2 sm:mt-0 lg:col-span-6 lg:col-start-2">
+						<div className="col-span-12 xs:col-span-10 xs:col-start-2">
 							<LottieAnimation animationData={lockerPaths} />
 						</div>
 					</Suspense>
-					<div className="xxs:col-span-8 xxs:block sm:hidden">
+					<div className="col-span-12 block sm:hidden">
 						{renderSteps("mobile")}
 					</div>
-					<div className="pb-10 xs:col-span-8">
-						<p className="mb-5 text-xl font-bold">
+					<div className="col-span-12 pb-10">
+						<p className="mb-5 text-lg font-bold">
 							Frequently asked questions
 						</p>
 						<FaqAccordion />

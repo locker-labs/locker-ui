@@ -135,31 +135,31 @@ export function SendTokensModal({ tokens }: ISendTokensModal) {
 		<Dialog>
 			<DialogTrigger asChild>
 				<button>
-					<div className="flex flex-col items-center justify-center rounded-sm bg-gray-100 xxs:h-20 xxs:w-20 xxs:space-y-2 xxs:p-2 sm:space-y-1 sm:p-4">
+					<div className="flex h-[3.6rem] w-[3.6rem] flex-col items-center justify-center space-y-2 rounded-sm bg-gray-100 p-2 sm:space-y-1 sm:p-4">
 						<div className="sm:hidden">
-							<Send className="text-locker-600" size={28} />
+							<Send className="text-locker-600" size={24} />
 						</div>
-						<div className="xxs:hidden sm:block">
-							<Send className="text-locker-600" size={34} />
+						<div className="hidden sm:block">
+							<Send className="text-locker-600" size={24} />
 						</div>
-						<p className="text-gray-500 xxs:text-sm sm:text-base lg:text-lg">
-							Send
-						</p>
+						<p className="text-xxxs text-gray-500">Send</p>
 					</div>
 				</button>
 			</DialogTrigger>
-			<DialogContent className="sm:max-w-[425px]">
+			<DialogContent className="sm:max-w-[640px]">
 				<DialogHeader>
-					<DialogTitle>Send Tokens</DialogTitle>
-					<DialogDescription>
-						Fill in the details below to send tokens.
+					<DialogTitle className="text-xl">
+						Transfer funds
+					</DialogTitle>
+					<DialogDescription className="text-sm text-gray-600">
+						Withdraw from your locker to another on-chain addres
 					</DialogDescription>
 				</DialogHeader>
 				{selectedToken && (
 					<div className="grid gap-4 py-4">
 						{/* Address Input */}
 						<div className="flex w-full flex-col space-y-1">
-							<span className="self-start text-xs text-light-600">
+							<span className="self-start font-semibold text-black">
 								Recipient address
 							</span>
 							<AddressInput
@@ -173,7 +173,7 @@ export function SendTokensModal({ tokens }: ISendTokensModal) {
 
 						{/* Token Dropdown */}
 						<div className="flex w-full flex-col space-y-1">
-							<span className="self-start text-xs text-light-600">
+							<span className="self-start text-xs font-bold text-black">
 								Token
 							</span>
 							<TokenDropdown
@@ -186,7 +186,7 @@ export function SendTokensModal({ tokens }: ISendTokensModal) {
 
 						{/* Amount Input */}
 						<div className="flex w-full flex-col space-y-1">
-							<span className="self-start text-xs text-light-600">
+							<span className="self-start text-xs  font-bold text-black">
 								Amount
 							</span>
 							<CurrencyInput
@@ -211,7 +211,7 @@ export function SendTokensModal({ tokens }: ISendTokensModal) {
 						<Button
 							disabled={!isValid}
 							onClick={() => handleSendUserOp()}
-							className={`${!isValid ? "cursor-not-allowed opacity-80" : "cursor-pointer opacity-100"}`}
+							className={`${!isValid ? "cursor-not-allowed bg-locker-600 opacity-80" : "cursor-pointer bg-locker-600 opacity-100"}`}
 						>
 							{isLoading ? (
 								<AiOutlineLoading3Quarters

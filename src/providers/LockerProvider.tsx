@@ -58,7 +58,7 @@ export function LockerProvider({
 	// console.log("lockers records", lockers);
 	// console.log("lockers initialLockers", initialLockers);
 	const locker = lockers && lockers.length > 0 ? lockers[0] : undefined;
-	const automations = policies[0]?.automations ?? [];
+	const automations = (policies && policies[0]?.automations) ?? [];
 
 	// Memoize the value to prevent unnecessary re-renders
 	const value = useMemo(

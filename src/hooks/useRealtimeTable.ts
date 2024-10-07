@@ -20,7 +20,13 @@ export const useRealtimeTable = <T extends { id: number }>(
 	const [records, setRecords] = useState<T[]>(initialRecords);
 
 	const subscribeToTable = useCallback(async () => {
-		const supabase = supabaseJwtClient(await getJwt());
+		let jwt;
+		try {
+			jwt = await getJwt();
+		} catch (e) {
+			return () => {};
+		}
+		const supabase = supabaseJwtClient(jwt);
 		let lastChannelState: REALTIME_SUBSCRIBE_STATES | null = null;
 		let channel: RealtimeChannel | null = null;
 
@@ -29,8 +35,13 @@ export const useRealtimeTable = <T extends { id: number }>(
 		};
 
 		const refreshToken = async () => {
-			const token = await getJwt();
-			supabase.realtime.setAuth(token);
+			try {
+				const token = await getJwt();
+				supabase.realtime.setAuth(token);
+			} catch (e) {
+				// This should happen normally when user logs out
+				console.warn("Unable to refresh JWT token.");
+			}
 		};
 
 		const subscribe = () => {

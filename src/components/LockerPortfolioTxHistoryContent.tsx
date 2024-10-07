@@ -55,13 +55,13 @@ export default function LockerPortfolioTxHistoryContent() {
 					?.recipientAddress?.toLowerCase();
 
 		let text = truncateAddress(address);
-		let bgColor = "bg-gray-300";
+		let bgColor = "bg-gray-200";
 		if (isLocker) {
 			text = "Your locker";
-			bgColor = "bg-locker-50";
+			bgColor = `bg-[#6A30C34D]`;
 		} else if (isForward) {
 			text = "Forward to";
-			bgColor = "bg-tx-forward";
+			bgColor = "bg-[#5490D999]";
 		}
 
 		return (
@@ -69,7 +69,7 @@ export default function LockerPortfolioTxHistoryContent() {
 				<Tooltip>
 					<TooltipTrigger asChild>
 						<div
-							className={`${bgColor} w-32 rounded-full px-2 py-1 text-center`}
+							className={`${bgColor} w-32 break-words rounded-full px-2 py-1 text-center text-xxs`}
 						>
 							{text}
 						</div>
@@ -96,7 +96,7 @@ export default function LockerPortfolioTxHistoryContent() {
 					<div className="flex items-center justify-start">
 						<div className="flex flex-row space-x-2">
 							{!isIncoming && amount && (
-								<div className="flex size-8 items-center justify-center border-b-2 border-l-2 pl-2 text-xs font-bold">
+								<div className="flex size-8 items-center justify-center border-b-2 border-l-2 pl-2 text-xxs font-bold text-gray-800">
 									{Big(tx.amount)
 										.div(amount)
 										.mul(100)
@@ -105,7 +105,7 @@ export default function LockerPortfolioTxHistoryContent() {
 								</div>
 							)}
 							<div className="flex flex-col">
-								<span className="flex flex-row items-center font-semibold">
+								<span className="flex flex-row items-center text-xxs font-semibold">
 									{directionLabel}
 									<span className="ml-2 rounded-full bg-locker-600 text-white">
 										{isIncoming ? (
@@ -115,7 +115,7 @@ export default function LockerPortfolioTxHistoryContent() {
 										)}
 									</span>
 								</span>
-								<span>
+								<span className="text-xs">
 									{formatAmount(tx.amount, tx.tokenDecimals)}{" "}
 									{tx.tokenSymbol}
 								</span>
@@ -126,7 +126,7 @@ export default function LockerPortfolioTxHistoryContent() {
 
 				{/* Time */}
 				<td>
-					<span className=" text-gray-500">
+					<span className=" text-xxs text-gray-500">
 						<TooltipProvider>
 							<Tooltip>
 								<TooltipTrigger asChild>
@@ -141,7 +141,7 @@ export default function LockerPortfolioTxHistoryContent() {
 				</td>
 
 				{/* From */}
-				<td>
+				<td className="text-xxs">
 					<div className="flex flex-row items-center justify-start space-x-2">
 						<span className="font-semibold">From</span>
 						{getCounterpartyLabel(tx.fromAddress)}
@@ -149,7 +149,7 @@ export default function LockerPortfolioTxHistoryContent() {
 				</td>
 
 				{/* To */}
-				<td>
+				<td className="text-xxs">
 					<div className="flex flex-row items-center justify-start space-x-2">
 						<span className="font-semibold">To</span>
 						{getCounterpartyLabel(tx.toAddress)}
@@ -157,13 +157,13 @@ export default function LockerPortfolioTxHistoryContent() {
 				</td>
 
 				{/* Confirmed/Pending */}
-				<td>
+				<td className="text-xxs">
 					<div className="flex flex-row items-center justify-start space-x-2">
 						<span
 							className={`${
 								isConfirmed
 									? "rounded-full bg-tx-confirmed px-2 py-1"
-									: "rounded-full px-2 py-1 text-gray-300"
+									: "rounded-full bg-gray-300 px-2 py-1"
 							}`}
 						>
 							{isConfirmed ? "Confirmed" : "Pending"}
@@ -177,7 +177,7 @@ export default function LockerPortfolioTxHistoryContent() {
 						href={`${chain.blockExplorers?.default.url}/tx/${tx.txHash}`}
 						target="_blank"
 						rel="noopener noreferrer"
-						className="text-semibold flex flex-row justify-center space-x-2 font-semibold text-locker-700"
+						className="flex flex-row justify-center space-x-2 text-xxs font-semibold text-locker-700"
 					>
 						<span>View on Explorer</span> <ArrowUpRight size={18} />
 					</a>
@@ -186,9 +186,22 @@ export default function LockerPortfolioTxHistoryContent() {
 		);
 	};
 
-	// Group the transactions where lockerDirection === 'in' and find linked transactions
+	// Filter transactions without triggeredByTokenTxId (outgoing without a corresponding incoming)
+	const unlinkedOutgoingTxs = txs.filter(
+		(tx) =>
+			tx.lockerDirection === ELockerDirection.OUT &&
+			!tx.triggeredByTokenTxId
+	);
+
+	// Group the incoming transactions and find linked transactions
 	const incomingTxs = txs.filter(
 		(tx) => tx.lockerDirection === ELockerDirection.IN
+	);
+
+	// Sort incoming and unlinked outgoing transactions together by creation time
+	const allTxs = [...incomingTxs, ...unlinkedOutgoingTxs].sort(
+		(a, b) =>
+			new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
 	);
 
 	const renderGroup = (incomingTx: Tx) => {
@@ -198,9 +211,9 @@ export default function LockerPortfolioTxHistoryContent() {
 
 		return (
 			<div key={incomingTx.id}>
-				<table className="w-full border-separate border-spacing-y-2 text-left xxs:table-auto xxs:border-spacing-x-3 lg:table-fixed">
+				<table className="w-full table-auto border-separate border-spacing-x-3 border-spacing-y-2 text-left xl:table-fixed">
 					<thead className="text-xs uppercase text-gray-600" />
-					<tbody className="xxs:text-xs lg:text-sm xxl:text-base">
+					<tbody className="text-xs lg:text-sm xxl:text-base">
 						{/* Render the "in" transaction first */}
 						{renderTxRow(incomingTx)}
 
@@ -218,8 +231,8 @@ export default function LockerPortfolioTxHistoryContent() {
 
 	return (
 		<div className="w-full">
-			{incomingTxs.length > 0 ? (
-				incomingTxs.map((incomingTx) => renderGroup(incomingTx))
+			{allTxs.length > 0 ? (
+				allTxs.map((incomingTx) => renderGroup(incomingTx))
 			) : (
 				<p className="text-sm text-gray-500">No transactions found.</p>
 			)}

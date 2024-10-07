@@ -27,7 +27,7 @@ function TxTable({ txs }: ITxTable) {
 		if (chain.blockExplorers) {
 			return (
 				<a
-					className="flex items-center space-x-2 hover:text-secondary-100 hover:underline dark:hover:text-primary-100"
+					className="hover:text-secondary-100 dark:hover:text-primary-100 flex items-center space-x-2 hover:underline"
 					href={`${chain.blockExplorers.default.url}/tx/${tx.txHash}`}
 					target="_blank"
 					rel="noopener noreferrer"
@@ -51,7 +51,7 @@ function TxTable({ txs }: ITxTable) {
 		if (chain.blockExplorers) {
 			return (
 				<a
-					className="flex items-center space-x-2 hover:text-secondary-100 hover:underline dark:hover:text-primary-100"
+					className="hover:text-secondary-100 dark:hover:text-primary-100 flex items-center space-x-2 hover:underline"
 					href={`${chain.blockExplorers.default.url}/address/${address}`}
 					target="_blank"
 					rel="noopener noreferrer"
@@ -66,8 +66,8 @@ function TxTable({ txs }: ITxTable) {
 	};
 
 	return (
-		<div className="flex w-full flex-col overflow-x-auto rounded-md border border-light-200 shadow-sm shadow-light-600 dark:border-dark-200 dark:shadow-none">
-			<table className="min-w-full divide-y divide-light-200 text-left text-xs dark:divide-dark-200">
+		<div className="border-light-200 shadow-light-600 dark:border-dark-200 flex w-full flex-col overflow-x-auto rounded-md border shadow-sm dark:shadow-none">
+			<table className="divide-light-200 dark:divide-dark-200 min-w-full divide-y text-left text-xs">
 				<thead>
 					<tr className="text-light-600">
 						<th className="px-4 py-3">Date</th>
@@ -86,7 +86,7 @@ function TxTable({ txs }: ITxTable) {
 						.map((tx) => (
 							<Fragment key={tx.txHash}>
 								<tr
-									className="cursor-pointer hover:bg-light-200 dark:hover:bg-dark-400"
+									className="hover:bg-light-200 dark:hover:bg-dark-400 cursor-pointer"
 									onClick={() => openTxDetailsModal()}
 								>
 									<td className="px-4 py-3">

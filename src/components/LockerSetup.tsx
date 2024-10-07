@@ -11,8 +11,6 @@ import DistributionBox from "@/components/DistributionBox";
 import { DEFAULT_BOXLETS } from "@/data/constants/boxlets";
 import { errors } from "@/data/constants/errorMessages";
 import { paths } from "@/data/constants/paths";
-import { useChainSelectModal } from "@/hooks/useChainSelectModal";
-import { useConnectModal } from "@/hooks/useConnectModal";
 import useSmartAccount from "@/hooks/useSmartAccount";
 import { useLocker } from "@/providers/LockerProvider";
 import { createLocker, createPolicy } from "@/services/lockers";
@@ -26,19 +24,26 @@ import {
 import { isChainSupported } from "@/utils/isChainSupported";
 
 import BoxletPieChart from "./BoxletPieChart";
+import ChainSelectModal from "./ChainSelectModal";
+// eslint-disable-next-line import/no-named-as-default
+import ConnectModal from "./ConnectModal";
 import { calcPrecentLeft, IDistributionBoxlet } from "./DistributionBoxlet";
 
 function LockerSetup() {
-	const { lockers } = useLocker();
+	const { locker: _locker } = useLocker();
+	const locker = _locker;
 	const [errorMessage, setErrorMessage] = useState<string>("");
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 
 	const { getToken } = useAuth();
 	const { chainId, address, isConnected } = useAccount();
 	const { signSessionKey } = useSmartAccount();
-	const { openConnectModal, renderConnectModal } = useConnectModal();
-	const { openChainSelectModal, renderChainSelectModal } =
-		useChainSelectModal();
+	const [didUserClick, setDidUserClick] = useState(false);
+	const [isConnectModalOpen, setIsConnectModalOpen] =
+		useState<boolean>(false); // Control for ConnectModal
+	const [isChainSelectModalOpen, setIsChainSelectModalOpen] =
+		useState<boolean>(false); // Control for ChainSelectModal
+
 	const { genSmartAccountAddress } = useSmartAccount();
 
 	const router = useRouter();
@@ -60,8 +65,6 @@ function LockerSetup() {
 				forwardToAddress: address,
 			});
 	}, [address]);
-
-	let locker: Locker | undefined = lockers[0];
 
 	const saveDecimal = Number(
 		formatUnits(BigInt(boxlets[EAutomationType.SAVINGS].percent), 2)
@@ -86,9 +89,9 @@ function LockerSetup() {
 		setErrorMessage("");
 		setIsLoading(true);
 		// Show Loader for 1.5 seconds
-		await new Promise((resolve) => {
-			setTimeout(resolve, 1500);
-		});
+		// await new Promise((resolve) => {
+		// 	setTimeout(resolve, 1500);
+		// });
 
 		// Proceed
 		try {
@@ -113,9 +116,12 @@ function LockerSetup() {
 				);
 				return newLocker;
 			}
-		} catch (error) {
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		} catch (error: any) {
 			// eslint-disable-next-line no-console
 			console.error(error);
+			setDidUserClick(false);
+			setErrorMessage(`Unable to create locker${error.toString()}`);
 		} finally {
 			setIsLoading(false);
 		}
@@ -128,7 +134,6 @@ function LockerSetup() {
 
 		// 1. Get user to sign session key
 		const sig = await signSessionKey(
-			chainId as number, // current chainId in user's connected wallet
 			0, // lockerIndex
 			sendToAddress as `0x${string}`, // hotWalletAddress
 			[] // offrampAddress
@@ -175,10 +180,17 @@ function LockerSetup() {
 	};
 
 	const isForwardToMissing = isForwardSelected && !isAddress(sendToAddress!);
-	const handlePolicyCreation = async () => {
-		setIsLoading(true);
-		// TODO: Improve error handling
-		if (isConnected) {
+
+	// Create locker after connecting
+	useEffect(() => {
+		// Don't do anything if user has never clicked
+		if (!didUserClick) return;
+
+		if (address && !locker) {
+			// create locker if wallet connected but locker
+			setIsConnectModalOpen(false);
+			createNewLocker();
+		} else if (address && locker) {
 			if (isSaveSelected && errorMessage === errors.INVALID_ADDRESS)
 				return;
 
@@ -207,20 +219,6 @@ function LockerSetup() {
 				return;
 			}
 
-			console.log("Trying to create policy");
-			console.log(locker);
-			if (!locker) {
-				locker = await createNewLocker();
-
-				console.log("Created locker");
-				console.log(locker);
-				// Locker may already exist or some other issue
-				if (!locker) {
-					setIsLoading(false);
-					return;
-				}
-			}
-
 			const isNotOwner =
 				locker && checksumAddress(locker.ownerAddress) !== address;
 			if (isNotOwner) {
@@ -233,19 +231,17 @@ function LockerSetup() {
 				return;
 			}
 
-			setIsLoading(false);
-			openChainSelectModal();
-		} else {
-			openConnectModal();
+			// Open chain selection if locker created and wallet connected
+			setIsChainSelectModalOpen(true);
 		}
-	};
+	}, [address, didUserClick, locker]);
 
 	let cta = null;
 	if (isLoading) {
 		cta = (
 			<button
 				aria-label="Connect wallet"
-				className="flex h-12 w-full cursor-not-allowed items-center justify-center rounded-md bg-locker-600 text-light-100 opacity-80 hover:bg-blue-200"
+				className="flex w-full cursor-not-allowed items-center  justify-center rounded-md bg-locker-600 py-3 text-sm font-semibold text-white opacity-80 hover:bg-blue-200"
 				disabled
 			>
 				<AiOutlineLoading3Quarters className="animate-spin" size={22} />
@@ -255,7 +251,7 @@ function LockerSetup() {
 		cta = (
 			<button
 				aria-label="Connect wallet"
-				className="flex h-12 w-full cursor-not-allowed items-center justify-center rounded-md bg-locker-600 text-light-100 opacity-80 hover:bg-blue-200"
+				className="flex w-full cursor-not-allowed items-center  justify-center rounded-md bg-locker-600 py-3 text-sm font-semibold text-white opacity-80 hover:bg-blue-200"
 				disabled
 			>
 				Adjust percentages
@@ -263,23 +259,44 @@ function LockerSetup() {
 		);
 	} else if (isConnected) {
 		cta = (
-			<button
-				aria-label="Enable automations"
-				className="flex h-12 w-full cursor-pointer items-center justify-center rounded-md bg-locker-600 text-light-100 opacity-100 hover:bg-blue-200"
-				onClick={() => handlePolicyCreation()}
-			>
-				Enable automations
-			</button>
+			<>
+				<button
+					aria-label="Enable automations"
+					className="flex w-full cursor-pointer items-center justify-center rounded-md bg-locker-600 py-3 text-sm font-semibold text-white opacity-100 hover:bg-blue-200"
+					onClick={() => {
+						setDidUserClick(true);
+					}}
+				>
+					Enable automations
+				</button>
+				<ChainSelectModal
+					open={isChainSelectModalOpen}
+					onClose={() => {
+						setDidUserClick(false);
+						setIsChainSelectModalOpen(false);
+					}} // Close modal handler
+					createNewPolicy={createNewPolicy}
+				/>
+			</>
 		);
 	} else {
 		cta = (
-			<button
-				aria-label="Continue"
-				className="flex h-12 w-full cursor-pointer items-center justify-center rounded-md bg-locker-600 text-light-100 opacity-100 hover:bg-blue-200"
-				onClick={() => openConnectModal()}
-			>
-				Connect wallet
-			</button>
+			<>
+				<button
+					aria-label="Continue"
+					className="flex w-full cursor-pointer items-center justify-center rounded-md bg-locker-600 py-3 text-sm font-semibold text-white opacity-100 hover:bg-blue-200"
+					onClick={() => {
+						setDidUserClick(true);
+						setIsConnectModalOpen(true);
+					}}
+				>
+					Connect wallet
+				</button>
+				<ConnectModal
+					open={isConnectModalOpen}
+					onClose={() => setIsConnectModalOpen(false)} // Close modal handler
+				/>
+			</>
 		);
 	}
 
@@ -300,9 +317,9 @@ function LockerSetup() {
 	if (isOverAllocated) allocationString = "over allocated";
 
 	const leftToAllocate = (
-		<span className="ml-2 text-sm text-dark-100">
+		<span className="ml-2 text-sm">
 			<span
-				className={`${isPerfectlyAllocated ? "text-success" : "text-error"}`}
+				className={`${isPerfectlyAllocated ? "text-black" : "text-error"} font-bold`}
 			>
 				{absAllocation}% {allocationString}
 			</span>
@@ -310,29 +327,24 @@ function LockerSetup() {
 	);
 
 	const rightPanel = (
-		<div className="grid grid-cols-1 justify-center text-center xxs:order-1 xxs:col-span-2 sm:order-2 sm:col-span-1">
-			<div className="flex justify-center">
-				<div className="xxs:size-64 lg:size-80 xxl:size-96">
-					<BoxletPieChart boxlets={boxlets} lineWidth={100} />
-				</div>
+		<div className="grid-col order-1 col-span-2 grid grid-cols-1 sm:order-2 sm:col-span-1 sm:ml-4 sm:max-w-[320px]">
+			<div className="flex justify-items-center">
+				<BoxletPieChart boxlets={boxlets} lineWidth={100} />
 			</div>
 
-			<div className="xxs:hidden sm:block">{leftToAllocate}</div>
+			<div className="mt-3 text-center">{leftToAllocate}</div>
 
-			<div className="xxs:hidden sm:block">
+			<div className="hidden sm:block">
 				{cta}
 				{errorSection}
 			</div>
-
-			{renderConnectModal()}
-			{chainId && renderChainSelectModal(createNewPolicy)}
 		</div>
 	);
 
 	const leftPanel = (
-		<div className="xxs:order-2 xxs:col-span-2 sm:order-1 sm:col-span-1">
+		<div className="order-2 col-span-2 mt-6 w-full justify-self-end sm:order-1 sm:col-span-1 sm:mt-0 sm:max-w-[512px]">
 			<DistributionBox boxlets={boxlets} updateBoxlet={updateBoxlet} />
-			<div className="mt-6 text-center font-bold sm:hidden">
+			<div className="mt-[1rem] text-center font-bold sm:hidden">
 				{leftToAllocate}
 			</div>
 			<div className="mt-3 sm:hidden">{cta}</div>
@@ -340,7 +352,7 @@ function LockerSetup() {
 	);
 
 	return (
-		<div className="grid grid-flow-row grid-cols-2 xxs:gap-12 lg:gap-x-24">
+		<div className="grid auto-cols-max grid-flow-row grid-cols-2 justify-items-center">
 			{leftPanel}
 			{rightPanel}
 		</div>

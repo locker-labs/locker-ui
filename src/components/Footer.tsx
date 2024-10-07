@@ -38,18 +38,18 @@ function Footer() {
 					size="20px"
 				/>
 			</div>
-			<div className="mt-6 flex text-center text-xs text-light-600">
+			<div className="text-light-600 mt-6 flex text-center text-xs">
 				<span className="text-sm">
 					Need help?{" "}
 					<a
-						href="mailto:support@chainrule.io"
-						className="underline underline-offset-2 hover:text-secondary-100 dark:hover:text-primary-100"
+						href="mailto:support@geeky.rocks"
+						className="hover:text-secondary-100 dark:hover:text-primary-100 underline underline-offset-2"
 					>
 						Contact us
 					</a>
 				</span>
 			</div>
-			<div className="mt-6 flex text-center text-sm text-light-600">
+			<div className="text-light-600 mt-6 flex text-center text-sm">
 				© 2024 Locker. All rights reserved.
 			</div>
 		</footer>
