@@ -1,10 +1,12 @@
 import { Disclosure } from "@headlessui/react";
 import { IoChevronDownOutline } from "react-icons/io5";
 
+import { supportedChains } from "@/data/constants/supportedChains";
+
 function FaqAccordion() {
 	return (
-		<div className="w-full max-w-2xl divide-y divide-light-200 rounded-md border border-light-200 shadow-sm shadow-light-600 dark:divide-dark-200 dark:border-dark-200 dark:shadow-none">
-			<Disclosure as="div" className="p-6">
+		<div className="divide-light-200 border-light-200 shadow-light-600 w-full max-w-2xl divide-y rounded-md border text-sm  shadow-sm">
+			<Disclosure as="div" className="p-5">
 				{({ open }) => (
 					<>
 						<Disclosure.Button className="flex w-full items-center justify-between">
@@ -13,16 +15,16 @@ function FaqAccordion() {
 							</span>
 							<IoChevronDownOutline
 								size={20}
-								className={`${open && "rotate-180"} ml-2 shrink-0 text-light-600`}
+								className={`${open && "rotate-180"} text-light-600 ml-2 shrink-0`}
 							/>
 						</Disclosure.Button>
-						<Disclosure.Panel className="mt-3 flex flex-col space-y-3 text-sm">
+						<Disclosure.Panel className="mt-3 flex flex-col space-y-3">
 							<span>
 								Locker is a company that builds custom,
 								programmable modules for smart accounts that are
 								compliant with{" "}
 								<a
-									className="underline underline-offset-2 hover:text-secondary-100 dark:hover:text-primary-100"
+									className="hover:text-secondary-100 underline underline-offset-2"
 									href="https://eips.ethereum.org/EIPS/eip-4337"
 									target="_blank"
 									rel="noopener noreferrer"
@@ -41,7 +43,7 @@ function FaqAccordion() {
 					</>
 				)}
 			</Disclosure>
-			<Disclosure as="div" className="p-6">
+			<Disclosure as="div" className="p-5">
 				{({ open }) => (
 					<>
 						<Disclosure.Button className="flex w-full items-center justify-between">
@@ -50,10 +52,10 @@ function FaqAccordion() {
 							</span>
 							<IoChevronDownOutline
 								size={20}
-								className={`${open && "rotate-180"} ml-2 shrink-0 text-light-600`}
+								className={`${open && "rotate-180"} text-light-600 ml-2 shrink-0`}
 							/>
 						</Disclosure.Button>
-						<Disclosure.Panel className="mt-3 flex flex-col space-y-3 text-sm">
+						<Disclosure.Panel className="mt-3 flex flex-col space-y-3">
 							<span>
 								Locker allows users who get paid in crypto to
 								automatially save and invest a portion of their
@@ -73,7 +75,7 @@ function FaqAccordion() {
 					</>
 				)}
 			</Disclosure>
-			<Disclosure as="div" className="p-6">
+			<Disclosure as="div" className="p-5">
 				{({ open }) => (
 					<>
 						<Disclosure.Button className="flex w-full items-center justify-between">
@@ -82,10 +84,10 @@ function FaqAccordion() {
 							</span>
 							<IoChevronDownOutline
 								size={20}
-								className={`${open && "rotate-180"} ml-2 shrink-0 text-light-600`}
+								className={`${open && "rotate-180"} text-light-600 ml-2 shrink-0`}
 							/>
 						</Disclosure.Button>
-						<Disclosure.Panel className="mt-3 flex flex-col space-y-3 text-sm">
+						<Disclosure.Panel className="mt-3 flex flex-col space-y-3">
 							<span>
 								Yes. Locker charges a small percentage fee each
 								time a payment is received in a user&apos;s
@@ -98,7 +100,7 @@ function FaqAccordion() {
 					</>
 				)}
 			</Disclosure>
-			<Disclosure as="div" className="p-6">
+			<Disclosure as="div" className="p-5">
 				{({ open }) => (
 					<>
 						<Disclosure.Button className="flex w-full items-center justify-between">
@@ -107,10 +109,10 @@ function FaqAccordion() {
 							</span>
 							<IoChevronDownOutline
 								size={20}
-								className={`${open && "rotate-180"} ml-2 shrink-0 text-light-600`}
+								className={`${open && "rotate-180"} text-light-600 ml-2 shrink-0`}
 							/>
 						</Disclosure.Button>
-						<Disclosure.Panel className="mt-3 flex flex-col space-y-3 text-sm">
+						<Disclosure.Panel className="mt-3 flex flex-col space-y-3">
 							<span>
 								Yes. Lockers are smart contract accounts that
 								each user owns entirely.
@@ -124,7 +126,7 @@ function FaqAccordion() {
 					</>
 				)}
 			</Disclosure>
-			<Disclosure as="div" className="p-6">
+			<Disclosure as="div" className="p-5">
 				{({ open }) => (
 					<>
 						<Disclosure.Button className="flex w-full items-center justify-between">
@@ -133,20 +135,20 @@ function FaqAccordion() {
 							</span>
 							<IoChevronDownOutline
 								size={20}
-								className={`${open && "rotate-180"} ml-2 shrink-0 text-light-600`}
+								className={`${open && "rotate-180"} text-light-600 ml-2 shrink-0`}
 							/>
 						</Disclosure.Button>
-						<Disclosure.Panel className="mt-3 flex flex-col space-y-3 text-sm">
+						<Disclosure.Panel className="mt-3 flex flex-col space-y-3">
 							<span>
-								Currently, we support Arbitrum One, Base,
-								Optimism, Avalanche C-Chain, and Polygon.
+								Currently, we support{" "}
+								{supportedChains.map((c) => c.name).join(", ")}.
 							</span>
 							<span>Support for more chains is coming soon.</span>
 						</Disclosure.Panel>
 					</>
 				)}
 			</Disclosure>
-			<Disclosure as="div" className="p-6">
+			<Disclosure as="div" className="p-5">
 				{({ open }) => (
 					<>
 						<Disclosure.Button className="flex w-full items-center justify-between">
@@ -155,7 +157,7 @@ function FaqAccordion() {
 							</span>
 							<IoChevronDownOutline
 								size={20}
-								className={`${open && "rotate-180"} ml-2 shrink-0 text-light-600`}
+								className={`${open && "rotate-180"} text-light-600 ml-2 shrink-0`}
 							/>
 						</Disclosure.Button>
 						<Disclosure.Panel className="mt-3 flex flex-col space-y-3 text-sm">
@@ -163,7 +165,7 @@ function FaqAccordion() {
 								Currently, the secure movement of users&apos;
 								funds is possible thanks to{" "}
 								<a
-									className="underline underline-offset-2 hover:text-secondary-100 dark:hover:text-primary-100"
+									className="hover:text-secondary-100 underline underline-offset-2"
 									href="https://docs-v4.zerodev.app/blog/session-keys-are-the-jwts-of-web3"
 									target="_blank"
 									rel="noopener noreferrer"
@@ -178,7 +180,7 @@ function FaqAccordion() {
 								Later, Locker plans to accomplish this
 								functionality and more via {"  "}
 								<a
-									className="underline underline-offset-2 hover:text-secondary-100 dark:hover:text-primary-100"
+									className="hover:text-secondary-100 underline underline-offset-2"
 									href="https://eips.ethereum.org/EIPS/eip-7579"
 									target="_blank"
 									rel="noopener noreferrer"

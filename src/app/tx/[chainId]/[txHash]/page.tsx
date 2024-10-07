@@ -86,12 +86,12 @@ export default function Transaction({
 						</span>
 					</div>
 					<button
-						className="h-14 w-40 rounded-full bg-secondary-100 text-lg text-light-100 hover:bg-secondary-200 dark:bg-primary-200 dark:hover:bg-primary-100"
+						className="bg-secondary-100 text-light-100 hover:bg-secondary-200 dark:bg-primary-200 dark:hover:bg-primary-100 h-14 w-40 rounded-full text-lg"
 						onClick={() => handleContinue()}
 					>
 						Continue
 					</button>
-					<span className="text-sm text-light-600">
+					<span className="text-light-600 text-sm">
 						Transaction confirmation may take several minutes.
 					</span>
 					<TxDetails tx={transaction} chain={chain} />
@@ -114,7 +114,7 @@ export default function Transaction({
 						</span>
 					</div>
 					<button
-						className="h-14 w-40 rounded-full bg-secondary-100 text-lg text-light-100 hover:bg-secondary-200 dark:bg-primary-200 dark:hover:bg-primary-100"
+						className="bg-secondary-100 text-light-100 hover:bg-secondary-200 dark:bg-primary-200 dark:hover:bg-primary-100 h-14 w-40 rounded-full text-lg"
 						onClick={() => handleContinue()}
 					>
 						Continue

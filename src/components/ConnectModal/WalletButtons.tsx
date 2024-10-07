@@ -1,42 +1,50 @@
-/* eslint-disable default-case */
+import * as DialogPrimitive from "@radix-ui/react-dialog"; // Importing Radix Dialog components
 import Image from "next/image";
+import { useEffect, useState } from "react";
 import { useConnect } from "wagmi";
 
+import { Button } from "@/components/ui/button";
 import { filterConnectors } from "@/utils/filterConnectors";
 
-export interface IWalletButtons {
-	closeModal: () => void;
-}
-
-function WalletButtons({ closeModal }: IWalletButtons) {
-	const { connect, connectors } = useConnect();
+function WalletButtons() {
+	const { connect, connectors, isSuccess } = useConnect(); // Check connection success status
+	const [connecting, setConnecting] = useState(false);
 
 	const filteredConnectors = filterConnectors(connectors);
 
+	useEffect(() => {
+		if (isSuccess) {
+			setConnecting(false);
+		}
+	}, [isSuccess]);
+
 	return (
-		<div className="flex w-full min-w-52 max-w-64 flex-col items-center justify-center space-y-2">
+		<div className="flex w-full flex-col items-center justify-center space-y-2">
 			{filteredConnectors.map((connector) => (
-				<button
-					className="flex h-fit w-full min-w-44 items-center justify-center rounded-full bg-light-200 p-2 hover:bg-light-300 dark:bg-dark-400 dark:hover:bg-dark-300"
-					key={connector.uid}
-					onClick={() => {
-						connect({ connector });
-						closeModal();
-					}}
-				>
-					<div className="flex w-36 items-center">
-						<Image
-							className="mr-4"
-							src={connector.icon}
-							alt={`${connector.name} Icon`}
-							height={45}
-							width={45}
-						/>
-						<span className="whitespace-nowrap">
-							{connector.label}
-						</span>
-					</div>
-				</button>
+				<DialogPrimitive.Close asChild key={connector.uid}>
+					<Button
+						variant="ghost"
+						className="border-1 flex h-fit w-full items-center justify-center rounded-sm border border-gray-300 bg-gray-50 p-1 hover:bg-gray-300"
+						disabled={connecting}
+						onClick={() => {
+							setConnecting(true);
+							connect({ connector });
+						}}
+					>
+						<div className="flex items-center">
+							<Image
+								className="mr-4"
+								src={connector.icon}
+								alt={`${connector.name} Icon`}
+								height={45}
+								width={45}
+							/>
+							<span className="whitespace-nowrap text-sm font-semibold">
+								{connector.label}
+							</span>
+						</div>
+					</Button>
+				</DialogPrimitive.Close>
 			))}
 		</div>
 	);

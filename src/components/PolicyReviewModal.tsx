@@ -38,7 +38,7 @@ function PolicyReviewModal({
 					leaveFrom="opacity-100"
 					leaveTo="opacity-0"
 				>
-					<div className="fixed inset-0 bg-dark-600/75" />
+					<div className="bg-dark-600/75 fixed inset-0" />
 				</Transition.Child>
 				<div className="fixed inset-0 overflow-y-auto">
 					<div className="flex min-h-full items-center justify-center p-4 text-center">
@@ -51,7 +51,7 @@ function PolicyReviewModal({
 							leaveFrom="opacity-100 scale-100"
 							leaveTo="opacity-0 scale-95"
 						>
-							<Dialog.Panel className="flex w-full min-w-64 max-w-sm flex-col items-center justify-center rounded-2xl bg-light-100 p-6 shadow-xl dark:bg-dark-500">
+							<Dialog.Panel className="bg-light-100 dark:bg-dark-500 flex w-full min-w-64 max-w-sm flex-col items-center justify-center rounded-2xl p-6 shadow-xl">
 								<Dialog.Title
 									as="h3"
 									className="flex w-full items-center justify-between"
@@ -60,7 +60,7 @@ function PolicyReviewModal({
 										Review
 									</span>
 									<button
-										className="rounded-full bg-light-200 p-1 hover:bg-light-300 dark:bg-dark-400 dark:hover:bg-dark-300"
+										className="bg-light-200 hover:bg-light-300 dark:bg-dark-400 dark:hover:bg-dark-300 rounded-full p-1"
 										aria-label="Close modal"
 										onClick={closeModal}
 									>
@@ -91,19 +91,19 @@ function PolicyReviewModal({
 											{getChainNameFromId(chainId)}
 										</span>
 									</div>
-									<span className="text-sm text-light-600">
+									<span className="text-light-600 text-sm">
 										These settings will only be enabled on{" "}
 										{getChainNameFromId(chainId)}. You can
 										enable other chains later.
 									</span>
-									<span className="text-sm text-light-600">
+									<span className="text-light-600 text-sm">
 										If this is not the chain you want to
 										enable right now, switch to the desired
 										chain in your wallet.
 									</span>
 									<div className="flex w-full flex-col items-center space-y-4">
 										<button
-											className="h-10 w-24 justify-center rounded-full bg-secondary-100 text-light-100 hover:bg-secondary-200 dark:bg-primary-200 dark:hover:bg-primary-100"
+											className="bg-secondary-100 text-light-100 hover:bg-secondary-200 dark:bg-primary-200 dark:hover:bg-primary-100 h-10 w-24 justify-center rounded-full"
 											onClick={() => {
 												createNewPolicy();
 												closeModal();
@@ -112,7 +112,7 @@ function PolicyReviewModal({
 											Enable
 										</button>
 										<button
-											className="text-sm hover:text-secondary-100 dark:hover:text-primary-100"
+											className="hover:text-secondary-100 dark:hover:text-primary-100 text-sm"
 											onClick={closeModal}
 										>
 											Cancel

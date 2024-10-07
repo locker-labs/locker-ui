@@ -73,7 +73,7 @@ function Tooltip({
 				className={`transition-opacity ${isOpen ? "z-50 opacity-100" : "opacity-0"}`}
 			>
 				<span
-					className={`${marginTop && marginTop} flex items-center rounded-xl bg-light-200 p-3 text-left text-xs dark:bg-dark-400 ${width && width}`}
+					className={`${marginTop && marginTop} bg-light-200 dark:bg-dark-400 flex items-center rounded-xl p-3 text-left text-xs ${width && width}`}
 				>
 					{label}
 				</span>

@@ -16,7 +16,6 @@ import { useAccount, useBalance, useDisconnect } from "wagmi";
 import ChainIcon from "@/components/ChainIcon";
 import Button from "@/components/HeaderMenu/Button";
 import { paths } from "@/data/constants/paths";
-import { useConnectModal } from "@/hooks/useConnectModal";
 import { copyToClipboard } from "@/utils/copytoClipboard";
 import { isChainSupported } from "@/utils/isChainSupported";
 import { truncateAddress } from "@/utils/truncateAddress";
@@ -27,7 +26,6 @@ function HeaderMenu() {
 	const router = useRouter();
 	const { signOut } = useClerk();
 	const { address, chain, isConnected } = useAccount();
-	const { openConnectModal, renderConnectModal } = useConnectModal();
 	const { disconnect } = useDisconnect();
 	const { data: balance } = useBalance({
 		address,
@@ -64,7 +62,7 @@ function HeaderMenu() {
 			</div>
 			<div className="flex w-full flex-col">
 				<button
-					className="flex w-full items-center p-2 outline-none hover:bg-light-300 "
+					className="hover:bg-light-300 flex w-full items-center p-2 outline-none "
 					onClick={() =>
 						copyToClipboard(address as string, setCopied)
 					}
@@ -93,7 +91,6 @@ function HeaderMenu() {
 					className={`${
 						active && "bg-light-300"
 					} flex w-full items-center p-2`}
-					onClick={openConnectModal}
 				>
 					<IoWalletOutline
 						className="mr-3 flex shrink-0 items-center justify-center"
@@ -109,11 +106,11 @@ function HeaderMenu() {
 		<Menu as="div" className="relative inline-block text-left">
 			{({ open }) => (
 				<>
-					<Menu.Button className="z-10 flex h-10 w-fit shrink-0 items-center justify-center rounded-full bg-light-200 px-2 hover:bg-light-300 ">
+					<Menu.Button className="z-10 flex h-10 w-fit shrink-0 items-center justify-center rounded-full bg-white px-2 hover:bg-gray-300 ">
 						<Button open={open} />
 					</Menu.Button>
 					<Transition show={open}>
-						<Menu.Items className="absolute right-0 z-50 mt-3 w-fit origin-top-right rounded-xl bg-light-200 p-1 text-sm outline-none ">
+						<Menu.Items className="absolute right-0 z-50 mt-3 w-fit origin-top-right rounded-xl bg-white p-1 text-sm outline-none ">
 							{isConnected ? connectedItems : disconnectedItems}
 							<Menu.Item>
 								{({ active }) => (
@@ -138,7 +135,7 @@ function HeaderMenu() {
 									<button
 										className={`${
 											active &&
-											"rounded-b-xl bg-light-300"
+											"bg-light-300 rounded-b-xl"
 										} flex w-full items-center p-2`}
 										onClick={() => disconnect()}
 									>
@@ -155,7 +152,7 @@ function HeaderMenu() {
 									<button
 										className={`${
 											active &&
-											"rounded-b-xl bg-light-300"
+											"bg-light-300 rounded-b-xl"
 										} flex w-full items-center p-2`}
 										onClick={() =>
 											signOut(() =>
@@ -173,7 +170,6 @@ function HeaderMenu() {
 							</Menu.Item>
 						</Menu.Items>
 					</Transition>
-					{renderConnectModal()}
 				</>
 			)}
 		</Menu>

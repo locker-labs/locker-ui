@@ -11,7 +11,7 @@ function Button({ open }: { open: boolean }) {
 	const { lockers } = useLocker();
 
 	let profileImg = (
-		<div className="flex size-7 items-center justify-center rounded-full bg-secondary-100 text-light-100 dark:bg-primary-100">
+		<div className="bg-secondary-100 text-light-100 dark:bg-primary-100 flex size-7 items-center justify-center rounded-full">
 			<FaUserAlt size={16} />
 		</div>
 	);

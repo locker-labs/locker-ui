@@ -1,73 +1,59 @@
-import { Dialog, Transition } from "@headlessui/react";
-import { Fragment } from "react";
-import { IoClose } from "react-icons/io5";
 import { useChainId } from "wagmi";
 
+import {
+	Dialog,
+	DialogContent,
+	DialogDescription,
+	DialogHeader,
+	DialogTitle,
+} from "@/components/ui/dialog"; // Assuming you have ShadCN's dialog components in place
 import { useLocker } from "@/providers/LockerProvider";
 
 import { IconGreenCheck } from "./Icons";
 import QrModalContent from "./QrModalContent";
 
-export interface ILockerOnboardedModal {
+export interface LockerOnboardedModalProps {
 	isOpen: boolean;
 	closeModal: () => void;
 }
 
-function LockerOnboardedModal({ isOpen, closeModal }: ILockerOnboardedModal) {
+function LockerOnboardedModal({
+	isOpen,
+	closeModal,
+}: LockerOnboardedModalProps) {
 	const { lockers } = useLocker();
 	const chainId = useChainId();
 
 	if (!lockers) return null;
 	const locker = lockers[0];
 	const { address: lockerAddress } = locker;
-	return (
-		<Transition appear show={isOpen} as={Fragment}>
-			<Dialog as="div" className="relative z-10" onClose={closeModal}>
-				<div className="fixed inset-0 overflow-y-auto">
-					<div className="flex min-h-full items-center justify-center p-4 text-center">
-						<Transition.Child
-							as={Fragment}
-							enter="ease-out duration-300"
-							enterFrom="opacity-0 scale-95"
-							enterTo="opacity-100 scale-100"
-							leave="ease-in duration-200"
-							leaveFrom="opacity-100 scale-100"
-							leaveTo="opacity-0 scale-95"
-						>
-							<Dialog.Panel className="flex w-full min-w-64 max-w-md flex-col items-center justify-center rounded-2xl bg-light-100 p-6 shadow-xl">
-								<div className="flex w-full items-end justify-end">
-									<button
-										className="rounded-full bg-light-200 p-1 hover:bg-light-300"
-										aria-label="Close modal"
-										onClick={closeModal}
-									>
-										<IoClose className="" size="22px" />
-									</button>
-								</div>
-								<div className="flex w-full justify-center">
-									<IconGreenCheck />
-								</div>
 
-								<Dialog.Title
-									as="h5"
-									className="mb-2 mt-3 flex w-full flex-col items-center justify-center space-y-2 text-center text-xl"
-								>
-									Your locker was created
-								</Dialog.Title>
-								<Dialog.Description className="text-sm text-gray-600">
-									Fund your locker using the address below to
-									see your first auto dispursement in action.
-								</Dialog.Description>
-								<QrModalContent
-									lockerAddress={lockerAddress}
-									chainId={chainId}
-								/>
-							</Dialog.Panel>
-						</Transition.Child>
+	return (
+		<Dialog open={isOpen} onOpenChange={closeModal}>
+			<DialogContent className="max-w-[640px] p-6">
+				<DialogHeader className="flex items-center justify-between">
+					<div className="flex justify-center">
+						<IconGreenCheck />
 					</div>
+					<DialogTitle className="w-full text-center text-xl font-bold">
+						Your locker is ready
+					</DialogTitle>
+				</DialogHeader>
+
+				<div className="flex flex-col items-center space-y-4">
+					<DialogDescription className="text-center text-sm text-gray-600 sm:max-w-[400px]">
+						To start saving, fund your locker with ETH or ERC20
+						using the address below.
+					</DialogDescription>
+
+					{/* QR Code or Address content */}
+					<QrModalContent
+						lockerAddress={lockerAddress}
+						chainId={chainId}
+					/>
 				</div>
-			</Dialog>
-		</Transition>
+			</DialogContent>
+		</Dialog>
 	);
 }
 

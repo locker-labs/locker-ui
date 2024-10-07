@@ -30,7 +30,7 @@ function AllocationBox({
 							<SaveIcon divSize="size-6" iconSize="14px" />
 							<span className="ml-3">Save</span>
 						</div>
-						<span className="ml-3 whitespace-nowrap text-light-600">
+						<span className="text-light-600 ml-3 whitespace-nowrap">
 							{savePercent} %
 						</span>
 					</div>
@@ -41,7 +41,7 @@ function AllocationBox({
 							<WalletIcon divSize="size-6" iconSize="12px" />
 							<span className="ml-3">Forward</span>
 						</div>
-						<span className="ml-3 whitespace-nowrap text-light-600">
+						<span className="text-light-600 ml-3 whitespace-nowrap">
 							{hotWalletPercent} %
 						</span>
 					</div>
@@ -52,7 +52,7 @@ function AllocationBox({
 							<BankIcon divSize="size-6" iconSize="15px" />
 							<span className="ml-3">Bank</span>
 						</div>
-						<span className="ml-3 whitespace-nowrap text-light-600">
+						<span className="text-light-600 ml-3 whitespace-nowrap">
 							{bankPercent} %
 						</span>
 					</div>

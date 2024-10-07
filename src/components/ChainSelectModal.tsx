@@ -1,99 +1,67 @@
-import { Dialog, Transition } from "@headlessui/react";
-import { Fragment } from "react";
 import { useSwitchChain } from "wagmi";
+
+import {
+	Dialog,
+	DialogContent,
+	DialogDescription,
+	DialogHeader,
+	DialogTitle,
+} from "@/components/ui/dialog"; // Assuming you have these set up according to ShadCN
 
 import ChainDropdown from "./ChainDropdown";
 
-export interface IChainSelectModal {
-	isOpen: boolean;
-	closeModal: () => void;
+interface IChainSelectModal {
+	open: boolean;
+	onClose: () => void;
 	createNewPolicy: () => void;
 }
 
 function ChainSelectModal({
-	isOpen,
-	closeModal,
+	open,
+	onClose,
 	createNewPolicy,
 }: IChainSelectModal) {
 	const { isPending, switchChain } = useSwitchChain();
-	return (
-		<Transition appear show={isOpen} as={Fragment}>
-			<Dialog as="div" className="relative z-10" onClose={closeModal}>
-				<Transition.Child
-					as={Fragment}
-					enter="ease-out duration-300"
-					enterFrom="opacity-0"
-					enterTo="opacity-100"
-					leave="ease-in duration-200"
-					leaveFrom="opacity-100"
-					leaveTo="opacity-0"
-				>
-					<div className="fixed inset-0 bg-dark-600/75" />
-				</Transition.Child>
-				<div className="fixed inset-0 overflow-y-auto">
-					<div className="flex min-h-full items-center justify-center p-4 text-center">
-						<Transition.Child
-							as={Fragment}
-							enter="ease-out duration-300"
-							enterFrom="opacity-0 scale-95"
-							enterTo="opacity-100 scale-100"
-							leave="ease-in duration-200"
-							leaveFrom="opacity-100 scale-100"
-							leaveTo="opacity-0 scale-95"
-						>
-							<Dialog.Panel className="flex w-full min-w-64 max-w-sm flex-col items-center justify-center rounded-2xl bg-light-100 p-6 shadow-xl">
-								<Dialog.Title
-									as="h3"
-									className="flex w-full flex-col items-center justify-between space-y-2 text-center"
-								>
-									<p className="w-full text-center text-lg font-medium">
-										Select a chain for your locker
-									</p>
-									<p className="w-full text-center text-sm text-gray-600">
-										You can change or add new chains at any
-										time.
-									</p>
-								</Dialog.Title>
-								<div className="mt-6 flex w-full flex-col items-center justify-center space-y-8">
-									<ChainDropdown
-										showName
-										switchChain={switchChain}
-										isPending={isPending}
-									/>
 
-									<div className="flex w-full flex-col items-center space-y-4">
-										{isPending ? (
-											<button
-												className="h-10 w-full cursor-not-allowed select-none justify-center rounded-md bg-locker-300 text-light-100"
-												disabled
-											>
-												Switching chains
-											</button>
-										) : (
-											<button
-												className="h-10 w-full cursor-pointer select-none justify-center rounded-md bg-locker-600 text-light-100 hover:bg-secondary-200"
-												onClick={() => {
-													createNewPolicy();
-													closeModal();
-												}}
-											>
-												Finish setup
-											</button>
-										)}
-										<button
-											className="text-xs hover:text-secondary-100"
-											onClick={closeModal}
-										>
-											&lt; Edit distributions
-										</button>
-									</div>
-								</div>
-							</Dialog.Panel>
-						</Transition.Child>
+	return (
+		<Dialog open={open} onOpenChange={onClose}>
+			<DialogContent className="sm:max-w-[644px]">
+				<DialogHeader>
+					<DialogTitle className="max-w-[544px] text-center text-xl font-bold">
+						Select a chain for your locker
+					</DialogTitle>
+					<DialogDescription className="max-w-[544px] text-center text-sm text-gray-600">
+						You can change or add new chains at any time.
+					</DialogDescription>
+				</DialogHeader>
+
+				<div className="mt-6 flex w-full flex-col items-center justify-center space-y-8">
+					<ChainDropdown
+						showName
+						switchChain={switchChain}
+						isPending={isPending}
+					/>
+
+					<div className="flex w-full flex-col items-center space-y-4">
+						{isPending ? (
+							<button
+								className="w-full cursor-not-allowed select-none justify-center rounded-sm bg-locker-300 py-2 text-sm font-semibold text-white"
+								disabled
+							>
+								Switching chains
+							</button>
+						) : (
+							<button
+								className="hover:bg-secondary-200 w-full cursor-pointer select-none justify-center rounded-sm bg-locker-600 py-2 text-sm font-semibold text-white"
+								onClick={createNewPolicy}
+							>
+								Finish setup
+							</button>
+						)}
 					</div>
 				</div>
-			</Dialog>
-		</Transition>
+			</DialogContent>
+		</Dialog>
 	);
 }
 

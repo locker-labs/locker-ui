@@ -7,11 +7,11 @@ import { usePathname } from "next/navigation";
 import { Suspense } from "react";
 import { useAccount } from "wagmi";
 
-// import AuthButton from "@/components/AuthButton";
-import ConnectButton from "@/components/ConnectButton";
 import HeaderMenu from "@/components/HeaderMenu";
 import { paths } from "@/data/constants/paths";
 import { isTestnet } from "@/utils/isTestnet";
+
+// import ConnectModal from "./ConnectModal";
 
 function Header() {
 	const pathname = usePathname();
@@ -32,9 +32,7 @@ function Header() {
 		</div>
 	) : showConnectButton ? (
 		<div className="xs1:space-x-2 ml-2 flex items-center justify-center">
-			<div className="xs1:flex hidden">
-				<ConnectButton />
-			</div>
+			<div className="xs1:flex hidden">{/* <ConnectModal /> */}</div>
 			<HeaderMenu />
 		</div>
 	) : null;

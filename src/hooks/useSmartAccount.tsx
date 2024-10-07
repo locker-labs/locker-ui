@@ -34,10 +34,13 @@ import {
 	getCombinedPolicy,
 	getCombinedPolicyMultRecipient,
 } from "@/data/policies/combined";
+import { Automation, EAutomationType } from "@/types";
 import { getBundler } from "@/utils/getBundler";
 import { getChainObjFromId } from "@/utils/getChainObj";
 import { getPaymaster } from "@/utils/getPaymaster";
 import getZerodevIndex from "@/utils/getZerodevIndex";
+import supabaseClient from "@/utils/supabase/client";
+import { TABLE_OFFRAMP_ADDRESSES } from "@/utils/supabase/tables";
 
 const useSmartAccount = () => {
 	const publicClient = usePublicClient();
@@ -50,7 +53,6 @@ const useSmartAccount = () => {
 	// Prompts user to sign session key for current chain
 	// ************************************************************* //
 	const signSessionKey = async (
-		chainId: number,
 		lockerIndex: number,
 		hotWalletAddress: `0x${string}`, // If not specified, defaults locker owner address
 		offrampAddresses: `0x${string}`[]
@@ -144,6 +146,40 @@ const useSmartAccount = () => {
 		return sig;
 	};
 	// ************************************************************* //
+
+	const refreshPolicy = async ({
+		automations,
+		chainId,
+	}: {
+		automations: Automation[];
+		chainId: number;
+	}) => {
+		// get offramp_addresses for this chainId
+		const { data: offrampAddressesData, error: offrampAddressesError } =
+			await supabaseClient
+				.from(TABLE_OFFRAMP_ADDRESSES)
+				.select(`address`)
+				.eq("chain_id", chainId);
+
+		if (offrampAddressesError) console.error(offrampAddressesError);
+
+		const offrampAddresses = Array.from(
+			new Set(offrampAddressesData!.map((item) => item.address))
+		) as `0x${string}`[];
+
+		console.log("offrampAddresses", chainId, offrampAddresses);
+
+		const hotWalletAutomation = automations.find(
+			(a) => a.type === EAutomationType.FORWARD_TO
+		);
+
+		if (!hotWalletAutomation?.recipientAddress) return undefined;
+		const hotWalletAddress = hotWalletAutomation.recipientAddress;
+
+		const sig = await signSessionKey(0, hotWalletAddress, offrampAddresses);
+
+		return sig;
+	};
 
 	// ************************************************************* //
 	// Constructs and submits userOp to send money out of locker
@@ -271,7 +307,12 @@ const useSmartAccount = () => {
 		});
 	// ************************************************************* //
 
-	return { genSmartAccountAddress, signSessionKey, sendUserOp };
+	return {
+		genSmartAccountAddress,
+		signSessionKey,
+		sendUserOp,
+		refreshPolicy,
+	};
 };
 
 export default useSmartAccount;
