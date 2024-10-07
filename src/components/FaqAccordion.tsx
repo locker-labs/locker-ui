@@ -1,6 +1,8 @@
 import { Disclosure } from "@headlessui/react";
 import { IoChevronDownOutline } from "react-icons/io5";
 
+import { supportedChains } from "@/data/constants/supportedChains";
+
 function FaqAccordion() {
 	return (
 		<div className="divide-light-200 border-light-200 shadow-light-600 w-full max-w-2xl divide-y rounded-md border text-sm  shadow-sm">
@@ -138,8 +140,8 @@ function FaqAccordion() {
 						</Disclosure.Button>
 						<Disclosure.Panel className="mt-3 flex flex-col space-y-3">
 							<span>
-								Currently, we support Arbitrum One, Base,
-								Optimism, Avalanche C-Chain, and Polygon.
+								Currently, we support{" "}
+								{supportedChains.map((c) => c.name).join(", ")}.
 							</span>
 							<span>Support for more chains is coming soon.</span>
 						</Disclosure.Panel>

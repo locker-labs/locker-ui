@@ -186,9 +186,22 @@ export default function LockerPortfolioTxHistoryContent() {
 		);
 	};
 
-	// Group the transactions where lockerDirection === 'in' and find linked transactions
+	// Filter transactions without triggeredByTokenTxId (outgoing without a corresponding incoming)
+	const unlinkedOutgoingTxs = txs.filter(
+		(tx) =>
+			tx.lockerDirection === ELockerDirection.OUT &&
+			!tx.triggeredByTokenTxId
+	);
+
+	// Group the incoming transactions and find linked transactions
 	const incomingTxs = txs.filter(
 		(tx) => tx.lockerDirection === ELockerDirection.IN
+	);
+
+	// Sort incoming and unlinked outgoing transactions together by creation time
+	const allTxs = [...incomingTxs, ...unlinkedOutgoingTxs].sort(
+		(a, b) =>
+			new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
 	);
 
 	const renderGroup = (incomingTx: Tx) => {
@@ -218,8 +231,8 @@ export default function LockerPortfolioTxHistoryContent() {
 
 	return (
 		<div className="w-full">
-			{incomingTxs.length > 0 ? (
-				incomingTxs.map((incomingTx) => renderGroup(incomingTx))
+			{allTxs.length > 0 ? (
+				allTxs.map((incomingTx) => renderGroup(incomingTx))
 			) : (
 				<p className="text-sm text-gray-500">No transactions found.</p>
 			)}

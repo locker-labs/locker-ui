@@ -41,7 +41,7 @@ function TokenDropdown({
 			{({ open }) => (
 				<div className="relative h-full w-full">
 					<span className="inline-block h-full w-full">
-						<Listbox.Button className="border-light-200 bg-light-100 hover:border-light-600 dark:border-dark-200 dark:bg-dark-500 dark:hover:border-light-600 flex h-12 w-full items-center justify-between rounded-md border  p-2">
+						<Listbox.Button className="flex h-12 w-full items-center justify-between rounded-md border border-gray-200 bg-gray-100 p-2 hover:border-gray-600  dark:hover:border-gray-600">
 							<div className="flex items-center justify-center">
 								<div
 									className={`mr-4 flex size-7 shrink-0 items-center justify-center rounded-full ${getChainIconStyling(selectedToken.chainId)}`}
@@ -85,7 +85,7 @@ function TokenDropdown({
 							static
 							className={`${
 								open && "relative z-10"
-							} border-light-200 bg-light-100 dark:border-dark-200 dark:bg-dark-500 mt-2 max-h-64 overflow-hidden overflow-y-auto rounded-md border bg-white outline-none`}
+							} mt-2 max-h-64 overflow-y-auto rounded-md border border-gray-200 bg-gray-100 bg-white outline-none`}
 						>
 							{tokens.map((token) => (
 								<Listbox.Option
@@ -95,13 +95,11 @@ function TokenDropdown({
 									{({ selected, active }) => (
 										<div
 											className={`${
-												active
-													? "bg-light-200 dark:bg-dark-300"
-													: ""
+												active ? "bg-gray-200" : ""
 											} ${
 												selected &&
 												!active &&
-												"bg-light-200/50 dark:bg-dark-400"
+												"bg-gray-200/50"
 											} relative flex h-12 w-full cursor-pointer select-none items-center justify-start p-2 pr-4`}
 										>
 											<div className="flex w-full items-center justify-between">
@@ -121,25 +119,29 @@ function TokenDropdown({
 														<span className="text-sm">
 															{token.symbol}
 														</span>
-														<span className="text-light-600 text-xs">
-															{formatUnits(
-																BigInt(
-																	token.balance
-																),
-																token.decimals
-															)}{" "}
-															available
+														<span className="text-xs">
+															<span className="text-gray-400">
+																Balance:
+															</span>{" "}
+															<span className="text-gray-700">
+																{formatUnits(
+																	BigInt(
+																		token.balance
+																	),
+																	token.decimals
+																)}
+															</span>
 														</span>
 													</div>
 												</div>
 												{token.address !==
 													zeroAddress && (
 													<button
-														className="hover:text-secondary-100 dark:hover:text-primary-100 flex h-12 items-center justify-center outline-none"
+														className="hover:text-secondary-100 flex h-12 items-center justify-center outline-none"
 														onClick={(e) => {
 															e.stopPropagation();
 															setCopiedSymbol(
-																token.symbol
+																`${token.chainId}-${token.address}`
 															);
 															copyToClipboard(
 																token.address,
@@ -150,7 +152,7 @@ function TokenDropdown({
 														<div className="flex h-10 w-12 items-center justify-center">
 															{copied &&
 															copiedSymbol ===
-																token.symbol ? (
+																`${token.chainId}-${token.address}` ? (
 																<IoCheckboxOutline
 																	className="text-success"
 																	size="15px"

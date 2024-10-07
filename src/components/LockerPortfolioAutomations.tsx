@@ -1,5 +1,5 @@
 import { DEFAULT_BOXLETS } from "@/data/constants/boxlets";
-import { Automation, EAutomationType } from "@/types";
+import { Automation, EAutomationStatus, EAutomationType } from "@/types";
 import adaptAutomations2Boxlets from "@/utils/adaptAutomations2Boxlets";
 
 import BoxletPieChart from "./BoxletPieChart";
@@ -32,8 +32,9 @@ function LockerPortfolioAutomations({
 					{automations.map((automation) => {
 						const { color, title } =
 							DEFAULT_BOXLETS[automation.type];
-						const isOfframp =
-							automation.type === EAutomationType.OFF_RAMP;
+						const isOfframpPending =
+							automation.type === EAutomationType.OFF_RAMP &&
+							automation.status === EAutomationStatus.NEW;
 
 						return (
 							<div
@@ -44,7 +45,9 @@ function LockerPortfolioAutomations({
 									<div className="flex flex-row items-center justify-center space-x-2">
 										<div
 											className="size-5 rounded-full"
-											style={{ backgroundColor: color }}
+											style={{
+												backgroundColor: color,
+											}}
 										/>
 										<span>{title}</span>
 									</div>
@@ -52,7 +55,7 @@ function LockerPortfolioAutomations({
 										{automation.allocation * 100}%
 									</span>
 								</div>
-								{isOfframp && (
+								{isOfframpPending && (
 									<div className="flex flex-row">
 										<SetupOfframpModal />
 									</div>

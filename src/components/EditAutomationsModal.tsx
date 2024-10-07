@@ -3,6 +3,7 @@ import { Pencil } from "lucide-react";
 import { useState } from "react";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { formatUnits, isAddress } from "viem";
+import { useChainId, useSwitchChain } from "wagmi";
 
 import BoxletPieChart from "@/components/BoxletPieChart";
 import DistributionBox from "@/components/DistributionBox";
@@ -33,6 +34,8 @@ export function EditAutomationsModal() {
 	const defaultBoxlets = automations
 		? adaptAutomations2Boxlets(automations)
 		: DEFAULT_BOXLETS;
+	const walletChainId = useChainId();
+	const { switchChain } = useSwitchChain();
 
 	const [boxlets, setBoxlets] = useState(defaultBoxlets); // Initialize with current policy automations
 	const [errorMessage, setErrorMessage] = useState<string>("");
@@ -131,6 +134,11 @@ export function EditAutomationsModal() {
 			// eslint-disable-next-line no-restricted-syntax
 			for (const policy of policies) {
 				// get new session key with current addresses
+				if (walletChainId !== policy.id) {
+					// eslint-disable-next-line no-await-in-loop
+					await switchChain({ chainId: policy.id });
+				}
+
 				console.log("automating");
 				console.log(automations);
 				console.log(boxlets);
