@@ -135,7 +135,6 @@ function LockerSetup() {
 
 		// 1. Get user to sign session key
 		const sig = await signSessionKey(
-			chainId as number, // current chainId in user's connected wallet
 			0, // lockerIndex
 			sendToAddress as `0x${string}`, // hotWalletAddress
 			[] // offrampAddress
