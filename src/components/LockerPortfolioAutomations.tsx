@@ -3,8 +3,8 @@ import { Automation, EAutomationType } from "@/types";
 import adaptAutomations2Boxlets from "@/utils/adaptAutomations2Boxlets";
 
 import BoxletPieChart from "./BoxletPieChart";
+import { EditAutomationsModal } from "./EditAutomationsModal";
 import { SetupOfframpModal } from "./SetupOfframpModal";
-// import { EditAutomationsModal } from "./EditAutomationsModal";
 
 export interface ILockerPortfolioAutomations {
 	automations: Automation[];
@@ -19,7 +19,7 @@ function LockerPortfolioAutomations({
 			<div className="flex flex-col justify-between">
 				<div className="flex flex-row items-center justify-between xs:space-x-2 lg:space-x-8">
 					<p className="font-bold">Locker Automation</p>
-					{/* <EditAutomationsModal /> */}
+					<EditAutomationsModal />
 				</div>
 			</div>
 			<div className="grid grid-flow-row grid-cols-3 gap-x-4 lg:grid-cols-1">

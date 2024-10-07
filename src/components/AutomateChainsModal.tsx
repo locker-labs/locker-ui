@@ -17,9 +17,10 @@ import { supportedChains } from "@/data/constants/supportedChains";
 import useSmartAccount from "@/hooks/useSmartAccount";
 import { useLocker } from "@/providers/LockerProvider";
 import { createPolicy, updatePolicy } from "@/services/lockers";
-import { EAutomationStatus, EAutomationType, Policy } from "@/types";
+import { EAutomationStatus, Policy } from "@/types";
 import { filterConnectors } from "@/utils/filterConnectors";
 import { getChainIconStyling } from "@/utils/getChainIconStyling";
+import getAutomations4Refresh from "@/utils/policies/getAutomations4Refresh";
 
 import ChainIcon from "./ChainIcon";
 
@@ -27,7 +28,7 @@ export default function AutomateChainsModal() {
 	const { address } = useAccount();
 	const walletChainId = useChainId();
 	const { policies, locker, automations } = useLocker();
-	const { signSessionKey } = useSmartAccount();
+	const { refreshPolicy } = useSmartAccount();
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const [errorMessage, setErrorMessage] = useState<string | null>(null);
 	const { isConnected } = useAccount();
@@ -36,8 +37,6 @@ export default function AutomateChainsModal() {
 
 	const filteredConnectors = filterConnectors(connectors);
 	const { switchChain } = useSwitchChain();
-
-	const offrampAddresses: `0x${string}`[] = [];
 
 	const createNewPolicy = async (
 		policyChainId: number,
@@ -72,22 +71,15 @@ export default function AutomateChainsModal() {
 			return;
 		}
 
-		const hotWalletAutomation = automations.find(
-			(a) => a.type === EAutomationType.FORWARD_TO
-		);
-		const hotWalletAddress =
-			hotWalletAutomation && hotWalletAutomation.recipientAddress
-				? hotWalletAutomation.recipientAddress
-				: locker.ownerAddress;
-
-		const sig = await signSessionKey(
-			policyChainId,
-			0,
-			hotWalletAddress,
-			offrampAddresses
-		);
+		const sig = await refreshPolicy({
+			automations,
+			chainId: policyChainId,
+		});
 		if (!sig) {
 			setIsLoading(false);
+			setErrorMessage(
+				"Something went wrong with session key creation. Please try again."
+			);
 			return;
 		}
 
@@ -96,18 +88,9 @@ export default function AutomateChainsModal() {
 				(pol) => pol.chainId === policyChainId
 			) as Policy;
 
-			const readyAutomations = currentPolicy.automations.map(
-				(automation) => {
-					const updatedAutomation = { ...automation };
-					if (
-						automation.status ===
-						EAutomationStatus.AUTOMATE_THEN_READY
-					) {
-						updatedAutomation.status = EAutomationStatus.READY;
-					}
-
-					return updatedAutomation;
-				}
+			// Update status AUTOMATE_THEN_READY -> READY
+			const automationsAfterReady = getAutomations4Refresh(
+				currentPolicy.automations
 			);
 
 			const policy: Policy = {
@@ -115,7 +98,7 @@ export default function AutomateChainsModal() {
 				lockerId: locker.id as number,
 				chainId: policyChainId as number,
 				sessionKey: sig as string,
-				automations: readyAutomations,
+				automations: automationsAfterReady,
 			};
 
 			const authToken = await getToken();
@@ -184,7 +167,8 @@ export default function AutomateChainsModal() {
 								// Grey out the chain if any automation has "automate_then_ready" status
 								const isGreyedOut = policy.automations.some(
 									(auto) =>
-										auto.status === "automate_then_ready"
+										auto.status ===
+										EAutomationStatus.AUTOMATE_THEN_READY
 								);
 								const styling = isGreyedOut
 									? "bg-gray-200"
@@ -240,24 +224,26 @@ export default function AutomateChainsModal() {
 
 							const iconStyling = isEnabled
 								? getChainIconStyling(chain.id)
-								: isAutomateThenReady
-									? "bg-gray-300" // Grey out for automate_then_ready
-									: "bg-gray-200";
+								: "bg-gray-200";
 
 							const enableButton = (
 								<div
 									key={`enable-${chain.id}`}
-									className={`flex items-center justify-between rounded-lg p-4 ${iconStyling}`}
+									className="ml-1 flex items-center justify-between rounded-lg p-4 text-gray-700 outline outline-1 outline-gray-300"
 								>
 									<div className="flex items-center space-x-4">
-										<ChainIcon chainId={chain.id} />
-										<p className=" text-gray-700">
+										<ChainIcon
+											chainId={chain.id}
+											className={`rounded-full ${iconStyling}`}
+											size="2.4rem"
+										/>
+										<p className="text-sm font-semibold">
 											{chain.name}
 										</p>
 									</div>
 									{!isEnabled ? (
 										<button
-											className="flex items-center justify-center rounded-md px-4 py-1 text-xs text-locker-500 outline outline-2 outline-locker-300 hover:bg-locker-300"
+											className="flex items-center justify-center rounded-md px-4 py-1 text-xxs outline outline-2 outline-gray-300 hover:bg-gray-100"
 											onClick={() =>
 												isAutomateThenReady
 													? createNewPolicy(
@@ -273,7 +259,7 @@ export default function AutomateChainsModal() {
 												: "Enable"}
 										</button>
 									) : (
-										<span className="px-4 text-xs text-locker-500">
+										<span className="px-4 text-xxs">
 											Enabled
 										</span>
 									)}

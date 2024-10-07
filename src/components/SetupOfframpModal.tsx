@@ -62,7 +62,7 @@ export function SetupOfframpModal() {
 					)}
 				</button>
 			</DialogTrigger>
-			<DialogContent className="sm:max-w-1/3">
+			<DialogContent className="sm:max-w-1/2">
 				<DialogHeader>
 					<DialogTitle>Identity verification</DialogTitle>
 					<DialogDescription>

@@ -106,11 +106,11 @@ function HeaderMenu() {
 		<Menu as="div" className="relative inline-block text-left">
 			{({ open }) => (
 				<>
-					<Menu.Button className="bg-light-200 hover:bg-light-300 z-10 flex h-10 w-fit shrink-0 items-center justify-center rounded-full px-2 ">
+					<Menu.Button className="z-10 flex h-10 w-fit shrink-0 items-center justify-center rounded-full bg-white px-2 hover:bg-gray-300 ">
 						<Button open={open} />
 					</Menu.Button>
 					<Transition show={open}>
-						<Menu.Items className="bg-light-200 absolute right-0 z-50 mt-3 w-fit origin-top-right rounded-xl p-1 text-sm outline-none ">
+						<Menu.Items className="absolute right-0 z-50 mt-3 w-fit origin-top-right rounded-xl bg-white p-1 text-sm outline-none ">
 							{isConnected ? connectedItems : disconnectedItems}
 							<Menu.Item>
 								{({ active }) => (

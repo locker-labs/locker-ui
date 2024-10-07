@@ -20,4 +20,5 @@ export const errors = {
 	NO_AUTOMATIONS: "No automations. Contact support@geeky.rocks.",
 	INVALID_AMOUNT: "Invalid amount.",
 	WALLET_DISCONNECTED: "Wallet is not connected.",
+	MISSING_AUTOMATIONS: "Old automations missing and cannot be updated.",
 };

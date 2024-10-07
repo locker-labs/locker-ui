@@ -43,11 +43,6 @@ function getSupabase() {
 	});
 }
 
-// NOTE: The above errors out. This, along with disabling RLS in Supabase, works.
-// function getSupabase() {
-// 	return createClient<Database>(supabaseUrl, supabaseAnonKey);
-// }
-
 const supabaseClient = getSupabase();
 
 export default supabaseClient;
