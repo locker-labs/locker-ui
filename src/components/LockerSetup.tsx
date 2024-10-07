@@ -86,7 +86,6 @@ function LockerSetup() {
 
 	// 2. Create locker
 	const createNewLocker = async (): Promise<Locker | undefined> => {
-		console.log("createNewLocker");
 		setErrorMessage("");
 		setIsLoading(true);
 		// Show Loader for 1.5 seconds
@@ -184,17 +183,14 @@ function LockerSetup() {
 
 	// Create locker after connecting
 	useEffect(() => {
-		console.log("main loop", didUserClick, isLoading, address, locker);
 		// Don't do anything if user has never clicked
 		if (!didUserClick) return;
 
 		if (address && !locker) {
-			console.log("Create locker after connecting");
 			// create locker if wallet connected but locker
 			setIsConnectModalOpen(false);
 			createNewLocker();
 		} else if (address && locker) {
-			console.log("Chain select modal");
 			if (isSaveSelected && errorMessage === errors.INVALID_ADDRESS)
 				return;
 
@@ -237,7 +233,6 @@ function LockerSetup() {
 
 			// Open chain selection if locker created and wallet connected
 			setIsChainSelectModalOpen(true);
-			// createNewLocker();
 		}
 	}, [address, didUserClick, locker]);
 
@@ -343,8 +338,6 @@ function LockerSetup() {
 				{cta}
 				{errorSection}
 			</div>
-
-			{/* {chainId && renderChainSelectModal(createNewPolicy)} */}
 		</div>
 	);
 
