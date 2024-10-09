@@ -34,7 +34,7 @@ function LockerOnboardedModal({
 		params.delete("o"); // Remove 'o' from the query
 
 		// Replace the current URL without the 'o' param
-		router.replace(`?${params.toString()}`, { shallow: true });
+		router.replace(`?${params.toString()}`, { scroll: true });
 
 		// Trigger the passed-in closeModal function to close the modal
 		closeModal();

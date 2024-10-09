@@ -31,7 +31,7 @@ function LockerPortfolioAutomations({
 				<div className="col-span-2 space-y-3 pt-3">
 					{automations
 						// temoprarily hide offramp
-						.filter((a) => a.type !== EAutomationType.OFF_RAMP)
+						// .filter((a) => a.type !== EAutomationType.OFF_RAMP)
 						.map((automation) => {
 							const { color, title } =
 								DEFAULT_BOXLETS[automation.type];
@@ -55,7 +55,10 @@ function LockerPortfolioAutomations({
 											<span>{title}</span>
 										</div>
 										<span className="font-semibold">
-											{automation.allocation * 100}%
+											{Math.round(
+												automation.allocation * 100
+											)}
+											%
 										</span>
 									</div>
 									{isOfframpPending && (
