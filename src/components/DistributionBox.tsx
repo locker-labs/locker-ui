@@ -1,7 +1,3 @@
-/* eslint-disable react/require-default-props */
-
-import { EAutomationType } from "@/types";
-
 import DistributionBoxlet, {
 	IBoxlets,
 	IDistributionBoxlet,
@@ -17,7 +13,7 @@ function DistributionBox({ boxlets, updateBoxlet }: IDistributionBox) {
 		<div className="flex w-full flex-col space-y-4">
 			{Object.keys(boxlets)
 				// temporarily hide offramp
-				.filter((boxletId) => boxletId !== EAutomationType.OFF_RAMP)
+				// .filter((boxletId) => boxletId !== EAutomationType.OFF_RAMP)
 				.map((boxletId) => (
 					<DistributionBoxlet
 						key={boxletId}

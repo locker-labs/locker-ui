@@ -1,3 +1,4 @@
+import { useRouter, useSearchParams } from "next/navigation"; // Import from next/navigation
 import { useChainId } from "wagmi";
 
 import {
@@ -23,13 +24,28 @@ function LockerOnboardedModal({
 }: LockerOnboardedModalProps) {
 	const { lockers } = useLocker();
 	const chainId = useChainId();
+	const router = useRouter(); // Get the router
+	const searchParams = useSearchParams(); // Get the search params
+
+	// Function to handle closing the modal and removing 'o' param
+	const handleCloseModal = () => {
+		// Get the current query parameters
+		const params = new URLSearchParams(searchParams.toString());
+		params.delete("o"); // Remove 'o' from the query
+
+		// Replace the current URL without the 'o' param
+		router.replace(`?${params.toString()}`, { scroll: true });
+
+		// Trigger the passed-in closeModal function to close the modal
+		closeModal();
+	};
 
 	if (!lockers) return null;
 	const locker = lockers[0];
 	const { address: lockerAddress } = locker;
 
 	return (
-		<Dialog open={isOpen} onOpenChange={closeModal}>
+		<Dialog open={isOpen} onOpenChange={handleCloseModal}>
 			<DialogContent className="max-w-[640px] p-6">
 				<DialogHeader className="flex items-center justify-between">
 					<div className="flex justify-center">

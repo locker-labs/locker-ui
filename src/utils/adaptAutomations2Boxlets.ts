@@ -13,7 +13,7 @@ export default function adaptAutomations2Boxlets(automations: Automation[]) {
 				automation.type,
 				{
 					...DEFAULT_BOXLETS[type],
-					percent: allocation * 100,
+					percent: Math.round(allocation * 100),
 					forwardToAddress,
 				},
 			];

@@ -1,11 +1,12 @@
 "use client";
 
-import { createContext, ReactNode, useContext, useMemo, useState } from "react";
+import { createContext, ReactNode, useContext, useMemo } from "react";
 
 import { useRealtimeTable } from "@/hooks/useRealtimeTable";
-import { Automation, LockerDb, PolicyDb, Tx } from "@/types";
+import { Automation, IOfframpAddress, LockerDb, PolicyDb, Tx } from "@/types";
 import {
 	TABLE_LOCKERS,
+	TABLE_OFFRAMP_ADDRESSES,
 	TABLE_POLICIES,
 	TABLE_TOKEN_TXS,
 } from "@/utils/supabase/tables";
@@ -13,7 +14,7 @@ import {
 export interface ILockerPortfolio {
 	initialLockers: LockerDb[];
 	initialPolicies: PolicyDb[];
-	initialOfframpAddresses: `0x${string}`[];
+	initialOfframpAddresses: IOfframpAddress[];
 }
 
 interface LockerPortfolioContextProps {
@@ -22,7 +23,7 @@ interface LockerPortfolioContextProps {
 	policies: PolicyDb[];
 	automations: Automation[] | undefined;
 	txs: Tx[];
-	offrampAddresses: `0x${string}`[];
+	offrampAddresses: IOfframpAddress[];
 }
 
 // Create the context with a default value
@@ -37,8 +38,6 @@ export function LockerProvider({
 	initialOfframpAddresses,
 	children,
 }: ILockerPortfolio & { children: ReactNode }) {
-	const [offrampAddresses] = useState(initialOfframpAddresses);
-
 	const initialTxs = (initialLockers || []).flatMap(
 		(locker) => locker.txs
 	) as Tx[];
@@ -50,6 +49,12 @@ export function LockerProvider({
 		initialPolicies
 	);
 	// console.log("Policy records", policies);
+
+	const { records: offrampAddresses } = useRealtimeTable<IOfframpAddress>(
+		TABLE_OFFRAMP_ADDRESSES,
+		initialOfframpAddresses
+	);
+	// console.log("Offramp address records", offrampAddresses);
 
 	const { records: lockers } = useRealtimeTable<LockerDb>(
 		TABLE_LOCKERS,
