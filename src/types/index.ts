@@ -93,3 +93,9 @@ export type LockerNetWorth = {
 	totalNetWorth: string;
 	chainsNetWorth: Record<number, string>;
 };
+
+export type IOfframpAddress = {
+	id: number;
+	chainId: number;
+	address: string;
+};

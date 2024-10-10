@@ -20,6 +20,7 @@ export function SetupOfframpModal() {
 	const { locker } = useLocker();
 	const [offrampUrl, setOfframpUrl] = useState<string>("");
 	const [isLoading, setIsLoading] = useState<boolean>(false);
+	const [isIframeLoading, setIsIframeLoading] = useState<boolean>(false); // Loading state for iframe
 	const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
 
 	// Handle the off-ramp creation process
@@ -34,6 +35,7 @@ export function SetupOfframpModal() {
 			// Only open the dialog after the offrampUrl is set
 			if (url) {
 				setIsDialogOpen(true);
+				setIsIframeLoading(true); // Start iframe loading
 			}
 		}
 	};
@@ -62,7 +64,7 @@ export function SetupOfframpModal() {
 					)}
 				</button>
 			</DialogTrigger>
-			<DialogContent className="sm:max-w-1/2">
+			<DialogContent className="sm:max-w-1/2 overflow-hidden">
 				<DialogHeader>
 					<DialogTitle>Identity verification</DialogTitle>
 					<DialogDescription>
@@ -77,12 +79,18 @@ export function SetupOfframpModal() {
 					</DialogDescription>
 				</DialogHeader>
 				<div className="mt-6 flex h-full w-full flex-col items-center justify-center">
+					{/* Display loader while iframe is loading */}
+					{(isIframeLoading || isLoading) && (
+						<Loader className="animate-spin" size={32} />
+					)}
 					{/* Only display the iframe if the offrampUrl is set */}
 					{offrampUrl && (
 						<iframe
-							className="flex h-[600px] w-full"
+							className={`flex h-[600px] w-full ${isIframeLoading ? "hidden" : "block"}`}
 							title="Beam Identity Verification Form"
 							src={offrampUrl}
+							onLoad={() => setIsIframeLoading(false)} // Remove loading when iframe finishes loading
+							onError={() => setIsIframeLoading(false)} // Handle loading error
 						/>
 					)}
 				</div>

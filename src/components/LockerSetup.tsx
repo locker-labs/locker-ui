@@ -51,6 +51,7 @@ function LockerSetup() {
 	const [boxlets, setBoxlets] = useState(DEFAULT_BOXLETS);
 
 	const updateBoxlet = (updatedBoxlet: IDistributionBoxlet) => {
+		setErrorMessage("");
 		setBoxlets((prevBoxlets) => ({
 			...prevBoxlets,
 			[updatedBoxlet.id]: updatedBoxlet, // Override the existing boxlet with the same id
@@ -63,6 +64,7 @@ function LockerSetup() {
 			updateBoxlet({
 				...DEFAULT_BOXLETS[EAutomationType.FORWARD_TO],
 				forwardToAddress: address,
+				percent: boxlets[EAutomationType.FORWARD_TO].percent,
 			});
 	}, [address]);
 

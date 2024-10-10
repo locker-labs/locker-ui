@@ -16,7 +16,7 @@ import { truncateAddress } from "@/utils/truncateAddress";
 
 export default function LockerPortfolioTxHistoryContent() {
 	dayjs.extend(relativeTime);
-	const { txs, locker, policies } = useLocker();
+	const { txs, locker, policies, offrampAddresses } = useLocker();
 
 	// Helper function to format amount
 	const formatAmount = (amount: string, decimals: number) => {
@@ -54,6 +54,14 @@ export default function LockerPortfolioTxHistoryContent() {
 					.find((a) => a.type === EAutomationType.FORWARD_TO)
 					?.recipientAddress?.toLowerCase();
 
+		const isOfframp =
+			offrampAddresses &&
+			offrampAddresses.find(
+				(offrampAddress) =>
+					address.toLowerCase() ===
+					offrampAddress.address.toLowerCase()
+			);
+
 		let text = truncateAddress(address);
 		let bgColor = "bg-gray-200";
 		if (isLocker) {
@@ -62,6 +70,9 @@ export default function LockerPortfolioTxHistoryContent() {
 		} else if (isForward) {
 			text = "Forward to";
 			bgColor = "bg-[#5490D999]";
+		} else if (isOfframp) {
+			text = "Your bank";
+			bgColor = "bg-[#49BFE399]";
 		}
 
 		return (
