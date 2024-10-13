@@ -1,7 +1,6 @@
-import DistributionBoxlet, {
-	IBoxlets,
-	IDistributionBoxlet,
-} from "./DistributionBoxlet";
+import { getBoxletsOn, IBoxlets, IDistributionBoxlet } from "@/lib/boxlets";
+
+import DistributionBoxlet from "./DistributionBoxlet";
 
 interface IDistributionBox {
 	boxlets: IBoxlets;
@@ -11,16 +10,13 @@ interface IDistributionBox {
 function DistributionBox({ boxlets, updateBoxlet }: IDistributionBox) {
 	return (
 		<div className="flex w-full flex-col space-y-4">
-			{Object.keys(boxlets)
-				// temporarily hide offramp
-				// .filter((boxletId) => boxletId !== EAutomationType.OFF_RAMP)
-				.map((boxletId) => (
-					<DistributionBoxlet
-						key={boxletId}
-						boxlet={boxlets[boxletId]}
-						updateBoxlet={updateBoxlet}
-					/>
-				))}
+			{getBoxletsOn(boxlets).map(([boxletId]) => (
+				<DistributionBoxlet
+					key={boxletId}
+					boxlet={boxlets[boxletId]}
+					updateBoxlet={updateBoxlet}
+				/>
+			))}
 		</div>
 	);
 }

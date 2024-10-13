@@ -8,10 +8,6 @@ import { useChainId, useSwitchChain } from "wagmi";
 import BoxletPieChart from "@/components/BoxletPieChart";
 import DistributionBox from "@/components/DistributionBox";
 import {
-	calcPrecentLeft,
-	IDistributionBoxlet,
-} from "@/components/DistributionBoxlet";
-import {
 	Dialog,
 	DialogContent,
 	DialogDescription,
@@ -22,6 +18,7 @@ import {
 import { DEFAULT_BOXLETS } from "@/data/constants/boxlets";
 import { errors } from "@/data/constants/errorMessages";
 import useSmartAccount from "@/hooks/useSmartAccount";
+import { calcPrecentLeft, IDistributionBoxlet } from "@/lib/boxlets";
 import { useLocker } from "@/providers/LockerProvider";
 import { updatePolicy } from "@/services/lockers";
 import { EAutomationType, Policy } from "@/types";
@@ -37,7 +34,12 @@ export function EditAutomationsModal() {
 	const walletChainId = useChainId();
 	const { switchChain } = useSwitchChain();
 
-	const [boxlets, setBoxlets] = useState(defaultBoxlets); // Initialize with current policy automations
+	// Initialize with current policy automations and any default automations, not included
+	const [boxlets, setBoxlets] = useState({
+		...defaultBoxlets,
+		...adaptAutomations2Boxlets(automations || []),
+	});
+
 	const [errorMessage, setErrorMessage] = useState<string>("");
 	const { getToken } = useAuth();
 	const { refreshPolicy } = useSmartAccount();

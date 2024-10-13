@@ -20,7 +20,7 @@ import LockerPortfolioTxHistory from "./LockerPortfolioTxHistory";
 import LockerPortfolioValue from "./LockerPortfolioValue";
 
 function LockerPortfolio() {
-	const { locker, policies, txs } = useLocker();
+	const { locker, txs, automations } = useLocker();
 	const [tokens, setTokens] = useState<Token[]>([]);
 	const [lockerNetWorth, setLockerNetWorth] = useState<string>("0.00");
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -40,18 +40,14 @@ function LockerPortfolio() {
 		if (onboardingFlag) openLockerOnboardedModal();
 	}, [onboardingFlag]);
 
-	const shouldSetupFirstPolicy =
-		!policies || (policies && policies.length === 0);
-
-	if (shouldSetupFirstPolicy) redirect(paths.ONBOARDING);
+	if (!automations) redirect(paths.ONBOARDING);
+	console.log("automations", automations);
 
 	// Props destructured variables
 	// const { txs } = locker;
 	const filteredTxs = txs
 		? txs.filter((tx) => isChainSupported(tx.chainId))
 		: [];
-	const basePolicy = policies[0];
-	const { automations } = basePolicy;
 
 	/* For now, we're only handling:
 		- One locker per user (index 0)

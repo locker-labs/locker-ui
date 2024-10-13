@@ -12,22 +12,19 @@ import { DEFAULT_BOXLETS } from "@/data/constants/boxlets";
 import { errors } from "@/data/constants/errorMessages";
 import { paths } from "@/data/constants/paths";
 import useSmartAccount from "@/hooks/useSmartAccount";
+import { calcPrecentLeft, IDistributionBoxlet } from "@/lib/boxlets";
+import { getCollectionFloor } from "@/lib/element";
 import { useLocker } from "@/providers/LockerProvider";
 import { createLocker, createPolicy } from "@/services/lockers";
-import {
-	Automation,
-	EAutomationStatus,
-	EAutomationType,
-	Locker,
-	Policy,
-} from "@/types";
+import { EAutomationType, Locker, Policy } from "@/types";
+import adaptBoxlets2Automations from "@/utils/adaptBoxlets2Automations";
 import { isChainSupported } from "@/utils/isChainSupported";
 
 import BoxletPieChart from "./BoxletPieChart";
 import ChainSelectModal from "./ChainSelectModal";
 // eslint-disable-next-line import/no-named-as-default
 import ConnectModal from "./ConnectModal";
-import { calcPrecentLeft, IDistributionBoxlet } from "./DistributionBoxlet";
+import DistributionBoxExtra from "./DistributionBoxExtra";
 
 function LockerSetup() {
 	const { locker: _locker } = useLocker();
@@ -68,6 +65,16 @@ function LockerSetup() {
 			});
 	}, [address]);
 
+	// get efrogs floor price on page loag
+	useEffect(() => {
+		getCollectionFloor().then((floorPrice) => {
+			updateBoxlet({
+				...DEFAULT_BOXLETS[EAutomationType.GOAL_EFROGS],
+				subtitle: `${floorPrice} ${DEFAULT_BOXLETS[EAutomationType.GOAL_EFROGS].subtitle}`,
+			});
+		});
+	}, []);
+
 	const saveDecimal = Number(
 		formatUnits(BigInt(boxlets[EAutomationType.SAVINGS].percent), 2)
 	);
@@ -78,10 +85,10 @@ function LockerSetup() {
 	);
 	const isForwardSelected = forwardDecimal > 0;
 
-	const offrampDecimal = Number(
-		formatUnits(BigInt(boxlets[EAutomationType.OFF_RAMP].percent), 2)
-	);
-	// const isOfframpSelected = offrampDecimal > 0;
+	// const offrampDecimal = Number(
+	// 	formatUnits(BigInt(boxlets[EAutomationType.OFF_RAMP].percent), 2)
+	// );
+
 	const percentLeft = calcPrecentLeft(boxlets);
 	const lockerIndex = 0;
 	const sendToAddress = boxlets[EAutomationType.FORWARD_TO].forwardToAddress;
@@ -90,10 +97,6 @@ function LockerSetup() {
 	const createNewLocker = async (): Promise<Locker | undefined> => {
 		setErrorMessage("");
 		setIsLoading(true);
-		// Show Loader for 1.5 seconds
-		// await new Promise((resolve) => {
-		// 	setTimeout(resolve, 1500);
-		// });
 
 		// Proceed
 		try {
@@ -138,7 +141,7 @@ function LockerSetup() {
 		const sig = await signSessionKey(
 			0, // lockerIndex
 			sendToAddress as `0x${string}`, // hotWalletAddress
-			[] // offrampAddress
+			[] // offrampAddress will always be undefined at this point
 		);
 		if (!sig) {
 			setIsLoading(false);
@@ -146,24 +149,8 @@ function LockerSetup() {
 		}
 
 		// 2. Craft policy object
-		const automations: Automation[] = [
-			{
-				type: EAutomationType.SAVINGS,
-				allocation: saveDecimal,
-				status: EAutomationStatus.READY,
-			},
-			{
-				type: EAutomationType.FORWARD_TO,
-				allocation: forwardDecimal,
-				status: EAutomationStatus.READY,
-				recipientAddress: sendToAddress as `0x${string}`,
-			},
-			{
-				type: EAutomationType.OFF_RAMP,
-				allocation: offrampDecimal,
-				status: EAutomationStatus.NEW,
-			},
-		];
+		const automations = adaptBoxlets2Automations(boxlets);
+
 		const policy: Policy = {
 			lockerId: locker?.id as number,
 			chainId: chainId as number,
@@ -203,7 +190,7 @@ function LockerSetup() {
 				return;
 			}
 
-			if (isSaveSelected && !sendToAddress) {
+			if (isForwardSelected && !sendToAddress) {
 				setErrorMessage(errors.NO_ADDRESS);
 				setIsLoading(false);
 				return;
@@ -343,9 +330,22 @@ function LockerSetup() {
 		</div>
 	);
 
+	const hasInactiveBoxlets = Object.values(boxlets).some(
+		(boxlet) => boxlet.state === "off"
+	);
+
 	const leftPanel = (
 		<div className="order-2 col-span-2 mt-6 w-full justify-self-end sm:order-1 sm:col-span-1 sm:mt-0 sm:max-w-[512px]">
 			<DistributionBox boxlets={boxlets} updateBoxlet={updateBoxlet} />
+			{hasInactiveBoxlets && (
+				<div className="my-[1rem]">
+					<DistributionBoxExtra
+						boxlets={boxlets}
+						updateBoxlet={updateBoxlet}
+					/>
+				</div>
+			)}
+
 			<div className="mt-[1rem] text-center font-bold sm:hidden">
 				{leftToAllocate}
 			</div>

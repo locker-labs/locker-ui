@@ -29,46 +29,43 @@ function LockerPortfolioAutomations({
 					</div>
 				</div>
 				<div className="col-span-2 space-y-3 pt-3">
-					{automations
-						// temoprarily hide offramp
-						// .filter((a) => a.type !== EAutomationType.OFF_RAMP)
-						.map((automation) => {
-							const { color, title } =
-								DEFAULT_BOXLETS[automation.type];
-							const isOfframpPending =
-								automation.type === EAutomationType.OFF_RAMP &&
-								automation.status === EAutomationStatus.NEW;
+					{automations.map((automation) => {
+						const { color, title } =
+							DEFAULT_BOXLETS[automation.type];
+						const isOfframpPending =
+							automation.type === EAutomationType.OFF_RAMP &&
+							automation.status === EAutomationStatus.NEW;
 
-							return (
-								<div
-									className="flex flex-col space-y-2"
-									key={`${automation.type}-${automation.recipientAddress}-div`}
-								>
-									<div className="flex flex-row justify-between text-xs">
-										<div className="flex flex-row items-center justify-center space-x-2">
-											<div
-												className="size-5 rounded-full"
-												style={{
-													backgroundColor: color,
-												}}
-											/>
-											<span>{title}</span>
-										</div>
-										<span className="font-semibold">
-											{Math.round(
-												automation.allocation * 100
-											)}
-											%
-										</span>
+						return (
+							<div
+								className="flex flex-col space-y-2"
+								key={`${automation.type}-${automation.recipientAddress}-div`}
+							>
+								<div className="flex flex-row justify-between text-xs">
+									<div className="flex flex-row items-center justify-center space-x-2">
+										<div
+											className="size-5 rounded-full"
+											style={{
+												backgroundColor: color,
+											}}
+										/>
+										<span>{title}</span>
 									</div>
-									{isOfframpPending && (
-										<div className="flex flex-row">
-											<SetupOfframpModal />
-										</div>
-									)}
+									<span className="font-semibold">
+										{Math.round(
+											automation.allocation * 100
+										)}
+										%
+									</span>
 								</div>
-							);
-						})}
+								{isOfframpPending && (
+									<div className="flex flex-row">
+										<SetupOfframpModal />
+									</div>
+								)}
+							</div>
+						);
+					})}
 				</div>
 			</div>
 		</div>
