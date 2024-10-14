@@ -64,7 +64,14 @@ function LockerPortfolioSavingsGoals({
 				const usdSaved = new Big(portfolioValue).mul(
 					automation.allocation
 				);
-				const amountSaved = ethUsd ? `${ethSaved} ETH` : `$${usdSaved}`;
+
+				const roundedEthSaved =
+					ethSaved && ethSaved.gte(0.0001)
+						? ethSaved.toFixed(4)
+						: "<0.0001";
+				const amountSaved = ethUsd
+					? `${roundedEthSaved} ETH`
+					: `$${usdSaved}`;
 
 				const value =
 					ethSaved && efrogsFloor
