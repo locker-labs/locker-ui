@@ -83,6 +83,8 @@ function LockerPortfolio() {
 				mainnetChainIds
 			);
 
+			console.log("netWorth", netWorth);
+
 			if (netWorth) {
 				setLockerNetWorth(netWorth.totalNetWorth);
 				setChainsNetWorths(netWorth.chainsNetWorth);
@@ -112,7 +114,9 @@ function LockerPortfolio() {
 				</div>
 
 				<div className="col-span-1 overflow-auto rounded-md bg-white p-4 lg:col-span-2 xl:col-span-4 xl:h-96">
-					<LockerPortfolioSavingsGoals />
+					<LockerPortfolioSavingsGoals
+						portfolioValue={lockerNetWorth}
+					/>
 				</div>
 			</div>
 			<div className="col-span-1 w-full overflow-auto rounded-md bg-white p-4 lg:min-h-96">

@@ -15,9 +15,9 @@ function BoxletPieChart({ boxlets, lineWidth }: IBoxletPieChart) {
 	// Remove non-zero boxlets
 	const nonZero = { ...boxlets };
 	getBoxletsOn(boxlets).forEach((kv) => {
-		console.log(`boxlet pie ${kv[0]}`);
-		console.log(kv[1]);
-		console.log(kv[1].percent === 0);
+		// console.log(`boxlet pie ${kv[0]}`);
+		// console.log(kv[1]);
+		// console.log(kv[1].percent === 0);
 
 		if (kv[1].percent === 0) delete nonZero[kv[0]];
 	});
@@ -28,8 +28,8 @@ function BoxletPieChart({ boxlets, lineWidth }: IBoxletPieChart) {
 		color: boxlet.color,
 	}));
 
-	console.log("BOXLETS");
-	console.log(boxlets);
+	// console.log("BOXLETS");
+	// console.log(boxlets);
 
 	// Add grey region for unallocated percent
 	const percentLeft = calcPrecentLeft(boxlets);

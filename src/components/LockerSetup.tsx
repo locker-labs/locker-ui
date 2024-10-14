@@ -65,7 +65,7 @@ function LockerSetup() {
 			});
 	}, [address]);
 
-	// get efrogs floor price on page loag
+	// get efrogs floor price on page load
 	useEffect(() => {
 		getCollectionFloor().then((floorPrice) => {
 			updateBoxlet({
@@ -84,10 +84,6 @@ function LockerSetup() {
 		formatUnits(BigInt(boxlets[EAutomationType.FORWARD_TO].percent), 2)
 	);
 	const isForwardSelected = forwardDecimal > 0;
-
-	// const offrampDecimal = Number(
-	// 	formatUnits(BigInt(boxlets[EAutomationType.OFF_RAMP].percent), 2)
-	// );
 
 	const percentLeft = calcPrecentLeft(boxlets);
 	const lockerIndex = 0;

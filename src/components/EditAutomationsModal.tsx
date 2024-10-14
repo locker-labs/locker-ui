@@ -25,7 +25,11 @@ import { EAutomationType, Policy } from "@/types";
 import adaptAutomations2Boxlets from "@/utils/adaptAutomations2Boxlets";
 import getAutomations4Boxlets from "@/utils/policies/getAutomations4Boxlets";
 
-export function EditAutomationsModal() {
+type IEditAutomationsModalProps = {
+	button?: JSX.Element;
+};
+
+function EditAutomationsModal({ button }: IEditAutomationsModalProps) {
 	const { policies, automations } = useLocker(); // Fetch locker and policies
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const defaultBoxlets = automations
@@ -97,42 +101,6 @@ export function EditAutomationsModal() {
 
 		// Iterate over all policies and update each one
 		try {
-			// const updates = policies.map(async (policy) => {
-			// 	// get new session key with current addresses
-			// 	const updatedAutomations = getAutomations4Boxlets(
-			// 		automations,
-			// 		boxlets
-			// 	);
-
-			// 	const sig = await refreshPolicy({
-			// 		automations: updatedAutomations,
-			// 	});
-			// 	if (!sig) {
-			// 		setIsLoading(false);
-			// 		setErrorMessage(
-			// 			"Something went wrong with session key creation. Please try again."
-			// 		);
-			// 		return;
-			// 	}
-
-			// 	const newPolicy: Policy = {
-			// 		...policy,
-			// 		sessionKey: sig as string,
-			// 		automations: updatedAutomations,
-			// 	};
-
-			// 	const authToken = await getToken();
-			// 	if (authToken) {
-			// 		return updatePolicy(authToken, newPolicy, setErrorMessage);
-			// 	}
-			// });
-
-			// updates.reduce(
-			// 	(promiseChain, currentTask) =>
-			// 		promiseChain.then(() => currentTask()),
-			// 	Promise.resolve()
-			// );
-
 			// eslint-disable-next-line no-restricted-syntax
 			for (const policy of policies) {
 				// get new session key with current addresses
@@ -254,12 +222,7 @@ export function EditAutomationsModal() {
 
 	return (
 		<Dialog>
-			<DialogTrigger asChild>
-				<button className="outline-solid flex cursor-pointer flex-row items-center justify-center rounded-md px-2 py-1 text-xxs outline outline-gray-300">
-					<Pencil size={12} />
-					<span className="ml-2 font-semibold">Edit</span>
-				</button>
-			</DialogTrigger>
+			<DialogTrigger asChild>{button}</DialogTrigger>
 			<DialogContent className="overflow-y-auto sm:max-w-[1280px]">
 				<DialogHeader>
 					<DialogTitle>Edit automations</DialogTitle>
@@ -277,3 +240,12 @@ export function EditAutomationsModal() {
 }
 
 export default EditAutomationsModal;
+
+EditAutomationsModal.defaultProps = {
+	button: (
+		<button className="outline-solid flex cursor-pointer flex-row items-center justify-center rounded-md px-2 py-1 text-xxs outline outline-1 outline-gray-300">
+			<Pencil size={12} />
+			<span className="ml-2 font-semibold">Edit</span>
+		</button>
+	),
+};

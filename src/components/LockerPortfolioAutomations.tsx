@@ -3,7 +3,7 @@ import { Automation, EAutomationStatus, EAutomationType } from "@/types";
 import adaptAutomations2Boxlets from "@/utils/adaptAutomations2Boxlets";
 
 import BoxletPieChart from "./BoxletPieChart";
-import { EditAutomationsModal } from "./EditAutomationsModal";
+import EditAutomationsModal from "./EditAutomationsModal";
 import { SetupOfframpModal } from "./SetupOfframpModal";
 
 export interface ILockerPortfolioAutomations {
