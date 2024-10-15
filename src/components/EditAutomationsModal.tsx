@@ -25,6 +25,8 @@ import { EAutomationType, Policy } from "@/types";
 import adaptAutomations2Boxlets from "@/utils/adaptAutomations2Boxlets";
 import getAutomations4Boxlets from "@/utils/policies/getAutomations4Boxlets";
 
+import DistributionBoxExtra from "./DistributionBoxExtra";
+
 type IEditAutomationsModalProps = {
 	button?: JSX.Element;
 };
@@ -209,9 +211,21 @@ function EditAutomationsModal({ button }: IEditAutomationsModalProps) {
 		</div>
 	);
 
+	const hasInactiveBoxlets = Object.values(boxlets).some(
+		(boxlet) => boxlet.state === "off"
+	);
+
 	const leftPanel = (
 		<div className="order-2 col-span-2 mt-6 w-full justify-self-end sm:order-1 sm:col-span-1 sm:mt-0 sm:max-w-[512px]">
 			<DistributionBox boxlets={boxlets} updateBoxlet={updateBoxlet} />
+			{hasInactiveBoxlets && (
+				<div className="my-[1rem]">
+					<DistributionBoxExtra
+						boxlets={boxlets}
+						updateBoxlet={updateBoxlet}
+					/>
+				</div>
+			)}
 			<div className="mt-[1rem] text-center font-bold sm:hidden">
 				{leftToAllocate}
 			</div>
