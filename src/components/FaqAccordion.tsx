@@ -20,24 +20,15 @@ function FaqAccordion() {
 						</Disclosure.Button>
 						<Disclosure.Panel className="mt-3 flex flex-col space-y-3">
 							<span>
-								Locker is a company that builds custom,
-								programmable modules for smart accounts that are
-								compliant with{" "}
-								<a
-									className="hover:text-secondary-100 underline underline-offset-2"
-									href="https://eips.ethereum.org/EIPS/eip-4337"
-									target="_blank"
-									rel="noopener noreferrer"
-								>
-									ERC-4337
-								</a>
-								.
+								Locker is a company that provides secure savings
+								and investment functionality for your crypto.
 							</span>
 							<span>
-								When users sign up for Locker, they can create a
-								smart account called a &quot;locker&quot;,
-								enabling them to use Locker&apos;s flagship
-								automatic payment routing module.
+								When you sign up for Locker, we&apos;ll create
+								you a smart account called a &quot;locker&quot;.
+								You are the sole owner of the account and grant
+								Locker limited permissions to transfer funds on
+								your behalf.
 							</span>
 						</Disclosure.Panel>
 					</>
@@ -58,7 +49,7 @@ function FaqAccordion() {
 						<Disclosure.Panel className="mt-3 flex flex-col space-y-3">
 							<span>
 								Locker allows users who get paid in crypto to
-								automatially save and invest a portion of their
+								automatically save and invest a portion of their
 								earnings, every time they get paid.
 							</span>
 							<span>
@@ -68,8 +59,9 @@ function FaqAccordion() {
 								settings.
 							</span>
 							<span>
-								The allocation settings can be adjusted at any
-								time.
+								You can also set a savings goal and work towards
+								your next big purchase, regardless of if
+								that&apos;s a new car or NFT.
 							</span>
 						</Disclosure.Panel>
 					</>
@@ -94,7 +86,10 @@ function FaqAccordion() {
 								locker. More details coming soon.
 							</span>
 							<span>
-								No fees will be charged during beta testing.
+								No platform fees will be charged during beta
+								testing. If you use the offramp functionality, a
+								1.5% / 3.5% fee is charged by our banking
+								partner for each USDC / ETH offramp.
 							</span>
 						</Disclosure.Panel>
 					</>
@@ -175,19 +170,6 @@ function FaqAccordion() {
 								, which allow users to give Locker (the company)
 								very granular permissions to perform specific
 								actions on their behalf.
-							</span>
-							<span>
-								Later, Locker plans to accomplish this
-								functionality and more via {"  "}
-								<a
-									className="hover:text-secondary-100 underline underline-offset-2"
-									href="https://eips.ethereum.org/EIPS/eip-7579"
-									target="_blank"
-									rel="noopener noreferrer"
-								>
-									ERC-7579 modules
-								</a>
-								.
 							</span>
 						</Disclosure.Panel>
 					</>
