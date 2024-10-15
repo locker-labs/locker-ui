@@ -1,5 +1,6 @@
 import "@/styles/globals.css";
 
+import { HighlightInit } from "@highlight-run/next/client";
 import { Analytics as VercelAnalytics } from "@vercel/analytics/react";
 import type { Metadata, Viewport } from "next";
 // eslint-disable-next-line camelcase
@@ -35,25 +36,38 @@ export default function RootLayout({
 	);
 
 	return (
-		<html lang="en" suppressHydrationWarning>
-			<body
-				className={`${inter.className} flex min-h-screen w-full flex-col items-center`}
-			>
-				<Suspense
-					fallback={
-						<div className="min-h-fit">
-							<Loading />
-						</div>
-					}
+		<>
+			<HighlightInit
+				projectId="ng21pwne"
+				serviceName="locker-ui"
+				tracingOrigins
+				networkRecording={{
+					enabled: true,
+					recordHeadersAndBody: true,
+					urlBlocklist: [],
+				}}
+			/>
+
+			<html lang="en" suppressHydrationWarning>
+				<body
+					className={`${inter.className} flex min-h-screen w-full flex-col items-center`}
 				>
-					<AuthProvider>
-						<EvmProvider initialState={initialState}>
-							{children}
-						</EvmProvider>
-					</AuthProvider>
-					<VercelAnalytics />
-				</Suspense>
-			</body>
-		</html>
+					<Suspense
+						fallback={
+							<div className="min-h-fit">
+								<Loading />
+							</div>
+						}
+					>
+						<AuthProvider>
+							<EvmProvider initialState={initialState}>
+								{children}
+							</EvmProvider>
+						</AuthProvider>
+						<VercelAnalytics />
+					</Suspense>
+				</body>
+			</html>
+		</>
 	);
 }
