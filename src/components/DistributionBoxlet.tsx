@@ -63,8 +63,8 @@ function DistributionBoxlet({
 					</span>
 					<div className="ml-2">
 						<TooltipProvider>
-							<Tooltip>
-								<TooltipTrigger>
+							<Tooltip delayDuration={300}>
+								<TooltipTrigger asChild>
 									<span className="cursor-pointer text-xs">
 										ⓘ
 									</span>

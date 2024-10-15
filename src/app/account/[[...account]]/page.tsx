@@ -13,7 +13,7 @@ function AccountPage() {
 	const { resolvedTheme } = useTheme();
 
 	return (
-		<div className="flex w-full flex-1 flex-col items-center py-12">
+		<div className="flex w-full flex-1 flex-col items-center px-4 py-12">
 			<div className="flex-col0 mb-8 flex w-full">
 				<button
 					className="hover:text-secondary-200 h-10 w-fit "
