@@ -32,9 +32,11 @@ type IEditAutomationsModalProps = {
 function EditAutomationsModal({ button }: IEditAutomationsModalProps) {
 	const { policies, automations } = useLocker(); // Fetch locker and policies
 	const [isLoading, setIsLoading] = useState<boolean>(false);
-	const defaultBoxlets = automations
-		? adaptAutomations2Boxlets(automations)
-		: DEFAULT_BOXLETS;
+	console.log("automations", automations);
+	const defaultBoxlets =
+		automations && automations.length > 0
+			? adaptAutomations2Boxlets(automations)
+			: DEFAULT_BOXLETS;
 	const walletChainId = useChainId();
 	const { switchChain } = useSwitchChain();
 

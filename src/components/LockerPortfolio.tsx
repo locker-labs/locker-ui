@@ -40,7 +40,7 @@ function LockerPortfolio() {
 		if (onboardingFlag) openLockerOnboardedModal();
 	}, [onboardingFlag]);
 
-	if (!automations) redirect(paths.ONBOARDING);
+	if (!automations || automations.length === 0) redirect(paths.ONBOARDING);
 	console.log("automations", automations);
 
 	// Props destructured variables

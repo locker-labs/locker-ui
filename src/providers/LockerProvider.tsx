@@ -70,10 +70,10 @@ export function LockerProvider({
 		() => ({
 			lockers: lockers || [],
 			locker,
-			policies,
+			policies: policies || [],
 			automations,
-			txs,
-			offrampAddresses,
+			txs: txs || [],
+			offrampAddresses: offrampAddresses || [],
 		}),
 		[lockers, policies, txs, offrampAddresses] // only recompute when these dependencies change
 	);
