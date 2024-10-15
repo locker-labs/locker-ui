@@ -26,5 +26,5 @@ export const getBoxletsOn = (boxlets: IBoxlets) =>
 export const getBoxletsOff = (boxlets: IBoxlets) =>
 	getBoxletsByState(boxlets, "off");
 
-export const calcPrecentLeft = (boxlets: IBoxlets) =>
+export const calcPercentLeft = (boxlets: IBoxlets) =>
 	getBoxletsArrOn(boxlets).reduce((acc, boxlet) => acc - boxlet.percent, 100);

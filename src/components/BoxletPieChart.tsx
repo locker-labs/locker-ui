@@ -1,7 +1,7 @@
 import { PieChart } from "react-minimal-pie-chart";
 
 import {
-	calcPrecentLeft,
+	calcPercentLeft,
 	getBoxletsOn,
 	IDistributionBoxlet,
 } from "@/lib/boxlets";
@@ -32,7 +32,7 @@ function BoxletPieChart({ boxlets, lineWidth }: IBoxletPieChart) {
 	// console.log(boxlets);
 
 	// Add grey region for unallocated percent
-	const percentLeft = calcPrecentLeft(boxlets);
+	const percentLeft = calcPercentLeft(boxlets);
 	console.log(`percentLeft ${percentLeft}`);
 	let data = dataWithoutZero;
 	if (percentLeft > 0) {

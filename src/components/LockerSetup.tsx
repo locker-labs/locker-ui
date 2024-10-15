@@ -4,7 +4,7 @@ import { useAuth } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
-import { checksumAddress, formatUnits, isAddress } from "viem";
+import { checksumAddress, isAddress } from "viem";
 import { useAccount } from "wagmi";
 
 import DistributionBox from "@/components/DistributionBox";
@@ -12,7 +12,7 @@ import { DEFAULT_BOXLETS } from "@/data/constants/boxlets";
 import { errors } from "@/data/constants/errorMessages";
 import { paths } from "@/data/constants/paths";
 import useSmartAccount from "@/hooks/useSmartAccount";
-import { calcPrecentLeft, IDistributionBoxlet } from "@/lib/boxlets";
+import { calcPercentLeft, IDistributionBoxlet } from "@/lib/boxlets";
 import { getCollectionFloor } from "@/lib/element";
 import { useLocker } from "@/providers/LockerProvider";
 import { createLocker, createPolicy } from "@/services/lockers";
@@ -75,17 +75,15 @@ function LockerSetup() {
 		});
 	}, []);
 
-	const saveDecimal = Number(
-		formatUnits(BigInt(boxlets[EAutomationType.SAVINGS].percent), 2)
-	);
-	const isSaveSelected = saveDecimal > 0;
+	const isSaveSelected =
+		boxlets[EAutomationType.SAVINGS] &&
+		boxlets[EAutomationType.SAVINGS].percent > 0;
 
-	const forwardDecimal = Number(
-		formatUnits(BigInt(boxlets[EAutomationType.FORWARD_TO].percent), 2)
-	);
-	const isForwardSelected = forwardDecimal > 0;
+	const isForwardSelected =
+		boxlets[EAutomationType.FORWARD_TO] &&
+		boxlets[EAutomationType.FORWARD_TO].percent > 0;
 
-	const percentLeft = calcPrecentLeft(boxlets);
+	const percentLeft = calcPercentLeft(boxlets);
 	const lockerIndex = 0;
 	const sendToAddress = boxlets[EAutomationType.FORWARD_TO].forwardToAddress;
 

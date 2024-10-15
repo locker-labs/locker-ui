@@ -2,7 +2,7 @@ import { useAuth } from "@clerk/nextjs";
 import { Pencil } from "lucide-react";
 import { useState } from "react";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
-import { formatUnits, isAddress } from "viem";
+import { isAddress } from "viem";
 import { useChainId, useSwitchChain } from "wagmi";
 
 import BoxletPieChart from "@/components/BoxletPieChart";
@@ -18,7 +18,7 @@ import {
 import { DEFAULT_BOXLETS } from "@/data/constants/boxlets";
 import { errors } from "@/data/constants/errorMessages";
 import useSmartAccount from "@/hooks/useSmartAccount";
-import { calcPrecentLeft, IDistributionBoxlet } from "@/lib/boxlets";
+import { calcPercentLeft, IDistributionBoxlet } from "@/lib/boxlets";
 import { useLocker } from "@/providers/LockerProvider";
 import { updatePolicy } from "@/services/lockers";
 import { EAutomationType, Policy } from "@/types";
@@ -55,18 +55,16 @@ function EditAutomationsModal({ button }: IEditAutomationsModalProps) {
 		}));
 	};
 
-	const saveDecimal = Number(
-		formatUnits(BigInt(boxlets[EAutomationType.SAVINGS].percent), 2)
-	);
-	const isSaveSelected = saveDecimal > 0;
+	const isSaveSelected =
+		boxlets[EAutomationType.SAVINGS] &&
+		boxlets[EAutomationType.SAVINGS].percent > 0;
 
-	const forwardDecimal = Number(
-		formatUnits(BigInt(boxlets[EAutomationType.FORWARD_TO].percent), 2)
-	);
-	const isForwardSelected = forwardDecimal > 0;
+	const isForwardSelected =
+		boxlets[EAutomationType.FORWARD_TO] &&
+		boxlets[EAutomationType.FORWARD_TO].percent > 0;
 
 	const sendToAddress = boxlets[EAutomationType.FORWARD_TO].forwardToAddress;
-	const percentLeft = calcPrecentLeft(boxlets);
+	const percentLeft = calcPercentLeft(boxlets);
 
 	const isForwardToMissing = isForwardSelected && !isAddress(sendToAddress!);
 
