@@ -7,7 +7,6 @@ export const getLockerNetWorth = async (
 	chaindIds: number[]
 ): Promise<LockerNetWorth | null> => {
 	const apiKey = process.env.MORALIS_WEB3_API_KEY;
-
 	if (!apiKey) {
 		throw new Error("MORALIS_WEB3_API_KEY is not set");
 	}
@@ -70,4 +69,40 @@ export const getLockerNetWorth = async (
 		console.error(error);
 		return null;
 	}
+};
+
+type IErc20Price = {
+	usdPrice: number;
+};
+export const getErc20Price = async (
+	// WETH default
+	tokenAddress: string = "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"
+): Promise<IErc20Price> => {
+	console.log(
+		"getErc20Price",
+		tokenAddress,
+		process.env.MORALIS_WEB3_API_KEY
+	);
+	const apiKey = process.env.MORALIS_WEB3_API_KEY;
+	if (!apiKey) {
+		throw new Error("MORALIS_WEB3_API_KEY is not set");
+	}
+
+	const response = await fetch(
+		`https://deep-index.moralis.io/api/v2.2/erc20/${tokenAddress}/price?chain=eth`,
+		{
+			method: "GET",
+			headers: new Headers({
+				"X-API-Key": apiKey,
+			}),
+		}
+	);
+
+	if (response.ok) {
+		const { usdPrice }: IErc20Price = await response.json();
+
+		return { usdPrice };
+	}
+
+	throw new Error(response.statusText);
 };

@@ -152,7 +152,9 @@ export function SendTokensModal({ tokens }: ISendTokensModal) {
 						Transfer funds
 					</DialogTitle>
 					<DialogDescription className="text-sm text-gray-600">
-						Withdraw from your locker to another on-chain addres
+						{selectedToken
+							? "Withdraw from your locker to another on-chain address"
+							: "You must first deposit funds into your locker"}
 					</DialogDescription>
 				</DialogHeader>
 				{selectedToken && (
@@ -203,7 +205,7 @@ export function SendTokensModal({ tokens }: ISendTokensModal) {
 					</div>
 				)}
 				<DialogFooter className="flex flex-col">
-					{successMessage ? (
+					{successMessage || !selectedToken ? (
 						<DialogClose asChild>
 							<Button>Close</Button>
 						</DialogClose>

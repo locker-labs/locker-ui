@@ -1,6 +1,6 @@
 import { formatUnits } from "viem";
 
-import { IDistributionBoxlet } from "@/components/DistributionBoxlet";
+import { IDistributionBoxlet } from "@/lib/boxlets";
 import { Automation, EAutomationStatus, EAutomationType } from "@/types";
 
 /**

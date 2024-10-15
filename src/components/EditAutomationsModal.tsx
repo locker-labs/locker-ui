@@ -2,15 +2,11 @@ import { useAuth } from "@clerk/nextjs";
 import { Pencil } from "lucide-react";
 import { useState } from "react";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
-import { formatUnits, isAddress } from "viem";
+import { isAddress } from "viem";
 import { useChainId, useSwitchChain } from "wagmi";
 
 import BoxletPieChart from "@/components/BoxletPieChart";
 import DistributionBox from "@/components/DistributionBox";
-import {
-	calcPrecentLeft,
-	IDistributionBoxlet,
-} from "@/components/DistributionBoxlet";
 import {
 	Dialog,
 	DialogContent,
@@ -22,22 +18,36 @@ import {
 import { DEFAULT_BOXLETS } from "@/data/constants/boxlets";
 import { errors } from "@/data/constants/errorMessages";
 import useSmartAccount from "@/hooks/useSmartAccount";
+import { calcPercentLeft, IDistributionBoxlet } from "@/lib/boxlets";
 import { useLocker } from "@/providers/LockerProvider";
 import { updatePolicy } from "@/services/lockers";
 import { EAutomationType, Policy } from "@/types";
 import adaptAutomations2Boxlets from "@/utils/adaptAutomations2Boxlets";
 import getAutomations4Boxlets from "@/utils/policies/getAutomations4Boxlets";
 
-export function EditAutomationsModal() {
+import DistributionBoxExtra from "./DistributionBoxExtra";
+
+type IEditAutomationsModalProps = {
+	button?: JSX.Element;
+};
+
+function EditAutomationsModal({ button }: IEditAutomationsModalProps) {
 	const { policies, automations } = useLocker(); // Fetch locker and policies
 	const [isLoading, setIsLoading] = useState<boolean>(false);
-	const defaultBoxlets = automations
-		? adaptAutomations2Boxlets(automations)
-		: DEFAULT_BOXLETS;
+	console.log("automations", automations);
+	const defaultBoxlets =
+		automations && automations.length > 0
+			? adaptAutomations2Boxlets(automations)
+			: DEFAULT_BOXLETS;
 	const walletChainId = useChainId();
 	const { switchChain } = useSwitchChain();
 
-	const [boxlets, setBoxlets] = useState(defaultBoxlets); // Initialize with current policy automations
+	// Initialize with current policy automations and any default automations, not included
+	const [boxlets, setBoxlets] = useState({
+		...defaultBoxlets,
+		...adaptAutomations2Boxlets(automations || []),
+	});
+
 	const [errorMessage, setErrorMessage] = useState<string>("");
 	const { getToken } = useAuth();
 	const { refreshPolicy } = useSmartAccount();
@@ -49,18 +59,16 @@ export function EditAutomationsModal() {
 		}));
 	};
 
-	const saveDecimal = Number(
-		formatUnits(BigInt(boxlets[EAutomationType.SAVINGS].percent), 2)
-	);
-	const isSaveSelected = saveDecimal > 0;
+	const isSaveSelected =
+		boxlets[EAutomationType.SAVINGS] &&
+		boxlets[EAutomationType.SAVINGS].percent > 0;
 
-	const forwardDecimal = Number(
-		formatUnits(BigInt(boxlets[EAutomationType.FORWARD_TO].percent), 2)
-	);
-	const isForwardSelected = forwardDecimal > 0;
+	const isForwardSelected =
+		boxlets[EAutomationType.FORWARD_TO] &&
+		boxlets[EAutomationType.FORWARD_TO].percent > 0;
 
 	const sendToAddress = boxlets[EAutomationType.FORWARD_TO].forwardToAddress;
-	const percentLeft = calcPrecentLeft(boxlets);
+	const percentLeft = calcPercentLeft(boxlets);
 
 	const isForwardToMissing = isForwardSelected && !isAddress(sendToAddress!);
 
@@ -95,42 +103,6 @@ export function EditAutomationsModal() {
 
 		// Iterate over all policies and update each one
 		try {
-			// const updates = policies.map(async (policy) => {
-			// 	// get new session key with current addresses
-			// 	const updatedAutomations = getAutomations4Boxlets(
-			// 		automations,
-			// 		boxlets
-			// 	);
-
-			// 	const sig = await refreshPolicy({
-			// 		automations: updatedAutomations,
-			// 	});
-			// 	if (!sig) {
-			// 		setIsLoading(false);
-			// 		setErrorMessage(
-			// 			"Something went wrong with session key creation. Please try again."
-			// 		);
-			// 		return;
-			// 	}
-
-			// 	const newPolicy: Policy = {
-			// 		...policy,
-			// 		sessionKey: sig as string,
-			// 		automations: updatedAutomations,
-			// 	};
-
-			// 	const authToken = await getToken();
-			// 	if (authToken) {
-			// 		return updatePolicy(authToken, newPolicy, setErrorMessage);
-			// 	}
-			// });
-
-			// updates.reduce(
-			// 	(promiseChain, currentTask) =>
-			// 		promiseChain.then(() => currentTask()),
-			// 	Promise.resolve()
-			// );
-
 			// eslint-disable-next-line no-restricted-syntax
 			for (const policy of policies) {
 				// get new session key with current addresses
@@ -227,10 +199,9 @@ export function EditAutomationsModal() {
 
 	const rightPanel = (
 		<div className="grid-col order-1 col-span-2 grid grid-cols-1 sm:order-2 sm:col-span-1 sm:ml-4 sm:max-w-[320px]">
-			<div className="flex justify-items-center">
+			<div className="mx-auto max-w-[12rem]">
 				<BoxletPieChart boxlets={boxlets} lineWidth={100} />
 			</div>
-
 			<div className="mt-3 text-center">{leftToAllocate}</div>
 
 			<div className="hidden sm:block">
@@ -240,9 +211,21 @@ export function EditAutomationsModal() {
 		</div>
 	);
 
+	const hasInactiveBoxlets = Object.values(boxlets).some(
+		(boxlet) => boxlet.state === "off"
+	);
+
 	const leftPanel = (
 		<div className="order-2 col-span-2 mt-6 w-full justify-self-end sm:order-1 sm:col-span-1 sm:mt-0 sm:max-w-[512px]">
 			<DistributionBox boxlets={boxlets} updateBoxlet={updateBoxlet} />
+			{hasInactiveBoxlets && (
+				<div className="my-[1rem]">
+					<DistributionBoxExtra
+						boxlets={boxlets}
+						updateBoxlet={updateBoxlet}
+					/>
+				</div>
+			)}
 			<div className="mt-[1rem] text-center font-bold sm:hidden">
 				{leftToAllocate}
 			</div>
@@ -252,13 +235,8 @@ export function EditAutomationsModal() {
 
 	return (
 		<Dialog>
-			<DialogTrigger asChild>
-				<button className="outline-solid flex cursor-pointer flex-row items-center justify-center rounded-md px-2 py-1 text-xxs outline outline-gray-300">
-					<Pencil size={12} />
-					<span className="ml-2 font-semibold">Edit</span>
-				</button>
-			</DialogTrigger>
-			<DialogContent className="overflow-y-auto sm:max-w-[1280px]">
+			<DialogTrigger asChild>{button}</DialogTrigger>
+			<DialogContent className="h-[95vh] overflow-y-auto sm:max-w-[95%] xl:max-w-[1280px]">
 				<DialogHeader>
 					<DialogTitle>Edit automations</DialogTitle>
 					<DialogDescription>
@@ -275,3 +253,12 @@ export function EditAutomationsModal() {
 }
 
 export default EditAutomationsModal;
+
+EditAutomationsModal.defaultProps = {
+	button: (
+		<button className="outline-solid flex cursor-pointer flex-row items-center justify-center rounded-md px-2 py-1 text-xxs outline outline-1 outline-gray-300">
+			<Pencil size={12} />
+			<span className="ml-2 font-semibold">Edit</span>
+		</button>
+	),
+};

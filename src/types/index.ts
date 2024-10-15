@@ -51,6 +51,8 @@ export enum EAutomationType {
 	SAVINGS = "savings",
 	FORWARD_TO = "forward_to",
 	OFF_RAMP = "off_ramp",
+	GOAL_EFROGS = "goal_efrogs",
+	GOAL_CUSTOM = "goal_custom",
 }
 
 export enum EAutomationStatus {
@@ -67,6 +69,11 @@ export type Automation = {
 	allocation: number; // 0 - 1
 	status: EAutomationStatus; // Always "ready" for "savings" or "forward_to" types
 	recipientAddress?: `0x${string}`; // Required if forward_to or off_ramp
+	name?: string;
+	description?: string;
+	goal_amount?: string;
+	// contract address not used because price is chain agnostic
+	goal_currency_symbol?: string;
 };
 
 export type Policy = {
