@@ -65,10 +65,13 @@ function LockerPortfolioSavingsGoals({
 					automation.allocation
 				);
 
-				const roundedEthSaved =
-					ethSaved && ethSaved.gte(0.0001)
-						? ethSaved.toFixed(4)
-						: "<0.0001";
+				// Set amount saved to 0, <0.0001, or rounded to 4 decimal places
+				let roundedEthSaved = "0";
+				if (ethSaved) {
+					if (ethSaved.gte(0.0001))
+						roundedEthSaved = ethSaved.toFixed(4);
+					else if (ethSaved.gt(0)) roundedEthSaved = "<0.0001";
+				}
 				const amountSaved = ethUsd
 					? `${roundedEthSaved} ETH`
 					: `$${usdSaved}`;
@@ -84,7 +87,7 @@ function LockerPortfolioSavingsGoals({
 				return (
 					<div
 						key={`goal-${automation.type}`}
-						className="flex flex-row items-center justify-between space-x-2 rounded-md bg-white p-2 shadow-md outline outline-1 outline-gray-300"
+						className="flex flex-row items-center justify-between space-x-2 rounded-md bg-white p-2 shadow-md outline outline-1 outline-gray-300 sm:w-1/2 xl:w-full"
 					>
 						<div>{img}</div>
 						<div className="flex w-full flex-col space-y-1">

@@ -24,7 +24,7 @@ function LockerPortfolioAutomations({
 			</div>
 			<div className="grid grid-flow-row grid-cols-3 gap-x-4 lg:grid-cols-1">
 				<div className="col-span-1 flex flex-col items-center justify-center">
-					<div className="lg:w-1/3 xl:w-1/2">
+					<div className="max-w-[7rem] lg:w-1/3 xl:w-1/2">
 						<BoxletPieChart boxlets={boxlets} lineWidth={100} />
 					</div>
 				</div>

@@ -37,10 +37,10 @@ export const DEFAULT_BOXLETS: IDistributionBoxlets = {
 
 	[EAutomationType.GOAL_EFROGS]: {
 		id: EAutomationType.GOAL_EFROGS,
-		title: "efrogs NFT",
+		title: "Efrogs NFT",
 		subtitle: "ETH floor",
 		tooltip:
-			"Get notified when you've saved enough to by the efrogs floor.",
+			"Get notified when you've saved enough to by the Efrogs floor.",
 		color: "#63DFDF",
 		percent: 0,
 		state: "off",

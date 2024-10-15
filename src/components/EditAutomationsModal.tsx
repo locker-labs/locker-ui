@@ -197,10 +197,9 @@ function EditAutomationsModal({ button }: IEditAutomationsModalProps) {
 
 	const rightPanel = (
 		<div className="grid-col order-1 col-span-2 grid grid-cols-1 sm:order-2 sm:col-span-1 sm:ml-4 sm:max-w-[320px]">
-			<div className="flex justify-items-center">
+			<div className="mx-auto max-w-[12rem]">
 				<BoxletPieChart boxlets={boxlets} lineWidth={100} />
 			</div>
-
 			<div className="mt-3 text-center">{leftToAllocate}</div>
 
 			<div className="hidden sm:block">
@@ -223,7 +222,7 @@ function EditAutomationsModal({ button }: IEditAutomationsModalProps) {
 	return (
 		<Dialog>
 			<DialogTrigger asChild>{button}</DialogTrigger>
-			<DialogContent className="overflow-y-auto sm:max-w-[1280px]">
+			<DialogContent className="h-[95vh] overflow-y-auto sm:max-w-[95%] xl:max-w-[1280px]">
 				<DialogHeader>
 					<DialogTitle>Edit automations</DialogTitle>
 					<DialogDescription>
