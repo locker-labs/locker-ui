@@ -11,7 +11,6 @@ import { formatUnits, zeroAddress } from "viem";
 import ChainIcon from "@/components/ChainIcon";
 import { Token } from "@/types";
 import { copyToClipboard } from "@/utils/copytoClipboard";
-import { getChainIconStyling } from "@/utils/getChainIconStyling";
 
 export interface ITokenDropdown {
 	tokens: Token[];
@@ -43,9 +42,7 @@ function TokenDropdown({
 					<span className="inline-block h-full w-full">
 						<Listbox.Button className="flex h-12 w-full items-center justify-between rounded-md border border-gray-200 bg-gray-100 p-2 hover:border-gray-600  dark:hover:border-gray-600">
 							<div className="flex items-center justify-center">
-								<div
-									className={`mr-4 flex size-7 shrink-0 items-center justify-center rounded-full ${getChainIconStyling(selectedToken.chainId)}`}
-								>
+								<div className="mr-4 flex size-7 shrink-0 items-center justify-center rounded-full">
 									<ChainIcon
 										className="flex items-center justify-center"
 										chainId={selectedToken.chainId}
@@ -104,9 +101,7 @@ function TokenDropdown({
 										>
 											<div className="flex w-full items-center justify-between">
 												<div className="flex items-center justify-center">
-													<div
-														className={`mr-4 flex size-7 shrink-0 items-center justify-center rounded-full ${getChainIconStyling(token.chainId)}`}
-													>
+													<div className="mr-4 flex size-7 shrink-0 items-center justify-center rounded-full">
 														<ChainIcon
 															className="flex items-center justify-center"
 															chainId={

@@ -3,23 +3,16 @@ import { useAccount } from "wagmi";
 
 import ChainIcon from "@/components/ChainIcon";
 import Tooltip from "@/components/Tooltip";
-import { getChainIconStyling } from "@/utils/getChainIconStyling";
 import { getChainNameFromChainObj } from "@/utils/getChainName";
 import { isChainSupported } from "@/utils/isChainSupported";
 
 function Button({ open, showName }: { open: boolean; showName: boolean }) {
 	const { chain } = useAccount();
 
-	const chainIconStyling = chain
-		? getChainIconStyling(chain.id)
-		: "bg-error/20 text-error";
-
 	const buttonContent = (
 		<div className="flex size-full justify-between space-x-1 rounded-full p-2">
 			<div className="flex space-x-3">
-				<div
-					className={`flex size-7 rounded-full ${chainIconStyling} items-center justify-center`}
-				>
+				<div className="flex size-7 items-center justify-center rounded-full">
 					{chain && isChainSupported(chain.id) ? (
 						<ChainIcon
 							className="flex items-center justify-center"

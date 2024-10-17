@@ -5,7 +5,7 @@ import {
 import { Automation } from "@/types";
 
 export default function adaptAutomations2Boxlets(automations: Automation[]) {
-	return Object.fromEntries(
+	const automationBoxlets = Object.fromEntries(
 		automations.map((automation) => {
 			const {
 				type,
@@ -29,5 +29,11 @@ export default function adaptAutomations2Boxlets(automations: Automation[]) {
 				},
 			];
 		})
-	) as IDistributionBoxlets;
+	);
+
+	// Merge with DEFAULT_BOXLETS to ensure any missing keys get their defaults
+	return {
+		...DEFAULT_BOXLETS,
+		...automationBoxlets,
+	} as IDistributionBoxlets;
 }
