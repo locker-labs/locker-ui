@@ -198,13 +198,15 @@ function EditAutomationsModal({ button }: IEditAutomationsModalProps) {
 	);
 
 	const rightPanel = (
-		<div className="grid-col order-1 col-span-2 grid grid-cols-1 sm:order-2 sm:col-span-1 sm:ml-4 sm:max-w-[320px]">
+		<div className="order-1 col-span-2 flex flex-col items-start sm:order-2 sm:col-span-1 sm:ml-4 sm:max-w-[320px]">
 			<div className="mx-auto max-w-[12rem]">
 				<BoxletPieChart boxlets={boxlets} lineWidth={100} />
 			</div>
-			<div className="mt-3 text-center">{leftToAllocate}</div>
+			<div className="mt-3 w-full text-center sm:mt-4">
+				{leftToAllocate}
+			</div>
 
-			<div className="hidden sm:block">
+			<div className="hidden w-full sm:flex">
 				{cta}
 				{errorSection}
 			</div>
@@ -237,9 +239,11 @@ function EditAutomationsModal({ button }: IEditAutomationsModalProps) {
 		<Dialog>
 			<DialogTrigger asChild>{button}</DialogTrigger>
 			<DialogContent className="h-[95vh] overflow-y-auto sm:max-w-[95%] xl:max-w-[1280px]">
-				<DialogHeader>
-					<DialogTitle>Edit automations</DialogTitle>
-					<DialogDescription>
+				<DialogHeader className="text-center">
+					<DialogTitle className="text-center">
+						Edit your locker
+					</DialogTitle>
+					<DialogDescription className="text-center">
 						Adjust your automation settings below.
 					</DialogDescription>
 				</DialogHeader>

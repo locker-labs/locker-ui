@@ -8,6 +8,7 @@ import { getCollectionFloor } from "@/lib/element";
 import { useLocker } from "@/providers/LockerProvider";
 import { getErc20Price } from "@/services/moralis";
 import { EAutomationType } from "@/types";
+import getActiveAutomations from "@/utils/getActiveAutomations";
 import getSavingsAutomations from "@/utils/getSavingsAutomations";
 
 import EditAutomationsModal from "./EditAutomationsModal";
@@ -23,8 +24,11 @@ function LockerPortfolioSavingsGoals({
 	const [efrogsFloor, setEfrogsFloor] = useState(null);
 	const [ethUsd, setEthUsd] = useState<number | null>(null);
 	const { automations } = useLocker();
-	const hasGoals =
-		automations && getSavingsAutomations(automations).length > 0;
+
+	const savingsAutomations = getActiveAutomations(
+		getSavingsAutomations(automations || [])
+	);
+	const hasGoals = automations && savingsAutomations.length > 0;
 
 	// get efrogs floor price on page load
 	useEffect(() => {
@@ -47,7 +51,7 @@ function LockerPortfolioSavingsGoals({
 
 	const body = hasGoals ? (
 		<div className="flex flex-col">
-			{getSavingsAutomations(automations).map((automation) => {
+			{savingsAutomations.map((automation) => {
 				const img =
 					automation.type === EAutomationType.GOAL_CUSTOM ? (
 						<IconSavingsGoal />

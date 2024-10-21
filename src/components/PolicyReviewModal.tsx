@@ -4,7 +4,6 @@ import { IoClose } from "react-icons/io5";
 
 import AllocationBox from "@/components/AllocationBox";
 import ChainIcon from "@/components/ChainIcon";
-import { getChainIconStyling } from "@/utils/getChainIconStyling";
 import { getChainNameFromId } from "@/utils/getChainName";
 
 export interface IPolicyReviewModal {
@@ -78,9 +77,7 @@ function PolicyReviewModal({
 										/>
 									</div>
 									<div className="flex w-full items-center justify-center">
-										<div
-											className={`flex size-7 items-center justify-center rounded-full ${getChainIconStyling(chainId)}`}
-										>
+										<div className="flex size-7 items-center justify-center rounded-full">
 											<ChainIcon
 												className="flex items-center justify-center"
 												chainId={chainId}

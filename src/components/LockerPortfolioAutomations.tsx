@@ -1,6 +1,7 @@
 import { DEFAULT_BOXLETS } from "@/data/constants/boxlets";
 import { Automation, EAutomationStatus, EAutomationType } from "@/types";
 import adaptAutomations2Boxlets from "@/utils/adaptAutomations2Boxlets";
+import getActiveAutomations from "@/utils/getActiveAutomations";
 
 import BoxletPieChart from "./BoxletPieChart";
 import EditAutomationsModal from "./EditAutomationsModal";
@@ -29,7 +30,7 @@ function LockerPortfolioAutomations({
 					</div>
 				</div>
 				<div className="col-span-2 space-y-3 pt-3">
-					{automations.map((automation) => {
+					{getActiveAutomations(automations).map((automation) => {
 						const { color, title } =
 							DEFAULT_BOXLETS[automation.type];
 						const isOfframpPending =

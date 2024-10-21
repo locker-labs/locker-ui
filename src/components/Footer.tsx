@@ -1,24 +1,21 @@
-import { FaFile, FaGithub, FaTelegram, FaXTwitter } from "react-icons/fa6";
+import Link from "next/link";
+import { FaTelegram, FaXTwitter } from "react-icons/fa6";
 
 import FarcasterIcon from "@/components/FarcasterIcon";
 import IconLink from "@/components/IconLink";
 
 function Footer() {
 	return (
-		<footer className="my-10 flex w-full flex-col items-center justify-center">
-			<div className="flex">
-				<IconLink
-					Icon={FaFile}
-					url="https://docs.locker.money"
-					label="Locker Docs"
-					size="20px"
-				/>
-				<IconLink
-					Icon={FaGithub}
-					url="https://github.com/locker-labs"
-					label="Github Link"
-					size="20px"
-				/>
+		<footer className="mb-4 mt-4 flex w-full items-center space-y-4 text-center text-gray-400 xxs:flex-col xxs:justify-center sm:mt-10 sm:flex-row sm:justify-between sm:space-y-0">
+			<div className="flex flex-row justify-center space-x-4 font-semibold">
+				<Link href="https://docs.locker.money">Docs</Link>
+				<Link href="https://github.com/locker-labs">Github</Link>
+				<Link href="mailto:support@geeky.rocks">Support</Link>
+				<Link href="/terms">Terms</Link>
+				<Link href="/privacy">Privacy</Link>
+			</div>
+
+			<div className="flex flex-row justify-center space-x-3">
 				<IconLink
 					Icon={FarcasterIcon}
 					url={process.env.FARCASTER_URL}
@@ -37,20 +34,6 @@ function Footer() {
 					label="Telegram Link"
 					size="20px"
 				/>
-			</div>
-			<div className="text-light-600 mt-6 flex text-center text-xs">
-				<span className="text-sm">
-					Need help?{" "}
-					<a
-						href="mailto:support@geeky.rocks"
-						className="hover:text-secondary-100 dark:hover:text-primary-100 underline underline-offset-2"
-					>
-						Contact us
-					</a>
-				</span>
-			</div>
-			<div className="text-light-600 mt-6 flex text-center text-sm">
-				© 2024 Locker. All rights reserved.
 			</div>
 		</footer>
 	);
