@@ -11,6 +11,8 @@ function Footer() {
 				<Link href="https://docs.locker.money">Docs</Link>
 				<Link href="https://github.com/locker-labs">Github</Link>
 				<Link href="mailto:support@geeky.rocks">Support</Link>
+				<Link href="/terms">Terms</Link>
+				<Link href="/privacy">Privacy</Link>
 			</div>
 
 			<div className="flex flex-row justify-center space-x-3">

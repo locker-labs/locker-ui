@@ -250,7 +250,7 @@ function LockerSetup() {
 						setDidUserClick(true);
 					}}
 				>
-					Enable automations
+					Finish setup
 				</button>
 				<ChainSelectModal
 					open={isChainSelectModalOpen}
@@ -310,14 +310,15 @@ function LockerSetup() {
 	);
 
 	const rightPanel = (
-		<div className="grid-col order-1 col-span-2 grid grid-cols-1 sm:order-2 sm:col-span-1 sm:ml-4 sm:max-w-[320px]">
-			<div className="flex justify-items-center">
+		<div className="order-1 col-span-2 flex flex-col items-start sm:order-2 sm:col-span-1 sm:ml-4 sm:max-w-[320px]">
+			<div className="mx-auto max-w-[12rem]">
 				<BoxletPieChart boxlets={boxlets} lineWidth={100} />
 			</div>
+			<div className="mt-3 w-full text-center sm:mt-4">
+				{leftToAllocate}
+			</div>
 
-			<div className="mt-3 text-center">{leftToAllocate}</div>
-
-			<div className="hidden sm:block">
+			<div className="hidden w-full sm:flex">
 				{cta}
 				{errorSection}
 			</div>
