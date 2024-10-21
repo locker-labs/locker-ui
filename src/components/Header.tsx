@@ -50,7 +50,7 @@ function Header() {
 					href={paths.LANDING}
 				>
 					<Image
-						src="/assets/logoLockerDarkLetters.svg"
+						src="/assets/locker/logoBeta.svg"
 						alt="Locker logo"
 						priority
 						fill

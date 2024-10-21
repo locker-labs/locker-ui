@@ -34,7 +34,7 @@ function LockerOnboarding() {
 	);
 
 	return (
-		<div className="flex w-full flex-col space-y-12">
+		<div className="mb-10 flex w-full flex-col space-y-12">
 			{heading}
 			<LockerSetup />
 		</div>

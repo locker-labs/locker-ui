@@ -1,10 +1,10 @@
-import AarcButton from "./AarcButton";
 import CopyButton from "./buttons/CopyButton";
 import LockerQrCode from "./LockerQrCode";
 import SupportedChainsIcons from "./SupportedChainsIcons";
 
 export default function QrModalContent({
 	lockerAddress,
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	chainId,
 }: {
 	lockerAddress: `0x${string}`;
@@ -25,7 +25,6 @@ export default function QrModalContent({
 			<div>
 				<LockerQrCode lockerAddress={lockerAddress} />
 			</div>
-			<AarcButton lockerAddress={lockerAddress} chainId={chainId} />
 		</div>
 	);
 }

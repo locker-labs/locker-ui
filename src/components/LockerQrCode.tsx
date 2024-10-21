@@ -23,10 +23,6 @@ function LockerQrCode({ lockerAddress }: ILockerQrCode) {
 					excavate: true,
 				}}
 			/>
-			<div className="border-secondary-100 absolute left-[-0.5px] top-[-0.5px] h-10 w-10 rounded-md border-l-[7px] border-t-[7px]" />
-			<div className="border-primary-100 absolute right-[-0.5px] top-[-0.5px] h-10 w-10 rounded-md border-r-[7px] border-t-[7px]" />
-			<div className="border-primary-100 absolute bottom-[-0.5px] left-[-0.5px] h-10 w-10 rounded-md border-b-[7px] border-l-[7px]" />
-			<div className="border-secondary-100 absolute bottom-[-0.5px] right-[-0.5px] h-10 w-10 rounded-md border-b-[7px] border-r-[7px]" />
 		</div>
 	);
 }
