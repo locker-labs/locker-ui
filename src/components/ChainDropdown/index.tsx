@@ -10,7 +10,6 @@ import type { Chain } from "wagmi/chains";
 import Button from "@/components/ChainDropdown/Button";
 import ChainIcon from "@/components/ChainIcon";
 import { supportedChains } from "@/data/constants/supportedChains";
-import { getChainIconStyling } from "@/utils/getChainIconStyling";
 import { getChainNameFromChainObj } from "@/utils/getChainName";
 import { isChainSupported } from "@/utils/isChainSupported";
 
@@ -87,9 +86,7 @@ function ChainDropdown(
 											} ${index === supportedChains.length - 1 && "rounded-b-xl"}`}
 										>
 											<div className="flex w-full items-center">
-												<div
-													className={`flex size-7 shrink-0 items-center justify-center rounded-full ${getChainIconStyling(chainOption.id)}`}
-												>
+												<div className="flex size-7 shrink-0 items-center justify-center rounded-full">
 													<ChainIcon
 														className="flex items-center justify-center"
 														chainId={chainOption.id}

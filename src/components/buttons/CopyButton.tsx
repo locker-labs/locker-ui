@@ -12,7 +12,7 @@ export default function CopyButton({ text }: { text: string }) {
 				<code>{text}</code>
 			</div>
 			<button
-				className="flex flex-row items-center justify-center rounded-md bg-locker-600 p-2 text-xs text-white"
+				className={`flex flex-row items-center justify-center rounded-md p-2 text-xs text-locker-700 ${copied ? "bg-locker-100" : "bg-locker-25"}`}
 				onClick={() => copyToClipboard(text, setCopied)}
 			>
 				{copied ? "Copied" : "Copy"}

@@ -17,9 +17,8 @@ import { supportedChains } from "@/data/constants/supportedChains";
 import useSmartAccount from "@/hooks/useSmartAccount";
 import { useLocker } from "@/providers/LockerProvider";
 import { createPolicy, updatePolicy } from "@/services/lockers";
-import { EAutomationStatus, Policy } from "@/types";
+import { Policy } from "@/types";
 import { filterConnectors } from "@/utils/filterConnectors";
-import { getChainIconStyling } from "@/utils/getChainIconStyling";
 import getAutomations4Refresh from "@/utils/policies/getAutomations4Refresh";
 
 import ChainIcon from "./ChainIcon";
@@ -163,29 +162,24 @@ export default function AutomateChainsModal() {
 				<button className="w-full">
 					<div className="flex w-full flex-row justify-between rounded-md p-2 shadow-md outline outline-1 outline-gray-300">
 						<div className="flex flex-row space-x-1">
-							{policies.map((policy) => {
+							{policies.map((policy) => (
 								// Grey out the chain if any automation has "automate_then_ready" status
-								const isGreyedOut = policy.automations.some(
-									(auto) =>
-										auto.status ===
-										EAutomationStatus.AUTOMATE_THEN_READY
-								);
-								const styling = isGreyedOut
-									? "bg-gray-200"
-									: getChainIconStyling(policy.chainId);
+								// const isGreyedOut = policy.automations.some(
+								// 	(auto) =>
+								// 		auto.status ===
+								// 		EAutomationStatus.AUTOMATE_THEN_READY
+								// );
 
-								return (
-									<div
-										className={`rounded-full ${styling}`}
-										key={`policy-div-${policy.chainId}`}
-									>
-										<ChainIcon
-											chainId={policy.chainId}
-											key={`icon-${policy.chainId}`}
-										/>
-									</div>
-								);
-							})}
+								<div
+									className="rounded-full"
+									key={`policy-div-${policy.chainId}`}
+								>
+									<ChainIcon
+										chainId={policy.chainId}
+										key={`icon-${policy.chainId}`}
+									/>
+								</div>
+							))}
 						</div>
 
 						<div className="text-xxs text-gray-700 underline underline-offset-8">
@@ -204,7 +198,7 @@ export default function AutomateChainsModal() {
 					</DialogDescription>
 				</DialogHeader>
 				<div className="max-h-96 overflow-y-auto">
-					<div className="flex flex-col space-y-4 pr-2 pt-2">
+					<div className="flex flex-col space-y-3 pb-2 pr-2 pt-2">
 						{sortedChains.map((chain) => {
 							const policy = policies.find(
 								(p) => p.chainId === chain.id
@@ -222,19 +216,15 @@ export default function AutomateChainsModal() {
 										auto.status === "automate_then_ready"
 								);
 
-							const iconStyling = isEnabled
-								? getChainIconStyling(chain.id)
-								: "bg-gray-200";
-
 							const enableButton = (
 								<div
 									key={`enable-${chain.id}`}
-									className="ml-1 flex items-center justify-between rounded-lg p-4 text-gray-700 outline outline-1 outline-gray-300"
+									className="ml-1 flex items-center justify-between rounded-lg px-4 py-2 text-gray-700 outline outline-1 outline-gray-300"
 								>
 									<div className="flex items-center space-x-4">
 										<ChainIcon
 											chainId={chain.id}
-											className={`rounded-full ${iconStyling}`}
+											className="rounded-full"
 											size="2.4rem"
 										/>
 										<p className="text-sm font-semibold">
@@ -243,7 +233,7 @@ export default function AutomateChainsModal() {
 									</div>
 									{!isEnabled ? (
 										<button
-											className="flex items-center justify-center rounded-md px-4 py-1 text-xxs outline outline-2 outline-gray-300 hover:bg-gray-100"
+											className="flex items-center justify-center rounded-sm bg-locker-600 px-4 py-2 text-xxs text-white outline outline-2 hover:bg-locker-400"
 											onClick={() =>
 												isAutomateThenReady
 													? createNewPolicy(

@@ -18,6 +18,7 @@ import LockerPortfolioAutomations from "./LockerPortfolioAutomations";
 import LockerPortfolioSavingsGoals from "./LockerPortfolioSavingsGoals";
 import LockerPortfolioTxHistory from "./LockerPortfolioTxHistory";
 import LockerPortfolioValue from "./LockerPortfolioValue";
+import LockerPortfolioWalletDetector from "./LockerPortfolioWalletDetector";
 
 function LockerPortfolio() {
 	const { locker, txs, automations } = useLocker();
@@ -123,6 +124,7 @@ function LockerPortfolio() {
 				<LockerPortfolioTxHistory />
 			</div>
 			{onboardingFlag && renderLockerOnboardedModal()}
+			<LockerPortfolioWalletDetector />
 		</div>
 	);
 }
