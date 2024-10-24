@@ -11,26 +11,29 @@ import {
 
 type EfrogsGoalAchievedDialogProps = {
 	savedEth: string;
-	efrogsFloorEth: string;
+	efrogsFloorEth: string | null;
 };
 
 function EfrogsGoalAchievedDialog({
 	savedEth,
 	efrogsFloorEth,
 }: EfrogsGoalAchievedDialogProps) {
-	const [isOpen, setIsOpen] = useState(Big(savedEth).gte(efrogsFloorEth));
+	const floor = process.env.NEXT_PUBLIC_EFROGS_FLOOR || efrogsFloorEth;
+	const [isClosed, setIsClosed] = useState(
+		!floor || Big(savedEth).lte(floor)
+	);
 
 	const handleClose = () => {
-		setIsOpen(false);
+		setIsClosed(true);
 	};
 
 	return (
-		<Dialog open={isOpen} onOpenChange={setIsOpen}>
+		<Dialog open={isClosed} onOpenChange={setIsClosed}>
 			<DialogContent>
 				<DialogTitle>Savings Goal Achieved!</DialogTitle>
 				<DialogDescription>
 					Congratulations! You&apos;ve saved {savedEth} ETH, which
-					meets or exceeds the goal floor of {efrogsFloorEth} ETH.
+					meets or exceeds the goal floor of {floor} ETH.
 				</DialogDescription>
 				<DialogClose
 					asChild

@@ -89,6 +89,7 @@ function LockerPortfolioSavingsGoals({
 				let floor =
 					DEFAULT_BOXLETS[EAutomationType.GOAL_EFROGS].subtitle;
 				if (efrogsFloor) floor = `${efrogsFloor} ${floor}`;
+
 				return (
 					<div
 						key={`goal-${automation.type}`}
@@ -112,7 +113,7 @@ function LockerPortfolioSavingsGoals({
 						</div>
 						<EfrogsGoalAchievedDialog
 							savedEth={roundedEthSaved}
-							efrogsFloorEth="0.00001"
+							efrogsFloorEth={efrogsFloor}
 						/>
 					</div>
 				);

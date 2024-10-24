@@ -223,10 +223,12 @@ const useSmartAccount = () => {
 		const bundlerRpcUrl = getBundler(chainId);
 		const paymasterRpcUrl = getPaymaster(chainId);
 
+		if (!chain) throw new Error("No chain defined");
+
 		const kernelAccountClient = createKernelAccountClient({
 			account: kernelAccountObj,
 			entryPoint: ENTRYPOINT_ADDRESS_V07,
-			chain,
+			chain: chain!,
 			bundlerTransport: http(bundlerRpcUrl),
 			middleware: {
 				sponsorUserOperation: async ({ userOperation }) => {

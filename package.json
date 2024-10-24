@@ -51,7 +51,6 @@
 		"@zerodev/ecdsa-validator": "^5.3.1",
 		"@zerodev/permissions": "5.4.0",
 		"@zerodev/sdk": "^5.3.2",
-		"@zerodev/webauthn-key": "^5.3.3",
 		"big.js": "^6.2.2",
 		"class-variance-authority": "^0.7.0",
 		"clsx": "^2.1.1",
