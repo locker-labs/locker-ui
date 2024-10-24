@@ -68,7 +68,7 @@ export default function LockerPortfolioTxHistoryContent() {
 			text = "Your locker";
 			bgColor = `bg-[#6A30C34D]`;
 		} else if (isForward) {
-			text = "Forward to";
+			text = "Forwarding address";
 			bgColor = "bg-[#5490D999]";
 		} else if (isOfframp) {
 			text = "Your bank";

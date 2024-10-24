@@ -27,7 +27,7 @@ export default function LockerPortfolioWalletDetector() {
 		const isWrongAddress =
 			address &&
 			locker &&
-			address !== locker.ownerAddress &&
+			address.toLowerCase() !== locker.ownerAddress.toLowerCase() &&
 			!onboardingFlag;
 		if (isWrongAddress) {
 			setIsOpen(true);

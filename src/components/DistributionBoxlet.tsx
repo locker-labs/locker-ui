@@ -12,7 +12,6 @@ import { IDistributionBoxlet } from "@/lib/boxlets";
 import { EAutomationType } from "@/types";
 
 import DistributionBoxletExtra from "./DistributionBoxletExtra";
-import PercentInput from "./PercentInput";
 
 function DistributionBoxlet({
 	boxlet,
@@ -23,24 +22,26 @@ function DistributionBoxlet({
 }) {
 	const { title: boxletTitle, color, percent } = boxlet;
 
-	// Handle percent change for both Slider and PercentInput
+	// Handle percent change for both Slider and input
 	const handlePercentChange = (newPercent: number) => {
-		const updatedBoxlet = { ...boxlet, percent: newPercent }; // Update the percent in the boxlet
-		updateBoxlet(updatedBoxlet); // Call the updateBoxlet function to update the parent state
-	};
-
-	// Handle input change for PercentInput (e.target.value is a string so convert to number)
-	const handleInputChange = (e: React.FormEvent<HTMLInputElement>) => {
-		const newPercent = Number(e.currentTarget.value);
-		handlePercentChange(newPercent);
-	};
-
-	// Handle percent change for both Slider and PercentInput
-	const handleForwardToChange = (e: React.FormEvent<HTMLInputElement>) => {
-		const newAddress = e.currentTarget.value;
-		console.log("Updating to", newAddress);
-		const updatedBoxlet = { ...boxlet, forwardToAddress: newAddress };
+		const clampedPercent = Math.max(0, Math.min(100, newPercent)); // Ensure percentage stays between 0 and 100
+		const updatedBoxlet = { ...boxlet, percent: clampedPercent };
 		updateBoxlet(updatedBoxlet);
+	};
+
+	// Increment percentage by 1
+	const incrementPercent = () => {
+		handlePercentChange(percent + 1);
+	};
+
+	// Decrement percentage by 1
+	const decrementPercent = () => {
+		handlePercentChange(percent - 1);
+	};
+
+	const handleInputChange = (e: React.FormEvent<HTMLInputElement>) => {
+		const newPercent = Number(e.currentTarget.value.replace("%", "")); // Remove the '%' sign if present
+		handlePercentChange(newPercent);
 	};
 
 	const isForwardTo = boxlet.id === EAutomationType.FORWARD_TO;
@@ -112,19 +113,38 @@ function DistributionBoxlet({
 			)}
 
 			{/* Allocation percentage */}
-			<div className="flex flex-row space-x-3">
+			<div className="flex flex-row items-center space-x-3">
 				<Slider
-					value={[percent]} // Slider expects a number array
+					value={[percent]}
 					onValueChange={(newValue) =>
 						handlePercentChange(newValue[0])
-					} // Correctly handle slider value changes
+					}
 					max={100}
 				/>
-				<PercentInput
-					value={percent.toString()}
-					onInput={handleInputChange} // Handle input changes correctly
-					disabled={false}
-				/>
+				<div className="border-1 flex items-center space-x-2 rounded-md border border-[#D0D5DD] bg-white shadow-sm">
+					<button
+						type="button"
+						className="border-0 pl-2 text-lg text-gray-400"
+						onClick={decrementPercent}
+						aria-label="Decrease percentage"
+					>
+						-
+					</button>
+					<input
+						type="text"
+						className="max-w-[3rem] border-0 text-center"
+						value={`${percent}%`}
+						onChange={handleInputChange}
+					/>
+					<button
+						type="button"
+						className="border-0 pr-2 text-gray-400"
+						onClick={incrementPercent}
+						aria-label="Increase percentage"
+					>
+						+
+					</button>
+				</div>
 			</div>
 
 			{/* Forwarding address */}
@@ -139,7 +159,12 @@ function DistributionBoxlet({
 						placeholder="0x"
 						disabled={false}
 						value={boxlet.forwardToAddress}
-						onChange={handleForwardToChange}
+						onChange={(e) =>
+							updateBoxlet({
+								...boxlet,
+								forwardToAddress: e.currentTarget.value,
+							})
+						}
 					/>
 				</div>
 			)}

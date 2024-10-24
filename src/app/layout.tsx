@@ -7,12 +7,10 @@ import type { Metadata, Viewport } from "next";
 import { Open_Sans } from "next/font/google";
 import { headers } from "next/headers";
 import { type ReactNode, Suspense } from "react";
-import { cookieToInitialState } from "wagmi";
 
 import { globalMetadata } from "@/data/seo/globalMetadata";
 import AuthProvider from "@/providers/AuthProvider";
 import EvmProvider from "@/providers/EvmProvider";
-import { wagmiConfig } from "@/providers/wagmiConfig";
 
 import Loading from "./loading";
 
@@ -30,11 +28,6 @@ export default function RootLayout({
 }: Readonly<{
 	children: ReactNode;
 }>) {
-	const initialState = cookieToInitialState(
-		wagmiConfig,
-		headers().get("cookie")
-	);
-
 	return (
 		<>
 			<HighlightInit
@@ -60,7 +53,7 @@ export default function RootLayout({
 						}
 					>
 						<AuthProvider>
-							<EvmProvider initialState={initialState}>
+							<EvmProvider cookie={headers().get("cookie") ?? ""}>
 								{children}
 							</EvmProvider>
 						</AuthProvider>

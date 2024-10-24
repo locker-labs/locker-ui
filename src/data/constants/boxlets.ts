@@ -18,7 +18,7 @@ export const DEFAULT_BOXLETS: IDistributionBoxlets = {
 
 	[EAutomationType.FORWARD_TO]: {
 		id: EAutomationType.FORWARD_TO,
-		title: "Forward to address",
+		title: "Forwarding address",
 		tooltip: "When payments are received, send this amount somewhere else.",
 		color: "#5490D9",
 		percent: 75,

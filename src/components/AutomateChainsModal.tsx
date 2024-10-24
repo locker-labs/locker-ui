@@ -159,7 +159,7 @@ export default function AutomateChainsModal() {
 	return (
 		<Dialog>
 			<DialogTrigger>
-				<button className="w-full">
+				<div className="w-full">
 					<div className="flex w-full flex-row justify-between rounded-md p-2 shadow-md outline outline-1 outline-gray-300">
 						<div className="flex flex-row space-x-1">
 							{policies.map((policy) => (
@@ -186,7 +186,7 @@ export default function AutomateChainsModal() {
 							Manage chains
 						</div>
 					</div>
-				</button>
+				</div>
 			</DialogTrigger>
 
 			<DialogContent>

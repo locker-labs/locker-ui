@@ -1,6 +1,7 @@
 "use client";
 
 import { useAuth } from "@clerk/nextjs";
+import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
@@ -23,7 +24,6 @@ import { isChainSupported } from "@/utils/isChainSupported";
 import BoxletPieChart from "./BoxletPieChart";
 import ChainSelectModal from "./ChainSelectModal";
 // eslint-disable-next-line import/no-named-as-default
-import ConnectModal from "./ConnectModal";
 import DistributionBoxExtra from "./DistributionBoxExtra";
 
 function LockerSetup() {
@@ -36,8 +36,7 @@ function LockerSetup() {
 	const { chainId, address, isConnected } = useAccount();
 	const { signSessionKey } = useSmartAccount();
 	const [didUserClick, setDidUserClick] = useState(false);
-	const [isConnectModalOpen, setIsConnectModalOpen] =
-		useState<boolean>(false); // Control for ConnectModal
+	const { openConnectModal } = useConnectModal();
 	const [isChainSelectModalOpen, setIsChainSelectModalOpen] =
 		useState<boolean>(false); // Control for ChainSelectModal
 
@@ -171,7 +170,6 @@ function LockerSetup() {
 
 		if (address && !locker) {
 			// create locker if wallet connected but locker
-			setIsConnectModalOpen(false);
 			createNewLocker();
 		} else if (address && locker) {
 			if (isSaveSelected && errorMessage === errors.INVALID_ADDRESS)
@@ -264,22 +262,16 @@ function LockerSetup() {
 		);
 	} else {
 		cta = (
-			<>
-				<button
-					aria-label="Continue"
-					className="flex w-full cursor-pointer items-center justify-center rounded-md bg-locker-600 py-3 text-sm font-semibold text-white opacity-100 hover:bg-blue-200"
-					onClick={() => {
-						setDidUserClick(true);
-						setIsConnectModalOpen(true);
-					}}
-				>
-					Connect wallet
-				</button>
-				<ConnectModal
-					open={isConnectModalOpen}
-					onClose={() => setIsConnectModalOpen(false)} // Close modal handler
-				/>
-			</>
+			<button
+				aria-label="Continue"
+				className="flex w-full cursor-pointer items-center justify-center rounded-md bg-locker-600 py-3 text-sm font-semibold text-white opacity-100 hover:bg-blue-200"
+				onClick={() => {
+					setDidUserClick(true);
+					if (openConnectModal) openConnectModal();
+				}}
+			>
+				Connect wallet
+			</button>
 		);
 	}
 
@@ -318,7 +310,7 @@ function LockerSetup() {
 				{leftToAllocate}
 			</div>
 
-			<div className="hidden w-full sm:flex">
+			<div className="hidden w-full flex-col sm:flex">
 				{cta}
 				{errorSection}
 			</div>
@@ -344,7 +336,10 @@ function LockerSetup() {
 			<div className="mt-[1rem] text-center font-bold sm:hidden">
 				{leftToAllocate}
 			</div>
-			<div className="mt-3 sm:hidden">{cta}</div>
+			<div className="mt-3 flex flex-col sm:hidden">
+				{cta}
+				{errorSection}
+			</div>
 		</div>
 	);
 

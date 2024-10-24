@@ -12,6 +12,7 @@ import getActiveAutomations from "@/utils/getActiveAutomations";
 import getSavingsAutomations from "@/utils/getSavingsAutomations";
 
 import EditAutomationsModal from "./EditAutomationsModal";
+import EfrogsGoalAchievedDialog from "./EfrogsGoalAchievedDialog";
 import { IconEfrogs, IconSavingsGoal } from "./Icons";
 
 type ILockerPortfolioSavingsGoals = {
@@ -109,6 +110,10 @@ function LockerPortfolioSavingsGoals({
 								</div>
 							</div>
 						</div>
+						<EfrogsGoalAchievedDialog
+							savedEth={roundedEthSaved}
+							efrogsFloorEth="0.00001"
+						/>
 					</div>
 				);
 			})}

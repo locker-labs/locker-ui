@@ -1,7 +1,7 @@
 import { Disclosure } from "@headlessui/react";
 import { IoChevronDownOutline } from "react-icons/io5";
 
-import { supportedChains } from "@/data/constants/supportedChains";
+import { supportedChainNames } from "@/data/constants/supportedChains";
 
 function FaqAccordion() {
 	return (
@@ -135,8 +135,7 @@ function FaqAccordion() {
 						</Disclosure.Button>
 						<Disclosure.Panel className="mt-3 flex flex-col space-y-3">
 							<span>
-								Currently, we support{" "}
-								{supportedChains.map((c) => c.name).join(", ")}.
+								Currently, we support {supportedChainNames()}.
 							</span>
 							<span>Support for more chains is coming soon.</span>
 						</Disclosure.Panel>
