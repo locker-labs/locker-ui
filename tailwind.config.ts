@@ -72,6 +72,7 @@ const config: Config = {
 				"tx-confirmed": "#B7EDD3",
 				"tx-forward": "#FFD09A",
 				"tx-offramp": "#B6E5F4",
+				green: "#3DB87D",
 				// "blue-200": "#A6AAED",
 				// "primary-100": "#4C4EDD",
 				// "primary-200": "#4546C4",

@@ -132,7 +132,7 @@ function EditAutomationsModal({ button }: IEditAutomationsModalProps) {
 					automations: updatedAutomations,
 					chainId: policy.chainId,
 				});
-				console.log("sig", sig);
+				// console.log("sig", sig);
 				if (!sig) {
 					setIsLoading(false);
 					setErrorMessage(
