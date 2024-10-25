@@ -1,9 +1,12 @@
+"use client";
+
 import { useAuth } from "@clerk/nextjs";
+import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { Pencil } from "lucide-react";
 import { useState } from "react";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { isAddress } from "viem";
-import { useChainId, useSwitchChain } from "wagmi";
+import { useAccount, useChainId, useSwitchChain } from "wagmi";
 
 import BoxletPieChart from "@/components/BoxletPieChart";
 import DistributionBox from "@/components/DistributionBox";
@@ -34,6 +37,8 @@ type IEditAutomationsModalProps = {
 function EditAutomationsModal({ button }: IEditAutomationsModalProps) {
 	const { policies, automations } = useLocker(); // Fetch locker and policies
 	const [isLoading, setIsLoading] = useState<boolean>(false);
+	const [isOpen, setIsOpen] = useState<boolean>(false); // State to control modal visibility
+	const { isConnected: isWalletConnected } = useAccount();
 	console.log("automations", automations);
 	const defaultBoxlets =
 		automations && automations.length > 0
@@ -47,6 +52,8 @@ function EditAutomationsModal({ button }: IEditAutomationsModalProps) {
 		...defaultBoxlets,
 		...adaptAutomations2Boxlets(automations || []),
 	});
+
+	const { openConnectModal } = useConnectModal();
 
 	const [errorMessage, setErrorMessage] = useState<string>("");
 	const { getToken } = useAuth();
@@ -145,6 +152,8 @@ function EditAutomationsModal({ button }: IEditAutomationsModalProps) {
 				if (authToken) {
 					// eslint-disable-next-line no-await-in-loop
 					await updatePolicy(authToken, newPolicy, setErrorMessage);
+					// Close the modal after successful update
+					setIsOpen(false);
 				}
 			}
 		} catch (error) {
@@ -155,21 +164,35 @@ function EditAutomationsModal({ button }: IEditAutomationsModalProps) {
 		}
 	};
 
-	const cta = isLoading ? (
+	let cta = (
 		<button
 			aria-label="Loading"
 			className="flex w-full cursor-not-allowed items-center justify-center rounded-md bg-locker-600 py-3 text-sm font-semibold text-white opacity-80"
 		>
 			<AiOutlineLoading3Quarters className="animate-spin" size={22} />
 		</button>
-	) : (
-		<button
-			className="flex w-full cursor-pointer items-center justify-center rounded-md bg-locker-600 py-3 text-sm font-semibold text-white"
-			onClick={handleUpdatePolicy}
-		>
-			Update Automations
-		</button>
 	);
+	if (!isLoading) {
+		if (isWalletConnected) {
+			cta = (
+				<button
+					className="flex w-full cursor-pointer items-center justify-center rounded-md bg-locker-600 py-3 text-sm font-semibold text-white"
+					onClick={handleUpdatePolicy}
+				>
+					Update Automations
+				</button>
+			);
+		} else {
+			cta = (
+				<button
+					className="flex w-full cursor-pointer items-center justify-center rounded-md bg-locker-600 py-3 text-sm font-semibold text-white"
+					onClick={openConnectModal}
+				>
+					Connect Wallet
+				</button>
+			);
+		}
+	}
 
 	const errorSection = (
 		<div>
@@ -206,7 +229,7 @@ function EditAutomationsModal({ button }: IEditAutomationsModalProps) {
 				{leftToAllocate}
 			</div>
 
-			<div className="hidden w-full sm:flex">
+			<div className="hidden w-full sm:flex sm:flex-col">
 				{cta}
 				{errorSection}
 			</div>
@@ -231,12 +254,16 @@ function EditAutomationsModal({ button }: IEditAutomationsModalProps) {
 			<div className="mt-[1rem] text-center font-bold sm:hidden">
 				{leftToAllocate}
 			</div>
-			<div className="mt-3 sm:hidden">{cta}</div>
+
+			<div className="mt-3 flex flex-col sm:hidden">
+				{cta}
+				{errorSection}
+			</div>
 		</div>
 	);
 
 	return (
-		<Dialog>
+		<Dialog open={isOpen} onOpenChange={setIsOpen}>
 			<DialogTrigger asChild>{button}</DialogTrigger>
 			<DialogContent className="h-[95vh] overflow-y-auto sm:max-w-[95%] xl:max-w-[1280px]">
 				<DialogHeader className="text-center">

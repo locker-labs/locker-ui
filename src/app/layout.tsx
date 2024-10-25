@@ -42,9 +42,7 @@ export default function RootLayout({
 			/>
 
 			<html lang="en" suppressHydrationWarning>
-				<body
-					className={`${inter.className} flex min-h-screen w-full flex-col items-center`}
-				>
+				<body className={`${inter.className}`}>
 					<Suspense
 						fallback={
 							<div className="min-h-fit">
@@ -54,7 +52,9 @@ export default function RootLayout({
 					>
 						<AuthProvider>
 							<EvmProvider cookie={headers().get("cookie") ?? ""}>
-								{children}
+								<div className="flex min-h-screen w-full flex-col items-center">
+									{children}
+								</div>
 							</EvmProvider>
 						</AuthProvider>
 						<VercelAnalytics />

@@ -169,6 +169,7 @@ const useSmartAccount = () => {
 
 		console.log("offrampAddresses", chainId, offrampAddresses);
 
+		console.log("automations", automations);
 		const hotWalletAutomation = automations.find(
 			(a) => a.type === EAutomationType.FORWARD_TO
 		);

@@ -12,8 +12,14 @@ export default function getAutomations4Boxlets(
 	automations: Automation[],
 	boxlets: { [id: string]: IDistributionBoxlet }
 ): Automation[] {
-	return automations.map((automation) => {
-		const boxlet = boxlets[automation.type];
+	console.log("automations", automations);
+	const updatedAutomations = Object.values(boxlets).map((boxlet) => {
+		const defaultAutomation = {
+			type: boxlet.id as EAutomationType,
+			status: EAutomationStatus.NEW,
+		};
+		const automation =
+			automations.find((a) => a.type === boxlet.id) || defaultAutomation;
 
 		// Convert the percentage from the boxlet into the allocation (fractional form)
 		const allocation = Number(formatUnits(BigInt(boxlet.percent), 2));
@@ -26,7 +32,7 @@ export default function getAutomations4Boxlets(
 
 		// If the automation is of type 'forward_to', include the recipientAddress from the boxlet
 		if (
-			automation.type === EAutomationType.FORWARD_TO &&
+			boxlet.id === EAutomationType.FORWARD_TO &&
 			boxlet.forwardToAddress
 		) {
 			updatedAutomation.recipientAddress =
@@ -41,4 +47,10 @@ export default function getAutomations4Boxlets(
 
 		return updatedAutomation;
 	});
+
+	const updatedTypes = updatedAutomations.map((a) => a.type);
+	return [
+		...automations.filter((a) => !updatedTypes.includes(a.type)),
+		...updatedAutomations,
+	];
 }

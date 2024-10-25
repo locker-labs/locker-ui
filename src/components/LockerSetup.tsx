@@ -310,7 +310,7 @@ function LockerSetup() {
 				{leftToAllocate}
 			</div>
 
-			<div className="hidden w-full flex-col sm:flex">
+			<div className="hidden w-full sm:flex sm:flex-col">
 				{cta}
 				{errorSection}
 			</div>
