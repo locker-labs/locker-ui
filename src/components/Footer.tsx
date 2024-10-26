@@ -17,9 +17,6 @@ function Footer() {
 				<Link target="_blank" href="mailto:support@geeky.rocks">
 					Support
 				</Link>
-				<Link target="_blank" href="/terms">
-					Terms
-				</Link>
 				<Link target="_blank" href="/privacy">
 					Privacy
 				</Link>

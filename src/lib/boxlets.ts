@@ -22,8 +22,10 @@ export const getBoxletsArrOn = (boxlets: IBoxlets) =>
 		(boxlet) => boxlet.state === EAutomationUserState.ON
 	);
 
-export const getBoxletsByState = (boxlets: IBoxlets, state: "on" | "off") =>
-	Object.entries(boxlets).filter(([, boxlet]) => boxlet.state === state);
+export const getBoxletsByState = (
+	boxlets: IBoxlets,
+	state: EAutomationUserState.ON | EAutomationUserState.OFF
+) => Object.entries(boxlets).filter(([, boxlet]) => boxlet.state === state);
 
 export const getBoxletsOn = (boxlets: IBoxlets) =>
 	getBoxletsByState(boxlets, EAutomationUserState.ON);

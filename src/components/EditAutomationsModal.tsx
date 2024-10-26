@@ -3,9 +3,10 @@
 import { useAuth } from "@clerk/nextjs";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { Pencil } from "lucide-react";
+import Link from "next/link";
 import { useState } from "react";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
-import { isAddress } from "viem";
+import { checksumAddress, isAddress } from "viem";
 import { useAccount, useChainId, useSwitchChain } from "wagmi";
 
 import BoxletPieChart from "@/components/BoxletPieChart";
@@ -36,17 +37,17 @@ type IEditAutomationsModalProps = {
 };
 
 function EditAutomationsModal({ button }: IEditAutomationsModalProps) {
-	const { policies, automations } = useLocker(); // Fetch locker and policies
+	const { policies, automations, locker } = useLocker(); // Fetch locker and policies
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const [isOpen, setIsOpen] = useState<boolean>(false); // State to control modal visibility
 	const { isConnected: isWalletConnected } = useAccount();
-	console.log("automations", automations);
 	const defaultBoxlets =
 		automations && automations.length > 0
 			? adaptAutomations2Boxlets(automations)
 			: DEFAULT_BOXLETS;
 	const walletChainId = useChainId();
 	const { switchChain } = useSwitchChain();
+	const { address } = useAccount();
 
 	// Initialize with current policy automations and any default automations, not included
 	const [boxlets, setBoxlets] = useState({
@@ -80,6 +81,14 @@ function EditAutomationsModal({ button }: IEditAutomationsModalProps) {
 
 	const isForwardToMissing = isForwardSelected && !isAddress(sendToAddress!);
 
+	const handleOpenChange = (open: boolean) => {
+		if (isWalletConnected) {
+			setIsOpen(open);
+		} else {
+			openConnectModal?.();
+		}
+	};
+
 	const handleUpdatePolicy = async () => {
 		setIsLoading(true);
 		setErrorMessage("");
@@ -109,18 +118,27 @@ function EditAutomationsModal({ button }: IEditAutomationsModalProps) {
 			return;
 		}
 
+		if (!locker) {
+			setErrorMessage("Locker not found");
+			setIsLoading(false);
+			return;
+		}
+
+		if (checksumAddress(locker.ownerAddress) !== address) {
+			setErrorMessage(
+				`${errors.UNAUTHORIZED} Expected wallet: ${locker.ownerAddress}`
+			);
+			setIsLoading(false);
+			return;
+		}
+
 		// Iterate over all policies and update each one
 		try {
-			console.log("automating");
-			console.log(automations);
-			console.log(boxlets);
-
 			// The same automations are set for all chains/policies
 			const updatedAutomations = getAutomations4Boxlets(
 				automations,
 				boxlets
 			);
-			console.log("updatedAutomations", updatedAutomations);
 
 			// eslint-disable-next-line no-restricted-syntax
 			for (const policy of policies) {
@@ -158,13 +176,14 @@ function EditAutomationsModal({ button }: IEditAutomationsModalProps) {
 				}
 			}
 
-			// Close the modal after successful update
-			setIsOpen(false);
 			toast({
 				title: "Automations updated",
 				description:
 					"Your locker will now follow the new automations every time you get paid.",
 			});
+
+			// Close the modal after successful update
+			setIsOpen(false);
 		} catch (error) {
 			console.error(error);
 			setErrorMessage("Error updating policy");
@@ -276,15 +295,27 @@ function EditAutomationsModal({ button }: IEditAutomationsModalProps) {
 	);
 
 	return (
-		<Dialog open={isOpen} onOpenChange={setIsOpen}>
+		<Dialog open={isOpen} onOpenChange={handleOpenChange}>
 			<DialogTrigger asChild>{button}</DialogTrigger>
 			<DialogContent className="h-[95vh] overflow-y-auto sm:max-w-[95%] xl:max-w-[1280px]">
 				<DialogHeader className="text-center">
 					<DialogTitle className="text-center">
 						Edit your locker
 					</DialogTitle>
-					<DialogDescription className="text-center">
-						Adjust your automation settings below.
+					<DialogDescription className="flex flex-row justify-center text-center">
+						<div className="sm:max-w-[640px]">
+							Every time there is a deposit into your locker,
+							money is distributed according to your rules below.
+							Funds always remain under your control.{" "}
+							<Link
+								href="https://docs.locker.money/privacy-and-security"
+								className="text-locker-300"
+								target="_blank"
+							>
+								Learn more
+							</Link>
+							.
+						</div>
 					</DialogDescription>
 				</DialogHeader>
 				<div className="grid grid-cols-2 gap-4 overflow-y-auto py-4">

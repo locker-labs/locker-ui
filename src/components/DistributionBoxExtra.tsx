@@ -1,4 +1,5 @@
 import { getBoxletsOff, IBoxlets, IDistributionBoxlet } from "@/lib/boxlets";
+import { EAutomationUserState } from "@/types";
 
 import DistributionBoxletExtra from "./DistributionBoxletExtra";
 
@@ -16,7 +17,10 @@ function DistributionBoxExtra({ boxlets, updateBoxlet }: IDistributionBox) {
 					// function that is called on click
 					// call updateBoxlet with boxlet.state set to "on"
 					const onClick = () => {
-						updateBoxlet({ ...boxlet, state: "on" });
+						updateBoxlet({
+							...boxlet,
+							state: EAutomationUserState.ON,
+						});
 					};
 
 					return (

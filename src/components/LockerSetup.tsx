@@ -28,7 +28,6 @@ import DistributionBoxExtra from "./DistributionBoxExtra";
 
 function LockerSetup() {
 	const { locker } = useLocker();
-	console.log("locker", locker);
 	const [errorMessage, setErrorMessage] = useState<string>("");
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 

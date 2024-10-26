@@ -17,7 +17,6 @@ export default function getAutomations4Boxlets(
 	automations: Automation[],
 	boxlets: { [id: string]: IDistributionBoxlet }
 ): Automation[] {
-	console.log("automations", automations);
 	const updatedAutomations = Object.values(boxlets).map((boxlet) => {
 		const defaultAutomation = {
 			type: boxlet.id as EAutomationType,

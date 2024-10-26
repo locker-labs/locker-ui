@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/tooltip";
 import { disclosures } from "@/data/constants/disclosures";
 import { IDistributionBoxlet } from "@/lib/boxlets";
-import { EAutomationType } from "@/types";
+import { EAutomationType, EAutomationUserState } from "@/types";
 
 import DistributionBoxletExtra from "./DistributionBoxletExtra";
 
@@ -81,7 +81,10 @@ function DistributionBoxlet({
 					<button
 						aria-label="Remove savings goal"
 						onClick={() => {
-							updateBoxlet({ ...boxlet, state: "off" });
+							updateBoxlet({
+								...boxlet,
+								state: EAutomationUserState.OFF,
+							});
 						}}
 					>
 						<Trash2 className="size-[0.9rem] text-gray-500" />

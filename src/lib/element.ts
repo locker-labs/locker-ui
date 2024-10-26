@@ -37,7 +37,6 @@ const getCollectionStats = async (slug: string = "ethereum-frogs") => {
 
 export const getCollectionFloor = async (slug: string = "ethereum-frogs") => {
 	const collectionStats = await getCollectionStats(slug);
-	console.log("collectionStats", collectionStats);
 	return collectionStats.floorPrice;
 };
 

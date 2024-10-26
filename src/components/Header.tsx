@@ -9,18 +9,14 @@ import { useAccount } from "wagmi";
 
 import HeaderMenu from "@/components/HeaderMenu";
 import { paths } from "@/data/constants/paths";
-import { isTestnet } from "@/utils/isTestnet";
-
-// import ConnectModal from "./ConnectModal";
 
 function Header() {
 	const pathname = usePathname();
 	const { isSignedIn } = useAuth();
-	const { isConnected, chainId } = useAccount();
+	const { isConnected } = useAccount();
 
 	const showConnectButton = isSignedIn && !isConnected;
 	const showMenu = isSignedIn && isConnected;
-	const showTestnetBanner = isConnected && chainId && isTestnet(chainId);
 
 	const menu = showMenu ? (
 		<div
@@ -39,11 +35,6 @@ function Header() {
 
 	return (
 		<header className="relative top-0 z-10 w-full">
-			{showTestnetBanner && (
-				<div className="w-full rounded-full bg-warning/20 p-2 text-center text-warning">
-					Testnet
-				</div>
-			)}
 			<div className="flex h-20 items-center justify-between">
 				<Link
 					className="relative mr-2 flex h-9 w-28 shrink-0 justify-center"

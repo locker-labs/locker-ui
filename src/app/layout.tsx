@@ -8,11 +8,11 @@ import { Open_Sans } from "next/font/google";
 import { headers } from "next/headers";
 import { type ReactNode, Suspense } from "react";
 
+import Loader from "@/components/Loader";
+import { Toaster } from "@/components/ui/toaster";
 import { globalMetadata } from "@/data/seo/globalMetadata";
 import AuthProvider from "@/providers/AuthProvider";
 import EvmProvider from "@/providers/EvmProvider";
-
-import Loading from "./loading";
 
 const inter = Open_Sans({ subsets: ["latin"] });
 
@@ -46,7 +46,7 @@ export default function RootLayout({
 					<Suspense
 						fallback={
 							<div className="flex min-h-fit flex-row place-items-center">
-								<Loading />
+								<Loader />
 							</div>
 						}
 					>
@@ -59,6 +59,7 @@ export default function RootLayout({
 						</AuthProvider>
 						<VercelAnalytics />
 					</Suspense>
+					<Toaster />
 				</body>
 			</html>
 		</>

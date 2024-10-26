@@ -1,5 +1,5 @@
 import { IDistributionBoxlet } from "@/lib/boxlets";
-import { EAutomationType } from "@/types";
+import { EAutomationType, EAutomationUserState } from "@/types";
 
 export type IDistributionBoxlets = {
 	[id: string]: IDistributionBoxlet;
@@ -13,7 +13,7 @@ export const DEFAULT_BOXLETS: IDistributionBoxlets = {
 		color: "#6A30C3",
 		tooltip:
 			"When payments are received, save this amount in your locker for later use.",
-		state: "on",
+		state: EAutomationUserState.ON,
 	},
 
 	[EAutomationType.FORWARD_TO]: {
@@ -23,7 +23,7 @@ export const DEFAULT_BOXLETS: IDistributionBoxlets = {
 		color: "#5490D9",
 		percent: 75,
 		forwardToAddress: "",
-		state: "on",
+		state: EAutomationUserState.ON,
 	},
 
 	[EAutomationType.OFF_RAMP]: {
@@ -32,7 +32,7 @@ export const DEFAULT_BOXLETS: IDistributionBoxlets = {
 		tooltip: "When payments are received, send this amount to your bank.",
 		color: "#49BFE3",
 		percent: 0,
-		state: "on",
+		state: EAutomationUserState.ON,
 	},
 
 	[EAutomationType.GOAL_EFROGS]: {
@@ -43,7 +43,7 @@ export const DEFAULT_BOXLETS: IDistributionBoxlets = {
 			"Get notified when you've saved enough to by the Efrogs floor.",
 		color: "#63DFDF",
 		percent: 0,
-		state: "off",
+		state: EAutomationUserState.OFF,
 	},
 
 	// [EAutomationType.GOAL_CUSTOM]: {

@@ -167,9 +167,6 @@ const useSmartAccount = () => {
 			new Set(offrampAddressesData!.map((item) => item.address))
 		) as `0x${string}`[];
 
-		console.log("offrampAddresses", chainId, offrampAddresses);
-
-		console.log("automations", automations);
 		const hotWalletAutomation = automations.find(
 			(a) => a.type === EAutomationType.FORWARD_TO
 		);

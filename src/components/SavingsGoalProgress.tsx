@@ -23,6 +23,14 @@ export default function SavingsGoalProgress({
 	efrogsFloorEth,
 	className,
 }: ISavingsGoalProgressParams) {
+	// console.log(
+	// 	"SavingsGoalProgress",
+	// 	automation,
+	// 	ethUsd,
+	// 	portfolioValue,
+	// 	efrogsFloorEth,
+	// 	className
+	// );
 	const img =
 		automation.type === EAutomationType.GOAL_CUSTOM ? (
 			<IconSavingsGoal />
@@ -34,9 +42,7 @@ export default function SavingsGoalProgress({
 	const ethSaved =
 		ethUsd &&
 		new Big(portfolioValue).div(ethUsd).mul(automation.allocation);
-	console.log("ethSaved", ethSaved?.toString());
 	const usdSaved = new Big(portfolioValue).mul(automation.allocation);
-	console.log("usdSaved", usdSaved.toString());
 	// Set amount saved to 0, <0.0001, or rounded to 4 decimal places
 	let roundedEthSaved = "0";
 	if (ethSaved) {
@@ -63,7 +69,7 @@ export default function SavingsGoalProgress({
 			<div className="flex w-full flex-col space-y-1">
 				<div>{title}</div>
 				<Progress
-					value={value}
+					value={Math.min(value, 100)}
 					className="relative h-2 w-full overflow-hidden rounded bg-gray-300"
 				>
 					<div
