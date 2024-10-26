@@ -32,7 +32,7 @@ function LockerPortfolioValue({
 					<p className="text-xxl font-bold">${portfolioValue}</p>
 				</div>
 				<div className="flex flex-row space-x-4">
-					<SendTokensModal tokens={tokens} />
+					<SendTokensModal />
 
 					<QrCodeModal
 						button={

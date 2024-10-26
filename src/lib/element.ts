@@ -69,6 +69,7 @@ export const getEfrogNftInfo = async (tokenId: string) => {
 		name: data.name,
 		nftImgUrl: data.imagePreviewUrl,
 		collectionImgUrl: data.collection.imageUrl,
+		collectionName: data.collection.name,
 	};
 };
 
@@ -79,6 +80,8 @@ export type IEfrogsFloorInfo = {
 	nftName: string;
 	nftImgUrl: string;
 	collectionImgUrl: string;
+	collectionName: string;
+	nftUrl: string;
 };
 
 /**
@@ -90,8 +93,10 @@ export const getEfrogsFloorInfo = async (): Promise<IEfrogsFloorInfo> => {
 	const { priceBase, priceUSD, tokenId } = await getEfrogsFloor();
 
 	// Get detailed NFT information
-	const { name, nftImgUrl, collectionImgUrl } =
+	const { name, nftImgUrl, collectionImgUrl, collectionName } =
 		await getEfrogNftInfo(tokenId);
+
+	const nftUrl = `https://element.market/assets/linea/${EFROGS_CONTRACT_ADDRESS}/${tokenId}`;
 
 	// Combine the data
 	return {
@@ -101,5 +106,7 @@ export const getEfrogsFloorInfo = async (): Promise<IEfrogsFloorInfo> => {
 		nftName: name,
 		nftImgUrl,
 		collectionImgUrl,
+		collectionName,
+		nftUrl,
 	};
 };

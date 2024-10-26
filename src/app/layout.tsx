@@ -45,7 +45,7 @@ export default function RootLayout({
 				<body className={`${inter.className}`}>
 					<Suspense
 						fallback={
-							<div className="min-h-fit">
+							<div className="flex min-h-fit flex-row place-items-center">
 								<Loading />
 							</div>
 						}

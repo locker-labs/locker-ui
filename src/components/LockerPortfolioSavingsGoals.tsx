@@ -51,6 +51,7 @@ function LockerPortfolioSavingsGoals({
 			{savingsAutomations.map((automation) => (
 				<div className="flex flex-col" key={`goal-${automation.type}`}>
 					<SavingsGoalProgress
+						className="sm:w-1/2 xl:w-full"
 						automation={automation}
 						ethUsd={ethUsd}
 						portfolioValue={portfolioValue}

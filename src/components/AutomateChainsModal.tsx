@@ -191,8 +191,10 @@ export default function AutomateChainsModal() {
 
 			<DialogContent>
 				<DialogHeader>
-					<DialogTitle>Manage Chains</DialogTitle>
-					<DialogDescription className="text-sm">
+					<DialogTitle className="text-center">
+						Manage Chains
+					</DialogTitle>
+					<DialogDescription className="text-center text-sm">
 						Locker only has permission to move funds on the chains
 						you explicitly enable below.
 					</DialogDescription>

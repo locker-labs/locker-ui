@@ -7,9 +7,9 @@ import { useEffect, useState } from "react";
 import { paths } from "@/data/constants/paths";
 import { supportedChainIdsArray } from "@/data/constants/supportedChains";
 import { useLockerOnboardedModal } from "@/hooks/useLockerOnboardedModal";
+import { useSendTokensModal } from "@/providers/SendTokensModalProvider";
 import { getLockerNetWorth } from "@/services/moralis";
 import { getTokenBalances } from "@/services/transactions";
-import { Token } from "@/types";
 import { isChainSupported } from "@/utils/isChainSupported";
 import { isTestnet } from "@/utils/isTestnet";
 
@@ -22,7 +22,6 @@ import LockerPortfolioWalletDetector from "./LockerPortfolioWalletDetector";
 
 function LockerPortfolio() {
 	const { locker, txs, automations } = useLocker();
-	const [tokens, setTokens] = useState<Token[]>([]);
 	const [lockerNetWorth, setLockerNetWorth] = useState<string>("0.00");
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const [_chainsNetWorths, setChainsNetWorths] = useState<
@@ -32,7 +31,7 @@ function LockerPortfolio() {
 	const { getToken } = useAuth();
 
 	const searchParams = useSearchParams();
-
+	const { setTokens, tokens } = useSendTokensModal();
 	const { openLockerOnboardedModal, renderLockerOnboardedModal } =
 		useLockerOnboardedModal();
 	const onboardingFlag = searchParams.get("o");
@@ -74,7 +73,14 @@ function LockerPortfolio() {
 	};
 
 	const fetchLockerNetWorth = async () => {
-		if (locker && filteredTxs.length > 0) {
+		// in order to not use up credits,
+		// we only fetch the net worth if there are transactions
+		// in development, there will sometimes be no transactions in DB,
+		// but there will be tokens with balance from previous usage
+		console.log("fetchLockerNetWorth");
+		console.log("filteredTxs", filteredTxs);
+		console.log("tokens", tokens);
+		if (locker && (filteredTxs.length > 0 || tokens.length > 0)) {
 			const mainnetChainIds = supportedChainIdsArray.filter(
 				(chainId) => !isTestnet(chainId)
 			);
@@ -93,11 +99,14 @@ function LockerPortfolio() {
 		}
 	};
 
+	useEffect(() => {
+		fetchLockerNetWorth();
+	}, [tokens, filteredTxs]);
+
 	// Only fetch locker net worth on initial render to prevent call to Moralis API
 	// every 5 seconds. This can be updated once we implement a websocket.
 	useEffect(() => {
 		getTokenList();
-		fetchLockerNetWorth();
 	}, []);
 
 	return (

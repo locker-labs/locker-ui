@@ -1,14 +1,16 @@
 import Big from "big.js";
 import { PartyPopper } from "lucide-react";
-import React, { useState } from "react";
+import Link from "next/link";
+import React, { useEffect, useState } from "react";
 
 import {
 	Dialog,
 	DialogClose,
 	DialogContent,
-	DialogDescription,
 	DialogTitle,
 } from "@/components/ui/dialog";
+import { getEfrogsFloorInfo, IEfrogsFloorInfo } from "@/lib/element";
+import { useSendTokensModal } from "@/providers/SendTokensModalProvider";
 import { Automation } from "@/types";
 
 import SavingsGoalProgress from "./SavingsGoalProgress";
@@ -33,16 +35,63 @@ function EfrogsGoalAchievedDialog({
 		Big(0);
 	console.log("ethSaved", ethSaved.toString());
 	console.log("floor", floor);
-	const savedEnough = true;
-	// const savedEnough = floor && Big(ethSaved).gte(floor);
+	// const savedEnough = true;
+	const savedEnough = floor && Big(ethSaved).gte(floor);
 	const [isClosed, setIsClosed] = useState(!savedEnough);
+	const [nftInfo, setNftInfo] = useState<IEfrogsFloorInfo | null>(null);
+	const { openModal: openSendTokensModal } = useSendTokensModal();
 
-	const handleClose = () => {
+	useEffect(() => {
+		const getInfo = async () => {
+			try {
+				const info = await getEfrogsFloorInfo();
+				setNftInfo(info);
+			} catch (error) {
+				console.error("Error fetching NFT info", error);
+			}
+		};
+
+		getInfo();
+	}, []);
+
+	const nftSection = nftInfo && (
+		<Link
+			target="_blank"
+			href={nftInfo.nftUrl}
+			className="border-1 flex w-full flex-row space-x-8 rounded-md border border-gray-300 p-2 shadow-sm"
+		>
+			<div className="w-[10rem]">
+				<img
+					src={nftInfo.nftImgUrl}
+					alt={nftInfo.nftName}
+					className="w-full rounded-sm"
+				/>
+			</div>
+
+			<div className="mt-4 flex flex-col">
+				<div className="flex flex-row items-center space-x-2">
+					<img
+						src={nftInfo.collectionImgUrl}
+						alt={nftInfo.collectionName}
+						className="h-[1.2rem] w-[1.2rem] rounded-full"
+					/>
+					<span className="text-xs">{nftInfo.collectionName}</span>
+				</div>
+				<div className="mb-4 mt-2 text-sm font-semibold ">
+					{nftInfo.nftName}
+				</div>
+				<div className="text-lg font-bold">{floor} ETH</div>
+			</div>
+		</Link>
+	);
+
+	const handleWithdrawFunds = () => {
 		setIsClosed(true);
+		openSendTokensModal();
 	};
 
 	return (
-		<Dialog open={!isClosed} onOpenChange={setIsClosed}>
+		<Dialog open={!isClosed} onOpenChange={(open) => setIsClosed(!open)}>
 			<DialogContent>
 				<DialogTitle>
 					<div className="flex w-full flex-col items-center space-y-4 text-center">
@@ -50,23 +99,35 @@ function EfrogsGoalAchievedDialog({
 						<div>You&apos;ve reached your savings goal</div>
 					</div>
 				</DialogTitle>
-				<DialogDescription>
-					<div className="flex flex-col items-center space-y-4">
-						<SavingsGoalProgress
-							automation={automation}
-							ethUsd={ethUsd}
-							portfolioValue={portfolioValue}
-							efrogsFloorEth={efrogsFloorEth}
-						/>
+				<div className="flex flex-col items-center space-y-4">
+					<SavingsGoalProgress
+						className="bg-[#3DB87D1A]"
+						automation={automation}
+						ethUsd={ethUsd}
+						portfolioValue={portfolioValue}
+						efrogsFloorEth={efrogsFloorEth}
+					/>
+					{nftSection}
+				</div>
+				<div className="mt-8 flex flex-col self-end">
+					<div className="text-center text-sm text-gray-600">
+						Withdraw your funds then complete purchase
 					</div>
-				</DialogDescription>
-				<DialogClose
-					asChild
-					onClick={handleClose}
-					className="mt-4 self-end rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
-				>
-					<button>Close</button>
-				</DialogClose>
+					<div className="font-seminbold mt-4 flex w-full flex-row justify-between space-x-4 text-xs">
+						<button
+							className="grow rounded-md bg-locker-600 text-white"
+							onClick={handleWithdrawFunds}
+						>
+							Withdraw funds
+						</button>
+						<DialogClose
+							asChild
+							className="border-1 grow rounded-md border border-gray-300 px-4 py-2 text-gray-700"
+						>
+							<button>Later</button>
+						</DialogClose>
+					</div>
+				</div>
 			</DialogContent>
 		</Dialog>
 	);
