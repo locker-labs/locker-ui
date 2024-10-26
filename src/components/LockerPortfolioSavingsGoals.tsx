@@ -29,6 +29,12 @@ function LockerPortfolioSavingsGoals({
 
 	// get efrogs floor price on page load
 	useEffect(() => {
+		// load from env for testing
+		if (process.env.NEXT_PUBLIC_EFROGS_FLOOR) {
+			setEfrogsFloor(process.env.NEXT_PUBLIC_EFROGS_FLOOR);
+			return;
+		}
+
 		getCollectionFloor().then(setEfrogsFloor);
 	}, []);
 

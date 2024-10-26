@@ -28,15 +28,14 @@ function EfrogsGoalAchievedDialog({
 	ethUsd,
 	portfolioValue,
 }: EfrogsGoalAchievedDialogProps) {
-	const floor = process.env.NEXT_PUBLIC_EFROGS_FLOOR || efrogsFloorEth;
 	const ethSaved =
 		(ethUsd &&
 			new Big(portfolioValue).div(ethUsd).mul(automation.allocation)) ||
 		Big(0);
 	console.log("ethSaved", ethSaved.toString());
-	console.log("floor", floor);
+	console.log("efrogsFloorEth", efrogsFloorEth);
 	// const savedEnough = true;
-	const savedEnough = floor && Big(ethSaved).gte(floor);
+	const savedEnough = efrogsFloorEth && Big(ethSaved).gte(efrogsFloorEth);
 	const [isClosed, setIsClosed] = useState(!savedEnough);
 	const [nftInfo, setNftInfo] = useState<IEfrogsFloorInfo | null>(null);
 	const { openModal: openSendTokensModal } = useSendTokensModal();
@@ -80,7 +79,7 @@ function EfrogsGoalAchievedDialog({
 				<div className="mb-4 mt-2 text-sm font-semibold ">
 					{nftInfo.nftName}
 				</div>
-				<div className="text-lg font-bold">{floor} ETH</div>
+				<div className="text-lg font-bold">{efrogsFloorEth} ETH</div>
 			</div>
 		</Link>
 	);

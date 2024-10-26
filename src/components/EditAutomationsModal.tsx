@@ -20,6 +20,7 @@ import {
 } from "@/components/ui/dialog";
 import { DEFAULT_BOXLETS } from "@/data/constants/boxlets";
 import { errors } from "@/data/constants/errorMessages";
+import { useToast } from "@/hooks/use-toast";
 import useSmartAccount from "@/hooks/useSmartAccount";
 import { calcPercentLeft, IDistributionBoxlet } from "@/lib/boxlets";
 import { useLocker } from "@/providers/LockerProvider";
@@ -52,7 +53,7 @@ function EditAutomationsModal({ button }: IEditAutomationsModalProps) {
 		...defaultBoxlets,
 		...adaptAutomations2Boxlets(automations || []),
 	});
-
+	const { toast } = useToast();
 	const { openConnectModal } = useConnectModal();
 
 	const [errorMessage, setErrorMessage] = useState<string>("");
@@ -110,6 +111,17 @@ function EditAutomationsModal({ button }: IEditAutomationsModalProps) {
 
 		// Iterate over all policies and update each one
 		try {
+			console.log("automating");
+			console.log(automations);
+			console.log(boxlets);
+
+			// The same automations are set for all chains/policies
+			const updatedAutomations = getAutomations4Boxlets(
+				automations,
+				boxlets
+			);
+			console.log("updatedAutomations", updatedAutomations);
+
 			// eslint-disable-next-line no-restricted-syntax
 			for (const policy of policies) {
 				// get new session key with current addresses
@@ -117,15 +129,6 @@ function EditAutomationsModal({ button }: IEditAutomationsModalProps) {
 					// eslint-disable-next-line no-await-in-loop
 					await switchChain({ chainId: policy.id });
 				}
-
-				console.log("automating");
-				console.log(automations);
-				console.log(boxlets);
-				const updatedAutomations = getAutomations4Boxlets(
-					automations,
-					boxlets
-				);
-				console.log("updatedAutomations", updatedAutomations);
 
 				// eslint-disable-next-line no-await-in-loop
 				const sig = await refreshPolicy({
@@ -152,10 +155,16 @@ function EditAutomationsModal({ button }: IEditAutomationsModalProps) {
 				if (authToken) {
 					// eslint-disable-next-line no-await-in-loop
 					await updatePolicy(authToken, newPolicy, setErrorMessage);
-					// Close the modal after successful update
-					setIsOpen(false);
 				}
 			}
+
+			// Close the modal after successful update
+			setIsOpen(false);
+			toast({
+				title: "Automations updated",
+				description:
+					"Your locker will now follow the new automations every time you get paid.",
+			});
 		} catch (error) {
 			console.error(error);
 			setErrorMessage("Error updating policy");
@@ -174,12 +183,16 @@ function EditAutomationsModal({ button }: IEditAutomationsModalProps) {
 	);
 	if (!isLoading) {
 		if (isWalletConnected) {
+			const text =
+				policies.length > 1
+					? `Save changes on ${policies.length} chains`
+					: "Save changes";
 			cta = (
 				<button
 					className="flex w-full cursor-pointer items-center justify-center rounded-md bg-locker-600 py-3 text-sm font-semibold text-white"
 					onClick={handleUpdatePolicy}
 				>
-					Update Automations
+					{text}
 				</button>
 			);
 		} else {

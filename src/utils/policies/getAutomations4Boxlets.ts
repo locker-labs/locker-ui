@@ -1,7 +1,12 @@
 import { formatUnits } from "viem";
 
 import { IDistributionBoxlet } from "@/lib/boxlets";
-import { Automation, EAutomationStatus, EAutomationType } from "@/types";
+import {
+	Automation,
+	EAutomationStatus,
+	EAutomationType,
+	EAutomationUserState,
+} from "@/types";
 
 /**
  * Returns automations with percentages from boxlets and statuses from original automations
@@ -17,6 +22,7 @@ export default function getAutomations4Boxlets(
 		const defaultAutomation = {
 			type: boxlet.id as EAutomationType,
 			status: EAutomationStatus.NEW,
+			userState: EAutomationUserState.ON,
 		};
 		const automation =
 			automations.find((a) => a.type === boxlet.id) || defaultAutomation;
@@ -28,6 +34,7 @@ export default function getAutomations4Boxlets(
 		const updatedAutomation: Automation = {
 			...automation, // Keeps original status and type
 			allocation, // Updated allocation from boxlet
+			userState: boxlet.state,
 		};
 
 		// If the automation is of type 'forward_to', include the recipientAddress from the boxlet
