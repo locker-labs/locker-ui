@@ -50,7 +50,7 @@
 
 @layer base {
 	html {
-		@apply text-[18px] sm:text-[16px] lg:text-[18px] xl:text-[20px];
+		@apply text-[16px] sm:text-[14px] lg:text-[16px] xl:text-[18px];
 		/* font-size: 20px; Setting rem base value */
 	}
 }

@@ -301,7 +301,7 @@ function LockerSetup() {
 	);
 
 	const rightPanel = (
-		<div className="order-1 col-span-2 flex flex-col items-start sm:order-2 sm:col-span-1 sm:ml-4 sm:max-w-[320px]">
+		<div className="order-1 col-span-2 flex flex-col items-start justify-start sm:order-2 sm:col-span-1 sm:ml-4 sm:max-w-[320px]">
 			<div className="mx-auto max-w-[12rem]">
 				<BoxletPieChart boxlets={boxlets} lineWidth={100} />
 			</div>

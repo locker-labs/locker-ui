@@ -131,7 +131,7 @@ export default function LockerPortfolioTxHistoryContent() {
 										)}
 									</span>
 								</span>
-								<span className="text-xs">
+								<span className="break-all text-xs">
 									{formatAmount(tx.amount, tx.tokenDecimals)}{" "}
 									{tx.tokenSymbol}
 								</span>

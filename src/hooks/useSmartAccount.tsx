@@ -19,9 +19,11 @@ import {
 	walletClientToSmartAccountSigner,
 } from "permissionless";
 import {
+	Address,
 	type Chain,
 	encodeFunctionData,
 	erc20Abi,
+	Hex,
 	http,
 	type PublicClient,
 	zeroAddress,
@@ -245,13 +247,22 @@ const useSmartAccount = () => {
 
 		let hash;
 		try {
-			if (token === zeroAddress) {
-				// Native token
-				hash = await kernelAccountClient.sendTransaction({
+			if (
+				token === zeroAddress ||
+				token === "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+			) {
+				const sendParams = {
 					to: recipient,
 					value: amount,
-					data: "0x", // default to 0x
-				});
+					data: "0x00000000", // default to 0x
+				} as {
+					to: Address;
+					value: bigint;
+					data: Hex;
+				};
+				console.log("sendParams", sendParams);
+				// Native token
+				hash = await kernelAccountClient.sendTransaction(sendParams);
 			} else {
 				// ERC-20 token
 				hash = await kernelAccountClient.sendUserOperation({

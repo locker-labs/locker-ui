@@ -78,11 +78,6 @@ export const getErc20Price = async (
 	// WETH default
 	tokenAddress: string = "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"
 ): Promise<IErc20Price> => {
-	console.log(
-		"getErc20Price",
-		tokenAddress,
-		process.env.MORALIS_WEB3_API_KEY
-	);
 	const apiKey = process.env.MORALIS_WEB3_API_KEY;
 	if (!apiKey) {
 		throw new Error("MORALIS_WEB3_API_KEY is not set");

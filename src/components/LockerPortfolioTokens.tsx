@@ -17,7 +17,6 @@ function LockerPortfolioTokens({ tokens }: ILockerPortfolioTokens) {
 					BigInt(token.balance),
 					token.decimals
 				);
-				console.log("token", token);
 
 				const valueUsd = token.valueUsd
 					? token.valueUsd.toFixed(2)

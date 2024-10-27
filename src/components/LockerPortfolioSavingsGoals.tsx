@@ -42,15 +42,12 @@ function LockerPortfolioSavingsGoals({
 	useEffect(() => {
 		getErc20Price()
 			.then(({ usdPrice }) => {
-				console.log("got usd price", usdPrice);
 				setEthUsd(usdPrice);
 			})
 			.catch((error) => {
 				console.error(error);
 			});
 	}, []);
-
-	console.log("portfolioValue", portfolioValue);
 
 	const body = hasGoals ? (
 		<>
