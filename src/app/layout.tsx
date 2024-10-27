@@ -7,14 +7,12 @@ import type { Metadata, Viewport } from "next";
 import { Open_Sans } from "next/font/google";
 import { headers } from "next/headers";
 import { type ReactNode, Suspense } from "react";
-import { cookieToInitialState } from "wagmi";
 
+import Loader from "@/components/Loader";
+import { Toaster } from "@/components/ui/toaster";
 import { globalMetadata } from "@/data/seo/globalMetadata";
 import AuthProvider from "@/providers/AuthProvider";
 import EvmProvider from "@/providers/EvmProvider";
-import { wagmiConfig } from "@/providers/wagmiConfig";
-
-import Loading from "./loading";
 
 const inter = Open_Sans({ subsets: ["latin"] });
 
@@ -30,11 +28,6 @@ export default function RootLayout({
 }: Readonly<{
 	children: ReactNode;
 }>) {
-	const initialState = cookieToInitialState(
-		wagmiConfig,
-		headers().get("cookie")
-	);
-
 	return (
 		<>
 			<HighlightInit
@@ -49,23 +42,24 @@ export default function RootLayout({
 			/>
 
 			<html lang="en" suppressHydrationWarning>
-				<body
-					className={`${inter.className} flex min-h-screen w-full flex-col items-center`}
-				>
+				<body className={`${inter.className}`}>
 					<Suspense
 						fallback={
-							<div className="min-h-fit">
-								<Loading />
+							<div className="flex min-h-fit flex-row place-items-center">
+								<Loader />
 							</div>
 						}
 					>
 						<AuthProvider>
-							<EvmProvider initialState={initialState}>
-								{children}
+							<EvmProvider cookie={headers().get("cookie") ?? ""}>
+								<div className="flex min-h-screen w-full flex-col items-center">
+									{children}
+								</div>
 							</EvmProvider>
 						</AuthProvider>
 						<VercelAnalytics />
 					</Suspense>
+					<Toaster />
 				</body>
 			</html>
 		</>

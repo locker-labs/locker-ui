@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 import { Button } from "@/components/ui/button";
 import {
 	Dialog,
@@ -36,7 +38,15 @@ export default function QrCodeModal({
 				<div className="flex flex-col items-center space-y-4">
 					<DialogDescription className="text-center text-sm text-gray-600 sm:max-w-[400px]">
 						To start saving, fund your locker with ETH or ERC20
-						using the address below.
+						using the address below.{" "}
+						<Link
+							href="https://docs.locker.money"
+							className="text-locker-300"
+							target="_blank"
+						>
+							Learn more
+						</Link>
+						.
 					</DialogDescription>
 
 					{/* QR Code or Address content */}

@@ -32,7 +32,6 @@ export const createLocker = async (
 ): Promise<Locker | undefined> => {
 	try {
 		// response.status should be 201 (Created)
-		console.log("Going to create locker");
 		const response = await fetch(endpoints.CREATE_LOCKER, {
 			method: "POST",
 			headers: {
@@ -41,8 +40,6 @@ export const createLocker = async (
 			},
 			body: JSON.stringify(locker),
 		});
-
-		console.log("Create locker response");
 
 		if (!response.ok) {
 			// Handle error in catch
@@ -230,7 +227,6 @@ export const createOfframp = async (
 
 		if (response.ok) {
 			const responseData = await response.json();
-			console.log(responseData.onboardingUrl);
 			return responseData.onboardingUrl;
 		}
 

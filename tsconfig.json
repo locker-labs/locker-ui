@@ -18,7 +18,7 @@
 		"noImplicitThis": true,
 		"noUnusedLocals": true,
 		"paths": {
-			"@/*": ["./src/*"]
+			"@/*": ["./src/*", "./__tests__/*"]
 		},
 		"plugins": [
 			{

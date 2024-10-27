@@ -7,9 +7,9 @@ import { useEffect, useState } from "react";
 import { paths } from "@/data/constants/paths";
 import { supportedChainIdsArray } from "@/data/constants/supportedChains";
 import { useLockerOnboardedModal } from "@/hooks/useLockerOnboardedModal";
+import { useSendTokensModal } from "@/providers/SendTokensModalProvider";
 import { getLockerNetWorth } from "@/services/moralis";
 import { getTokenBalances } from "@/services/transactions";
-import { Token } from "@/types";
 import { isChainSupported } from "@/utils/isChainSupported";
 import { isTestnet } from "@/utils/isTestnet";
 
@@ -22,7 +22,12 @@ import LockerPortfolioWalletDetector from "./LockerPortfolioWalletDetector";
 
 function LockerPortfolio() {
 	const { locker, txs, automations } = useLocker();
-	const [tokens, setTokens] = useState<Token[]>([]);
+	// Props destructured variables
+	// const { txs } = locker;
+	const filteredTxs = txs
+		? txs.filter((tx) => isChainSupported(tx.chainId))
+		: [];
+
 	const [lockerNetWorth, setLockerNetWorth] = useState<string>("0.00");
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const [_chainsNetWorths, setChainsNetWorths] = useState<
@@ -32,7 +37,7 @@ function LockerPortfolio() {
 	const { getToken } = useAuth();
 
 	const searchParams = useSearchParams();
-
+	const { setTokens, tokens } = useSendTokensModal();
 	const { openLockerOnboardedModal, renderLockerOnboardedModal } =
 		useLockerOnboardedModal();
 	const onboardingFlag = searchParams.get("o");
@@ -42,13 +47,6 @@ function LockerPortfolio() {
 	}, [onboardingFlag]);
 
 	if (!automations || automations.length === 0) redirect(paths.ONBOARDING);
-	console.log("automations", automations);
-
-	// Props destructured variables
-	// const { txs } = locker;
-	const filteredTxs = txs
-		? txs.filter((tx) => isChainSupported(tx.chainId))
-		: [];
 
 	/* For now, we're only handling:
 		- One locker per user (index 0)
@@ -69,12 +67,16 @@ function LockerPortfolio() {
 				? list.filter((token) => isChainSupported(token.chainId))
 				: [];
 			setTokens(filteredList);
-			console.log("Token list: ", filteredList);
 		}
 	};
 
 	const fetchLockerNetWorth = async () => {
-		if (locker && filteredTxs.length > 0) {
+		// in order to not use up credits,
+		// we only fetch the net worth if there are transactions
+		// in development, there will sometimes be no transactions in DB,
+		// but there will be tokens with balance from previous usage
+
+		if (locker && (filteredTxs.length > 0 || tokens.length > 0)) {
 			const mainnetChainIds = supportedChainIdsArray.filter(
 				(chainId) => !isTestnet(chainId)
 			);
@@ -84,21 +86,27 @@ function LockerPortfolio() {
 				mainnetChainIds
 			);
 
-			console.log("netWorth", netWorth);
-
-			if (netWorth) {
+			if (netWorth && netWorth.totalNetWorth !== lockerNetWorth) {
 				setLockerNetWorth(netWorth.totalNetWorth);
+			}
+
+			if (netWorth && netWorth.chainsNetWorth !== _chainsNetWorths) {
 				setChainsNetWorths(netWorth.chainsNetWorth);
 			}
 		}
 	};
 
-	// Only fetch locker net worth on initial render to prevent call to Moralis API
-	// every 5 seconds. This can be updated once we implement a websocket.
 	useEffect(() => {
-		getTokenList();
-		fetchLockerNetWorth();
-	}, []);
+		if (filteredTxs.length > 0 || tokens.length > 0) {
+			fetchLockerNetWorth();
+		}
+	}, [txs, tokens]); // filteredTxs is not a state variable and will cause re-renders if used instead
+
+	useEffect(() => {
+		if (filteredTxs.length > 0 || lockerNetWorth !== "0.00") {
+			getTokenList();
+		}
+	}, [txs, lockerNetWorth]);
 
 	return (
 		<div className="flex w-full flex-col space-y-4 bg-locker-25">
@@ -121,7 +129,7 @@ function LockerPortfolio() {
 				</div>
 			</div>
 			<div className="col-span-1 w-full overflow-auto rounded-md bg-white p-4 lg:min-h-96">
-				<LockerPortfolioTxHistory />
+				<LockerPortfolioTxHistory tokens={tokens} />
 			</div>
 			{onboardingFlag && renderLockerOnboardedModal()}
 			<LockerPortfolioWalletDetector />

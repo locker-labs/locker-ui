@@ -27,7 +27,7 @@ export default function LockerPortfolioWalletDetector() {
 		const isWrongAddress =
 			address &&
 			locker &&
-			address !== locker.ownerAddress &&
+			address.toLowerCase() !== locker.ownerAddress.toLowerCase() &&
 			!onboardingFlag;
 		if (isWrongAddress) {
 			setIsOpen(true);
@@ -51,9 +51,9 @@ export default function LockerPortfolioWalletDetector() {
 					<DialogTitle className="text-center text-xl font-bold">
 						Wrong wallet detected
 					</DialogTitle>
-					<DialogDescription className="mt-2 text-sm text-gray-600">
-						Your wallet&apos;s current account is not the owner of
-						this locker
+					<DialogDescription className="mt-2 text-center text-sm text-gray-600">
+						You cannot make any changes until you reconnect with
+						wallet that created this locker.
 					</DialogDescription>
 				</DialogHeader>
 				<div className="mb-6 mt-4 text-sm">

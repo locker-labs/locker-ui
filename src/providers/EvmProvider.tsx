@@ -1,23 +1,32 @@
 "use client";
 
+import "@rainbow-me/rainbowkit/styles.css";
+
+import { RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import type { ReactNode } from "react";
-import { type State, WagmiProvider } from "wagmi";
+import { cookieToInitialState, WagmiProvider } from "wagmi";
 
 import { wagmiConfig } from "@/providers/wagmiConfig";
 
 export interface IEvmProvider {
 	children: ReactNode;
-	initialState: State | undefined;
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	cookie: any;
 }
 
-function EvmProvider({ children, initialState }: IEvmProvider) {
+function EvmProvider({ children, cookie }: IEvmProvider) {
 	const queryClient = new QueryClient();
+	const initialState = cookieToInitialState(wagmiConfig, cookie);
 
 	return (
-		<WagmiProvider config={wagmiConfig} initialState={initialState}>
+		<WagmiProvider
+			config={wagmiConfig}
+			// eslint-disable-next-line react/jsx-props-no-spreading
+			{...(initialState ? { initialState } : {})}
+		>
 			<QueryClientProvider client={queryClient}>
-				{children}
+				<RainbowKitProvider>{children}</RainbowKitProvider>
 			</QueryClientProvider>
 		</WagmiProvider>
 	);

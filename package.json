@@ -15,7 +15,7 @@
 		"lint:check": "eslint . --ext .js,.jsx,.ts,.tsx",
 		"prepare": "husky",
 		"start": "next start",
-		"test": "jest --coverage",
+		"test": "jest",
 		"test:match": "jest --verbose"
 	},
 	"commitlint": {
@@ -42,7 +42,10 @@
 		"@radix-ui/react-progress": "^1.1.0",
 		"@radix-ui/react-slider": "^1.2.0",
 		"@radix-ui/react-slot": "^1.1.0",
+		"@radix-ui/react-tabs": "^1.1.1",
+		"@radix-ui/react-toast": "^1.2.2",
 		"@radix-ui/react-tooltip": "^1.1.2",
+		"@rainbow-me/rainbowkit": "^2.2.0",
 		"@supabase/ssr": "^0.4.1",
 		"@supabase/supabase-js": "^2.45.3",
 		"@tanstack/react-query": "^5.32.1",
@@ -69,7 +72,7 @@
 		"react-icons": "^5.1.0",
 		"react-minimal-pie-chart": "^8.4.0",
 		"react-popper": "^2.3.0",
-		"tailwind-merge": "^2.5.2",
+		"tailwind-merge": "^2.5.4",
 		"tailwindcss-animate": "^1.0.7",
 		"viem": "^2.9.31",
 		"wagmi": "^2.8.0"
@@ -78,8 +81,9 @@
 		"@commitlint/cli": "^19.3.0",
 		"@commitlint/config-conventional": "^19.2.2",
 		"@next/eslint-plugin-next": "^14.2.3",
-		"@testing-library/jest-dom": "^6.4.2",
-		"@testing-library/react": "^15.0.5",
+		"@testing-library/dom": "^10.4.0",
+		"@testing-library/jest-dom": "^6.6.2",
+		"@testing-library/react": "^15.0.7",
 		"@types/big.js": "^6.2.2",
 		"@types/jest": "^29.5.12",
 		"@types/jsonwebtoken": "^9.0.6",
@@ -109,6 +113,7 @@
 		"prettier-plugin-tailwindcss": "^0.5.14",
 		"tailwindcss": "^3.4.1",
 		"ts-jest": "^29.1.2",
+		"ts-node": "^10.9.2",
 		"typescript": "^5"
 	}
 }
