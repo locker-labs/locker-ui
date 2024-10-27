@@ -89,13 +89,15 @@ export function SendTokensModal() {
 		}
 
 		try {
-			await sendUserOp(
+			console.log("Going to send tokens");
+			const hash = await sendUserOp(
 				0,
 				selectedToken.chainId,
 				sendToAddress as `0x${string}`,
 				selectedToken.address,
 				amount
 			);
+			console.log(`Sent tokens ${hash}`);
 
 			setSendToAddress("");
 			setAmountInput("");
