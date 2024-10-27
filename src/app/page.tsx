@@ -96,7 +96,7 @@ export default function LandingPage() {
 
 	return (
 		<main className="px-4 py-4 lg:p-10 xl:px-[6rem] xl:py-[4rem]">
-			<div className="bg-light-100 text-dark-500 lg:gap-x-18 mb-24 grid grid-flow-row-dense gap-y-2 sm:grid-cols-2 sm:gap-x-12 xl:gap-x-24">
+			<div className="bg-light-100 text-dark-500 lg:gap-x-18 mb-24 grid grid-flow-row-dense gap-y-2 sm:max-w-[1100px] sm:grid-cols-2 sm:gap-x-12 xl:gap-x-24">
 				<div className="space-y-4 sm:max-w-[480px]">{intro}</div>
 				<div className="grid grid-cols-1 space-y-8 xs:grid-cols-12 sm:max-w-[520px]">
 					<Suspense fallback={<Loader />}>
