@@ -14,6 +14,8 @@ import { EAutomationType, ELockerDirection, Tx } from "@/types";
 import { getChainObjFromId } from "@/utils/getChainObj";
 import { truncateAddress } from "@/utils/truncateAddress";
 
+import ChainIcon from "./ChainIcon";
+
 export default function LockerPortfolioTxHistoryContent() {
 	dayjs.extend(relativeTime);
 	const { txs, locker, policies, offrampAddresses } = useLocker();
@@ -115,6 +117,9 @@ export default function LockerPortfolioTxHistoryContent() {
 									%
 								</div>
 							)}
+							<div>
+								<ChainIcon chainId={tx.chainId} size="2rem" />
+							</div>
 							<div className="flex flex-col">
 								<span className="flex flex-row items-center text-xxs font-semibold">
 									{directionLabel}

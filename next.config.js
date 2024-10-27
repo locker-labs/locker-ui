@@ -96,6 +96,7 @@ module.exports = withPWA({
 				pathname: "/**",
 			},
 		],
+		domains: ["logo.moralis.io", "cdn.moralis.io"],
 	},
 	webpack: (config) => {
 		// eslint-disable-next-line no-param-reassign

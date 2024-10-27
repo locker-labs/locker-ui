@@ -6,7 +6,7 @@ import IconLink from "@/components/IconLink";
 
 function Footer() {
 	return (
-		<footer className="mb-4 mt-4 flex w-full items-center space-y-4 text-center text-gray-400 xxs:mt-8 xxs:flex-col xxs:justify-center sm:mt-10 sm:flex-row sm:justify-between sm:space-y-0">
+		<footer className="mb-4 mt-4 flex w-full max-w-[55rem] items-center space-y-4 text-center text-gray-400 xxs:mt-8 xxs:flex-col xxs:justify-center sm:mt-10 sm:flex-row sm:justify-between sm:space-y-0">
 			<div className="flex flex-row justify-center space-x-4 text-xs font-semibold">
 				<Link target="_blank" href="https://docs.locker.money">
 					Docs

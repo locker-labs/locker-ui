@@ -33,10 +33,18 @@ import getAutomations4Boxlets from "@/utils/policies/getAutomations4Boxlets";
 import DistributionBoxExtra from "./DistributionBoxExtra";
 
 type IEditAutomationsModalProps = {
+	// eslint-disable-next-line react/require-default-props
 	button?: JSX.Element;
 };
 
-function EditAutomationsModal({ button }: IEditAutomationsModalProps) {
+function EditAutomationsModal({
+	button = (
+		<button className="outline-solid flex cursor-pointer flex-row items-center justify-center rounded-md px-2 py-1 text-xxs outline outline-1 outline-gray-300">
+			<Pencil size={12} />
+			<span className="ml-2 font-semibold">Edit</span>
+		</button>
+	),
+}: IEditAutomationsModalProps) {
 	const { policies, automations, locker } = useLocker(); // Fetch locker and policies
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const [isOpen, setIsOpen] = useState<boolean>(false); // State to control modal visibility
@@ -328,12 +336,3 @@ function EditAutomationsModal({ button }: IEditAutomationsModalProps) {
 }
 
 export default EditAutomationsModal;
-
-EditAutomationsModal.defaultProps = {
-	button: (
-		<button className="outline-solid flex cursor-pointer flex-row items-center justify-center rounded-md px-2 py-1 text-xxs outline outline-1 outline-gray-300">
-			<Pencil size={12} />
-			<span className="ml-2 font-semibold">Edit</span>
-		</button>
-	),
-};
