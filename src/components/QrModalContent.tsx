@@ -19,7 +19,7 @@ export default function QrModalContent({
 				<CopyButton text={lockerAddress} />
 			</div>
 
-			<div className="mt-2 flex items-center justify-center space-x-2">
+			<div className="mt-2 flex items-center justify-center">
 				<SupportedChainsIcons />
 			</div>
 			<div>

@@ -29,13 +29,6 @@ function EfrogsGoalAchievedDialog({
 	ethUsd,
 	portfolioValue,
 }: EfrogsGoalAchievedDialogProps) {
-	console.log(
-		"EfrogsGoalAchievedDialog",
-		efrogsFloorEth,
-		automation,
-		ethUsd,
-		portfolioValue
-	);
 	const ethSaved =
 		(ethUsd &&
 			new Big(portfolioValue).div(ethUsd).mul(automation.allocation)) ||
@@ -43,9 +36,7 @@ function EfrogsGoalAchievedDialog({
 
 	// const savedEnough = true;
 	const savedEnough = efrogsFloorEth && Big(ethSaved).gte(efrogsFloorEth);
-	console.log("savedEnough", savedEnough);
 	const [isClosed, setIsClosed] = useState(!savedEnough);
-	console.log("isClosed", isClosed);
 	const [nftInfo, setNftInfo] = useState<IEfrogsFloorInfo | null>(null);
 	const { openModal: openSendTokensModal } = useSendTokensModal();
 
@@ -70,9 +61,9 @@ function EfrogsGoalAchievedDialog({
 		<Link
 			target="_blank"
 			href={nftInfo.nftUrl}
-			className="border-1 flex w-full flex-row space-x-8 rounded-md border border-gray-300 p-2 shadow-sm"
+			className="border-1 flex w-full flex-row space-x-2 rounded-md border border-gray-300 p-2 shadow-sm xs:space-x-8"
 		>
-			<div className="w-[10rem]">
+			<div className="w-full max-w-[6rem] xs:max-w-[12rem]">
 				<img
 					src={nftInfo.nftImgUrl}
 					alt={nftInfo.nftName}
@@ -80,7 +71,7 @@ function EfrogsGoalAchievedDialog({
 				/>
 			</div>
 
-			<div className="mt-4 flex flex-col">
+			<div className="mt-1 flex flex-col xs:mt-4">
 				<div className="flex flex-row items-center space-x-2">
 					<img
 						src={nftInfo.collectionImgUrl}
@@ -104,7 +95,7 @@ function EfrogsGoalAchievedDialog({
 
 	return (
 		<Dialog open={!isClosed} onOpenChange={(open) => setIsClosed(!open)}>
-			<DialogContent>
+			<DialogContent className="p-2 xs:p-4">
 				<DialogHeader>
 					<DialogTitle>
 						<div className="flex w-full flex-col items-center space-y-4 text-center">
