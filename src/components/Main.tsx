@@ -9,7 +9,7 @@ export default async function Main({
 	children: ReactNode;
 }>) {
 	return (
-		<main className="p-4 lg:px-6 xl:px-8">
+		<main className="p-4 lg:px-6 xl:px-8 ">
 			<Header />
 			{children}
 			<Footer />

@@ -1,10 +1,7 @@
-import Link from "next/link";
-
 import { Button } from "@/components/ui/button";
 import {
 	Dialog,
 	DialogContent,
-	DialogDescription,
 	DialogHeader,
 	DialogTitle,
 	DialogTrigger,
@@ -30,25 +27,16 @@ export default function QrCodeModal({
 				{button || <Button variant="outline">Show QR Code</Button>}
 			</DialogTrigger>
 			<DialogContent className="sm:max-w-[640px]">
-				<DialogHeader>
+				<DialogHeader className="flex flex-col items-center">
 					<DialogTitle className="text-center text-xl font-bold">
 						Deposit funds
 					</DialogTitle>
 				</DialogHeader>
-				<div className="flex flex-col items-center space-y-4">
-					<DialogDescription className="text-center text-sm text-gray-600 sm:max-w-[400px]">
+				<div className="flex max-h-[calc(100vh-200px)] flex-col items-center space-y-4  overflow-y-auto">
+					<div className="text-center text-sm text-gray-600 sm:max-w-[400px]">
 						To start saving, fund your locker with ETH or ERC20
-						using the address below.{" "}
-						<Link
-							href="https://docs.locker.money"
-							className="text-locker-300"
-							target="_blank"
-						>
-							Learn more
-						</Link>
-						.
-					</DialogDescription>
-
+						using the address below.
+					</div>
 					{/* QR Code or Address content */}
 					<QrModalContent
 						lockerAddress={lockerAddress}

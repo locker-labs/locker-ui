@@ -34,7 +34,7 @@ function Header() {
 	) : null;
 
 	return (
-		<header className="relative top-0 z-10 w-full">
+		<header className="relative top-0 z-10 w-full max-w-[55rem]">
 			<div className="flex h-20 items-center justify-between">
 				<Link
 					className="relative mr-2 flex h-9 w-28 shrink-0 justify-center"

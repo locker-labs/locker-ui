@@ -108,6 +108,9 @@ export type Token = {
 	decimals: number;
 	chainId: number;
 	balance: string;
+	imgUrl: string;
+	valueUsd: number;
+	valueUsdChange: number;
 };
 
 export type LockerNetWorth = {
