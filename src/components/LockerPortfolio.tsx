@@ -129,7 +129,7 @@ function LockerPortfolio() {
 				</div>
 			</div>
 			<div className="col-span-1 w-full overflow-auto rounded-md bg-white p-4 lg:min-h-96">
-				<LockerPortfolioTxHistory />
+				<LockerPortfolioTxHistory tokens={tokens} />
 			</div>
 			{onboardingFlag && renderLockerOnboardedModal()}
 			<LockerPortfolioWalletDetector />

@@ -173,26 +173,24 @@ export default function AutomateChainsModal() {
 
 	return (
 		<Dialog open={isOpen} onOpenChange={handleOpenChange}>
-			<DialogTrigger>
-				<div className="w-full">
-					<div className="flex w-full flex-row justify-between rounded-md p-2 shadow-md outline outline-1 outline-gray-300">
-						<div className="flex flex-row space-x-1">
-							{policies.map((policy) => (
-								<div
-									className="rounded-full"
-									key={`policy-div-${policy.chainId}`}
-								>
-									<ChainIcon
-										chainId={policy.chainId}
-										key={`icon-${policy.chainId}`}
-									/>
-								</div>
-							))}
-						</div>
+			<DialogTrigger className="w-full">
+				<div className="flex w-full flex-row justify-between rounded-md p-2 shadow-md outline outline-1 outline-gray-300">
+					<div className="flex flex-row space-x-1">
+						{policies.map((policy) => (
+							<div
+								className="rounded-full"
+								key={`policy-div-${policy.chainId}`}
+							>
+								<ChainIcon
+									chainId={policy.chainId}
+									key={`icon-${policy.chainId}`}
+								/>
+							</div>
+						))}
+					</div>
 
-						<div className="text-xxs text-gray-700 underline underline-offset-8">
-							Manage chains
-						</div>
+					<div className="text-xxs text-gray-700 underline underline-offset-8">
+						Manage chains
 					</div>
 				</div>
 			</DialogTrigger>

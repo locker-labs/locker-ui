@@ -1,12 +1,11 @@
 import { QrCode } from "lucide-react";
-import { formatUnits } from "viem";
 import { useChainId } from "wagmi";
 
 import { useLocker } from "@/providers/LockerProvider";
 import { Token } from "@/types";
-import { getChainNameFromId } from "@/utils/getChainName";
 
 import AutomateChainsModal from "./AutomateChainsModal";
+import LockerPortfolioTokens from "./LockerPortfolioTokens";
 import QrCodeModal from "./QrCodeModal";
 import { SendTokensModal } from "./SendTokensModal";
 
@@ -65,32 +64,7 @@ function LockerPortfolioValue({
 				<AutomateChainsModal />
 			</div>
 			<div className="hidden space-y-2 overflow-auto pr-2 sm:block sm:max-h-52">
-				{tokens.map((token) => {
-					const rawAmount = formatUnits(
-						BigInt(token.balance),
-						token.decimals
-					);
-
-					const key = `${token.chainId}-${token.address}`;
-					return (
-						<div key={key}>
-							<div className="flex flex-row justify-between">
-								<div className="flex flex-col">
-									<div className="text-sm font-semibold">
-										{token.symbol}
-									</div>
-									<div className="text-xxs text-gray-500">
-										{getChainNameFromId(token.chainId)}
-									</div>
-								</div>
-								<div className="text-xs font-semibold">
-									{rawAmount}
-								</div>
-							</div>
-							<hr />
-						</div>
-					);
-				})}
+				<LockerPortfolioTokens tokens={tokens} />
 			</div>
 		</div>
 	);
