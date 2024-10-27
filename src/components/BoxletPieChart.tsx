@@ -33,7 +33,6 @@ function BoxletPieChart({ boxlets, lineWidth }: IBoxletPieChart) {
 
 	// Add grey region for unallocated percent
 	const percentLeft = calcPercentLeft(boxlets);
-	console.log(`percentLeft ${percentLeft}`);
 	let data = dataWithoutZero;
 	if (percentLeft > 0) {
 		data = dataWithoutZero.concat({

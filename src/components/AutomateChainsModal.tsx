@@ -1,8 +1,9 @@
 import { useAuth } from "@clerk/nextjs";
-import Image from "next/image";
+import { useConnectModal } from "@rainbow-me/rainbowkit";
+import Link from "next/link";
 import { useState } from "react";
 import { checksumAddress } from "viem";
-import { useAccount, useChainId, useConnect, useSwitchChain } from "wagmi";
+import { useAccount, useChainId, useSwitchChain } from "wagmi";
 
 import {
 	Dialog,
@@ -14,11 +15,11 @@ import {
 } from "@/components/ui/dialog";
 import { errors } from "@/data/constants/errorMessages";
 import { supportedChains } from "@/data/constants/supportedChains";
+import { useToast } from "@/hooks/use-toast";
 import useSmartAccount from "@/hooks/useSmartAccount";
 import { useLocker } from "@/providers/LockerProvider";
 import { createPolicy, updatePolicy } from "@/services/lockers";
 import { Policy } from "@/types";
-import { filterConnectors } from "@/utils/filterConnectors";
 import getAutomations4Refresh from "@/utils/policies/getAutomations4Refresh";
 
 import ChainIcon from "./ChainIcon";
@@ -28,14 +29,23 @@ export default function AutomateChainsModal() {
 	const walletChainId = useChainId();
 	const { policies, locker, automations } = useLocker();
 	const { refreshPolicy } = useSmartAccount();
+	const [isOpen, setIsOpen] = useState(false);
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const [errorMessage, setErrorMessage] = useState<string | null>(null);
 	const { isConnected } = useAccount();
 	const { getToken } = useAuth();
-	const { connect, connectors } = useConnect();
+	const { openConnectModal } = useConnectModal();
 
-	const filteredConnectors = filterConnectors(connectors);
 	const { switchChain } = useSwitchChain();
+	const { toast } = useToast();
+
+	const handleOpenChange = (open: boolean) => {
+		if (isConnected) {
+			setIsOpen(open);
+		} else {
+			openConnectModal?.();
+		}
+	};
 
 	const createNewPolicy = async (
 		policyChainId: number,
@@ -118,6 +128,11 @@ export default function AutomateChainsModal() {
 			}
 		}
 
+		toast({
+			title: "Chain enabled",
+			description:
+				"Your locker will now follow perform your automation on this chain every time you get paid.",
+		});
 		setIsLoading(false);
 	};
 
@@ -157,47 +172,48 @@ export default function AutomateChainsModal() {
 	});
 
 	return (
-		<Dialog>
-			<DialogTrigger>
-				<button className="w-full">
-					<div className="flex w-full flex-row justify-between rounded-md p-2 shadow-md outline outline-1 outline-gray-300">
-						<div className="flex flex-row space-x-1">
-							{policies.map((policy) => (
-								// Grey out the chain if any automation has "automate_then_ready" status
-								// const isGreyedOut = policy.automations.some(
-								// 	(auto) =>
-								// 		auto.status ===
-								// 		EAutomationStatus.AUTOMATE_THEN_READY
-								// );
-
-								<div
-									className="rounded-full"
-									key={`policy-div-${policy.chainId}`}
-								>
-									<ChainIcon
-										chainId={policy.chainId}
-										key={`icon-${policy.chainId}`}
-									/>
-								</div>
-							))}
-						</div>
-
-						<div className="text-xxs text-gray-700 underline underline-offset-8">
-							Manage chains
-						</div>
+		<Dialog open={isOpen} onOpenChange={handleOpenChange}>
+			<DialogTrigger className="w-full">
+				<div className="flex w-full flex-row justify-between rounded-md p-2 shadow-md outline outline-1 outline-gray-300">
+					<div className="flex flex-row space-x-1">
+						{policies.map((policy) => (
+							<div
+								className="rounded-full"
+								key={`policy-div-${policy.chainId}`}
+							>
+								<ChainIcon
+									chainId={policy.chainId}
+									key={`icon-${policy.chainId}`}
+								/>
+							</div>
+						))}
 					</div>
-				</button>
+
+					<div className="text-xxs text-gray-700 underline underline-offset-8">
+						Manage chains
+					</div>
+				</div>
 			</DialogTrigger>
 
 			<DialogContent>
 				<DialogHeader>
-					<DialogTitle>Manage Chains</DialogTitle>
-					<DialogDescription className="text-sm">
+					<DialogTitle className="text-center">
+						Manage Chains
+					</DialogTitle>
+					<DialogDescription className="text-center text-sm">
 						Locker only has permission to move funds on the chains
-						you explicitly enable below.
+						you explicitly enable below.{" "}
+						<Link
+							href="https://docs.locker.money/privacy-and-security"
+							target="_blank"
+							className="text-locker-300"
+						>
+							Learn more
+						</Link>
+						.
 					</DialogDescription>
 				</DialogHeader>
-				<div className="max-h-96 overflow-y-auto">
+				<div className="max-h-[calc(100vh-200px)] overflow-y-auto p-1">
 					<div className="flex flex-col space-y-3 pb-2 pr-2 pt-2">
 						{sortedChains.map((chain) => {
 							const policy = policies.find(
@@ -216,6 +232,15 @@ export default function AutomateChainsModal() {
 										auto.status === "automate_then_ready"
 								);
 
+							// open connect modal if not connceted
+							// otherwise create/refresh policy
+							let onEnable = openConnectModal;
+							if (isConnected) {
+								onEnable = () =>
+									isAutomateThenReady
+										? createNewPolicy(chain.id, true)
+										: createNewPolicy(chain.id);
+							}
 							const enableButton = (
 								<div
 									key={`enable-${chain.id}`}
@@ -234,14 +259,7 @@ export default function AutomateChainsModal() {
 									{!isEnabled ? (
 										<button
 											className="flex items-center justify-center rounded-sm bg-locker-600 px-4 py-2 text-xxs text-white outline outline-2 hover:bg-locker-400"
-											onClick={() =>
-												isAutomateThenReady
-													? createNewPolicy(
-															chain.id,
-															true
-														)
-													: createNewPolicy(chain.id)
-											}
+											onClick={onEnable}
 											disabled={isLoading}
 										>
 											{isAutomateThenReady
@@ -256,65 +274,7 @@ export default function AutomateChainsModal() {
 								</div>
 							);
 
-							if (
-								isConnected ||
-								isEnabled ||
-								isAutomateThenReady
-							) {
-								return enableButton;
-							}
-
-							return (
-								<Dialog key={chain.id}>
-									<DialogTrigger>
-										{enableButton}
-									</DialogTrigger>
-									<DialogContent>
-										<DialogHeader>
-											<DialogTitle>
-												Connect your wallet
-											</DialogTitle>
-											<DialogDescription className="text-gray-600">
-												You must connect with the owner
-												of this locker:{" "}
-												{locker?.ownerAddress}
-											</DialogDescription>
-										</DialogHeader>
-										<div className="flex w-full flex-col items-center justify-center space-y-2">
-											{filteredConnectors.map(
-												(connector) => (
-													<button
-														className="hover:bg-light-300 flex h-fit w-full min-w-44 items-center justify-center rounded-md bg-gray-50 p-2 outline outline outline-1 outline-gray-300"
-														key={connector.uid}
-														onClick={() =>
-															connect({
-																connector,
-															})
-														}
-													>
-														<div className="flex w-36 items-center">
-															<Image
-																className="mr-4"
-																src={
-																	connector.icon
-																}
-																alt={`${connector.name} Icon`}
-																height={45}
-																width={45}
-															/>
-															<span className="whitespace-nowrap">
-																{
-																	connector.label
-																}
-															</span>
-														</div>
-													</button>
-												)
-											)}
-										</div>
-									</DialogContent>
-								</Dialog>
-							);
+							return enableButton;
 						})}
 					</div>
 				</div>

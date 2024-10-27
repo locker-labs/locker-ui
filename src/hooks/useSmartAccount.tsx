@@ -167,8 +167,6 @@ const useSmartAccount = () => {
 			new Set(offrampAddressesData!.map((item) => item.address))
 		) as `0x${string}`[];
 
-		console.log("offrampAddresses", chainId, offrampAddresses);
-
 		const hotWalletAutomation = automations.find(
 			(a) => a.type === EAutomationType.FORWARD_TO
 		);
@@ -223,10 +221,12 @@ const useSmartAccount = () => {
 		const bundlerRpcUrl = getBundler(chainId);
 		const paymasterRpcUrl = getPaymaster(chainId);
 
+		if (!chain) throw new Error("No chain defined");
+
 		const kernelAccountClient = createKernelAccountClient({
 			account: kernelAccountObj,
 			entryPoint: ENTRYPOINT_ADDRESS_V07,
-			chain,
+			chain: chain!,
 			bundlerTransport: http(bundlerRpcUrl),
 			middleware: {
 				sponsorUserOperation: async ({ userOperation }) => {

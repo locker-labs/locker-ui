@@ -15,11 +15,10 @@ import {
 	IconPaid,
 	IconPlus,
 } from "@/components/Icons";
+import Loader from "@/components/Loader";
 import StepInfo from "@/components/StepInfo";
 import { paths } from "@/data/constants/paths";
 import lockerPaths from "@/data/lottie/lockerPaths.json";
-
-import Loading from "./loading";
 
 const LottieAnimation = dynamic(() => import("@/components/LottieAnimation"), {
 	ssr: false,
@@ -73,7 +72,7 @@ export default function LandingPage() {
 				</p>
 			</div>
 
-			<Suspense fallback={<Loading />}>
+			<Suspense fallback={<Loader />}>
 				<div className="mb-[1rem] flex flex-row items-center space-x-6">
 					<AuthButton type="sign-up" label="Sign Up" />
 					<AuthButton type="sign-in" label="Sign In" />
@@ -96,11 +95,11 @@ export default function LandingPage() {
 	);
 
 	return (
-		<main className="px-4 py-4 lg:p-10 xl:px-[6rem] xl:py-[4rem]">
+		<main className="px-4 py-4 sm:max-w-[1100px] lg:p-10 xl:py-[2rem]">
 			<div className="bg-light-100 text-dark-500 lg:gap-x-18 mb-24 grid grid-flow-row-dense gap-y-2 sm:grid-cols-2 sm:gap-x-12 xl:gap-x-24">
 				<div className="space-y-4 sm:max-w-[480px]">{intro}</div>
 				<div className="grid grid-cols-1 space-y-8 xs:grid-cols-12 sm:max-w-[520px]">
-					<Suspense fallback={<Loading />}>
+					<Suspense fallback={<Loader />}>
 						<div className="col-span-12 xs:col-span-10 xs:col-start-2">
 							<LottieAnimation animationData={lockerPaths} />
 						</div>

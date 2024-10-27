@@ -22,7 +22,9 @@ export const useRealtimeTable = <T extends { id: number }>(
 	const subscribeToTable = useCallback(async () => {
 		let jwt;
 		try {
+			// console.log("Subscribing to table", tableName);
 			jwt = await getJwt();
+			// console.log("Got JWT for table", tableName);
 		} catch (e) {
 			return () => {};
 		}
@@ -56,9 +58,9 @@ export const useRealtimeTable = <T extends { id: number }>(
 					},
 					// eslint-disable-next-line @typescript-eslint/no-explicit-any
 					(rawPayload: any) => {
-						console.log("got event", rawPayload);
+						// console.log("got event", rawPayload);
 						const payload = convertKeysToCamelCase(rawPayload);
-						console.log("adaptedPayload", payload);
+						// console.log("adaptedPayload", payload);
 
 						if (
 							payload.eventType ===
@@ -94,15 +96,15 @@ export const useRealtimeTable = <T extends { id: number }>(
 					}
 				)
 				.subscribe(async (status, error) => {
-					console.log(`[${tableName}]: `, status);
+					// console.log(`[${tableName}]: `, status);
 					if (
 						status === REALTIME_SUBSCRIBE_STATES.CLOSED &&
 						lastChannelState ===
 							REALTIME_SUBSCRIBE_STATES.SUBSCRIBED
 					) {
-						console.log(
-							"Channel closed (e.g. JWT expiration), resubscribing..."
-						);
+						// console.log(
+						// 	"Channel closed (e.g. JWT expiration), resubscribing..."
+						// );
 						await refreshToken();
 						cleanup();
 						subscribe();

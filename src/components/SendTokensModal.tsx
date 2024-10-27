@@ -1,3 +1,4 @@
+import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { Send } from "lucide-react";
 import { useEffect, useState } from "react";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
@@ -10,33 +11,37 @@ import TokenDropdown from "@/components/TokenDropdown";
 import { Button } from "@/components/ui/button";
 import {
 	Dialog,
-	DialogClose, // <-- Import DialogClose
+	DialogClose,
 	DialogContent,
 	DialogDescription,
 	DialogFooter,
 	DialogHeader,
 	DialogTitle,
-	DialogTrigger,
 } from "@/components/ui/dialog";
 import { errors } from "@/data/constants/errorMessages";
 import { successes } from "@/data/constants/successMessages";
+import { useToast } from "@/hooks/use-toast";
 import useSmartAccount from "@/hooks/useSmartAccount";
+import { cn } from "@/lib/utils";
 import { useLocker } from "@/providers/LockerProvider";
+import { useSendTokensModal } from "@/providers/SendTokensModalProvider";
 import { Token } from "@/types";
 
-export interface ISendTokensModal {
-	tokens: Token[];
-}
-
-export function SendTokensModal({ tokens }: ISendTokensModal) {
+export function SendTokensModal() {
+	const { isOpen, openModal, closeModal, tokens } = useSendTokensModal();
 	const { locker } = useLocker();
+	const {
+		isConnected: isWalletConnected,
+		address,
+		chainId: walletChainId,
+	} = useAccount();
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const [selectedToken, setSelectedToken] = useState<Token>(tokens[0]);
 	const [sendToAddress, setSendToAddress] = useState<string>("");
 	const [amountInput, setAmountInput] = useState<string>("");
 	const [amount, setAmount] = useState<bigint>(BigInt(0));
 	const [errorMessage, setErrorMessage] = useState<string>("");
-	const [successMessage, setSuccessMessage] = useState<string>("");
+	const { openConnectModal } = useConnectModal();
 
 	const [chainSwitched, setChainSwitched] = useState<boolean>(false);
 	const [pendingTokenChainId, setPendingTokenChainId] = useState<
@@ -45,8 +50,8 @@ export function SendTokensModal({ tokens }: ISendTokensModal) {
 
 	const { sendUserOp } = useSmartAccount();
 	const { switchChain } = useSwitchChain();
-	const { chainId: walletChainId, address } = useAccount();
 	const { data: walletClient } = useWalletClient();
+	const { toast } = useToast();
 
 	const handleChainSwitch = async (tokenChainId: number) => {
 		switchChain({ chainId: tokenChainId });
@@ -83,20 +88,36 @@ export function SendTokensModal({ tokens }: ISendTokensModal) {
 			return;
 		}
 
-		const hash = await sendUserOp(
-			0,
-			selectedToken.chainId,
-			sendToAddress as `0x${string}`,
-			selectedToken.address,
-			amount
-		);
+		try {
+			await sendUserOp(
+				0,
+				selectedToken.chainId,
+				sendToAddress as `0x${string}`,
+				selectedToken.address,
+				amount
+			);
 
-		if (hash) {
-			setSuccessMessage(successes.SENT_TOKEN);
+			setSendToAddress("");
+			setAmountInput("");
+			setAmount(BigInt(0));
+			toast({
+				title: "Send successful",
+				description: successes.SENT_TOKEN,
+			});
+
+			closeModal();
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		} catch (err: any) {
+			console.error("Something unexpected happened trying to send.", err);
+			setErrorMessage(err.message);
+		} finally {
+			setIsLoading(false);
 		}
-
-		setIsLoading(false);
 	};
+
+	useEffect(() => {
+		setErrorMessage("");
+	}, [address]);
 
 	const isValid =
 		!isLoading &&
@@ -107,7 +128,7 @@ export function SendTokensModal({ tokens }: ISendTokensModal) {
 		amount <= BigInt(selectedToken.balance);
 
 	useEffect(() => {
-		if (!selectedToken && tokens) {
+		if (tokens.length > 0 && !selectedToken) {
 			setSelectedToken(tokens[0]);
 		}
 	}, [tokens]);
@@ -131,112 +152,146 @@ export function SendTokensModal({ tokens }: ISendTokensModal) {
 		}
 	}, [walletClient, pendingTokenChainId]);
 
-	return (
-		<Dialog>
-			<DialogTrigger asChild>
-				<button>
-					<div className="flex h-[3.6rem] w-[3.6rem] flex-col items-center justify-center space-y-2 rounded-sm bg-gray-100 p-2 sm:space-y-1 sm:p-4">
-						<div className="sm:hidden">
-							<Send className="text-locker-600" size={24} />
-						</div>
-						<div className="hidden sm:block">
-							<Send className="text-locker-600" size={24} />
-						</div>
-						<p className="text-xxxs text-gray-500">Send</p>
-					</div>
-				</button>
-			</DialogTrigger>
-			<DialogContent className="sm:max-w-[640px]">
-				<DialogHeader>
-					<DialogTitle className="text-xl">
-						Transfer funds
-					</DialogTitle>
-					<DialogDescription className="text-sm text-gray-600">
-						{selectedToken
-							? "Withdraw from your locker to another on-chain address"
-							: "You must first deposit funds into your locker"}
-					</DialogDescription>
-				</DialogHeader>
-				{selectedToken && (
-					<div className="grid gap-4 py-4">
-						{/* Address Input */}
-						<div className="flex w-full flex-col space-y-1">
-							<span className="self-start font-semibold text-black">
-								Recipient address
-							</span>
-							<AddressInput
-								sendToAddress={sendToAddress}
-								setSendToAddress={setSendToAddress}
-								isLoading={isLoading}
-								setErrorMessage={setErrorMessage}
-								disabled={!!successMessage}
-							/>
-						</div>
-
-						{/* Token Dropdown */}
-						<div className="flex w-full flex-col space-y-1">
-							<span className="self-start text-xs font-bold text-black">
-								Token
-							</span>
-							<TokenDropdown
-								tokens={tokens}
-								selectedToken={selectedToken}
-								setSelectedToken={setSelectedToken}
-								disabled={!!successMessage}
-							/>
-						</div>
-
-						{/* Amount Input */}
-						<div className="flex w-full flex-col space-y-1">
-							<span className="self-start text-xs  font-bold text-black">
-								Amount
-							</span>
-							<CurrencyInput
-								isLoading={isLoading}
-								setAmount={setAmount}
-								amountInput={amountInput}
-								setAmountInput={setAmountInput}
-								maxAmount={BigInt(selectedToken?.balance || 0)}
-								token={selectedToken}
-								setErrorMessage={setErrorMessage}
-								disabled={!!successMessage}
-							/>
-						</div>
-					</div>
+	let cta = (
+		<DialogClose asChild className="mt-4">
+			<Button onClick={closeModal} className="w-full bg-locker-600">
+				Close
+			</Button>
+		</DialogClose>
+	);
+	if (!isWalletConnected) {
+		cta = (
+			<Button
+				disabled={!isValid}
+				onClick={() => handleSendUserOp()}
+				className={cn(
+					"w-full bg-locker-600",
+					!isValid
+						? "cursor-not-allowed opacity-80"
+						: "cursor-pointer bg-locker-600 opacity-100"
 				)}
-				<DialogFooter className="flex flex-col">
-					{successMessage || !selectedToken ? (
-						<DialogClose asChild>
-							<Button>Close</Button>
-						</DialogClose>
-					) : (
-						<Button
-							disabled={!isValid}
-							onClick={() => handleSendUserOp()}
-							className={`${!isValid ? "cursor-not-allowed bg-locker-600 opacity-80" : "cursor-pointer bg-locker-600 opacity-100"}`}
-						>
-							{isLoading ? (
-								<AiOutlineLoading3Quarters
-									className="animate-spin"
-									size={22}
-								/>
-							) : (
-								"Send"
-							)}
-						</Button>
-					)}
-					{errorMessage && (
-						<span className="text-sm text-error">
-							{errorMessage}
-						</span>
-					)}
-					{successMessage && (
-						<span className="mt-6 text-success">
-							{successMessage}
-						</span>
-					)}
-				</DialogFooter>
-			</DialogContent>
-		</Dialog>
+			>
+				{isLoading ? (
+					<AiOutlineLoading3Quarters
+						className="animate-spin"
+						size={22}
+					/>
+				) : (
+					"Send"
+				)}
+			</Button>
+		);
+	} else if (selectedToken) {
+		cta = (
+			<Button
+				disabled={!isValid}
+				onClick={() => handleSendUserOp()}
+				className={cn(
+					"w-full bg-locker-600",
+					!isValid
+						? "cursor-not-allowed opacity-80"
+						: "cursor-pointer bg-locker-600 opacity-100"
+				)}
+			>
+				{isLoading ? (
+					<AiOutlineLoading3Quarters
+						className="animate-spin"
+						size={22}
+					/>
+				) : (
+					"Send"
+				)}
+			</Button>
+		);
+	}
+
+	const onOpenModal = isWalletConnected ? openModal : openConnectModal;
+	return (
+		<>
+			<button onClick={onOpenModal}>
+				<div className="flex h-[3.6rem] w-[3.6rem] flex-col items-center justify-center space-y-2 rounded-sm bg-gray-100 p-2 sm:space-y-1 sm:p-4">
+					<div className="sm:hidden">
+						<Send className="text-locker-600" size={24} />
+					</div>
+					<div className="hidden sm:block">
+						<Send className="text-locker-600" size={24} />
+					</div>
+					<p className="text-xxxs text-gray-500">Send</p>
+				</div>
+			</button>
+
+			<Dialog open={isOpen} onOpenChange={closeModal}>
+				<DialogContent className="sm:max-w-[640px]">
+					<DialogHeader>
+						<DialogTitle className="text-center text-xl">
+							Transfer funds
+						</DialogTitle>
+						<DialogDescription className="text-center text-sm text-gray-600">
+							{selectedToken
+								? "Withdraw from your locker to another on-chain address."
+								: "You must first deposit funds into your locker."}
+						</DialogDescription>
+					</DialogHeader>
+
+					{/* Scrollable Content */}
+					<div className="max-h-[calc(100vh-200px)] overflow-y-auto">
+						{selectedToken && (
+							<div className="grid gap-4 py-4">
+								<div className="flex w-full flex-col space-y-1">
+									<span className="self-start font-semibold text-black">
+										Recipient address
+									</span>
+									<AddressInput
+										sendToAddress={sendToAddress}
+										setSendToAddress={setSendToAddress}
+										isLoading={isLoading}
+										setErrorMessage={setErrorMessage}
+									/>
+								</div>
+								<div className="flex w-full flex-col space-y-1">
+									<span className="self-start font-semibold text-black">
+										Token
+									</span>
+									<TokenDropdown
+										tokens={tokens}
+										selectedToken={selectedToken}
+										setSelectedToken={setSelectedToken}
+									/>
+								</div>
+								<div className="flex w-full flex-col space-y-1">
+									<span className="self-start font-semibold text-black">
+										Amount
+									</span>
+									<CurrencyInput
+										isLoading={isLoading}
+										setAmount={setAmount}
+										amountInput={amountInput}
+										setAmountInput={setAmountInput}
+										maxAmount={BigInt(
+											selectedToken?.balance || 0
+										)}
+										token={selectedToken}
+										setErrorMessage={setErrorMessage}
+										disabled={false}
+									/>
+								</div>
+							</div>
+						)}
+						<DialogFooter>
+							<div className="flex w-full flex-col">
+								{cta}
+								<div className="flex w-full flex-col">
+									{errorMessage && (
+										<div className="text-sm text-error">
+											{errorMessage}
+										</div>
+									)}
+								</div>
+							</div>
+						</DialogFooter>
+					</div>
+				</DialogContent>
+			</Dialog>
+		</>
 	);
 }

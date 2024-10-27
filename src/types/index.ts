@@ -64,9 +64,19 @@ export enum EAutomationStatus {
 	FAILED = "failed",
 }
 
+// How the user wants to treat the automation
+// If a user activates offramp, then deactivates it.
+// The status will be READY because KYC is already done
+// But the userState will be "off"
+export enum EAutomationUserState {
+	ON = "on",
+	OFF = "off",
+}
+
 export type Automation = {
 	type: EAutomationType;
 	allocation: number; // 0 - 1
+	// Determines if automation can be used
 	status: EAutomationStatus; // Always "ready" for "savings" or "forward_to" types
 	recipientAddress?: `0x${string}`; // Required if forward_to or off_ramp
 	name?: string;
@@ -74,6 +84,10 @@ export type Automation = {
 	goal_amount?: string;
 	// contract address not used because price is chain agnostic
 	goal_currency_symbol?: string;
+	// Determines if user wants the automation to be active
+	// If field is missing, then app assumes the automation is on.
+	// This is done in order to be backwards compatible
+	userState?: EAutomationUserState;
 };
 
 export type Policy = {
