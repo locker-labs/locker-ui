@@ -43,11 +43,11 @@ export default function SavingsGoalProgress({
 		ethUsd &&
 		new Big(portfolioValue).div(ethUsd).mul(automation.allocation);
 	const usdSaved = new Big(portfolioValue).mul(automation.allocation);
-	// Set amount saved to 0, <0.0001, or rounded to 4 decimal places
+	// Set amount saved to 0, <0.001, or rounded to 4 decimal places
 	let roundedEthSaved = "0";
 	if (ethSaved) {
-		if (ethSaved.gte(0.0001)) roundedEthSaved = ethSaved.toFixed(4);
-		else if (ethSaved.gt(0)) roundedEthSaved = "<0.0001";
+		if (ethSaved.gte(0.001)) roundedEthSaved = ethSaved.toFixed(3);
+		else if (ethSaved.gt(0)) roundedEthSaved = "<0.001";
 	}
 	const amountSaved = ethUsd ? `${roundedEthSaved} ETH` : `$${usdSaved}`;
 
@@ -57,7 +57,10 @@ export default function SavingsGoalProgress({
 			: 0;
 
 	let floor = DEFAULT_BOXLETS[EAutomationType.GOAL_EFROGS].subtitle;
-	if (efrogsFloorEth) floor = `${efrogsFloorEth} ${floor}`;
+	if (efrogsFloorEth) {
+		const shortFloor = Big(efrogsFloorEth).toFixed(3);
+		floor = `${shortFloor} ${floor}`;
+	}
 	return (
 		<div
 			className={cn(
