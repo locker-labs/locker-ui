@@ -84,9 +84,7 @@ export function SetupOfframpModal() {
 				</DialogHeader>
 				<div className="mt-6 flex h-full w-full flex-col items-center justify-center">
 					{/* Display loader while iframe is loading */}
-					{(isIframeLoading || isLoading) && (
-						<Loader className="animate-spin" size={32} />
-					)}
+					{(isIframeLoading || isLoading) && <Loader />}
 					{/* Only display the iframe if the offrampUrl is set */}
 					{offrampUrl && (
 						<iframe
