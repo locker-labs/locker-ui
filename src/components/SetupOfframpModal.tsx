@@ -1,5 +1,5 @@
 import { useAuth } from "@clerk/nextjs";
-import { Loader, TriangleAlert } from "lucide-react";
+import { TriangleAlert } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 
@@ -15,6 +15,8 @@ import {
 import { useLocker } from "@/providers/LockerProvider";
 import { createOfframp } from "@/services/lockers";
 
+import Loader from "./Loader";
+
 export function SetupOfframpModal() {
 	const { getToken } = useAuth();
 	const { locker } = useLocker();
@@ -29,7 +31,7 @@ export function SetupOfframpModal() {
 		if (authToken && locker?.address) {
 			setIsLoading(true);
 			const url = await createOfframp(authToken, locker.address);
-			setOfframpUrl(url);
+			setOfframpUrl(`${url}&hideCloseIcon=true`);
 			setIsLoading(false);
 
 			// Only open the dialog after the offrampUrl is set
@@ -49,7 +51,7 @@ export function SetupOfframpModal() {
 					disabled={isLoading}
 				>
 					{isLoading ? (
-						<Loader className="animate-spin" size={20} />
+						<Loader />
 					) : (
 						<>
 							<TriangleAlert
@@ -64,10 +66,12 @@ export function SetupOfframpModal() {
 					)}
 				</button>
 			</DialogTrigger>
-			<DialogContent className="sm:max-w-1/2 overflow-hidden">
+			<DialogContent className="sm:max-w-1/2 max-h-[calc(100vh-200px)] overflow-y-auto">
 				<DialogHeader>
-					<DialogTitle>Identity verification</DialogTitle>
-					<DialogDescription>
+					<DialogTitle className="text-center">
+						Identity verification
+					</DialogTitle>
+					<DialogDescription className="text-center">
 						Your identity is securely verified with Beam. Offramp to
 						your debit card in seconds once complete.{" "}
 						<Link
@@ -80,9 +84,7 @@ export function SetupOfframpModal() {
 				</DialogHeader>
 				<div className="mt-6 flex h-full w-full flex-col items-center justify-center">
 					{/* Display loader while iframe is loading */}
-					{(isIframeLoading || isLoading) && (
-						<Loader className="animate-spin" size={32} />
-					)}
+					{(isIframeLoading || isLoading) && <Loader />}
 					{/* Only display the iframe if the offrampUrl is set */}
 					{offrampUrl && (
 						<iframe
