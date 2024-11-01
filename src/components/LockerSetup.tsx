@@ -54,6 +54,12 @@ function LockerSetup() {
 	};
 
 	useEffect(() => {
+		setErrorMessage("");
+	}, [chainId]);
+
+	useEffect(() => {
+		setErrorMessage("");
+
 		// Prefill forwarding address with owner's address unless it already has a value
 		if (address && !boxlets[EAutomationType.FORWARD_TO].forwardToAddress)
 			updateBoxlet({

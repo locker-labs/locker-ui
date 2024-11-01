@@ -70,7 +70,7 @@ function LockerPortfolioSavingsGoals({
 			))}
 		</>
 	) : (
-		<div className="flex flex-col items-center justify-center space-y-4">
+		<div className="flex h-full flex-col items-center justify-center space-y-4">
 			<p className="rounded-sm bg-gray-300 p-3 text-center text-white sm:p-5">
 				<PiggyBank size={28} />
 			</p>

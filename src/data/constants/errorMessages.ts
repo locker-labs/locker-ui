@@ -1,7 +1,7 @@
 import { supportedChainNames } from "./supportedChains";
 
 export const errors = {
-	UNSUPPORTED_CHAIN: `Your wallet's current network is unsupported. Please switch to a supported chain: ${supportedChainNames}`,
+	UNSUPPORTED_CHAIN: `Your wallet's current network is unsupported. Please switch to a supported chain: ${supportedChainNames()}`,
 	LOCKER_CONFLICT:
 		"A Locker already exists for this wallet address on this chain. Please switch to a different account in your wallet.",
 	LOCKER_NOT_FOUND: "Locker not found.",

@@ -17,8 +17,8 @@ function LockerPortfolioTokens({ tokens }: ILockerPortfolioTokens) {
 	// Show loader if there are transactions but no tokens
 	if (!tokens) {
 		if (txs.length > 0) return <Loader />;
-		// if there are not transactions, don't di
-		return <p>No tokens in locker</p>;
+		// if there are not transactions, don't display anything
+		return null;
 	}
 
 	return (
