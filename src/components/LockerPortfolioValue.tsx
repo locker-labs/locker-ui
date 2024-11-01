@@ -11,7 +11,7 @@ import { SendTokensModal } from "./SendTokensModal";
 
 type ILockerPortfolioValue = {
 	portfolioValue: string;
-	tokens: Token[];
+	tokens: Token[] | undefined;
 };
 
 function LockerPortfolioValue({

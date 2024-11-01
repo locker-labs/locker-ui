@@ -6,7 +6,7 @@ import LockerPortfolioTokens from "./LockerPortfolioTokens";
 import LockerPortfolioTxHistoryTab from "./LockerPortfolioTxHistoryTab";
 
 type ILockerPortfolioTxHistory = {
-	tokens: Token[];
+	tokens: Token[] | undefined;
 };
 
 export default function LockerPortfolioTxHistory({

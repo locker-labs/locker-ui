@@ -9,7 +9,7 @@ interface SendTokensModalContextType {
 	isOpen: boolean;
 	openModal: () => void;
 	closeModal: () => void;
-	tokens: Token[];
+	tokens: Token[] | undefined;
 	setTokens: (tokens: Token[]) => void;
 }
 
@@ -23,7 +23,7 @@ export function SendTokensModalProvider({
 	children: React.ReactNode;
 }) {
 	const [isOpen, setIsOpen] = useState(false);
-	const [tokens, setTokens] = useState<Token[]>([]);
+	const [tokens, setTokens] = useState<Token[] | undefined>(undefined);
 
 	const openModal = () => setIsOpen(true);
 	const closeModal = () => setIsOpen(false);

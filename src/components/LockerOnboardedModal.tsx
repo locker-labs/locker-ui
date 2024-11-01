@@ -46,7 +46,7 @@ function LockerOnboardedModal({
 
 	return (
 		<Dialog open={isOpen} onOpenChange={handleCloseModal}>
-			<DialogContent className="max-w-[640px] p-6">
+			<DialogContent className="h-[95vh] max-w-[640px] overflow-y-auto p-6">
 				<DialogHeader className="flex items-center justify-between">
 					<div className="flex justify-center">
 						<IconGreenCheck />
@@ -56,7 +56,7 @@ function LockerOnboardedModal({
 					</DialogTitle>
 				</DialogHeader>
 
-				<div className="flex flex-col items-center space-y-4">
+				<div className="flex flex-col items-center space-y-4 ">
 					<DialogDescription className="text-center text-sm text-gray-600 sm:max-w-[400px]">
 						To start saving, fund your locker with ETH or ERC20
 						using the address below.

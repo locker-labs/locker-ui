@@ -14,7 +14,6 @@ import DistributionBox from "@/components/DistributionBox";
 import {
 	Dialog,
 	DialogContent,
-	DialogDescription,
 	DialogHeader,
 	DialogTitle,
 	DialogTrigger,
@@ -100,7 +99,7 @@ function EditAutomationsModal({
 	const handleUpdatePolicy = async () => {
 		setIsLoading(true);
 		setErrorMessage("");
-
+		console.log("handleUpdatePolicy");
 		// Validate inputs
 		if (isSaveSelected && !sendToAddress) {
 			setErrorMessage(errors.NO_ADDRESS);
@@ -147,10 +146,12 @@ function EditAutomationsModal({
 				automations,
 				boxlets
 			);
+			console.log("updatedAutomations", updatedAutomations);
 
 			// eslint-disable-next-line no-restricted-syntax
 			for (const policy of policies) {
 				// get new session key with current addresses
+				console.log("policy", policy);
 				if (walletChainId !== policy.id) {
 					// eslint-disable-next-line no-await-in-loop
 					await switchChain({ chainId: policy.id });
@@ -163,6 +164,7 @@ function EditAutomationsModal({
 				});
 				// console.log("sig", sig);
 				if (!sig) {
+					console.error("Error creating session key");
 					setIsLoading(false);
 					setErrorMessage(
 						"Something went wrong with session key creation. Please try again."
@@ -175,12 +177,15 @@ function EditAutomationsModal({
 					sessionKey: sig as string,
 					automations: updatedAutomations,
 				};
+				console.log("newPolicy", newPolicy);
 
 				// eslint-disable-next-line no-await-in-loop
 				const authToken = await getToken();
 				if (authToken) {
+					console.log("Updating policy");
 					// eslint-disable-next-line no-await-in-loop
 					await updatePolicy(authToken, newPolicy, setErrorMessage);
+					console.log("Policy updated");
 				}
 			}
 
@@ -310,7 +315,7 @@ function EditAutomationsModal({
 					<DialogTitle className="text-center">
 						Edit your locker
 					</DialogTitle>
-					<DialogDescription className="flex flex-row justify-center text-center">
+					<div className="flex flex-row justify-center text-center">
 						<div className="sm:max-w-[640px]">
 							Every time there is a deposit into your locker,
 							money is distributed according to your rules below.
@@ -324,7 +329,7 @@ function EditAutomationsModal({
 							</Link>
 							.
 						</div>
-					</DialogDescription>
+					</div>
 				</DialogHeader>
 				<div className="grid grid-cols-2 gap-4 overflow-y-auto py-4">
 					{leftPanel}

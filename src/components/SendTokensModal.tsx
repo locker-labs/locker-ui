@@ -36,7 +36,9 @@ export function SendTokensModal() {
 		chainId: walletChainId,
 	} = useAccount();
 	const [isLoading, setIsLoading] = useState<boolean>(false);
-	const [selectedToken, setSelectedToken] = useState<Token>(tokens[0]);
+	const [selectedToken, setSelectedToken] = useState<Token | undefined>(
+		tokens ? tokens[0] : undefined
+	);
 	const [sendToAddress, setSendToAddress] = useState<string>("");
 	const [amountInput, setAmountInput] = useState<string>("");
 	const [amount, setAmount] = useState<bigint>(BigInt(0));
@@ -78,6 +80,12 @@ export function SendTokensModal() {
 			return;
 		}
 
+		if (!selectedToken) {
+			setErrorMessage(`${errors.NO_TOKEN_SELECTED}`);
+			setIsLoading(false);
+			return;
+		}
+
 		if (walletChainId !== selectedToken.chainId) {
 			await handleChainSwitch(selectedToken.chainId);
 			return;
@@ -99,15 +107,21 @@ export function SendTokensModal() {
 			);
 			console.log(`Sent tokens ${hash}`);
 
-			setSendToAddress("");
-			setAmountInput("");
-			setAmount(BigInt(0));
-			toast({
-				title: "Send successful",
-				description: successes.SENT_TOKEN,
-			});
+			if (hash) {
+				setSendToAddress("");
+				setAmountInput("");
+				setAmount(BigInt(0));
+				toast({
+					title: "Send successful",
+					description: successes.SENT_TOKEN,
+				});
 
-			closeModal();
+				closeModal();
+			}
+
+			setErrorMessage(
+				"Something went wrong. This is normally because of stale nonces. Wait for all your transactions to be confirmed, then try again"
+			);
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		} catch (err: any) {
 			console.error("Something unexpected happened trying to send.", err);
@@ -125,12 +139,12 @@ export function SendTokensModal() {
 		!isLoading &&
 		!errorMessage &&
 		sendToAddress &&
-		!!selectedToken.balance &&
+		!!selectedToken?.balance &&
 		amount > BigInt(0) &&
 		amount <= BigInt(selectedToken.balance);
 
 	useEffect(() => {
-		if (tokens.length > 0 && !selectedToken) {
+		if (tokens && tokens.length > 0 && !selectedToken) {
 			setSelectedToken(tokens[0]);
 		}
 	}, [tokens]);
@@ -141,6 +155,7 @@ export function SendTokensModal() {
 	}, [selectedToken]);
 
 	useEffect(() => {
+		if (!selectedToken) return;
 		if (chainSwitched && walletChainId === selectedToken.chainId) {
 			handleSendUserOp();
 			setChainSwitched(false);
@@ -255,7 +270,7 @@ export function SendTokensModal() {
 										Token
 									</span>
 									<TokenDropdown
-										tokens={tokens}
+										tokens={tokens || []}
 										selectedToken={selectedToken}
 										setSelectedToken={setSelectedToken}
 									/>

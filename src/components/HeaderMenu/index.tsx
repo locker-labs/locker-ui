@@ -1,35 +1,27 @@
 import { useClerk } from "@clerk/nextjs";
 import { Menu, Transition } from "@headlessui/react";
+import { Wallet } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
 import { GrConnect } from "react-icons/gr";
 import {
-	IoCheckboxOutline,
-	IoCopyOutline,
 	IoLogOutOutline,
 	IoSettingsOutline,
 	IoWalletOutline,
 	IoWarningOutline,
 } from "react-icons/io5";
-import { useAccount, useBalance, useDisconnect } from "wagmi";
+import { useAccount, useDisconnect } from "wagmi";
 
 import ChainIcon from "@/components/ChainIcon";
 import Button from "@/components/HeaderMenu/Button";
 import { paths } from "@/data/constants/paths";
-import { copyToClipboard } from "@/utils/copytoClipboard";
 import { isChainSupported } from "@/utils/isChainSupported";
-import { truncateAddress } from "@/utils/truncateAddress";
+import { truncateAddressShort } from "@/utils/truncateAddress";
 
 function HeaderMenu() {
-	const [copied, setCopied] = useState<boolean>(false);
-
 	const router = useRouter();
 	const { signOut } = useClerk();
 	const { address, chain, isConnected } = useAccount();
 	const { disconnect } = useDisconnect();
-	const { data: balance } = useBalance({
-		address,
-	});
 
 	const connectedItems = (
 		<>
@@ -41,12 +33,7 @@ function HeaderMenu() {
 							chainId={chain.id}
 							size="16px"
 						/>
-						<span className="whitespace-nowrap">
-							{parseFloat(balance?.formatted as string).toFixed(
-								7
-							)}{" "}
-							{balance?.symbol}
-						</span>
+						<span className="whitespace-nowrap">{chain.name}</span>
 					</>
 				) : (
 					<>
@@ -60,26 +47,9 @@ function HeaderMenu() {
 					</>
 				)}
 			</div>
-			<div className="flex w-full flex-col">
-				<button
-					className="hover:bg-light-300 flex w-full items-center p-2 outline-none "
-					onClick={() =>
-						copyToClipboard(address as string, setCopied)
-					}
-				>
-					{copied ? (
-						<IoCheckboxOutline
-							className="mr-3 flex shrink-0 items-center justify-center text-success"
-							size="16px"
-						/>
-					) : (
-						<IoCopyOutline
-							className="mr-3 flex shrink-0 items-center justify-center"
-							size="16px"
-						/>
-					)}
-					<span>{truncateAddress(address as `0x${string}`)}</span>
-				</button>
+			<div className="flex w-full flex-row items-center p-2">
+				<Wallet className="mr-3 flex h-[16px] w-[16px] shrink-0 items-center justify-center" />
+				<span>{truncateAddressShort(address as `0x${string}`)}</span>
 			</div>
 		</>
 	);

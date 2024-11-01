@@ -21,4 +21,5 @@ export const errors = {
 	INVALID_AMOUNT: "Invalid amount.",
 	WALLET_DISCONNECTED: "Wallet is not connected.",
 	MISSING_AUTOMATIONS: "Old automations missing and cannot be updated.",
+	NO_TOKEN_SELECTED: "No token selected.",
 };

@@ -6,3 +6,12 @@ export const truncateAddress = (address: `0x${string}`): string => {
 	if (!match) return address;
 	return `${match[1]}...${match[2]}`;
 };
+
+export const truncateAddressShort = (address: `0x${string}`): string => {
+	if (!address) return "No Account";
+	const match = address.match(
+		/^(0x[a-zA-Z0-9]{2})[a-zA-Z0-9]+([a-zA-Z0-9]{3})$/
+	);
+	if (!match) return address;
+	return `${match[1]}...${match[2]}`;
+};
