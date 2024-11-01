@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { formatUnits } from "viem";
 
+import { useLocker } from "@/providers/LockerProvider";
 import { Token } from "@/types";
 
 import ChainIcon from "./ChainIcon";
@@ -11,8 +12,13 @@ type ILockerPortfolioTokens = {
 };
 
 function LockerPortfolioTokens({ tokens }: ILockerPortfolioTokens) {
+	const { txs } = useLocker();
+
+	// Show loader if there are transactions but no tokens
 	if (!tokens) {
-		return <Loader />;
+		if (txs.length > 0) return <Loader />;
+		// if there are not transactions, don't di
+		return <p>No tokens in locker</p>;
 	}
 
 	return (
