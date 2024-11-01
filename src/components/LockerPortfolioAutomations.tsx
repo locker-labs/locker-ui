@@ -14,7 +14,8 @@ export interface ILockerPortfolioAutomations {
 function LockerPortfolioAutomations({
 	automations,
 }: ILockerPortfolioAutomations) {
-	const boxlets = adaptAutomations2Boxlets(automations);
+	const activeAutomations = getActiveAutomations(automations);
+	const boxlets = adaptAutomations2Boxlets(activeAutomations);
 	return (
 		<div className="flex flex-col space-y-6">
 			<div className="flex flex-col justify-between">
@@ -30,7 +31,7 @@ function LockerPortfolioAutomations({
 					</div>
 				</div>
 				<div className="col-span-2 space-y-3 pt-3">
-					{getActiveAutomations(automations).map((automation) => {
+					{activeAutomations.map((automation) => {
 						const { color, title } =
 							DEFAULT_BOXLETS[automation.type];
 						const isOfframpPending =

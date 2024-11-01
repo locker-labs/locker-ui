@@ -99,15 +99,21 @@ export function SendTokensModal() {
 			);
 			console.log(`Sent tokens ${hash}`);
 
-			setSendToAddress("");
-			setAmountInput("");
-			setAmount(BigInt(0));
-			toast({
-				title: "Send successful",
-				description: successes.SENT_TOKEN,
-			});
+			if (hash) {
+				setSendToAddress("");
+				setAmountInput("");
+				setAmount(BigInt(0));
+				toast({
+					title: "Send successful",
+					description: successes.SENT_TOKEN,
+				});
 
-			closeModal();
+				closeModal();
+			}
+
+			setErrorMessage(
+				"Something went wrong. This is normally because of stale nonces. Wait for all your transactions to be confirmed, then try again"
+			);
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		} catch (err: any) {
 			console.error("Something unexpected happened trying to send.", err);

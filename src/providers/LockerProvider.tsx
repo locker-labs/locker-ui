@@ -48,7 +48,7 @@ export function LockerProvider({
 		TABLE_POLICIES,
 		initialPolicies
 	);
-	console.log("Policy records", policies);
+	// console.log("Policy records", policies);
 
 	const { records: offrampAddresses } = useRealtimeTable<IOfframpAddress>(
 		TABLE_OFFRAMP_ADDRESSES,
