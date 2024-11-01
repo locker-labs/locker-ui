@@ -76,7 +76,10 @@ function LockerPortfolio() {
 		// in development, there will sometimes be no transactions in DB,
 		// but there will be tokens with balance from previous usage
 
-		if (locker && (filteredTxs.length > 0 || tokens.length > 0)) {
+		if (
+			locker &&
+			(filteredTxs.length > 0 || (tokens?.length && tokens.length > 0))
+		) {
 			const mainnetChainIds = supportedChainIdsArray.filter(
 				(chainId) => !isTestnet(chainId)
 			);
@@ -97,7 +100,7 @@ function LockerPortfolio() {
 	};
 
 	useEffect(() => {
-		if (filteredTxs.length > 0 || tokens.length > 0) {
+		if (filteredTxs.length > 0 || (tokens?.length && tokens.length > 0)) {
 			fetchLockerNetWorth();
 		}
 	}, [txs, tokens]); // filteredTxs is not a state variable and will cause re-renders if used instead

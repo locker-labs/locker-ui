@@ -36,7 +36,9 @@ export function SendTokensModal() {
 		chainId: walletChainId,
 	} = useAccount();
 	const [isLoading, setIsLoading] = useState<boolean>(false);
-	const [selectedToken, setSelectedToken] = useState<Token>(tokens[0]);
+	const [selectedToken, setSelectedToken] = useState<Token | undefined>(
+		tokens ? tokens[0] : undefined
+	);
 	const [sendToAddress, setSendToAddress] = useState<string>("");
 	const [amountInput, setAmountInput] = useState<string>("");
 	const [amount, setAmount] = useState<bigint>(BigInt(0));
@@ -74,6 +76,12 @@ export function SendTokensModal() {
 			setErrorMessage(
 				`${errors.UNAUTHORIZED} Expected wallet: ${locker?.ownerAddress}`
 			);
+			setIsLoading(false);
+			return;
+		}
+
+		if (!selectedToken) {
+			setErrorMessage(`${errors.NO_TOKEN_SELECTED}`);
 			setIsLoading(false);
 			return;
 		}
@@ -131,12 +139,12 @@ export function SendTokensModal() {
 		!isLoading &&
 		!errorMessage &&
 		sendToAddress &&
-		!!selectedToken.balance &&
+		!!selectedToken?.balance &&
 		amount > BigInt(0) &&
 		amount <= BigInt(selectedToken.balance);
 
 	useEffect(() => {
-		if (tokens.length > 0 && !selectedToken) {
+		if (tokens && tokens.length > 0 && !selectedToken) {
 			setSelectedToken(tokens[0]);
 		}
 	}, [tokens]);
@@ -147,6 +155,7 @@ export function SendTokensModal() {
 	}, [selectedToken]);
 
 	useEffect(() => {
+		if (!selectedToken) return;
 		if (chainSwitched && walletChainId === selectedToken.chainId) {
 			handleSendUserOp();
 			setChainSwitched(false);
@@ -261,7 +270,7 @@ export function SendTokensModal() {
 										Token
 									</span>
 									<TokenDropdown
-										tokens={tokens}
+										tokens={tokens || []}
 										selectedToken={selectedToken}
 										setSelectedToken={setSelectedToken}
 									/>

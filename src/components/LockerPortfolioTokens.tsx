@@ -4,12 +4,17 @@ import { formatUnits } from "viem";
 import { Token } from "@/types";
 
 import ChainIcon from "./ChainIcon";
+import Loader from "./Loader";
 
 type ILockerPortfolioTokens = {
-	tokens: Token[];
+	tokens: Token[] | undefined;
 };
 
 function LockerPortfolioTokens({ tokens }: ILockerPortfolioTokens) {
+	if (!tokens) {
+		return <Loader />;
+	}
+
 	return (
 		<>
 			{tokens.map((token) => {
@@ -18,17 +23,23 @@ function LockerPortfolioTokens({ tokens }: ILockerPortfolioTokens) {
 					token.decimals
 				);
 
-				const valueUsd = token.valueUsd
-					? token.valueUsd.toFixed(2)
-					: "0.00";
-				const valueUsdChange = token.valueUsdChange
-					? Math.abs(token.valueUsdChange).toFixed(2)
-					: "0.00";
+				let valueUsd = "0.00";
+				if (token && token.valueUsd) {
+					valueUsd = token.valueUsd.toFixed(2);
+				}
+
+				const valueUsdChange = "0.00";
 				let valueChangeColor = "black";
-				if (token && token.valueUsdChange > 0)
-					valueChangeColor = "green";
-				if (token && token.valueUsdChange < 0)
-					valueChangeColor = "red-500";
+
+				if (token && token.valueUsdChange) {
+					valueUsd = Math.abs(token.valueUsdChange).toFixed(2);
+					if (token.valueUsdChange > 0) {
+						valueChangeColor = "green";
+					}
+					if (token.valueUsdChange < 0) {
+						valueChangeColor = "red-500";
+					}
+				}
 
 				const key = `${token.chainId}-${token.address}`;
 				return (
