@@ -35,19 +35,20 @@ function LockerPortfolioSavingsGoals({
 			return;
 		}
 
-		getCollectionFloor().then(setEfrogsFloor);
-	}, []);
+		if (hasGoals) getCollectionFloor().then(setEfrogsFloor);
+	}, [automations]);
 
 	// get ETHUSD
 	useEffect(() => {
-		getErc20Price()
-			.then(({ usdPrice }) => {
-				setEthUsd(usdPrice);
-			})
-			.catch((error) => {
-				console.error(error);
-			});
-	}, []);
+		if (hasGoals)
+			getErc20Price()
+				.then(({ usdPrice }) => {
+					setEthUsd(usdPrice);
+				})
+				.catch((error) => {
+					console.error(error);
+				});
+	}, [automations]);
 
 	const body = hasGoals ? (
 		<>
