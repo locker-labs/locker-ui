@@ -34,11 +34,11 @@ function LockerPortfolioTokens({ tokens }: ILockerPortfolioTokens) {
 					valueUsd = token.valueUsd.toFixed(2);
 				}
 
-				const valueUsdChange = "0.00";
+				let valueUsdChange = "0.00";
 				let valueChangeColor = "black";
 
 				if (token && token.valueUsdChange) {
-					valueUsd = Math.abs(token.valueUsdChange).toFixed(2);
+					valueUsdChange = Math.abs(token.valueUsdChange).toFixed(2);
 					if (token.valueUsdChange > 0) {
 						valueChangeColor = "green";
 					}
