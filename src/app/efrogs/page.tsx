@@ -1,6 +1,7 @@
 import React from "react";
 
 import BasicPage from "@/components/BasicPage";
+import { paths, pathStrings } from "@/data/constants/paths";
 
 export default function EfrogsPage() {
 	return (
@@ -19,8 +20,11 @@ export default function EfrogsPage() {
 			<p className="mb-4">Locker</p>
 			<p className="mb-4">
 				<strong>Contact Information:</strong>{" "}
-				<a href="mailto:locker@geeky.rocks" className="text-blue-500">
-					locker@geeky.rocks
+				<a
+					href={pathStrings.CONTACT_EMAIL_MAILTO}
+					className="text-blue-500"
+				>
+					{paths.CONTACT_EMAIL}
 				</a>
 			</p>
 			<p className="mb-4">
@@ -55,12 +59,12 @@ export default function EfrogsPage() {
 				</li>
 				<li>
 					<strong>Free Entry by Mail:</strong> To enter without
-					purchase, mail a handwritten postcard with your name, Locker
-					address, and a statement expressing your intent to enter the
-					Sweepstakes to: Locker, 400 Poydras St, Suite 900, New
-					Orleans, LA. Mail-in entries must be received by January 7,
-					2025, or by the earlier drawing date if participation goals
-					have been met.
+					purchase, mail a letter with your name, Locker address, and
+					a statement expressing your intent to enter the Sweepstakes
+					to: Locker, 400 Poydras St, Suite 900, New Orleans, LA.
+					Mail-in entries must be received by January 7, 2025, or by
+					the earlier drawing date if participation goals have been
+					met.
 				</li>
 			</ul>
 
@@ -134,8 +138,11 @@ export default function EfrogsPage() {
 			<p className="mb-4">
 				To obtain a copy of the winner&apos;s name, please send a
 				request to{" "}
-				<a href="mailto:locker@geeky.rocks" className="text-blue-500">
-					locker@geeky.rocks
+				<a
+					href={pathStrings.CONTACT_EMAIL_MAILTO}
+					className="text-blue-500"
+				>
+					{paths.CONTACT_EMAIL}
 				</a>{" "}
 				by January 31, 2025, or within 30 days of an earlier drawing
 				date if applicable.

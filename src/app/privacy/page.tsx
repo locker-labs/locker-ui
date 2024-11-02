@@ -1,6 +1,7 @@
 import React from "react";
 
 import BasicPage from "@/components/BasicPage";
+import { paths, pathStrings } from "@/data/constants/paths";
 
 export default function PrivacyPage() {
 	return (
@@ -108,8 +109,11 @@ export default function PrivacyPage() {
 			</p>
 			<p className="mb-4">
 				To request the deletion of transaction history logs, email us at{" "}
-				<a href="mailto:privacy@geeky.rocks" className="text-blue-500">
-					privacy@geeky.rocks
+				<a
+					href={pathStrings.CONTACT_EMAIL_MAILTO}
+					className="text-blue-500"
+				>
+					{paths.CONTACT_EMAIL}
 				</a>
 				.
 			</p>
@@ -122,8 +126,11 @@ export default function PrivacyPage() {
 				regarding your personal information under applicable privacy
 				laws, such as the right to access, correct, or delete your data.
 				To exercise these rights, contact us at{" "}
-				<a href="mailto:privacy@geeky.rocks" className="text-blue-500">
-					privacy@geeky.rocks
+				<a
+					href={pathStrings.CONTACT_EMAIL_MAILTO}
+					className="text-blue-500"
+				>
+					{paths.CONTACT_EMAIL}
 				</a>
 				.
 			</p>
@@ -143,8 +150,11 @@ export default function PrivacyPage() {
 			<p className="mb-4">
 				If you have any questions about this privacy policy, please
 				contact us at{" "}
-				<a href="mailto:privacy@geeky.rocks" className="text-blue-500">
-					privacy@geeky.rocks
+				<a
+					href={pathStrings.CONTACT_EMAIL_MAILTO}
+					className="text-blue-500"
+				>
+					{paths.CONTACT_EMAIL}
 				</a>
 				.
 			</p>
