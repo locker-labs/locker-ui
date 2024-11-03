@@ -1,14 +1,17 @@
 import React from "react";
 
+import BasicPage from "@/components/BasicPage";
+import { paths, pathStrings } from "@/data/constants/paths";
+
 export default function PrivacyPage() {
 	return (
-		<div className="container mx-auto px-1 py-8 text-black sm:px-4">
-			<h1 className="mb-6 text-xl font-bold">Privacy Policy</h1>
-			<p className="mb-4">Last Updated: Oct 20, 2024</p>
+		<BasicPage>
+			<p className="mb-6 text-center text-xl font-bold">Privacy Policy</p>
+			<p className="mb-4 text-center">Last Updated: Oct 20, 2024</p>
 
-			<h2 className="mb-4 mt-6 text-lg font-semibold">
+			<p className="mb-4 mt-6 text-lg font-semibold">
 				1. Information We Collect
-			</h2>
+			</p>
 			<p className="mb-4">
 				We collect information when you use our Services, including:
 			</p>
@@ -26,9 +29,9 @@ export default function PrivacyPage() {
 				</li>
 			</ul>
 
-			<h2 className="mb-4 mt-6 text-lg font-semibold">
+			<p className="mb-4 mt-6 text-lg font-semibold">
 				2. How We Use Your Information
-			</h2>
+			</p>
 			<p className="mb-4">
 				We process your information for the following purposes:
 			</p>
@@ -106,8 +109,11 @@ export default function PrivacyPage() {
 			</p>
 			<p className="mb-4">
 				To request the deletion of transaction history logs, email us at{" "}
-				<a href="mailto:privacy@geeky.rocks" className="text-blue-500">
-					privacy@geeky.rocks
+				<a
+					href={pathStrings.CONTACT_EMAIL_MAILTO}
+					className="text-blue-500"
+				>
+					{paths.CONTACT_EMAIL}
 				</a>
 				.
 			</p>
@@ -120,8 +126,11 @@ export default function PrivacyPage() {
 				regarding your personal information under applicable privacy
 				laws, such as the right to access, correct, or delete your data.
 				To exercise these rights, contact us at{" "}
-				<a href="mailto:privacy@geeky.rocks" className="text-blue-500">
-					privacy@geeky.rocks
+				<a
+					href={pathStrings.CONTACT_EMAIL_MAILTO}
+					className="text-blue-500"
+				>
+					{paths.CONTACT_EMAIL}
 				</a>
 				.
 			</p>
@@ -141,11 +150,14 @@ export default function PrivacyPage() {
 			<p className="mb-4">
 				If you have any questions about this privacy policy, please
 				contact us at{" "}
-				<a href="mailto:privacy@geeky.rocks" className="text-blue-500">
-					privacy@geeky.rocks
+				<a
+					href={pathStrings.CONTACT_EMAIL_MAILTO}
+					className="text-blue-500"
+				>
+					{paths.CONTACT_EMAIL}
 				</a>
 				.
 			</p>
-		</div>
+		</BasicPage>
 	);
 }

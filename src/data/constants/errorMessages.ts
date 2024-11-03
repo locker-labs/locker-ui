@@ -1,3 +1,4 @@
+import { paths } from "./paths";
 import { supportedChainNames } from "./supportedChains";
 
 export const errors = {
@@ -16,8 +17,8 @@ export const errors = {
 	AT_LEAST_ONE: "Must choose at least one.",
 	SUM_TO_100: "Percentages must add up to 100%.",
 	INVALID_INVITE: "Invalid invite code.",
-	NO_LOCKER: "No locker. Contact support@geeky.rocks.",
-	NO_AUTOMATIONS: "No automations. Contact support@geeky.rocks.",
+	NO_LOCKER: `No locker. Contact ${paths.CONTACT_EMAIL}.`,
+	NO_AUTOMATIONS: `No automations. Contact ${paths.CONTACT_EMAIL}.`,
 	INVALID_AMOUNT: "Invalid amount.",
 	WALLET_DISCONNECTED: "Wallet is not connected.",
 	MISSING_AUTOMATIONS: "Old automations missing and cannot be updated.",
