@@ -1,6 +1,7 @@
 import "@/styles/globals.css";
 
 import { HighlightInit } from "@highlight-run/next/client";
+import { GoogleAnalytics } from "@next/third-parties/google";
 import { Analytics as VercelAnalytics } from "@vercel/analytics/react";
 import type { Metadata, Viewport } from "next";
 // eslint-disable-next-line camelcase
@@ -28,6 +29,7 @@ export default function RootLayout({
 }: Readonly<{
 	children: ReactNode;
 }>) {
+	const gTagId = process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID;
 	return (
 		<>
 			<HighlightInit
@@ -61,6 +63,7 @@ export default function RootLayout({
 					</Suspense>
 					<Toaster />
 				</body>
+				{gTagId && <GoogleAnalytics gaId={gTagId} />}
 			</html>
 		</>
 	);
