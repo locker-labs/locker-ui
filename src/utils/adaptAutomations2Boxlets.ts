@@ -11,6 +11,8 @@ export default function adaptAutomations2Boxlets(automations: Automation[]) {
 				type,
 				allocation,
 				recipientAddress: forwardToAddress,
+				extraId,
+				color,
 			} = automation;
 
 			// On if it has a positive allocation, or if it's type is always on by default
@@ -20,12 +22,15 @@ export default function adaptAutomations2Boxlets(automations: Automation[]) {
 					: EAutomationUserState.ON;
 
 			return [
-				automation.type,
+				extraId || automation.type,
 				{
+					// If there are multiple TRANSFER_TO, then they should have the same title, but a random color
 					...DEFAULT_BOXLETS[type],
 					percent: Math.round(allocation * 100),
 					forwardToAddress,
 					state,
+					extraId,
+					color,
 				},
 			];
 		})

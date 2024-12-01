@@ -6,7 +6,7 @@ import { Pencil } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
-import { checksumAddress, isAddress } from "viem";
+import { checksumAddress } from "viem";
 import { useAccount, useChainId, useSwitchChain } from "wagmi";
 
 import BoxletPieChart from "@/components/BoxletPieChart";
@@ -25,9 +25,12 @@ import useSmartAccount from "@/hooks/useSmartAccount";
 import { calcPercentLeft, IDistributionBoxlet } from "@/lib/boxlets";
 import { useLocker } from "@/providers/LockerProvider";
 import { updatePolicy } from "@/services/lockers";
-import { EAutomationType, Policy } from "@/types";
+import { EAutomationType, EAutomationUserState, Policy } from "@/types";
 import adaptAutomations2Boxlets from "@/utils/adaptAutomations2Boxlets";
+import { getRandColor } from "@/utils/colors";
 import getAutomations4Boxlets from "@/utils/policies/getAutomations4Boxlets";
+import { genRandString } from "@/utils/strings";
+import validateBoxlets from "@/utils/validateBoxlets";
 
 import DistributionBoxExtra from "./DistributionBoxExtra";
 
@@ -48,17 +51,41 @@ function EditAutomationsModal({
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const [isOpen, setIsOpen] = useState<boolean>(false); // State to control modal visibility
 	const { isConnected: isWalletConnected } = useAccount();
-	const defaultBoxlets =
-		automations && automations.length > 0
-			? adaptAutomations2Boxlets(automations)
-			: DEFAULT_BOXLETS;
 	const walletChainId = useChainId();
 	const { switchChain } = useSwitchChain();
 	const { address } = useAccount();
 
-	// Initialize with current policy automations and any default automations, not included
-	const [boxlets, setBoxlets] = useState({
+	const defaultBoxlets =
+		automations && automations.length > 0
+			? adaptAutomations2Boxlets(automations)
+			: DEFAULT_BOXLETS;
+
+	const defaultBoxletsWithExtra = {
 		...defaultBoxlets,
+	};
+
+	const extraBoxlet = Object.values(defaultBoxletsWithExtra).find(
+		(boxlet) =>
+			boxlet.state === EAutomationUserState.OFF &&
+			boxlet.id === EAutomationType.FORWARD_TO
+	);
+
+	console.log("extraBoxlet", extraBoxlet);
+	if (!extraBoxlet) {
+		const extraId = `${EAutomationType.FORWARD_TO}-${genRandString(8)}`;
+		defaultBoxletsWithExtra[extraId] = {
+			...DEFAULT_BOXLETS[EAutomationType.FORWARD_TO],
+			id: EAutomationType.FORWARD_TO,
+			state: EAutomationUserState.OFF,
+			percent: 5,
+			extraId,
+			color: getRandColor(),
+		};
+	}
+
+	console.log("defaultBoxletsWithExtra", defaultBoxletsWithExtra);
+	const [boxlets, setBoxlets] = useState({
+		...defaultBoxletsWithExtra,
 		...adaptAutomations2Boxlets(automations || []),
 	});
 	const { toast } = useToast();
@@ -69,24 +96,15 @@ function EditAutomationsModal({
 	const { refreshPolicy } = useSmartAccount();
 
 	const updateBoxlet = (updatedBoxlet: IDistributionBoxlet) => {
+		console.log("updatedBoxlet", updatedBoxlet);
 		setBoxlets((prevBoxlets) => ({
 			...prevBoxlets,
-			[updatedBoxlet.id]: updatedBoxlet, // Override the existing boxlet with the same id
+			[updatedBoxlet.extraId || updatedBoxlet.id]: updatedBoxlet, // Override the existing boxlet with the same id
 		}));
+		setErrorMessage("");
 	};
 
-	const isSaveSelected =
-		boxlets[EAutomationType.SAVINGS] &&
-		boxlets[EAutomationType.SAVINGS].percent > 0;
-
-	const isForwardSelected =
-		boxlets[EAutomationType.FORWARD_TO] &&
-		boxlets[EAutomationType.FORWARD_TO].percent > 0;
-
-	const sendToAddress = boxlets[EAutomationType.FORWARD_TO].forwardToAddress;
 	const percentLeft = calcPercentLeft(boxlets);
-
-	const isForwardToMissing = isForwardSelected && !isAddress(sendToAddress!);
 
 	const handleOpenChange = (open: boolean) => {
 		if (isWalletConnected) {
@@ -101,14 +119,10 @@ function EditAutomationsModal({
 		setErrorMessage("");
 		console.log("handleUpdatePolicy");
 		// Validate inputs
-		if (isSaveSelected && !sendToAddress) {
-			setErrorMessage(errors.NO_ADDRESS);
-			setIsLoading(false);
-			return;
-		}
-
-		if (isForwardToMissing) {
-			setErrorMessage(errors.RECIPIENT_EVM);
+		const boxletError = validateBoxlets(boxlets);
+		console.log("boxletError", boxletError);
+		if (boxletError) {
+			setErrorMessage(boxletError);
 			setIsLoading(false);
 			return;
 		}
@@ -142,9 +156,14 @@ function EditAutomationsModal({
 		// Iterate over all policies and update each one
 		try {
 			// The same automations are set for all chains/policies
-			const updatedAutomations = getAutomations4Boxlets(
+			const _updatedAutomations = getAutomations4Boxlets(
 				automations,
 				boxlets
+			);
+			console.log("_updatedAutomations", _updatedAutomations);
+
+			const updatedAutomations = _updatedAutomations.filter(
+				(automation) => automation.userState === EAutomationUserState.ON
 			);
 			console.log("updatedAutomations", updatedAutomations);
 

@@ -20,6 +20,7 @@ function DistributionBoxlet({
 	boxlet: IDistributionBoxlet;
 	updateBoxlet: (boxlet: IDistributionBoxlet) => void;
 }) {
+	console.log("DistributionBoxlet -> boxlet", boxlet);
 	const { title: boxletTitle, color, percent } = boxlet;
 
 	// Handle percent change for both Slider and input
@@ -44,7 +45,7 @@ function DistributionBoxlet({
 		handlePercentChange(newPercent);
 	};
 
-	const isForwardTo = boxlet.id === EAutomationType.FORWARD_TO;
+	const isForwardTo = boxlet.id?.includes(EAutomationType.FORWARD_TO);
 	const isOfframp = boxlet.id === EAutomationType.OFF_RAMP;
 	const isGoal =
 		boxlet.id === EAutomationType.GOAL_EFROGS ||
@@ -77,19 +78,20 @@ function DistributionBoxlet({
 						</TooltipProvider>
 					</div>
 				</div>
-				{isGoal && (
-					<button
-						aria-label="Remove savings goal"
-						onClick={() => {
-							updateBoxlet({
-								...boxlet,
-								state: EAutomationUserState.OFF,
-							});
-						}}
-					>
-						<Trash2 className="size-[0.9rem] text-gray-500" />
-					</button>
-				)}
+				{isGoal ||
+					(isForwardTo && (
+						<button
+							aria-label="Remove automation"
+							onClick={() => {
+								updateBoxlet({
+									...boxlet,
+									state: EAutomationUserState.OFF,
+								});
+							}}
+						>
+							<Trash2 className="size-[0.9rem] text-gray-500" />
+						</button>
+					))}
 			</div>
 
 			{/* Offramp restrictions */}

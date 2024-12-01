@@ -2,6 +2,8 @@ import { EAutomationUserState } from "@/types";
 
 export type IDistributionBoxlet = {
 	id: string;
+	// ID is being used as type, so we need to add an extraId for when there's multiples of the same type
+	extraId?: string;
 	title: string;
 	// used for efrogs floor price
 	subtitle?: string;

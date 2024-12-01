@@ -1,10 +1,7 @@
 import { PieChart } from "react-minimal-pie-chart";
 
-import {
-	calcPercentLeft,
-	getBoxletsOn,
-	IDistributionBoxlet,
-} from "@/lib/boxlets";
+import { calcPercentLeft, IDistributionBoxlet } from "@/lib/boxlets";
+import { EAutomationUserState } from "@/types";
 
 export interface IBoxletPieChart {
 	boxlets: { [id: string]: IDistributionBoxlet };
@@ -12,15 +9,20 @@ export interface IBoxletPieChart {
 }
 
 function BoxletPieChart({ boxlets, lineWidth }: IBoxletPieChart) {
-	// Remove non-zero boxlets
+	console.log("BoxletPieChart", boxlets);
+	// Remove boxlets with zero allocation
 	const nonZero = { ...boxlets };
-	getBoxletsOn(boxlets).forEach((kv) => {
-		// console.log(`boxlet pie ${kv[0]}`);
-		// console.log(kv[1]);
-		// console.log(kv[1].percent === 0);
+	Object.entries(boxlets).forEach(([boxletId, boxlet]) => {
+		console.log(`boxlet pie ${boxletId}`);
+		console.log(boxlet);
+		console.log(boxlet.percent === 0);
 
-		if (kv[1].percent === 0) delete nonZero[kv[0]];
+		const shouldDelete =
+			boxlet.percent === 0 || boxlet.state === EAutomationUserState.OFF;
+		if (shouldDelete) delete nonZero[boxletId];
 	});
+
+	console.log("nonZero", nonZero);
 
 	// Convert to pie chart format
 	const dataWithoutZero = Object.values(nonZero).map((boxlet) => ({
@@ -40,6 +42,7 @@ function BoxletPieChart({ boxlets, lineWidth }: IBoxletPieChart) {
 			color: "#EAECF0",
 		});
 	}
+	console.log("data", data);
 	// confusing to have negative value in pie chart
 	// else if (percentLeft < 0) {
 	// 	data = dataWithoutZero.concat({

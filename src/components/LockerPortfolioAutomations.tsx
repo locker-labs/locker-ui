@@ -32,8 +32,10 @@ function LockerPortfolioAutomations({
 				</div>
 				<div className="col-span-2 space-y-3 pt-3">
 					{activeAutomations.map((automation) => {
-						const { color, title } =
-							DEFAULT_BOXLETS[automation.type];
+						const { title } = DEFAULT_BOXLETS[automation.type];
+						const color =
+							automation.color ||
+							DEFAULT_BOXLETS[automation.type]?.color;
 						const isOfframpPending =
 							automation.type === EAutomationType.OFF_RAMP &&
 							automation.status === EAutomationStatus.NEW;

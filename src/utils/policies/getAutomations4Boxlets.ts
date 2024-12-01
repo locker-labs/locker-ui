@@ -20,17 +20,30 @@ export default function getAutomations4Boxlets(
 	const updatedAutomations = Object.values(boxlets).map((boxlet) => {
 		const defaultAutomation = {
 			type: boxlet.id as EAutomationType,
-			status: EAutomationStatus.NEW,
+			name: boxlet.title,
+			color: boxlet.color,
+			// status: EAutomationStatus.NEW,
 			userState: EAutomationUserState.ON,
 		};
 		const automation =
-			automations.find((a) => a.type === boxlet.id) || defaultAutomation;
+			automations.find(
+				(a) =>
+					// By type if no extraId, or by extraId if it exists
+					(!boxlet.extraId && a.type === boxlet.id) ||
+					(boxlet.extraId && a.extraId === boxlet.extraId)
+			) || defaultAutomation;
 
 		// Convert the percentage from the boxlet into the allocation (fractional form)
 		const allocation = Number(formatUnits(BigInt(boxlet.percent), 2));
 
 		// Create the updated automation object
 		const updatedAutomation: Automation = {
+			extraId: boxlet.extraId,
+			color: boxlet.color,
+			status:
+				boxlet.id === EAutomationType.OFF_RAMP
+					? EAutomationStatus.NEW
+					: EAutomationStatus.READY,
 			...automation, // Keeps original status and type
 			allocation, // Updated allocation from boxlet
 			userState: boxlet.state,

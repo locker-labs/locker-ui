@@ -138,7 +138,7 @@ function LockerSetup() {
 		// 1. Get user to sign session key
 		const sig = await signSessionKey(
 			0, // lockerIndex
-			sendToAddress as `0x${string}`, // hotWalletAddress
+			[sendToAddress] as `0x${string}`[], // hotWalletAddress
 			[] // offrampAddress will always be undefined at this point
 		);
 		if (!sig) {

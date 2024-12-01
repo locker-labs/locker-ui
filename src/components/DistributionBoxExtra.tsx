@@ -9,11 +9,12 @@ interface IDistributionBox {
 }
 
 function DistributionBoxExtra({ boxlets, updateBoxlet }: IDistributionBox) {
+	const extraBoxlets = getBoxletsOff(boxlets);
 	return (
 		<div className="flex w-full flex-col space-y-4 rounded-md bg-locker-25 p-4 ">
 			<p className="font-bold">Add a savings goal</p>
 			<div className="grid w-full grid-cols-1 items-center gap-4 sm:grid-cols-2">
-				{getBoxletsOff(boxlets).map(([boxletId, boxlet]) => {
+				{extraBoxlets.map(([boxletId, boxlet]) => {
 					// function that is called on click
 					// call updateBoxlet with boxlet.state set to "on"
 					const onClick = () => {

@@ -56,7 +56,7 @@ const useSmartAccount = () => {
 	// ************************************************************* //
 	const signSessionKey = async (
 		lockerIndex: number,
-		hotWalletAddress: `0x${string}`, // If not specified, defaults locker owner address
+		hotWalletAddresses: `0x${string}`[], // If not specified, defaults locker owner address
 		offrampAddresses: `0x${string}`[]
 	): Promise<string | undefined> => {
 		if (!walletClient) {
@@ -85,7 +85,7 @@ const useSmartAccount = () => {
 
 		// Policies to allow Locker agent to send money to user's hot wallet
 		let combinedPolicy;
-		const toAddresses = [hotWalletAddress, ...offrampAddresses];
+		const toAddresses = [...hotWalletAddresses, ...offrampAddresses];
 		// let hotWalletErc20Policy;
 		// let hotWalletNativePolicy;
 		if (toAddresses.length === 1) {
@@ -169,14 +169,18 @@ const useSmartAccount = () => {
 			new Set(offrampAddressesData!.map((item) => item.address))
 		) as `0x${string}`[];
 
-		const hotWalletAutomation = automations.find(
-			(a) => a.type === EAutomationType.FORWARD_TO
+		const hotWalletAddresses = automations
+			.filter(
+				(a) =>
+					a.type === EAutomationType.FORWARD_TO && a.recipientAddress
+			)
+			.map((a) => a.recipientAddress!);
+
+		const sig = await signSessionKey(
+			0,
+			hotWalletAddresses || [],
+			offrampAddresses
 		);
-
-		if (!hotWalletAutomation?.recipientAddress) return undefined;
-		const hotWalletAddress = hotWalletAutomation.recipientAddress;
-
-		const sig = await signSessionKey(0, hotWalletAddress, offrampAddresses);
 
 		return sig;
 	};

@@ -35,7 +35,7 @@ describe("getAutomations4Boxlets", () => {
 		expect(updatedAutomations[0]).toMatchObject({
 			type: EAutomationType.SAVINGS,
 			allocation: 0.5,
-			status: EAutomationStatus.NEW,
+			status: EAutomationStatus.READY,
 			userState: EAutomationUserState.ON,
 		});
 	});
