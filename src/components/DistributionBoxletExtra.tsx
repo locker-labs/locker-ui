@@ -10,16 +10,26 @@ function DistributionBoxletExtra({
 	boxletId: string;
 	boxlet: IDistributionBoxlet;
 }) {
-	const img =
-		boxletId === EAutomationType.GOAL_CUSTOM ? (
-			<IconSavingsGoal />
-		) : (
-			<IconEfrogs />
-		);
+	let img;
+	switch (boxletId) {
+		case EAutomationType.GOAL_CUSTOM:
+			img = <IconSavingsGoal />;
+			break;
+		case EAutomationType.GOAL_EFROGS:
+			img = <IconEfrogs />;
 
+			break;
+		default:
+			img = (
+				<div
+					className="flex size-7 shrink-0 items-center justify-center rounded-full"
+					style={{ backgroundColor: boxlet.color }}
+				/>
+			);
+	}
 	return (
 		<div className="flex flex-row items-center space-x-3 rounded-sm bg-white p-2">
-			<div>{img}</div>
+			<div className="flex h-[3.2rem] items-center">{img}</div>
 			<div className="flex flex-col text-left text-xs">
 				<div className="font-semibold">{boxlet.title}</div>
 				{boxlet.subtitle && (

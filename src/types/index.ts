@@ -80,6 +80,9 @@ export type Automation = {
 	status: EAutomationStatus; // Always "ready" for "savings" or "forward_to" types
 	recipientAddress?: `0x${string}`; // Required if forward_to or off_ramp
 	name?: string;
+	color?: string;
+	// a random ID used for the non-standard automations like the second transfer to
+	extraId?: string;
 	description?: string;
 	goal_amount?: string;
 	// contract address not used because price is chain agnostic
