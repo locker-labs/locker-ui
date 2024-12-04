@@ -21,18 +21,19 @@ export default function adaptAutomations2Boxlets(automations: Automation[]) {
 					? EAutomationUserState.OFF
 					: EAutomationUserState.ON;
 
-			return [
-				extraId || automation.type,
-				{
-					// If there are multiple TRANSFER_TO, then they should have the same title, but a random color
-					...DEFAULT_BOXLETS[type],
-					percent: Math.round(allocation * 100),
-					forwardToAddress,
-					state,
-					extraId,
-					color,
-				},
-			];
+			const boxlet = {
+				// If there are multiple TRANSFER_TO, then they should have the same title, but a random color
+				...DEFAULT_BOXLETS[type],
+				percent: Math.round(allocation * 100),
+				forwardToAddress,
+				state,
+				extraId,
+				// color,
+			};
+			if (color) {
+				boxlet.color = color;
+			}
+			return [extraId || automation.type, boxlet];
 		})
 	);
 
