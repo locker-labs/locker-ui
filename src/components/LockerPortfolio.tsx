@@ -15,6 +15,7 @@ import { isTestnet } from "@/utils/isTestnet";
 
 import { useLocker } from "../providers/LockerProvider";
 import LockerPortfolioAutomations from "./LockerPortfolioAutomations";
+import LockerPortfolioBanner from "./LockerPortfolioBanner";
 import LockerPortfolioSavingsGoals from "./LockerPortfolioSavingsGoals";
 import LockerPortfolioTxHistory from "./LockerPortfolioTxHistory";
 import LockerPortfolioValue from "./LockerPortfolioValue";
@@ -113,6 +114,7 @@ function LockerPortfolio() {
 
 	return (
 		<div className="flex w-full max-w-[55rem] flex-col space-y-4 bg-locker-25">
+			<LockerPortfolioBanner />
 			<div className="grid grid-flow-row-dense grid-cols-1 gap-4 lg:grid-cols-2 xl:grid-cols-11">
 				<div className="col-span-1 overflow-auto rounded-md bg-white p-4 lg:col-span-1 lg:h-96 xl:col-span-4">
 					<LockerPortfolioValue
