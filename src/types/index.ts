@@ -55,6 +55,12 @@ export enum EAutomationType {
 	GOAL_CUSTOM = "goal_custom",
 }
 
+export enum EAutomationBatchType {
+	EACH = "each",
+	HOURLY = "hourly",
+	DAILY = "daily",
+}
+
 export enum EAutomationStatus {
 	NEW = "new",
 	PENDING = "pending",
@@ -91,6 +97,8 @@ export type Automation = {
 	// If field is missing, then app assumes the automation is on.
 	// This is done in order to be backwards compatible
 	userState?: EAutomationUserState;
+	// Defaults to each
+	batchType?: EAutomationBatchType;
 };
 
 export type Policy = {

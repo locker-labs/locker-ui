@@ -1,5 +1,9 @@
 import { IDistributionBoxlet } from "@/lib/boxlets";
-import { EAutomationType, EAutomationUserState } from "@/types";
+import {
+	EAutomationBatchType,
+	EAutomationType,
+	EAutomationUserState,
+} from "@/types";
 
 export type IDistributionBoxlets = {
 	[id: string]: IDistributionBoxlet;
@@ -14,6 +18,7 @@ export const DEFAULT_BOXLETS: IDistributionBoxlets = {
 		tooltip:
 			"When payments are received, save this amount in your locker for later use.",
 		state: EAutomationUserState.ON,
+		batchType: EAutomationBatchType.EACH,
 	},
 
 	[EAutomationType.FORWARD_TO]: {

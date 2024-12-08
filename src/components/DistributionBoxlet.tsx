@@ -9,7 +9,11 @@ import {
 } from "@/components/ui/tooltip";
 import { disclosures } from "@/data/constants/disclosures";
 import { IDistributionBoxlet } from "@/lib/boxlets";
-import { EAutomationType, EAutomationUserState } from "@/types";
+import {
+	EAutomationBatchType,
+	EAutomationType,
+	EAutomationUserState,
+} from "@/types";
 
 import DistributionBoxletExtra from "./DistributionBoxletExtra";
 
@@ -151,6 +155,34 @@ function DistributionBoxlet({
 					</button>
 				</div>
 			</div>
+
+			{/* Batching */}
+			{isForwardTo && (
+				<div className="flex flex-col">
+					<span className="mb-1 text-xxs font-semibold text-gray-700">
+						Batch automations to save gas
+					</span>
+					<select
+						id="batchTypeSelect"
+						className="rounded-md border border-gray-300 bg-white p-2 text-xxs"
+						value={boxlet.batchType || EAutomationBatchType.EACH} // defaulting to 'EACH' if undefined
+						onChange={(e) =>
+							updateBoxlet({
+								...boxlet,
+								batchType: e.target
+									.value as EAutomationBatchType,
+							})
+						}
+					>
+						{Object.values(EAutomationBatchType).map((type) => (
+							<option key={type} value={type}>
+								{type.charAt(0) + type.toLowerCase().slice(1)}{" "}
+								{/* Capitalize the first letter */}
+							</option>
+						))}
+					</select>
+				</div>
+			)}
 
 			{/* Forwarding address */}
 			{isForwardTo && (
