@@ -24,6 +24,7 @@ export default function getAutomations4Boxlets(
 			color: boxlet.color,
 			// status: EAutomationStatus.NEW,
 			userState: EAutomationUserState.ON,
+			batchType: boxlet.batchType,
 		};
 		const automation =
 			automations.find(
@@ -47,6 +48,7 @@ export default function getAutomations4Boxlets(
 			...automation, // Keeps original status and type
 			allocation, // Updated allocation from boxlet
 			userState: boxlet.state,
+			batchType: boxlet.batchType,
 		};
 
 		// If the automation is of type 'forward_to', include the recipientAddress from the boxlet

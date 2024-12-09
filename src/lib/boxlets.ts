@@ -1,4 +1,4 @@
-import { EAutomationUserState } from "@/types";
+import { EAutomationBatchType, EAutomationUserState } from "@/types";
 
 export type IDistributionBoxlet = {
 	id: string;
@@ -12,6 +12,7 @@ export type IDistributionBoxlet = {
 	tooltip: string;
 	forwardToAddress?: string;
 	state: EAutomationUserState;
+	batchType?: EAutomationBatchType;
 };
 
 export type IBoxlets = {

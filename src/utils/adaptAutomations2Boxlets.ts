@@ -13,6 +13,7 @@ export default function adaptAutomations2Boxlets(automations: Automation[]) {
 				recipientAddress: forwardToAddress,
 				extraId,
 				color,
+				batchType,
 			} = automation;
 
 			// On if it has a positive allocation, or if it's type is always on by default
@@ -32,6 +33,9 @@ export default function adaptAutomations2Boxlets(automations: Automation[]) {
 			};
 			if (color) {
 				boxlet.color = color;
+			}
+			if (batchType) {
+				boxlet.batchType = batchType;
 			}
 			return [extraId || automation.type, boxlet];
 		})
