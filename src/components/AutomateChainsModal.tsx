@@ -1,5 +1,5 @@
 import { useAuth } from "@clerk/nextjs";
-import { useConnectModal } from "@rainbow-me/rainbowkit";
+import { useAppKit } from "@reown/appkit/react";
 import Link from "next/link";
 import { useState } from "react";
 import { checksumAddress } from "viem";
@@ -34,7 +34,7 @@ export default function AutomateChainsModal() {
 	const [errorMessage, setErrorMessage] = useState<string | null>(null);
 	const { isConnected } = useAccount();
 	const { getToken } = useAuth();
-	const { openConnectModal } = useConnectModal();
+	const { open: openConnectModal } = useAppKit();
 
 	const { switchChain } = useSwitchChain();
 	const { toast } = useToast();

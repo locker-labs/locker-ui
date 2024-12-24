@@ -1,3 +1,5 @@
+"use client";
+
 import {
 	getKernelAddressFromECDSA,
 	signerToEcdsaValidator,
@@ -46,6 +48,7 @@ import { TABLE_OFFRAMP_ADDRESSES } from "@/utils/supabase/tables";
 
 const useSmartAccount = () => {
 	const publicClient = usePublicClient();
+	console.log("!publicClient", publicClient);
 	const { data: walletClient } = useWalletClient();
 
 	if (!process.env.LOCKER_AGENT_ADDRESS)
@@ -59,6 +62,12 @@ const useSmartAccount = () => {
 		hotWalletAddresses: `0x${string}`[], // If not specified, defaults locker owner address
 		offrampAddresses: `0x${string}`[]
 	): Promise<string | undefined> => {
+		console.log(
+			"signSessionKey",
+			lockerIndex,
+			hotWalletAddresses,
+			offrampAddresses
+		);
 		if (!walletClient) {
 			throw new Error("Wallet client is not available");
 		}
@@ -113,11 +122,17 @@ const useSmartAccount = () => {
 				kernelVersion: KERNEL_V3_1,
 			}
 		);
+		const index = getZerodevIndex(lockerIndex);
+		console.log("index", index);
+		console.log("ENTRYPOINT_ADDRESS_V07", ENTRYPOINT_ADDRESS_V07);
+		console.log("KERNEL_V3_1", KERNEL_V3_1);
+		console.log("ecdsaValidator", ecdsaValidator);
+		console.log("permissionPlugin", permissionPlugin);
 		const kernelAccountObj = await createKernelAccount(
 			publicClient as PublicClient,
 			{
 				kernelVersion: KERNEL_V3_1,
-				index: getZerodevIndex(lockerIndex),
+				index,
 				entryPoint: ENTRYPOINT_ADDRESS_V07,
 				plugins: {
 					sudo: ecdsaValidator,
@@ -210,12 +225,19 @@ const useSmartAccount = () => {
 				kernelVersion: KERNEL_V3_1,
 			}
 		);
+		const index = getZerodevIndex(lockerIndex);
+		console.log("sendUserOp");
+		console.log("index", index);
+		console.log("publicClient", publicClient);
+		console.log("smartAccountSigner", smartAccountSigner);
+		console.log("ecdsaValidator", ecdsaValidator);
+		console.log("ENTRYPOINT_ADDRESS_V07", ENTRYPOINT_ADDRESS_V07);
 
 		const kernelAccountObj = await createKernelAccount(
 			publicClient as PublicClient,
 			{
 				kernelVersion: KERNEL_V3_1,
-				index: getZerodevIndex(lockerIndex),
+				index,
 				entryPoint: ENTRYPOINT_ADDRESS_V07,
 				plugins: {
 					sudo: ecdsaValidator,

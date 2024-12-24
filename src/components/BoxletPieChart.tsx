@@ -13,16 +13,16 @@ function BoxletPieChart({ boxlets, lineWidth }: IBoxletPieChart) {
 	// Remove boxlets with zero allocation
 	const nonZero = { ...boxlets };
 	Object.entries(boxlets).forEach(([boxletId, boxlet]) => {
-		console.log(`boxlet pie ${boxletId}`);
-		console.log(boxlet);
-		console.log(boxlet.percent === 0);
+		// console.log(`boxlet pie ${boxletId}`);
+		// console.log(boxlet);
+		// console.log(boxlet.percent === 0);
 
 		const shouldDelete =
 			boxlet.percent === 0 || boxlet.state === EAutomationUserState.OFF;
 		if (shouldDelete) delete nonZero[boxletId];
 	});
 
-	console.log("nonZero", nonZero);
+	// console.log("nonZero", nonZero);
 
 	// Convert to pie chart format
 	const dataWithoutZero = Object.values(nonZero).map((boxlet) => ({
