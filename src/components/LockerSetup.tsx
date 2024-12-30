@@ -1,7 +1,7 @@
 "use client";
 
 import { useAuth } from "@clerk/nextjs";
-import { useConnectModal } from "@rainbow-me/rainbowkit";
+import { useAppKit } from "@reown/appkit/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
@@ -14,7 +14,7 @@ import { errors } from "@/data/constants/errorMessages";
 import { paths } from "@/data/constants/paths";
 import useSmartAccount from "@/hooks/useSmartAccount";
 import { calcPercentLeft, IDistributionBoxlet } from "@/lib/boxlets";
-import { getCollectionFloor } from "@/lib/element";
+// import { getCollectionFloor } from "@/lib/element";
 import { useLocker } from "@/providers/LockerProvider";
 import { createLocker, createPolicy } from "@/services/lockers";
 import { EAutomationType, Locker, Policy } from "@/types";
@@ -35,7 +35,7 @@ function LockerSetup() {
 	const { chainId, address, isConnected } = useAccount();
 	const { signSessionKey } = useSmartAccount();
 	const [didUserClick, setDidUserClick] = useState(false);
-	const { openConnectModal } = useConnectModal();
+	const { open: openConnectModal } = useAppKit();
 	const [isChainSelectModalOpen, setIsChainSelectModalOpen] =
 		useState<boolean>(false); // Control for ChainSelectModal
 
@@ -70,14 +70,14 @@ function LockerSetup() {
 	}, [address]);
 
 	// get efrogs floor price on page load
-	useEffect(() => {
-		getCollectionFloor().then((floorPrice) => {
-			updateBoxlet({
-				...DEFAULT_BOXLETS[EAutomationType.GOAL_EFROGS],
-				subtitle: `${floorPrice} ${DEFAULT_BOXLETS[EAutomationType.GOAL_EFROGS].subtitle}`,
-			});
-		});
-	}, []);
+	// useEffect(() => {
+	// 	getCollectionFloor().then((floorPrice) => {
+	// 		updateBoxlet({
+	// 			...DEFAULT_BOXLETS[EAutomationType.GOAL_EFROGS],
+	// 			subtitle: `${floorPrice} ${DEFAULT_BOXLETS[EAutomationType.GOAL_EFROGS].subtitle}`,
+	// 		});
+	// 	});
+	// }, []);
 
 	const isSaveSelected =
 		boxlets[EAutomationType.SAVINGS] &&

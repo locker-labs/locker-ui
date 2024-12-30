@@ -1,7 +1,7 @@
 "use client";
 
 import { useAuth } from "@clerk/nextjs";
-import { useConnectModal } from "@rainbow-me/rainbowkit";
+import { useAppKit } from "@reown/appkit/react";
 import { Pencil } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
@@ -70,7 +70,7 @@ function EditAutomationsModal({
 			boxlet.id === EAutomationType.FORWARD_TO
 	);
 
-	console.log("extraBoxlet", extraBoxlet);
+	// console.log("extraBoxlet", extraBoxlet);
 	if (!extraBoxlet) {
 		const extraId = `${EAutomationType.FORWARD_TO}-${genRandString(8)}`;
 		defaultBoxletsWithExtra[extraId] = {
@@ -83,13 +83,13 @@ function EditAutomationsModal({
 		};
 	}
 
-	console.log("defaultBoxletsWithExtra", defaultBoxletsWithExtra);
+	// console.log("defaultBoxletsWithExtra", defaultBoxletsWithExtra);
 	const [boxlets, setBoxlets] = useState({
 		...defaultBoxletsWithExtra,
 		...adaptAutomations2Boxlets(automations || []),
 	});
 	const { toast } = useToast();
-	const { openConnectModal } = useConnectModal();
+	const { open: openConnectModal } = useAppKit();
 
 	const [errorMessage, setErrorMessage] = useState<string>("");
 	const { getToken } = useAuth();
@@ -250,7 +250,7 @@ function EditAutomationsModal({
 			cta = (
 				<button
 					className="flex w-full cursor-pointer items-center justify-center rounded-md bg-locker-600 py-3 text-sm font-semibold text-white"
-					onClick={openConnectModal}
+					onClick={() => openConnectModal()}
 				>
 					Connect Wallet
 				</button>

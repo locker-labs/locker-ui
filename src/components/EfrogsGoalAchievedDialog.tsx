@@ -10,7 +10,7 @@ import {
 	DialogHeader,
 	DialogTitle,
 } from "@/components/ui/dialog";
-import { getEfrogsFloorInfo, IEfrogsFloorInfo } from "@/lib/element";
+import { IEfrogsFloorInfo } from "@/lib/element";
 import { useSendTokensModal } from "@/providers/SendTokensModalProvider";
 import { Automation } from "@/types";
 
@@ -37,25 +37,25 @@ function EfrogsGoalAchievedDialog({
 	// const savedEnough = true;
 	const savedEnough = efrogsFloorEth && Big(ethSaved).gte(efrogsFloorEth);
 	const [isClosed, setIsClosed] = useState(!savedEnough);
-	const [nftInfo, setNftInfo] = useState<IEfrogsFloorInfo | null>(null);
+	const [nftInfo] = useState<IEfrogsFloorInfo | null>(null);
 	const { openModal: openSendTokensModal } = useSendTokensModal();
 
 	useEffect(() => {
 		setIsClosed(!savedEnough);
 	}, [savedEnough]);
 
-	useEffect(() => {
-		const getInfo = async () => {
-			try {
-				const info = await getEfrogsFloorInfo();
-				setNftInfo(info);
-			} catch (error) {
-				console.error("Error fetching NFT info", error);
-			}
-		};
+	// useEffect(() => {
+	// 	const getInfo = async () => {
+	// 		try {
+	// 			const info = await getEfrogsFloorInfo();
+	// 			setNftInfo(info);
+	// 		} catch (error) {
+	// 			console.error("Error fetching NFT info", error);
+	// 		}
+	// 	};
 
-		getInfo();
-	}, []);
+	// 	getInfo();
+	// }, []);
 
 	const nftSection = nftInfo && (
 		<Link

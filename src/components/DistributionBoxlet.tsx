@@ -24,7 +24,7 @@ function DistributionBoxlet({
 	boxlet: IDistributionBoxlet;
 	updateBoxlet: (boxlet: IDistributionBoxlet) => void;
 }) {
-	console.log("DistributionBoxlet -> boxlet", boxlet);
+	// console.log("DistributionBoxlet -> boxlet", boxlet);
 	const { title: boxletTitle, color, percent } = boxlet;
 
 	// Handle percent change for both Slider and input

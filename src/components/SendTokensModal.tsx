@@ -1,4 +1,4 @@
-import { useConnectModal } from "@rainbow-me/rainbowkit";
+import { useAppKit } from "@reown/appkit/react";
 import { Send } from "lucide-react";
 import { useEffect, useState } from "react";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
@@ -43,7 +43,7 @@ export function SendTokensModal() {
 	const [amountInput, setAmountInput] = useState<string>("");
 	const [amount, setAmount] = useState<bigint>(BigInt(0));
 	const [errorMessage, setErrorMessage] = useState<string>("");
-	const { openConnectModal } = useConnectModal();
+	const { open: openConnectModal } = useAppKit();
 
 	const [chainSwitched, setChainSwitched] = useState<boolean>(false);
 	const [pendingTokenChainId, setPendingTokenChainId] = useState<
@@ -225,7 +225,7 @@ export function SendTokensModal() {
 	const onOpenModal = isWalletConnected ? openModal : openConnectModal;
 	return (
 		<>
-			<button onClick={onOpenModal}>
+			<button onClick={() => onOpenModal()}>
 				<div className="flex h-[3.6rem] w-[3.6rem] flex-col items-center justify-center space-y-2 rounded-sm bg-gray-100 p-2 sm:space-y-1 sm:p-4">
 					<div className="sm:hidden">
 						<Send className="text-locker-600" size={24} />
