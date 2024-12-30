@@ -259,7 +259,7 @@ export default function AutomateChainsModal() {
 									{!isEnabled ? (
 										<button
 											className="flex items-center justify-center rounded-sm bg-locker-600 px-4 py-2 text-xxs text-white outline outline-2 hover:bg-locker-400"
-											onClick={onEnable}
+											onClick={() => onEnable()}
 											disabled={isLoading}
 										>
 											{isAutomateThenReady
