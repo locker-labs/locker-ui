@@ -11,7 +11,8 @@ export const projectId = process.env.NEXT_PUBLIC_WC_PROJECT_ID!;
 export const wagmiAdapter = new WagmiAdapter({
 	storage: createStorage({
 		storage: cookieStorage,
-	}),
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	}) as any,
 	ssr: true,
 	networks: supportedChains,
 	projectId,
