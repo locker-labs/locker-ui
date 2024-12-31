@@ -73,8 +73,12 @@ export const getCombinedPolicyMultRecipient = (toAddresses: `0x${string}`[]) =>
 				],
 			},
 			// {
-			// 	target: toAddress,
+			// 	target: toAddresses[0]!,
 			// 	valueLimit: BigInt("100000000000000000000000000000"),
 			// },
+			// ...toAddresses.map((toAddress) => ({
+			// 	target: toAddress,
+			// 	valueLimit: BigInt("100000000000000000000000000000"),
+			// })),
 		],
 	});
