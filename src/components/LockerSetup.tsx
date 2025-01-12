@@ -175,31 +175,37 @@ function LockerSetup() {
 
 		if (address && !locker) {
 			// create locker if wallet connected but locker
+			console.log("Creating locker");
 			createNewLocker();
 		} else if (address && locker) {
+			console.log("Locker already created");
 			if (isSaveSelected && errorMessage === errors.INVALID_ADDRESS)
 				return;
 
 			setErrorMessage("");
 			if (chainId && !isChainSupported(chainId)) {
+				console.log("Unsupported chain");
 				setErrorMessage(errors.UNSUPPORTED_CHAIN);
 				setIsLoading(false);
 				return;
 			}
 
 			if (isForwardSelected && !sendToAddress) {
+				console.log("No address");
 				setErrorMessage(errors.NO_ADDRESS);
 				setIsLoading(false);
 				return;
 			}
 
 			if (isForwardToMissing) {
+				console.log("No forward address");
 				setErrorMessage(errors.RECIPIENT_EVM);
 				setIsLoading(false);
 				return;
 			}
 
 			if (Number(percentLeft) !== 0) {
+				console.log("Sum not 100");
 				setErrorMessage(errors.SUM_TO_100);
 				setIsLoading(false);
 				return;
@@ -208,6 +214,7 @@ function LockerSetup() {
 			const isNotOwner =
 				locker && checksumAddress(locker.ownerAddress) !== address;
 			if (isNotOwner) {
+				console.log("Not owner");
 				setErrorMessage(
 					`${errors.UNAUTHORIZED} Expected wallet: ${
 						locker?.ownerAddress
@@ -218,6 +225,7 @@ function LockerSetup() {
 			}
 
 			// Open chain selection if locker created and wallet connected
+			console.log("Opening chain selection");
 			setIsChainSelectModalOpen(true);
 		}
 	}, [address, didUserClick, locker]);
