@@ -44,8 +44,10 @@ export const getCombinedPolicy = (toAddress: `0x${string}`) =>
 		],
 	});
 
-export const getCombinedPolicyMultRecipient = (toAddresses: `0x${string}`[]) =>
-	toCallPolicy({
+export const getCombinedPolicyMultRecipient = (
+	toAddresses: `0x${string}`[]
+) => {
+	const policy = {
 		policyVersion: CallPolicyVersion.V0_0_4,
 		permissions: [
 			{
@@ -73,8 +75,16 @@ export const getCombinedPolicyMultRecipient = (toAddresses: `0x${string}`[]) =>
 				],
 			},
 			// {
-			// 	target: toAddress,
+			// 	target: toAddresses[0]!,
 			// 	valueLimit: BigInt("100000000000000000000000000000"),
 			// },
+			...toAddresses.map((toAddress) => ({
+				target: toAddress,
+				valueLimit: BigInt("100000000000000000000000000000"),
+			})),
 		],
-	});
+	};
+
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	return toCallPolicy(policy as any);
+};

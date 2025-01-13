@@ -97,6 +97,7 @@ const useSmartAccount = () => {
 		} else {
 			combinedPolicy = getCombinedPolicyMultRecipient(toAddresses);
 		}
+		console.log("combinedPolicy", combinedPolicy);
 
 		// Type guard to filter out undefined values
 		function isDefined<T>(value: T | undefined): value is T {
@@ -132,6 +133,7 @@ const useSmartAccount = () => {
 		let sig;
 		try {
 			sig = await serializePermissionAccount(kernelAccountObj);
+			console.log("sig", sig);
 		} catch (error) {
 			const acceptableErrorMessages = [
 				"rejected",

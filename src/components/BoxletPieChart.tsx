@@ -9,7 +9,7 @@ export interface IBoxletPieChart {
 }
 
 function BoxletPieChart({ boxlets, lineWidth }: IBoxletPieChart) {
-	console.log("BoxletPieChart", boxlets);
+	// console.log("BoxletPieChart", boxlets);
 	// Remove boxlets with zero allocation
 	const nonZero = { ...boxlets };
 	Object.entries(boxlets).forEach(([boxletId, boxlet]) => {
