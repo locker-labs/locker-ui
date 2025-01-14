@@ -1,3 +1,5 @@
+"use client";
+
 import {
 	getKernelAddressFromECDSA,
 	signerToEcdsaValidator,
@@ -12,12 +14,9 @@ import {
 	createKernelAccount,
 	createKernelAccountClient,
 	createZeroDevPaymasterClient,
+	getUserOperationGasPrice,
 } from "@zerodev/sdk";
-import { KERNEL_V3_1 } from "@zerodev/sdk/constants";
-import {
-	ENTRYPOINT_ADDRESS_V07,
-	walletClientToSmartAccountSigner,
-} from "permissionless";
+import { getEntryPoint, KERNEL_V3_1 } from "@zerodev/sdk/constants";
 import {
 	Address,
 	type Chain,
@@ -30,8 +29,6 @@ import {
 } from "viem";
 import { usePublicClient, useWalletClient } from "wagmi";
 
-// import { getErc20Policy } from "@/data/policies/erc20";
-// import { getNativePolicy } from "@/data/policies/native";
 import {
 	getCombinedPolicy,
 	getCombinedPolicyMultRecipient,
@@ -44,8 +41,11 @@ import getZerodevIndex from "@/utils/getZerodevIndex";
 import supabaseClient from "@/utils/supabase/client";
 import { TABLE_OFFRAMP_ADDRESSES } from "@/utils/supabase/tables";
 
+const entryPoint = getEntryPoint("0.7");
+
 const useSmartAccount = () => {
 	const publicClient = usePublicClient();
+	// console.log("!publicClient", publicClient);
 	const { data: walletClient } = useWalletClient();
 
 	if (!process.env.LOCKER_AGENT_ADDRESS)
@@ -59,18 +59,24 @@ const useSmartAccount = () => {
 		hotWalletAddresses: `0x${string}`[], // If not specified, defaults locker owner address
 		offrampAddresses: `0x${string}`[]
 	): Promise<string | undefined> => {
+		// console.log(
+		// 	"signSessionKey",
+		// 	lockerIndex,
+		// 	hotWalletAddresses,
+		// 	offrampAddresses
+		// );
 		if (!walletClient) {
 			throw new Error("Wallet client is not available");
 		}
 
-		const smartAccountSigner =
-			walletClientToSmartAccountSigner(walletClient);
+		// const smartAccountSigner =
+		// 	walletClientToSmartAccountSigner(walletClient);
 
 		const ecdsaValidator = await signerToEcdsaValidator(
 			publicClient as PublicClient,
 			{
-				signer: smartAccountSigner,
-				entryPoint: ENTRYPOINT_ADDRESS_V07,
+				signer: walletClient,
+				entryPoint,
 				kernelVersion: KERNEL_V3_1,
 			}
 		);
@@ -79,22 +85,19 @@ const useSmartAccount = () => {
 			process.env.LOCKER_AGENT_ADDRESS as `0x${string}`
 		);
 
-		const emptySessionKeySigner = toECDSASigner({
+		const emptySessionKeySigner = await toECDSASigner({
 			signer: emptyAccount,
 		});
 
 		// Policies to allow Locker agent to send money to user's hot wallet
 		let combinedPolicy;
 		const toAddresses = [...hotWalletAddresses, ...offrampAddresses];
-		// let hotWalletErc20Policy;
-		// let hotWalletNativePolicy;
 		if (toAddresses.length === 1) {
 			combinedPolicy = getCombinedPolicy(toAddresses[0]);
-			// hotWalletErc20Policy = getErc20Policy(hotWalletAddress);
-			// hotWalletNativePolicy = getNativePolicy(hotWalletAddress);
 		} else {
 			combinedPolicy = getCombinedPolicyMultRecipient(toAddresses);
 		}
+		console.log("combinedPolicy", combinedPolicy);
 
 		// Type guard to filter out undefined values
 		function isDefined<T>(value: T | undefined): value is T {
@@ -107,18 +110,19 @@ const useSmartAccount = () => {
 		const permissionPlugin = await toPermissionValidator(
 			publicClient as PublicClient,
 			{
-				entryPoint: ENTRYPOINT_ADDRESS_V07,
+				entryPoint,
 				signer: emptySessionKeySigner,
 				policies,
 				kernelVersion: KERNEL_V3_1,
 			}
 		);
+		const index = getZerodevIndex(lockerIndex);
 		const kernelAccountObj = await createKernelAccount(
 			publicClient as PublicClient,
 			{
 				kernelVersion: KERNEL_V3_1,
-				index: getZerodevIndex(lockerIndex),
-				entryPoint: ENTRYPOINT_ADDRESS_V07,
+				index,
+				entryPoint,
 				plugins: {
 					sudo: ecdsaValidator,
 					regular: permissionPlugin,
@@ -129,6 +133,7 @@ const useSmartAccount = () => {
 		let sig;
 		try {
 			sig = await serializePermissionAccount(kernelAccountObj);
+			console.log("sig", sig);
 		} catch (error) {
 			const acceptableErrorMessages = [
 				"rejected",
@@ -199,24 +204,27 @@ const useSmartAccount = () => {
 			throw new Error("Wallet client is not available");
 		}
 
-		const smartAccountSigner =
-			walletClientToSmartAccountSigner(walletClient);
-
 		const ecdsaValidator = await signerToEcdsaValidator(
 			publicClient as PublicClient,
 			{
-				signer: smartAccountSigner,
-				entryPoint: ENTRYPOINT_ADDRESS_V07,
+				signer: walletClient,
+				entryPoint,
 				kernelVersion: KERNEL_V3_1,
 			}
 		);
+		const index = getZerodevIndex(lockerIndex);
+		console.log("sendUserOp");
+		console.log("index", index);
+		console.log("publicClient", publicClient);
+		console.log("ecdsaValidator", ecdsaValidator);
+		console.log("ENTRYPOINT_ADDRESS_V07", entryPoint);
 
 		const kernelAccountObj = await createKernelAccount(
 			publicClient as PublicClient,
 			{
 				kernelVersion: KERNEL_V3_1,
-				index: getZerodevIndex(lockerIndex),
-				entryPoint: ENTRYPOINT_ADDRESS_V07,
+				index,
+				entryPoint,
 				plugins: {
 					sudo: ecdsaValidator,
 				},
@@ -229,23 +237,26 @@ const useSmartAccount = () => {
 
 		if (!chain) throw new Error("No chain defined");
 
+		const zerodevPaymaster = createZeroDevPaymasterClient({
+			chain,
+			transport: http(paymasterRpcUrl as string),
+		});
+
 		const kernelAccountClient = createKernelAccountClient({
 			account: kernelAccountObj,
-			entryPoint: ENTRYPOINT_ADDRESS_V07,
 			chain: chain!,
 			bundlerTransport: http(bundlerRpcUrl),
-			middleware: {
-				sponsorUserOperation: async ({ userOperation }) => {
-					const zerodevPaymaster = createZeroDevPaymasterClient({
-						chain,
-						entryPoint: ENTRYPOINT_ADDRESS_V07,
-						transport: http(paymasterRpcUrl as string),
-					});
+			client: publicClient,
+			paymaster: {
+				getPaymasterData(userOperation) {
 					return zerodevPaymaster.sponsorUserOperation({
 						userOperation,
-						entryPoint: ENTRYPOINT_ADDRESS_V07,
 					});
 				},
+			},
+			userOperation: {
+				estimateFeesPerGas: async ({ bundlerClient }) =>
+					getUserOperationGasPrice(bundlerClient),
 			},
 		});
 
@@ -264,14 +275,33 @@ const useSmartAccount = () => {
 					value: bigint;
 					data: Hex;
 				};
-				console.log("sendParams", sendParams);
+				// fix TypeError: Do not know how to serialize a BigInt
+
+				console.log(
+					"sendParams",
+					sendParams.to,
+					sendParams.value.toString(),
+					sendParams.data
+				);
 				// Native token
-				hash = await kernelAccountClient.sendTransaction(sendParams);
+				hash = await kernelAccountClient.sendTransaction({
+					calls: [sendParams],
+				});
+				// console.log("ETH transfer", recipient, amount);
+				// hash = await kernelAccountClient.sendUserOperation({
+				// 	callData: await kernelAccountObj.encodeCalls([
+				// 		{
+				// 			to: recipient,
+				// 			value: amount,
+				// 		},
+				// 	]),
+				// });
 			} else {
 				// ERC-20 token
+				console.log("ERC-20 token", token, recipient, amount);
 				hash = await kernelAccountClient.sendUserOperation({
-					userOperation: {
-						callData: await kernelAccountObj.encodeCallData({
+					callData: await kernelAccountObj.encodeCalls([
+						{
 							to: token,
 							value: BigInt(0),
 							data: encodeFunctionData({
@@ -279,8 +309,8 @@ const useSmartAccount = () => {
 								functionName: "transfer",
 								args: [recipient, amount],
 							}),
-						}),
-					},
+						},
+					]),
 				});
 			}
 
@@ -317,8 +347,8 @@ const useSmartAccount = () => {
 			publicClient: publicClient as PublicClient,
 			eoaAddress,
 			index: getZerodevIndex(lockerIndex),
-			entryPointAddress: ENTRYPOINT_ADDRESS_V07,
 			kernelVersion: KERNEL_V3_1,
+			entryPoint,
 		});
 	// ************************************************************* //
 

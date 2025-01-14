@@ -1,13 +1,28 @@
-import { getDefaultConfig } from "@rainbow-me/rainbowkit";
+"use client";
+
+import { WagmiAdapter } from "@reown/appkit-adapter-wagmi";
+import { cookieStorage, createStorage } from "wagmi";
 
 import { supportedChains } from "@/data/constants/supportedChains";
 
-export const wagmiConfig = getDefaultConfig({
-	appName: "Locker",
-	projectId: process.env.WC_PROJECT_ID!,
-	chains: supportedChains,
-	ssr: true, // If your dApp uses server side rendering (SSR)
+export const projectId = process.env.NEXT_PUBLIC_WC_PROJECT_ID!;
+
+// Set up the Wagmi Adapter (Config)
+export const wagmiAdapter = new WagmiAdapter({
+	storage: createStorage({
+		storage: cookieStorage,
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	}) as any,
+	ssr: true,
+	networks: supportedChains,
+	projectId,
 });
+
+// export const wagmiConfig = getDefaultConfig({
+// 	appName: "Save",
+// 	chains: supportedChains,
+// 	ssr: true, // If your dApp uses server side rendering (SSR)
+// });
 
 // export const wagmiConfig = createConfig({
 // 	ssr: true,

@@ -1,7 +1,7 @@
 import { PiggyBank, Plus } from "lucide-react";
 import { useEffect, useState } from "react";
 
-import { getCollectionFloor } from "@/lib/element";
+// import { getCollectionFloor } from "@/lib/element";
 import { useLocker } from "@/providers/LockerProvider";
 import { getErc20Price } from "@/services/moralis";
 import getActiveAutomations from "@/utils/getActiveAutomations";
@@ -18,7 +18,7 @@ type ILockerPortfolioSavingsGoals = {
 function LockerPortfolioSavingsGoals({
 	portfolioValue,
 }: ILockerPortfolioSavingsGoals) {
-	const [efrogsFloor, setEfrogsFloor] = useState<string | null>(null);
+	const [efrogsFloor] = useState<string | null>(null);
 	const [ethUsd, setEthUsd] = useState<number | null>(null);
 	const { automations } = useLocker();
 
@@ -28,15 +28,15 @@ function LockerPortfolioSavingsGoals({
 	const hasGoals = automations && savingsAutomations.length > 0;
 
 	// get efrogs floor price on page load
-	useEffect(() => {
-		// load from env for testing
-		if (process.env.NEXT_PUBLIC_EFROGS_FLOOR) {
-			setEfrogsFloor(process.env.NEXT_PUBLIC_EFROGS_FLOOR);
-			return;
-		}
+	// useEffect(() => {
+	// 	// load from env for testing
+	// 	if (process.env.NEXT_PUBLIC_EFROGS_FLOOR) {
+	// 		setEfrogsFloor(process.env.NEXT_PUBLIC_EFROGS_FLOOR);
+	// 		return;
+	// 	}
 
-		if (hasGoals) getCollectionFloor().then(setEfrogsFloor);
-	}, [automations]);
+	// 	if (hasGoals) getCollectionFloor().then(setEfrogsFloor);
+	// }, [automations]);
 
 	// get ETHUSD
 	useEffect(() => {

@@ -1,5 +1,5 @@
 import { useAuth } from "@clerk/nextjs";
-import { useConnectModal } from "@rainbow-me/rainbowkit";
+import { useAppKit } from "@reown/appkit/react";
 import Link from "next/link";
 import { useState } from "react";
 import { checksumAddress } from "viem";
@@ -34,7 +34,7 @@ export default function AutomateChainsModal() {
 	const [errorMessage, setErrorMessage] = useState<string | null>(null);
 	const { isConnected } = useAccount();
 	const { getToken } = useAuth();
-	const { openConnectModal } = useConnectModal();
+	const { open: openConnectModal } = useAppKit();
 
 	const { switchChain } = useSwitchChain();
 	const { toast } = useToast();
@@ -259,7 +259,7 @@ export default function AutomateChainsModal() {
 									{!isEnabled ? (
 										<button
 											className="flex items-center justify-center rounded-sm bg-locker-600 px-4 py-2 text-xxs text-white outline outline-2 hover:bg-locker-400"
-											onClick={onEnable}
+											onClick={() => onEnable()}
 											disabled={isLoading}
 										>
 											{isAutomateThenReady
