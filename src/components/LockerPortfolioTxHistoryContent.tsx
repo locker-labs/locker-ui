@@ -101,6 +101,7 @@ export default function LockerPortfolioTxHistoryContent() {
 
 		const directionLabel = isIncoming ? "Received" : "Sent";
 		const chain = getChainObjFromId(tx.chainId)!;
+		if (!chain) return null;
 
 		return (
 			<tr key={tx.id}>
