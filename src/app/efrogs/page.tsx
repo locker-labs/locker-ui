@@ -7,7 +7,7 @@ export default function EfrogsPage() {
 	return (
 		<BasicPage>
 			<h1 className="mb-6 text-center text-xl font-bold">
-				Locker Sweepstakes Official Rules
+				Locker “Efrogr Daily” Sweepstakes Official Rules
 			</h1>
 			<p className="mb-4 text-sm font-semibold uppercase">
 				No purchase necessary. A purchase or payment will not increase
@@ -15,137 +15,336 @@ export default function EfrogsPage() {
 			</p>
 
 			<h2 className="mb-4 mt-6 text-lg font-semibold">
-				Promotion Sponsor:
+				1. Sponsor & Administrator:
 			</h2>
-			<p className="mb-4">Locker</p>
-			<p className="mb-4">
-				<strong>Contact Information:</strong>{" "}
-				<a
-					href={pathStrings.CONTACT_EMAIL_MAILTO}
-					className="text-blue-500"
-				>
-					{paths.CONTACT_EMAIL}
-				</a>
-			</p>
-			<p className="mb-4">
-				<strong>Address:</strong> 400 Poydras St, Suite 900, New
-				Orleans, LA
-			</p>
-
-			<h2 className="mb-4 mt-6 text-lg font-semibold">1. Eligibility</h2>
-			<p className="mb-4">
-				The Locker Sweepstakes (the “Sweepstakes”) is open to
-				individuals who meet the age requirements and comply with these
-				rules. Employees, contractors, and affiliates of Locker, as well
-				as immediate family members, are not eligible to enter.
-			</p>
-
-			<h2 className="mb-4 mt-6 text-lg font-semibold">2. Entry Period</h2>
-			<p className="mb-4">
-				The Sweepstakes begins on November 1, 2024, at 12:00 AM (CT) and
-				ends on January 1, 2025, at 11:59 PM (CT). Locker reserves the
-				right to end the Sweepstakes early and conduct the winner
-				selection if there has been sufficient participation.
-			</p>
-
-			<h2 className="mb-4 mt-6 text-lg font-semibold">3. How to Enter</h2>
-			<p className="mb-4">You can enter the Sweepstakes in two ways:</p>
 			<ul className="mb-4 list-inside list-disc">
-				<li>
-					<strong>Automatic Entry by Participation:</strong> Save with
-					Locker toward your Efrogs NFT goal and complete an
-					Efrogs-related purchase through Locker during the
-					Sweepstakes period.
+				<li className="mb-2">
+					<strong>Sponsor/Administrator:</strong> Locker
+				</li>
+				<li className="mb-2">
+					<strong>Contact Information:</strong>{" "}
+					<a
+						href={pathStrings.CONTACT_EMAIL_MAILTO}
+						className="text-blue-500"
+					>
+						{paths.CONTACT_EMAIL}
+					</a>
 				</li>
 				<li>
-					<strong>Free Entry by Mail:</strong> To enter without
-					purchase, mail a letter with your name, Locker address, and
-					a statement expressing your intent to enter the Sweepstakes
-					to: Locker, 400 Poydras St, Suite 900, New Orleans, LA.
-					Mail-in entries must be received by January 7, 2025, or by
-					the earlier drawing date if participation goals have been
-					met.
+					<strong>Address:</strong> 400 Poydras St, Suite 900, New
+					Orleans, LA
 				</li>
 			</ul>
 
-			<h2 className="mb-4 mt-6 text-lg font-semibold">
-				4. Prize and Odds of Winning
-			</h2>
+			<h2 className="mb-4 mt-6 text-lg font-semibold">2. Eligibility</h2>
 			<p className="mb-4">
-				One (1) Efrog NFT will be awarded to an eligible participant
-				selected at random from all valid entries. Odds of winning
-				depend on the number of eligible entries received.
+				The Locker “Efrogr Daily” Sweepstakes (the “Sweepstakes”) is
+				open to individuals who have reached the age of majority in
+				their jurisdiction of residence at the time of entry and who
+				comply with these Official Rules. Employees, officers,
+				directors, members, managers, agents, and representatives of
+				Locker, its parent, subsidiaries, or affiliates, and their
+				immediate family members (defined as spouse, parent, child,
+				sibling, and their respective spouses) are not eligible to enter
+				or win.
 			</p>
 
 			<h2 className="mb-4 mt-6 text-lg font-semibold">
-				5. Winner Selection and Notification
+				3. Sweepstakes Period
 			</h2>
 			<p className="mb-4">
-				The winner will be selected in a random drawing conducted on or
-				about January 10, 2025, or earlier if participation goals are
-				met. The winner will be notified via the email associated with
-				their Locker account within 48 hours of selection. If the winner
-				does not respond within 5 business days, an alternate winner may
-				be chosen.
+				<ul>
+					<li>
+						<strong>Start Date</strong>: December 1, 2024, at 12:00
+						AM Central Time (“CT”).
+					</li>
+					<li>
+						<strong>End Date</strong>: This Sweepstakes is ongoing
+						and will continue until terminated by Sponsor
+						(“Indefinite End Date”). Daily drawings will be
+						conducted as described below in Section 7.
+					</li>
+				</ul>
+				Sponsor reserves the right to modify or end the Sweepstakes at
+				any time for any reason.
+			</p>
+
+			<h2 className="mb-4 mt-6 text-lg font-semibold">4. How to Enter</h2>
+			<p className="mb-4">
+				There are two (2) methods of entry into the Sweepstakes:
+			</p>
+			<ol className="mb-4 list-inside list-decimal">
+				<li>
+					<strong>Entry by Playing the Efrogr Game</strong>
+					<ul className="mb-4 mt-4 list-inside list-disc pl-6">
+						<li>
+							Visit{" "}
+							<a
+								href={paths.EFROGS_LOCKER}
+								className="text-blue-500"
+							>
+								{pathStrings.EFROGS_LOCKER}
+							</a>{" "}
+							or the Efrogr Telegram Bot at{" "}
+							<a
+								href={paths.EFROGS_TELEGRAM}
+								className="text-blue-500"
+							>
+								{paths.EFROGS_TELEGRAM}
+							</a>
+							.
+						</li>
+						<li>
+							Each game entry requires <strong>333 CROAK</strong>{" "}
+							tokens (“Player Fee”). Playing one (1) game equals
+							one (1) entry into the Sweepstakes for the relevant
+							drawing period (see Section 7).
+						</li>
+						<li>
+							Sponsor will allocate{" "}
+							<strong>50% of all Player Fees</strong> to the daily
+							prize pool for this Sweepstakes.
+						</li>
+						<li>
+							<strong>Winnings Distribution:</strong> If you are
+							selected as a winner and entered by paying with
+							CROAK, your prize will be automatically distributed
+							to the <strong>same address</strong> that was used
+							to pay for your entry.
+						</li>
+					</ul>
+				</li>
+				<li>
+					<strong>Free Entry by Mail</strong>
+					<ul className="mt-4 list-inside list-disc pl-6">
+						<li>
+							To enter without payment or gameplay, mail a letter
+							that includes:
+							<ul className="list-inside list-disc pl-6">
+								<li>Your full name</li>
+								<li>Your complete return mailing address</li>
+								<li>A valid email address (if available)</li>
+								<li>
+									<strong>
+										A payment address (e.g., a compatible
+										CROAK wallet address)
+									</strong>{" "}
+									to receive any potential winnings
+								</li>
+								<li>
+									A statement that you wish to enter the
+									“Locker Efrogr Daily Sweepstakes”
+								</li>
+							</ul>
+						</li>
+						<li>
+							Mail your letter in a postage-paid envelope to:
+							<p className="pl-6">
+								<strong>
+									Locker – Efrogr Daily Sweepstakes
+								</strong>
+							</p>
+							<p className="pl-6">400 Poydras St, Suite 900,</p>
+							<p className="pl-6">New Orleans, LA</p>
+						</li>
+						<li>
+							<strong>Important</strong>: If a potential winner
+							from the free mail-in entry method did{" "}
+							<strong>not</strong> include a valid payment address
+							in their entry letter, they will forfeit the right
+							to claim any winnings.
+						</li>
+						<li className="mb-4">
+							Each mail-in entry will be valid for the daily
+							drawing in which it is received and subsequent daily
+							drawings for as long as the Sweepstakes continues
+							(or until Sponsor, in its discretion, limits
+							eligibility based on any duplication or tampering
+							concerns).
+						</li>
+					</ul>
+				</li>
+			</ol>
+			<p className="mb-4">
+				<strong>Limit:</strong> One (1) entry per person per day,
+				regardless of the method of entry. Multiple entries in a single
+				day via the same or multiple methods (beyond the one entry) may
+				be disqualified.
+			</p>
+			<p className="mb-4">
+				<strong>Important:</strong>{" "}
+				<strong>No Purchase Necessary</strong>. A payment of CROAK for
+				gameplay is considered a paid entry, but it does{" "}
+				<strong>not</strong> increase your odds of winning over a free
+				mail-in entry. Each method of entry receives one entry into the
+				daily draw.
+			</p>
+			<h2 className="mb-4 mt-6 text-lg font-semibold">
+				5. Prize(s), Prize Pool, and Odds of Winning
+			</h2>
+			<ul className="mb-4 list-inside list-disc">
+				{" "}
+				<li>
+					<strong>Daily Prize Pool</strong>: 50% of the total Player
+					Fees collected from entries on the preceding day (12:00 AM
+					CT to 11:59 PM CT) will be allocated to the prize pool for
+					the daily drawing. Sponsor reserves the right to use an
+					alternate or supplemental prize structure if necessary.
+				</li>
+				<li>
+					<strong>Number of Daily Winners</strong>: One (1) daily
+					winner (unless otherwise stated by Sponsor).
+				</li>
+				<li>
+					<strong>Odds of Winning</strong>: Depend on the total number
+					of eligible entries received for that day&apos;s drawing.
+				</li>
+			</ul>
+			<p className="mb-4">
+				Prizes will be awarded in CROAK tokens or another form specified
+				by Sponsor, consistent with the daily prize pool.
 			</p>
 
 			<h2 className="mb-4 mt-6 text-lg font-semibold">
-				6. Privacy and Use of Information
+				6. Winner Selection and Notification
+			</h2>
+			<ul className="mb-4 list-inside list-disc">
+				<li>
+					<strong>Daily Drawings</strong>: One (1) daily winner will
+					be selected in a random drawing from among all eligible
+					entries received for that day.
+				</li>
+				<li>
+					<strong>Notification</strong>: Winners will be announced in
+					the official Telegram group at{" "}
+					<a href={paths.CROAK_TELEGRAM} className="text-blue-500">
+						{pathStrings.CROAK_TELEGRAM}
+					</a>
+					. In addition, potential winners may be notified by email or
+					other contact information on file if available.
+				</li>
+				<li>
+					<strong>Claiming Prize</strong>:
+				</li>
+				<ul className="mb-4 list-inside list-disc pl-6">
+					<li>
+						If you entered via the Efrogr game (paid entry), your
+						winnings will be automatically distributed to the{" "}
+						<strong>address used for your CROAK payment</strong>.
+					</li>
+					<li>
+						If you entered via mail-in, you must have{" "}
+						<strong>included a payment address</strong> in your
+						entry letter. If no payment address was provided, the
+						prize will be forfeited.
+					</li>
+					<li>
+						If a potential winner does not respond to any direct
+						communication (if requested) within five (5) business
+						days, or if the notification is undeliverable, Sponsor
+						may disqualify that winner and select an alternate.
+					</li>
+				</ul>
+			</ul>
+
+			<h2 className="mb-4 mt-6 text-lg font-semibold">
+				7. No Substitution; Taxes
 			</h2>
 			<p className="mb-4">
-				By entering, participants agree to Locker’s handling of their
-				information as described in the primary{" "}
-				<a href="/privacy" className="text-blue-500">
-					Privacy Policy
-				</a>
-				. No additional personal information is collected for the
-				Sweepstakes beyond what is provided in your Locker account or
-				required for free mail-in entry.
+				No substitution or transfer of the prize is permitted except at
+				Sponsor’s sole discretion. All taxes, fees, and surcharges on
+				prizes (if any) are the sole responsibility of the winner.
+				Sponsor will comply with all tax reporting obligations.
 			</p>
 
 			<h2 className="mb-4 mt-6 text-lg font-semibold">
-				7. General Conditions
+				8. Privacy & Publicity
 			</h2>
 			<p className="mb-4">
-				By participating, you agree to these Official Rules and the
-				decisions of Locker, which are final. Locker reserves the right
-				to disqualify any entrant who tampers with the entry process or
-				violates these rules. The prize is non-transferable, and no
-				substitution is allowed except at Locker’s sole discretion.
+				By entering, participants agree to Sponsor’s use of the
+				information supplied for Sweepstakes administration purposes.
+				Except where prohibited by law, acceptance of a prize
+				constitutes consent to the Sponsor’s use of winner’s name,
+				likeness, photograph, voice, opinions, and/or hometown and state
+				for promotional purposes in any media without further payment or
+				consideration.
 			</p>
 
 			<h2 className="mb-4 mt-6 text-lg font-semibold">
-				8. Limitation of Liability
+				9. General Conditions
 			</h2>
 			<p className="mb-4">
-				Locker is not responsible for any technical errors, lost
-				entries, or other issues outside its control that may affect
-				participation or outcome. By entering, you release Locker and
-				its affiliates from any claims arising from participation or
-				prize acceptance.
-			</p>
-
-			<h2 className="mb-4 mt-6 text-lg font-semibold">9. Disputes</h2>
-			<p className="mb-4">
-				This Sweepstakes is governed by the laws of the State of
-				Louisiana. Any disputes will be resolved individually and
-				exclusively by the appropriate courts located within Louisiana.
+				By participating, entrants agree to abide by these Official
+				Rules and the decisions of Sponsor, which are final and binding
+				in all matters relating to this Sweepstakes. Sponsor reserves
+				the right to disqualify any entry that it determines, in its
+				sole discretion, to be in violation of these Official Rules or
+				if the entrant is found tampering with the entry process or the
+				operation of the Sweepstakes.
 			</p>
 
 			<h2 className="mb-4 mt-6 text-lg font-semibold">
-				10. Winner’s List
+				10. Limitation of Liability
+			</h2>
+			<p className="mb-4">Sponsor is not responsible for:</p>
+			<ul className="mb-4 list-inside list-disc pl-6">
+				<li>
+					Any technical problems, delays, or malfunctions that may
+					impede entry or notifications;
+				</li>
+				<li>
+					Lost, late, misdirected, incomplete, or unintelligible
+					entries;
+				</li>
+				<li>
+					Any damage or loss suffered by entrants or any other party.
+				</li>
+			</ul>
+			<p className="mb-4">
+				By participating, you agree to release and hold harmless
+				Sponsor, its affiliates, and their respective officers,
+				directors, employees, and agents from and against any claim or
+				cause of action arising out of participation in the Sweepstakes
+				or receipt/use of any prize.
+			</p>
+
+			<h2 className="mb-4 mt-6 text-lg font-semibold">11. Disputes</h2>
+			<p className="mb-4">
+				All issues concerning the construction, validity,
+				interpretation, and enforceability of these Official Rules shall
+				be governed by and construed in accordance with the laws of the
+				State of Louisiana, without giving effect to any choice of law
+				or conflict of law rules. Any disputes shall be resolved
+				individually, without resort to any form of class action, and
+				exclusively in the federal or state courts located in Louisiana.
+			</p>
+
+			<h2 className="mb-4 mt-6 text-lg font-semibold">
+				12. Winners’ List
 			</h2>
 			<p className="mb-4">
-				To obtain a copy of the winner&apos;s name, please send a
-				request to{" "}
+				For a list of daily winners, send a request to{" "}
 				<a
 					href={pathStrings.CONTACT_EMAIL_MAILTO}
 					className="text-blue-500"
 				>
 					{paths.CONTACT_EMAIL}
 				</a>{" "}
-				by January 31, 2025, or within 30 days of an earlier drawing
-				date if applicable.
+				with “Efrogr Daily Sweepstakes Winners’ List” in the subject
+				line. Requests must be received within thirty (30) days after
+				the end date of the applicable daily drawing.
+			</p>
+
+			<p className="mb-4">
+				<strong>Sponsor/Administrator</strong>: Locker, 400 Poydras St,
+				Suite 900, New Orleans, LA
+			</p>
+			<p className="mb-4">
+				<strong>Effective Date</strong>: December 1, 2024
+			</p>
+			<p className="mb-4 text-sm font-semibold uppercase">
+				These Official Rules constitute the entire agreement between the
+				Sponsor and participants with respect to this Sweepstakes.
 			</p>
 		</BasicPage>
 	);
